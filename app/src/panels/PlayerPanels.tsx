@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { PlayerColor } from '@gamepark/zenith/PlayerColor'
+import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { StyledPlayerPanel, usePlayers } from '@gamepark/react-game'
 import { createPortal } from 'react-dom'
 
 export const PlayerPanels = () => {
-  const players = usePlayers<PlayerColor>({ sortFromMe: true })
+  const players = usePlayers<PlayerId>({ sortFromMe: true })
   const root = document.getElementById('root')
   if (!root) {
     return null
