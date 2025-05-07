@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { GameTemplateOptionsSpec } from '@gamepark/game-template/GameTemplateOptions'
-import { GameTemplateRules } from '@gamepark/game-template/GameTemplateRules'
-import { GameTemplateSetup } from '@gamepark/game-template/GameTemplateSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
+import { ZenithOptionsSpec } from '@gamepark/zenith/ZenithOptions'
+import { ZenithRules } from '@gamepark/zenith/ZenithRules'
+import { ZenithSetup } from '@gamepark/zenith/ZenithSetup'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { gameAnimations } from './animations/GameAnimations'
@@ -16,10 +16,10 @@ setupTranslation(translations, { debug: false })
 ReactDOM.render(
   <StrictMode>
     <GameProvider
-      game="game-template"
-      Rules={GameTemplateRules}
-      optionsSpec={GameTemplateOptionsSpec}
-      GameSetup={GameTemplateSetup}
+      game="zenith"
+      Rules={ZenithRules}
+      optionsSpec={ZenithOptionsSpec}
+      GameSetup={ZenithSetup}
       material={Material}
       locators={Locators}
       animations={gameAnimations}

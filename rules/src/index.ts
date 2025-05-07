@@ -1,3 +1,3 @@
-export { GameTemplateRules } from './GameTemplateRules'
-export { GameTemplateOptionsSpec } from './GameTemplateOptions'
-export { GameTemplateSetup } from './GameTemplateSetup'
+export { ZenithRules } from './ZenithRules'
+export { ZenithOptionsSpec } from './ZenithOptions'
+export { ZenithSetup } from './ZenithSetup'
