@@ -3,6 +3,7 @@ import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { agentDeckLocator } from './AgentDeckLocator'
+import { agentDiscardLocator } from './AgentDiscardLocator'
 import { diplomacyBoardPlaceLocator } from './DiplomacyBoardPlaceLocator'
 import { planetBoardInfluenceDiscSpace } from './PlanetBoardInfluenceDiscSpace'
 import { playerHandLocator } from './PlayerHandLocator'
@@ -13,5 +14,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.TechnologyBoardPlace]: technologyBoardPlaceLocator,
   [LocationType.PlayerHand]: playerHandLocator,
   [LocationType.AgentDeck]: agentDeckLocator,
+  [LocationType.AgentDiscard]: agentDiscardLocator,
   [LocationType.PlanetBoardInfluenceDiscSpace]: planetBoardInfluenceDiscSpace
 }

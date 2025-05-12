@@ -1,3 +1,3 @@
 export enum RuleId {
-  TheFirstStep = 1
+  Muligan = 1
 }

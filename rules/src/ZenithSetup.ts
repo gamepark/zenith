@@ -64,6 +64,6 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   }
 
   start() {
-    this.startPlayerTurn(RuleId.TheFirstStep, this.players[0])
+    this.startSimultaneousRule(RuleId.Muligan)
   }
 }

@@ -4,7 +4,6 @@ import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 export class PlayerHandLocator extends HandLocator {
   getCoordinates(location: Location, context: MaterialContext): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
-    console.log(index)
     switch (index) {
       case 0:
         return { x: -30, y: 20, z: 0.05 }

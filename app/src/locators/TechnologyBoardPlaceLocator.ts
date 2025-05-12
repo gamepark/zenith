@@ -12,7 +12,6 @@ export class TechnologyBoardPlaceLocator extends Locator {
 
   getYCoordinates(location: Location) {
     const base = -16.75
-    console.log(location)
     switch (location.id) {
       case 1:
         return base + 10.13

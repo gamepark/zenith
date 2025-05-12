@@ -5,5 +5,6 @@ export enum LocationType {
   PlanetBoardInfluenceDiscSpace,
   TechnologyBoardSpace,
   AgentDeck,
-  PlayerHand
+  PlayerHand,
+  AgentDiscard
 }
