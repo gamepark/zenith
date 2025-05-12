@@ -3,9 +3,9 @@ export enum MaterialType {
   TechnologyBoard,
   PlanetBoard,
   DiplomacyBoard,
+  InfluenceDisc,
   TechMarker,
   ZenithiumToken,
-  InfluenceDisc,
   CreditToken,
   BonusToken,
   LeaderBadgeToken
