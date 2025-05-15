@@ -1,7 +1,8 @@
 import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
 import shuffle from 'lodash/shuffle'
+import { teamColors } from './TeamColor'
 import { agents } from './material/Agent'
-import { influences } from './material/Influence'
+import { Influence, influences } from './material/Influence'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
@@ -19,19 +20,34 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     this.setupDeck()
     this.setupPlayers()
     this.setupInfluences()
+    this.setupLeaderBadge()
+    this.setupTechnologyBoard()
+  }
+
+  setupLeaderBadge() {
+    this.material(MaterialType.LeaderBadgeToken).createItem({
+      location: {
+        type: LocationType.DiplomacyBoardLeaderBadgeSpace
+      }
+    })
   }
 
   setupInfluences() {
-    const planets = influences
-    for (const planet of planets) {
+    for (const planet of influences) {
       this.material(MaterialType.InfluenceDisc).createItem({
         id: planet,
         location: {
           type: LocationType.PlanetBoardInfluenceDiscSpace,
-          id: planet
+          id: planet,
+          x: this.getPlanetStartPosition(planet)
         }
       })
     }
+  }
+
+  getPlanetStartPosition(planet: Influence) {
+    if (planet === Influence.Terra) return -1
+    return 0
   }
 
   setupDeck() {
@@ -50,6 +66,27 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     const deck = this.material(MaterialType.AgentCard).location(LocationType.AgentDeck).deck()
     for (const player of this.game.players) {
       this.setupPlayer(deck, player)
+    }
+  }
+
+  setupTechnologyBoard() {
+    const boards = ['S', 'U', 'N']
+    for (let i = 0; i < boards.length; i++) {
+      const current = boards[i]
+      this.material(MaterialType.TechnologyBoard).createItem({ id: current, location: { type: LocationType.TechnologyBoardPlace, id: boards.length - i } })
+
+      for (const color of teamColors) {
+        console.log(this.material(MaterialType.TechnologyBoard).id(current).getIndex())
+        this.material(MaterialType.TechMarker).createItem({
+          id: color,
+          location: {
+            type: LocationType.TechnologyBoardTokenSpace,
+            parent: this.material(MaterialType.TechnologyBoard).id(current).getIndex(),
+            id: color,
+            x: 0
+          }
+        })
+      }
     }
   }
 

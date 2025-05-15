@@ -112,11 +112,11 @@ When you add a new LocationType in the rules, you have to create a new "Locator"
 Example:
 
 ```
-export const Locators: Record<LocationType, Locator<PlayerId, MaterialType, LocationType>> = {
+export const Locators: Record<LocationType, Locator<PlayerColor, MaterialType, LocationType>> = {
   [LocationType.Hand]: new PlayerHandLocator(),
 }
 
-export class PlayerHandLocator extends HandLocator<PlayerId, MaterialType, LocationType> {
+export class PlayerHandLocator extends HandLocator<PlayerColor, MaterialType, LocationType> {
   coordinates = { x: 5, y: 20 }
 }
 ```

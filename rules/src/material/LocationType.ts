@@ -3,8 +3,9 @@ export enum LocationType {
   TechnologyBoardPlace,
   DiplomacyBoardPlace,
   PlanetBoardInfluenceDiscSpace,
-  TechnologyBoardSpace,
+  TechnologyBoardTokenSpace,
   AgentDeck,
   PlayerHand,
-  AgentDiscard
+  AgentDiscard,
+  DiplomacyBoardLeaderBadgeSpace
 }
