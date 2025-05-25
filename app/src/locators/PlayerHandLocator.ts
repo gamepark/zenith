@@ -1,5 +1,7 @@
 import { getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { getMyTeamColor } from './position.utils'
 
 export class PlayerHandLocator extends HandLocator {
   getCoordinates(location: Location, context: MaterialContext): Partial<Coordinates> {
@@ -17,21 +19,16 @@ export class PlayerHandLocator extends HandLocator {
   }
 
   getBaseAngle(location: Location, context: MaterialContext): number {
-    const index = getRelativePlayerIndex(context, location.player)
-    switch (index) {
-      case 0:
-      case 3:
-        return 0
-      case 1:
-      case 2:
-        return 180
-    }
-
-    return 0
+    if (this.isMyTeam(location, context)) return 0
+    return 180
   }
 
   getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
     return ['translateZ(10em)', `translateY(-45%)`, `rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
+  }
+
+  isMyTeam(location: Location, context: MaterialContext) {
+    return getMyTeamColor(context) === getTeamColor(location.player!)
   }
 }
 

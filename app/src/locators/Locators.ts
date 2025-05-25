@@ -6,8 +6,12 @@ import { agentDeckLocator } from './AgentDeckLocator'
 import { agentDiscardLocator } from './AgentDiscardLocator'
 import { diplomacyBoardLeaderBadgeSpaceLocator } from './DiplomacyBoardLeaderBadgeSpaceLocator'
 import { diplomacyBoardPlaceLocator } from './DiplomacyBoardPlaceLocator'
+import { influenceLocator } from './InfluenceLocator'
 import { planetBoardInfluenceDiscSpaceLocator } from './PlanetBoardInfluenceDiscSpaceLocator'
+import { planetBoardPlaceLocator } from './PlanetBoardPlaceLocator'
 import { playerHandLocator } from './PlayerHandLocator'
+import { teamCreditLocator } from './TeamCreditLocator'
+import { teamZenithiumLocator } from './TeamZenithiumLocator'
 import { technologyBoardPlaceLocator } from './TechnologyBoardPlaceLocator'
 import { technologyBoardTechMarkerSpaceLocator } from './TechnologyBoardTechMarkerSpaceLocator'
 
@@ -19,5 +23,9 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.AgentDiscard]: agentDiscardLocator,
   [LocationType.PlanetBoardInfluenceDiscSpace]: planetBoardInfluenceDiscSpaceLocator,
   [LocationType.DiplomacyBoardLeaderBadgeSpace]: diplomacyBoardLeaderBadgeSpaceLocator,
-  [LocationType.TechnologyBoardTokenSpace]: technologyBoardTechMarkerSpaceLocator
+  [LocationType.TechnologyBoardTokenSpace]: technologyBoardTechMarkerSpaceLocator,
+  [LocationType.PlanetBoardPlace]: planetBoardPlaceLocator,
+  [LocationType.Influence]: influenceLocator,
+  [LocationType.TeamCredit]: teamCreditLocator,
+  [LocationType.TeamZenithium]: teamZenithiumLocator
 }

@@ -4,6 +4,7 @@ import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
 import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
 export class MulliganRule extends SimultaneousRule {
   getActivePlayerLegalMoves(player: PlayerId): MaterialMove[] {
@@ -65,6 +66,6 @@ export class MulliganRule extends SimultaneousRule {
       this.forget(Memory.Mulligan, player)
     }
 
-    return []
+    return [this.startPlayerTurn(RuleId.PlayCard, this.remind(Memory.FirstPlayer))]
   }
 }

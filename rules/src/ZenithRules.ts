@@ -11,6 +11,7 @@ import {
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
+import { PlayCardRule } from './rules/PlayCardRule'
 import { RuleId } from './rules/RuleId'
 import { MulliganRule } from './rules/MulliganRule'
 
@@ -25,14 +26,16 @@ export class ZenithRules
     TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>>
 {
   rules = {
-    [RuleId.Muligan]: MulliganRule
+    [RuleId.Muligan]: MulliganRule,
+    [RuleId.PlayCard]: PlayCardRule
   }
 
   locationsStrategies = {
     [MaterialType.AgentCard]: {
       [LocationType.PlayerHand]: new PositiveSequenceStrategy(),
       [LocationType.AgentDeck]: new PositiveSequenceStrategy(),
-      [LocationType.AgentDiscard]: new PositiveSequenceStrategy()
+      [LocationType.AgentDiscard]: new PositiveSequenceStrategy(),
+      [LocationType.Influence]: new PositiveSequenceStrategy()
     }
   }
 

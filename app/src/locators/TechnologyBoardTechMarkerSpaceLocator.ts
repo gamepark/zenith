@@ -16,7 +16,6 @@ export class TechnologyBoardTechMarkerSpaceLocator extends Locator {
       return { x: 66, y: 94.5 }
     }
 
-    console.log(item, location)
     if (item?.location.id === 3) return { x: 34, y: 94.5 }
     if (item?.location.id === 2) return { x: 20.5, y: 94.5 }
     return { x: 17, y: 94.5 }

@@ -1,3 +1,4 @@
 export enum RuleId {
-  Muligan = 1
+  Muligan = 1,
+  PlayCard
 }

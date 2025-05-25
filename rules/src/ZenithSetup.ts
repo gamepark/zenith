@@ -1,12 +1,15 @@
 import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
+import sample from 'lodash/sample'
 import shuffle from 'lodash/shuffle'
-import { teamColors } from './TeamColor'
 import { agents } from './material/Agent'
+import { Credit } from './material/Credit'
 import { Influence, influences } from './material/Influence'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
+import { Memory } from './rules/Memory'
 import { RuleId } from './rules/RuleId'
+import { TeamColor, teamColors } from './TeamColor'
 import { ZenithOptions } from './ZenithOptions'
 import { ZenithRules } from './ZenithRules'
 
@@ -22,6 +25,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     this.setupInfluences()
     this.setupLeaderBadge()
     this.setupTechnologyBoard()
+    this.setupTeams()
   }
 
   setupLeaderBadge() {
@@ -76,13 +80,12 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
       this.material(MaterialType.TechnologyBoard).createItem({ id: current, location: { type: LocationType.TechnologyBoardPlace, id: boards.length - i } })
 
       for (const color of teamColors) {
-        console.log(this.material(MaterialType.TechnologyBoard).id(current).getIndex())
         this.material(MaterialType.TechMarker).createItem({
           id: color,
           location: {
             type: LocationType.TechnologyBoardTokenSpace,
             parent: this.material(MaterialType.TechnologyBoard).id(current).getIndex(),
-            id: color,
+            player: color,
             x: 0
           }
         })
@@ -100,7 +103,47 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     )
   }
 
+  setupTeams() {
+    this.setupTeam(TeamColor.White)
+    this.setupTeam(TeamColor.Black)
+  }
+
+  setupTeam(team: TeamColor) {
+    this.material(MaterialType.CreditToken).createItem({
+      id: Credit.Credit1,
+      location: {
+        type: LocationType.TeamCredit,
+        player: team
+      },
+      quantity: 4
+    })
+
+    this.material(MaterialType.CreditToken).createItem({
+      id: Credit.Credit3,
+      location: {
+        type: LocationType.TeamCredit,
+        player: team
+      }
+    })
+
+    this.material(MaterialType.CreditToken).createItem({
+      id: Credit.Credit5,
+      location: {
+        type: LocationType.TeamCredit,
+        player: team
+      }
+    })
+
+    this.material(MaterialType.ZenithiumToken).createItem({
+      location: {
+        type: LocationType.TeamZenithium,
+        player: team
+      }
+    })
+  }
+
   start() {
+    this.memorize(Memory.FirstPlayer, sample(this.game.players)!)
     this.startSimultaneousRule(RuleId.Muligan)
   }
 }

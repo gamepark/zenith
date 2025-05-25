@@ -4,6 +4,7 @@ import { Influence } from '@gamepark/zenith/material/Influence'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
+import { imWhiteTeam } from './position.utils'
 
 export class PlanetBoardInfluenceDiscSpaceLocator extends Locator {
   parentItemType = MaterialType.PlanetBoard
@@ -30,6 +31,11 @@ export class PlanetBoardInfluenceDiscSpaceLocator extends Locator {
     }
 
     return { x: 0, y }
+  }
+
+  getRotateZ(_location: Location, context: MaterialContext): number {
+    if (imWhiteTeam(context)) return 0
+    return 180
   }
 }
 

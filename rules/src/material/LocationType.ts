@@ -7,5 +7,8 @@ export enum LocationType {
   AgentDeck,
   PlayerHand,
   AgentDiscard,
-  DiplomacyBoardLeaderBadgeSpace
+  DiplomacyBoardLeaderBadgeSpace,
+  Influence,
+  TeamCredit,
+  TeamZenithium
 }
