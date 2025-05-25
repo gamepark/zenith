@@ -10,7 +10,7 @@ export class TechnologyBoardTechMarkerSpaceLocator extends Locator {
   getPositionOnParent(location: Location, context: MaterialContext): XYCoordinates {
     const item = this.getParentItem(location, context)
 
-    if (TeamColor.Black === location.id) {
+    if (TeamColor.Black === location.player) {
       if (item?.location.id === 3) return { x: 83, y: 94.5 }
       if (item?.location.id === 2) return { x: 79.5, y: 94.5 }
       return { x: 66, y: 94.5 }

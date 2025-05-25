@@ -20,13 +20,11 @@ export class InfluenceLocator extends ListLocator {
 
   getPositionOnParent(location: Location, _context: MaterialContext): Coordinates {
     const baseCoordinates = { x: 0, y: 0, z: 0.05 }
-    console.log(location.player, isWhite(location.player!), location.id)
     if (isWhite(location.player!)) {
       baseCoordinates.x += 12.6 + (location.id - 1) * 18.55
       baseCoordinates.y += 122
-      console.log(baseCoordinates)
     } else {
-      baseCoordinates.x += location.id * 17.1
+      baseCoordinates.x += 12.6 + (location.id - 1) * 18.55
       baseCoordinates.y -= 22.3
     }
 

@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import { TokenDescription } from '@gamepark/react-game'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import Mercury from '../images/planet/Mercury.png'
@@ -7,14 +8,20 @@ import Mars from '../images/planet/Mars.png'
 import Jupiter from '../images/planet/Jupiter.png'
 
 export class InfluenceDiscDescription extends TokenDescription {
-  height = 2.5
-  width = 2.7
+  height = 2.35
+  width = 2.6
   images = {
     [Influence.Mercury]: Mercury,
     [Influence.Venus]: Venus,
     [Influence.Terra]: Terra,
     [Influence.Mars]: Mars,
     [Influence.Jupiter]: Jupiter
+  }
+
+  getItemExtraCss() {
+    return css`
+      border-radius: 1.3em / 1.1em;
+    `
   }
 }
 
