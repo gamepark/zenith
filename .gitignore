@@ -29,3 +29,5 @@ yarn-error.log*
 
 # Visual Studio Code
 .vscode
+
+.history

@@ -44,11 +44,10 @@ export class PlayCardRule extends PlayerTurnRule {
       const playerHelper = this.playerHelper
       const item = this.material(MaterialType.AgentCard).getItem<Agent | undefined>(move.itemIndex)
       if (!item.id) return moves
-      console.log(
-        influenceHelper.getCost(item),
-        this.creditMoney.removeMoney(influenceHelper.getCost(item), { type: LocationType.TeamCredit, player: playerHelper.team })
-      )
-      moves.push(...this.creditMoney.removeMoney(influenceHelper.getCost(item), { type: LocationType.TeamCredit, player: playerHelper.team }))
+      const cost = influenceHelper.getCost(item)
+      if (cost > 0) {
+        moves.push(...this.creditMoney.removeMoney(cost, { type: LocationType.TeamCredit, player: playerHelper.team }))
+      }
     }
 
     if (move.location.type === LocationType.AgentDiscard) {

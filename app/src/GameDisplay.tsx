@@ -8,12 +8,20 @@ type GameDisplayProps = {
   players: number
 }
 
-export const GameDisplay: FC<GameDisplayProps> = () => {
+export const GameDisplay: FC<GameDisplayProps> = ({ players }) => {
   const margin = { top: 7, left: 0, right: 0, bottom: 0 }
 
   return (
     <>
-      <GameTable xMin={-50} xMax={50} yMin={-28} yMax={28} margin={margin} css={process.env.NODE_ENV === 'development' && tableBorder}>
+      <GameTable
+        verticalCenter
+        xMin={-50}
+        xMax={players === 2 ? 35 : 50}
+        yMin={-28}
+        yMax={28}
+        margin={margin}
+        css={process.env.NODE_ENV === 'development' && tableBorder}
+      >
         <GameTableNavigation />
         <PlayerPanels />
       </GameTable>

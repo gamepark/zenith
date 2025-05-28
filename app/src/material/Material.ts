@@ -8,7 +8,7 @@ import { planetBoardDescription } from './PlanetBoardDescription'
 import { influenceDiscDescription } from './InfluenceDiscDescription'
 import { techMarkerDescription } from './TechMarkerDescription'
 import { technologyBoardDescription } from './TechnologyBoardDescription'
-import { zenithiumTokendescription } from './ZenithiumTokendescription'
+import { zenithiumTokenDescription } from './ZenithiumTokenDescription'
 
 export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.PlanetBoard]: planetBoardDescription,
@@ -19,5 +19,5 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.LeaderBadgeToken]: leaderBadgeDescription,
   [MaterialType.TechMarker]: techMarkerDescription,
   [MaterialType.CreditToken]: creditTokenDescription,
-  [MaterialType.ZenithiumToken]: zenithiumTokendescription
+  [MaterialType.ZenithiumToken]: zenithiumTokenDescription
 }

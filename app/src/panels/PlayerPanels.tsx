@@ -7,6 +7,7 @@ import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { createPortal } from 'react-dom'
 import { creditTokenDescription } from '../material/CreditTokendescription'
+import { zenithiumTokenDescription } from '../material/ZenithiumTokenDescription'
 
 export const PlayerPanels = () => {
   const players = usePlayers<PlayerId>({ sortFromMe: true })
@@ -23,7 +24,11 @@ export const PlayerPanels = () => {
           key={player.id}
           player={player}
           css={panelPosition(index)}
-          mainCounter={{ image: creditTokenDescription.images[Credit.Credit1], value: new PlayerHelper(rules.game, player.id).credits }}
+          counters={[
+            { image: creditTokenDescription.images[Credit.Credit1], value: new PlayerHelper(rules.game, player.id).credits },
+            { image: zenithiumTokenDescription.image, value: new PlayerHelper(rules.game, player.id).zenithium }
+          ]}
+          //mainCounter={{ image: creditTokenDescription.images[Credit.Credit1], value: new PlayerHelper(rules.game, player.id).credits }}
         />
       ))}
     </>,

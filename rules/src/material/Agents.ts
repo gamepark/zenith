@@ -280,7 +280,7 @@ export const HiroshiSun: AgentCharacteristics = {
   faction: Faction.Human
 }
 export const Magellan: AgentCharacteristics = {
-  influence: Influence.Jupiter,
+  influence: Influence.Mercury,
   cost: 10,
   faction: Faction.Animod
 }
