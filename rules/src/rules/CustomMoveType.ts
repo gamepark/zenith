@@ -1,3 +1,4 @@
 export enum CustomMoveType {
-  Pass = 1
+  Pass = 1,
+  Diplomacy
 }

@@ -1,5 +1,9 @@
+import { getEnumValues } from '@gamepark/rules-api'
+
 export enum Faction {
-  Robot = 1,
+  Animod = 1,
   Human,
-  Animod
+  Robot
 }
+
+export const factions = getEnumValues(Faction)

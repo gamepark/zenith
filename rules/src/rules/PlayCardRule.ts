@@ -7,9 +7,15 @@ import { MaterialType } from '../material/MaterialType'
 import { getTeamColor } from '../TeamColor'
 import { InfluenceHelper } from './helper/InfluenceHelper'
 import { PlayerHelper } from './helper/PlayerHelper'
+import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
 export class PlayCardRule extends PlayerTurnRule {
+  onRuleStart() {
+    this.forget(Memory.DiscardFaction)
+    return []
+  }
+
   getPlayerMoves(): MaterialMove[] {
     const moves: MaterialMove[] = []
     const hand = this.hand
@@ -48,16 +54,18 @@ export class PlayCardRule extends PlayerTurnRule {
       if (cost > 0) {
         moves.push(...this.creditMoney.removeMoney(cost, { type: LocationType.TeamCredit, player: playerHelper.team }))
       }
+      moves.push(this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer))
     }
-
-    if (move.location.type === LocationType.AgentDiscard) {
-      // TODO: discard action => go to choice for two remaining actions
-    }
-
-    // TODO: in 4-player games, it is the mate that starts
-    moves.push(this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer))
 
     return moves
+  }
+
+  afterItemMove(move: ItemMove) {
+    if (!isMoveItemType(MaterialType.AgentCard)(move) || move.location.type !== LocationType.AgentDiscard) return []
+    const item = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
+    const agent = Agents[item.id]
+    this.memorize(Memory.DiscardFaction, agent.faction)
+    return [this.startRule(RuleId.DiscardAction)]
   }
 
   get creditMoney() {

@@ -6,6 +6,7 @@ import White from '../images/technology-token/white.png'
 export class TechMarkerDescription extends TokenDescription {
   height = 1.3
   width = 1.45
+  borderRadius = 1
   images = {
     [TeamColor.Black]: Black,
     [TeamColor.White]: White

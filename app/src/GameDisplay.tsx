@@ -16,7 +16,7 @@ export const GameDisplay: FC<GameDisplayProps> = ({ players }) => {
       <GameTable
         verticalCenter
         xMin={-50}
-        xMax={players === 2 ? 35 : 50}
+        xMax={players === 2 ? 40 : 50}
         yMin={-28}
         yMax={28}
         margin={margin}

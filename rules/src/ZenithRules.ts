@@ -11,6 +11,7 @@ import {
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
+import { DiscardActionRule } from './rules/DiscardActionRule'
 import { PlayCardRule } from './rules/PlayCardRule'
 import { RuleId } from './rules/RuleId'
 import { MulliganRule } from './rules/MulliganRule'
@@ -27,7 +28,8 @@ export class ZenithRules
 {
   rules = {
     [RuleId.Muligan]: MulliganRule,
-    [RuleId.PlayCard]: PlayCardRule
+    [RuleId.PlayCard]: PlayCardRule,
+    [RuleId.DiscardAction]: DiscardActionRule
   }
 
   locationsStrategies = {

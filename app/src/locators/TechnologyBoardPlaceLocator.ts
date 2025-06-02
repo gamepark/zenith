@@ -1,5 +1,6 @@
 import { Locator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
+import { Faction } from '@gamepark/zenith/material/Faction'
 import { imWhiteTeam } from './position.utils'
 
 export class TechnologyBoardPlaceLocator extends Locator {
@@ -22,11 +23,11 @@ export class TechnologyBoardPlaceLocator extends Locator {
   getReverseYCoordinates(location: Location) {
     const base = -16.75
     switch (location.id) {
-      case 1:
+      case Faction.Robot:
         return base + 23.37
-      case 2:
+      case Faction.Human:
         return base + 16.75
-      case 3:
+      case Faction.Animod:
       default:
         return base + 10.13
     }
@@ -35,11 +36,11 @@ export class TechnologyBoardPlaceLocator extends Locator {
   getYCoordinates(location: Location) {
     const base = -16.75
     switch (location.id) {
-      case 1:
+      case Faction.Robot:
         return base + 10.13
-      case 2:
+      case Faction.Human:
         return base + 16.75
-      case 3:
+      case Faction.Animod:
       default:
         return base + 23.37
     }

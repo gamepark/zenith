@@ -3,6 +3,7 @@ import sample from 'lodash/sample'
 import shuffle from 'lodash/shuffle'
 import { agents } from './material/Agent'
 import { Credit } from './material/Credit'
+import { factions } from './material/Faction'
 import { Influence, influences } from './material/Influence'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
@@ -77,7 +78,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     const boards = ['S', 'U', 'N']
     for (let i = 0; i < boards.length; i++) {
       const current = boards[i]
-      this.material(MaterialType.TechnologyBoard).createItem({ id: current, location: { type: LocationType.TechnologyBoardPlace, id: boards.length - i } })
+      this.material(MaterialType.TechnologyBoard).createItem({ id: current, location: { type: LocationType.TechnologyBoardPlace, id: factions[i] } })
 
       for (const color of teamColors) {
         this.material(MaterialType.TechMarker).createItem({

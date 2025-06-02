@@ -1,7 +1,6 @@
 import { MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
-import { credits } from '../../material/Credit'
 import { Influence } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -26,9 +25,5 @@ export class InfluenceHelper extends MaterialRulesPart {
 
   getInfluence(influence: Influence) {
     return this.material(MaterialType.AgentCard).location(LocationType.Influence).locationId(influence).player(this.team)
-  }
-
-  get creditMoney() {
-    return this.material(MaterialType.CreditToken).money(credits)
   }
 }

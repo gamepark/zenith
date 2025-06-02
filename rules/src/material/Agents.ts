@@ -57,7 +57,7 @@ export const Cresus: AgentCharacteristics = {
 export const Atlas: AgentCharacteristics = {
   influence: Influence.Mercury,
   cost: 3,
-  faction: Faction.Robot
+  faction: Faction.Animod
 }
 export const PunkMari: AgentCharacteristics = {
   influence: Influence.Mercury,
@@ -67,7 +67,7 @@ export const PunkMari: AgentCharacteristics = {
 export const Septimus: AgentCharacteristics = {
   influence: Influence.Mars,
   cost: 3,
-  faction: Faction.Robot
+  faction: Faction.Animod
 }
 export const DoubleJoe: AgentCharacteristics = {
   influence: Influence.Mercury,
@@ -247,7 +247,7 @@ export const QueenSuzanne: AgentCharacteristics = {
 export const H4milt0n: AgentCharacteristics = {
   influence: Influence.Mercury,
   cost: 2,
-  faction: Faction.Human
+  faction: Faction.Robot
 }
 export const Caesar: AgentCharacteristics = {
   influence: Influence.Mars,
@@ -257,7 +257,7 @@ export const Caesar: AgentCharacteristics = {
 export const IldaFlores: AgentCharacteristics = {
   influence: Influence.Venus,
   cost: 1,
-  faction: Faction.Animod
+  faction: Faction.Human
 }
 export const H3rb3rt: AgentCharacteristics = {
   influence: Influence.Terra,
@@ -347,7 +347,7 @@ export const B4rj4v3l: AgentCharacteristics = {
 export const Augustus: AgentCharacteristics = {
   influence: Influence.Terra,
   cost: 10,
-  faction: Faction.Human
+  faction: Faction.Animod
 }
 export const LulaSmart: AgentCharacteristics = {
   influence: Influence.Mercury,
