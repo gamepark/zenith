@@ -1,7 +1,7 @@
 import { Influence } from '../Influence'
 import { EffectType } from './EffectType'
 
-enum ConditionType {
+export enum ConditionType {
   DoEffect,
   Leader,
   HaveCredits
@@ -52,8 +52,14 @@ export type WinZenithiumEffect = {
   quantity?: number
 }
 
+export type GiveZenithiumEffect = {
+  type: EffectType.GiveZenithium
+  quantity?: number
+}
+
 export type ExileEffect = {
   type: EffectType.Exile
+  times?: number[]
 }
 
 export type WinInfluenceEffect = {
@@ -67,6 +73,7 @@ export type WinInfluenceEffect = {
 
 export type GiveInfluenceEffect = {
   type: EffectType.GiveInfluence
+  except?: Influence
 }
 
 export type ResetInfluenceEffect = {
@@ -105,6 +112,7 @@ export type Effect =
   | GiveCreditEffect
   | TransferEffect
   | WinZenithiumEffect
+  | GiveZenithiumEffect
   | ExileEffect
   | WinInfluenceEffect
   | GiveInfluenceEffect

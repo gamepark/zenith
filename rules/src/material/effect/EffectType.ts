@@ -5,6 +5,7 @@ export enum EffectType {
   WinCredit,
   Conditional,
   WinZenithium,
+  GiveZenithium,
   Exile,
   WinInfluence,
   GiveInfluence,
