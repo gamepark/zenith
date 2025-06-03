@@ -1,3 +1,4 @@
+import { Faction } from '../Faction'
 import { Influence } from '../Influence'
 import { EffectType } from './EffectType'
 
@@ -12,6 +13,7 @@ export type LeaderCondition = {
 }
 export type HaveCreditsCondition = {
   type: ConditionType.HaveCredits
+  min: number
 }
 
 export type DoEffectCondition = {
@@ -33,9 +35,19 @@ export type StealCreditEffect = {
   quantity?: number
 }
 
+export type SpendCreditEffect = {
+  type: EffectType.SpendCredit
+  factors?: number[]
+  quantities?: number[]
+}
+
 export type WinCreditEffect = {
   type: EffectType.WinCredit
   quantity?: number
+  factorPerDifferentOpponentInfluence?: number
+  factorPerDifferentInfluence?: number
+  perLevel1Technology?: number[]
+  opponent?: boolean
 }
 
 export type GiveCreditEffect = {
@@ -44,12 +56,28 @@ export type GiveCreditEffect = {
 }
 
 export type TransferEffect = {
-  type: EffectType.TransferCard
+  type: EffectType.Transfer
+  influence?: Influence
+  quantity?: number
 }
 
 export type WinZenithiumEffect = {
   type: EffectType.WinZenithium
   quantity?: number
+  opponent?: boolean
+  perLevel1Technology?: number[]
+}
+
+export type TakeBonusEffect = {
+  type: EffectType.TakeBonus
+  visible?: boolean
+}
+
+export type SpendZenithiumEffect = {
+  type: EffectType.SpendZenithium
+  quantity?: number
+  factors?: number[]
+  quantities?: number[]
 }
 
 export type GiveZenithiumEffect = {
@@ -59,15 +87,23 @@ export type GiveZenithiumEffect = {
 
 export type ExileEffect = {
   type: EffectType.Exile
-  times?: number[]
+  factors?: number[]
+  quantity?: number
+  except?: Influence
+  quantities?: number[]
+  opponent?: boolean
+  influence?: Influence
 }
 
 export type WinInfluenceEffect = {
   type: EffectType.WinInfluence
+  except?: Influence
   influence?: Influence
   quantity?: number
-  differentPlanets?: boolean
-  neighbor?: boolean
+  differentPlanet?: boolean
+  fromCenter?: boolean
+  leftNeighbor?: boolean
+  rightNeighbor?: boolean
   opponentSide?: boolean
 }
 
@@ -82,6 +118,11 @@ export type ResetInfluenceEffect = {
 
 export type DevelopTechnologyEffect = {
   type: EffectType.DevelopTechnology
+  free?: boolean
+  lowest?: boolean
+  discount?: number
+  faction?: Faction
+  optional?: boolean
 }
 
 export type GiveLeaderBadgeEffect = {
@@ -90,10 +131,12 @@ export type GiveLeaderBadgeEffect = {
 
 export type TakeLeaderBadgeEffect = {
   type: EffectType.TakeLeaderBadge
+  gold?: boolean
 }
 
 export type DiscardEffect = {
   type: EffectType.Discard
+  full?: boolean
 }
 
 export type MobilizeEffect = {
@@ -101,6 +144,7 @@ export type MobilizeEffect = {
 }
 
 export type ChoiceEffect = {
+  type: EffectType.Choice
   left: Effect
   right: Effect
 }
@@ -109,9 +153,11 @@ export type Effect =
   | ConditionalEffect
   | StealCreditEffect
   | WinCreditEffect
+  | SpendCreditEffect
   | GiveCreditEffect
   | TransferEffect
   | WinZenithiumEffect
+  | SpendZenithiumEffect
   | GiveZenithiumEffect
   | ExileEffect
   | WinInfluenceEffect
@@ -123,3 +169,4 @@ export type Effect =
   | DiscardEffect
   | MobilizeEffect
   | ChoiceEffect
+  | TakeBonusEffect

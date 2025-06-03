@@ -1,13 +1,15 @@
 export enum EffectType {
-  TransferCard = 1,
+  Transfer = 1,
   StealCredit,
   GiveCredit,
   WinCredit,
+  SpendCredit,
   Conditional,
   WinZenithium,
   GiveZenithium,
   Exile,
   WinInfluence,
+  SpendZenithium,
   GiveInfluence,
   ResetInfluence,
   DevelopTechnology,
@@ -15,5 +17,6 @@ export enum EffectType {
   TakeLeaderBadge,
   Discard,
   Mobilize,
-  Choice
+  Choice,
+  TakeBonus
 }
