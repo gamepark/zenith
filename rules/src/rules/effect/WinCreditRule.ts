@@ -7,7 +7,7 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const money = this.creditMoney
-    moves.push(...money.addMoney(this.wonCredit, { type: LocationType.TeamCredit, player: this.playerHelper.team }))
+    moves.push(...money.addMoney(this.wonCredit, { type: LocationType.TeamCredit, player: this.effect.opponent ? this.opponentTeam : this.playerHelper.team }))
 
     this.removeFirstEffect()
     moves.push(...this.afterEffectPlayed())

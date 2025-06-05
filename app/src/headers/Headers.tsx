@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { RuleId } from '@gamepark/zenith/rules/RuleId'
 import { ComponentType } from 'react'
+import { ChoiceHeader } from './ChoiceHeader'
 import { ConditionalHeader } from './ConditionalHeader'
 import { DevelopTechnologyHeader } from './DevelopTechnologyHeader'
 import { DiscardActionHeader } from './DiscardActionHeader'
@@ -12,5 +13,6 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DiscardAction]: DiscardActionHeader,
   [RuleId.GiveInfluence]: GiveInfluenceHeader,
   [RuleId.Conditional]: ConditionalHeader,
-  [RuleId.DevelopTechnology]: DevelopTechnologyHeader
+  [RuleId.DevelopTechnology]: DevelopTechnologyHeader,
+  [RuleId.Choice]: ChoiceHeader
 }

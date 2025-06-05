@@ -2,7 +2,6 @@ import { MaterialMove } from '@gamepark/rules-api'
 import { WinZenithiumEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { PlayerHelper } from '../helper/PlayerHelper'
 import { EffectRule } from './index'
 
 export class WinZenithiumRule extends EffectRule<WinZenithiumEffect> {
@@ -14,7 +13,7 @@ export class WinZenithiumRule extends EffectRule<WinZenithiumEffect> {
       this.zenithium.createItem({
         location: {
           type: LocationType.TeamZenithium,
-          player: new PlayerHelper(this.game, this.opponentTeam).team
+          player: this.effect.opponent ? this.opponentTeam : this.playerHelper.team
         },
         quantity: this.effect.quantity ?? 1
       })
