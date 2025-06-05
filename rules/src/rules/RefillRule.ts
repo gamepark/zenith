@@ -1,4 +1,5 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { influences } from '../material/Influence'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
@@ -11,6 +12,21 @@ export class RefillRule extends PlayerTurnRule {
     const leaderBadge = this.leaderBadge
     this.memorize(Memory.AlreadyPlayedPlayers, (p: PlayerId[] = []) => p.concat(this.player))
     const moves: MaterialMove[] = []
+
+    for (const influence of influences) {
+      const planet = this.material(MaterialType.InfluenceDisc).location(LocationType.PlanetBoardInfluenceDiscSpace).locationId(influence)
+      if (planet.length) continue
+      moves.push(
+        this.material(MaterialType.InfluenceDisc).createItem({
+          id: planet,
+          location: {
+            type: LocationType.PlanetBoardInfluenceDiscSpace,
+            id: planet,
+            x: 0
+          }
+        })
+      )
+    }
 
     if (!leaderBadge.length) {
       moves.push(...this.refillHand(4))
