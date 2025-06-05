@@ -6,6 +6,7 @@ import LeaderSilver from '../images/leader/LeaderSilver.png'
 export class LeaderBadgeDescription extends TokenDescription {
   width = 5.8
   height = 4.06
+  borderRadius = 2.2
   image = LeaderSilver
   backImage = LeaderGold
 

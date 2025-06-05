@@ -20,7 +20,8 @@ export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
 
   get technologies() {
     const zenithium = this.playerHelper.zenithium
-    const tokens = this.technologyTokens.filter((item) => (this.effect.faction ? item.location.id === this.effect.faction : true))
+    const techBoard = this.material(MaterialType.TechnologyBoard).locationId(this.effect.faction).getIndexes()
+    const tokens = this.technologyTokens.parent((p: number | undefined) => techBoard.includes(p!))
     if (!tokens.length) return tokens
     if (this.effect.free && this.effect.lowest) {
       const lowestX = tokens.minBy((item) => item.location.x!).getItem()!.location.x!

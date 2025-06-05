@@ -20,5 +20,6 @@ export enum RuleId {
   Mobilize,
   Choice,
   TakeBonus,
-  Refill
+  Refill,
+  StealCredit
 }

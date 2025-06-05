@@ -25,6 +25,7 @@ import {
   WinInfluenceRule,
   WinZenithiumRule
 } from '../effect'
+import { StealCreditRule } from '../effect/StealCreditRule'
 import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
 import { EffectRuleIds } from './EffectRuleIds'
@@ -104,5 +105,7 @@ export const getEffectRule = (game: MaterialGame, effect: Effect): EffectRule =>
       return new TransferRule(game, effect)
     case EffectType.GiveCredit:
       return new GiveCreditRule(game, effect)
+    case EffectType.StealCredit:
+      return new StealCreditRule(game, effect)
   }
 }

@@ -22,7 +22,7 @@ export class GiveCreditRule extends EffectRule<GiveCreditEffect> {
   }
 
   getExtraDataFromMove(move: ItemMove | CustomMove) {
-    if (!isCustomMoveType(CustomMoveType.GiveCredit)(move)) return {}
+    if (!isCustomMoveType(CustomMoveType.DoCondition)(move)) return {}
     return { quantity: move.data as number }
   }
 

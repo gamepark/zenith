@@ -19,5 +19,6 @@ export const EffectRuleIds: Record<EffectType, RuleId> = {
   [EffectType.Discard]: RuleId.Discard,
   [EffectType.Mobilize]: RuleId.Mobilize,
   [EffectType.Choice]: RuleId.Choice,
-  [EffectType.TakeBonus]: RuleId.TakeBonus
+  [EffectType.TakeBonus]: RuleId.TakeBonus,
+  [EffectType.StealCredit]: RuleId.StealCredit
 }

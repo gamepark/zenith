@@ -13,11 +13,12 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     if (moves.length > 0) return moves
 
     if (this.isDoCondition(condition) && this.effect.mandatory) {
-      moves.push(...(getEffectRule(this.game, condition.effect).getAutomaticEffectMoves() ?? []))
+      moves.push(...getEffectRule(this.game, condition.effect).getAutomaticEffectMoves())
       return moves
     }
 
     if (this.isLeaderCondition(condition) || this.isHaveCreditCondition(condition)) {
+      this.removeCondition()
       return this.afterEffectPlayed()
     }
 
@@ -30,7 +31,7 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
       if (!this.isAutomaticEffect) {
         const moves: MaterialMove[] = []
         if (!this.effect.mandatory) moves.push(this.customMove(CustomMoveType.Pass))
-        moves.push(...(getEffectRule(this.game, condition.effect).getPlayerMoves() ?? []))
+        moves.push(...getEffectRule(this.game, condition.effect).getPlayerMoves())
         return moves
       }
 
@@ -128,21 +129,27 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     return false
   }
 
-  removeCondition(extraData: Record<string, unknown>) {
+  removeCondition(extraData?: Record<string, unknown>) {
     this.memorize(Memory.Effects, (effects: Effect[]) => {
       const firstEffect = effects[0] as ConditionalEffect
       const { effect } = firstEffect
-      getEffectRule(this.game, effect).setExtraData(extraData)
+
+      if (extraData) {
+        getEffectRule(this.game, effect).setExtraData(extraData)
+      }
 
       return [effect, ...effects.slice(1)]
     })
   }
 
-  addEffectAndRemoveCondition(extraData: Record<string, unknown>) {
+  addEffectAndRemoveCondition(extraData?: Record<string, unknown>) {
     this.memorize(Memory.Effects, (effects: Effect[]) => {
       const firstEffect = effects[0] as ConditionalEffect
       const { condition, effect } = firstEffect
-      getEffectRule(this.game, effect).setExtraData(extraData)
+
+      if (extraData) {
+        getEffectRule(this.game, effect).setExtraData(extraData)
+      }
 
       return [(condition as DoEffectCondition).effect, effect, ...effects.slice(1)]
     })

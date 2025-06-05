@@ -15,9 +15,9 @@ export class InfluenceHelper extends MaterialRulesPart {
     super(game)
   }
 
-  getCost(item: MaterialItem<PlayerId, LocationType, Agent | undefined>) {
+  getCost(item: MaterialItem<PlayerId, LocationType, Agent | undefined>, decreaseInfluenceBy = 0) {
     const description = Agents[item.id!]
-    return Math.max(0, description.cost - this.getInfluence(description.influence).length)
+    return Math.max(0, description.cost - (this.getInfluence(description.influence).length - decreaseInfluenceBy))
   }
 
   getInfluence(influence: Influence) {

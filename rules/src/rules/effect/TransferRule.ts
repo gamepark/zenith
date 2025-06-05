@@ -47,11 +47,14 @@ export class TransferRule extends EffectRule<TransferEffect> {
     return allInfluences
       .filter((influence) => (this.effect.influence ? influence === this.effect.influence : true))
       .flatMap((influence) =>
-        allCards.locationId(influence).moveItems({
-          type: LocationType.Influence,
-          id: influence,
-          player: this.playerHelper.team
-        })
+        allCards
+          .locationId(influence)
+          .maxBy((item) => item.location.x!)
+          .moveItems({
+            type: LocationType.Influence,
+            id: influence,
+            player: this.playerHelper.team
+          })
       )
   }
 
@@ -60,7 +63,7 @@ export class TransferRule extends EffectRule<TransferEffect> {
   }
 
   getExtraDataFromMove(move: ItemMove) {
-    if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
+    if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.Influence) {
       const card = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
       return { quantity: Agents[card.id].cost, influence: Agents[card.id].influence }
     }

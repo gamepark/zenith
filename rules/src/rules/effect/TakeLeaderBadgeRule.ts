@@ -13,18 +13,20 @@ export class TakeLeaderBadgeRule extends EffectRule<TakeLeaderBadgeEffect> {
     const item = leaderBadge.getItem()!
     const team = this.playerHelper.team
     if (item.location.player === team) {
-      if (item.location.rotation) return []
-      return leaderBadge.rotateItems(true)
+      if (!item.location.rotation) {
+        moves.push(leaderBadge.rotateItem(true))
+      }
+    } else {
+      moves.push(
+        ...leaderBadge.moveItems({
+          type: LocationType.TeamLeaderBadge,
+          rotation: this.effect.gold,
+          player: team
+        })
+      )
     }
 
-    moves.push(
-      ...leaderBadge.moveItems({
-        type: LocationType.TeamLeaderBadge,
-        rotation: this.effect.gold,
-        player: team
-      })
-    )
-
+    this.removeFirstEffect()
     moves.push(...this.afterEffectPlayed())
     return moves
   }

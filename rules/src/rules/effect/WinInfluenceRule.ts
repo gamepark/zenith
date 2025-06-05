@@ -76,7 +76,8 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     const effect = this.effect
     if (effect.pattern) {
       //TODO: Something more difficult here
-      return []
+      this.removeFirstEffect()
+      return this.afterEffectPlayed()
     }
 
     this.removeFirstEffect()

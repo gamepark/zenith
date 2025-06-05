@@ -16,5 +16,6 @@ export enum EffectType {
   Discard,
   Mobilize,
   Choice,
-  TakeBonus
+  TakeBonus,
+  StealCredit
 }

@@ -23,6 +23,10 @@ export class PlayerHandLocator extends HandLocator {
     return 180
   }
 
+  getMaxAngle(): number {
+    return 11
+  }
+
   getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
     return ['translateZ(10em)', `translateY(-45%)`, `rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
   }

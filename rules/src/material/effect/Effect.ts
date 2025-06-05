@@ -50,6 +50,11 @@ export type GiveCreditEffect = {
   quantity: number
 }
 
+export type StealCreditEffect = {
+  type: EffectType.StealCredit
+  quantity: number
+}
+
 export type TransferEffect = {
   type: EffectType.Transfer
   influence?: Influence
@@ -145,6 +150,7 @@ export type Effect =
   | TransferEffect
   | WinZenithiumEffect
   | GiveZenithiumEffect
+  | StealCreditEffect
   | ExileEffect
   | WinInfluenceEffect
   | GiveInfluenceEffect

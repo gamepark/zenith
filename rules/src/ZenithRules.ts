@@ -32,6 +32,7 @@ import {
   WinInfluenceRule,
   WinZenithiumRule
 } from './rules/effect'
+import { StealCreditRule } from './rules/effect/StealCreditRule'
 import { MulliganRule } from './rules/MulliganRule'
 import { PlayCardRule } from './rules/PlayCardRule'
 import { RefillRule } from './rules/RefillRule'
@@ -69,7 +70,8 @@ export class ZenithRules
     [RuleId.Mobilize]: MobilizeRule,
     [RuleId.Choice]: ChoiceRule,
     [RuleId.TakeBonus]: TakeBonusRule,
-    [RuleId.Refill]: RefillRule
+    [RuleId.Refill]: RefillRule,
+    [RuleId.StealCredit]: StealCreditRule
   }
 
   locationsStrategies = {

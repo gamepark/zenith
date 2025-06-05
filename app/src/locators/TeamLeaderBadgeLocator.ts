@@ -5,12 +5,17 @@ import { getMyTeamColor } from './position.utils'
 
 export class TeamLeaderBadgeLocator extends Locator {
   getCoordinates(location: Location, context: MaterialContext) {
-    if (this.isMyTeam(location, context)) return { x: -46, y: 22, z: 0 }
-    return { x: -46, y: -22, z: 0 }
+    if (this.isMyTeam(location, context)) return { x: -30, y: 13, z: 0 }
+    return { x: -30, y: -13, z: 0 }
   }
 
   isMyTeam(location: Location, context: MaterialContext) {
     return getMyTeamColor(context) === location.player
+  }
+
+  getRotateZ(location: Location, context: MaterialContext): number {
+    if (this.isMyTeam(location, context)) return 0
+    return 180
   }
 }
 
