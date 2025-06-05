@@ -9,7 +9,7 @@ export const ConditionalHeader = () => {
   return (
     <>
       <PlayMoveButton move={pass}>Passez</PlayMoveButton>
-      <PlayMoveButton move={doIt}>Faire l'effet</PlayMoveButton>
+      <PlayMoveButton move={doIt}>Faire les fesses</PlayMoveButton>
     </>
   )
 }

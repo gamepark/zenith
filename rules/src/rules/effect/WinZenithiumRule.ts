@@ -26,8 +26,10 @@ export class WinZenithiumRule extends EffectRule<WinZenithiumEffect> {
     return moves
   }
 
-  setQuantity(quantity: number) {
-    this.effect.quantity ??= quantity
+  setExtraData(_extraData: Record<string, unknown>) {
+    if (_extraData.quantity) {
+      this.effect.quantity ??= _extraData.quantity as number
+    }
   }
 
   get zenithium() {

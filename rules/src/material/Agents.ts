@@ -1005,7 +1005,7 @@ export const Domitian: AgentCharacteristics = {
       condition: {
         type: ConditionType.DoEffect,
         effect: {
-          type: EffectType.Transfer
+          type: EffectType.Mobilize
         }
       },
       effect: {
@@ -1019,7 +1019,7 @@ export const Domitian: AgentCharacteristics = {
       condition: {
         type: ConditionType.DoEffect,
         effect: {
-          type: EffectType.Transfer
+          type: EffectType.Mobilize
         }
       },
       effect: {
@@ -1033,7 +1033,7 @@ export const Domitian: AgentCharacteristics = {
       condition: {
         type: ConditionType.DoEffect,
         effect: {
-          type: EffectType.Transfer
+          type: EffectType.Mobilize
         }
       },
       effect: {
@@ -1130,7 +1130,7 @@ export const W4ts0n: AgentCharacteristics = {
       quantity: 5
     },
     {
-      type: EffectType.Transfer
+      type: EffectType.Mobilize
     }
   ]
 }

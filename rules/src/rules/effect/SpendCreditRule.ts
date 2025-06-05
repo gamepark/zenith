@@ -17,9 +17,9 @@ export class SpendCreditRule extends EffectRule<SpendCreditEffect> {
     return moves
   }
 
-  getQuantityFromMove(move: ItemMove | CustomMove) {
-    if (!isCustomMoveType(CustomMoveType.SpendCredit)(move)) return 0
-    return move.data as number
+  getExtraDataFromMove(move: ItemMove | CustomMove) {
+    if (!isCustomMoveType(CustomMoveType.SpendCredit)(move)) return {}
+    return { quantity: move.data as number }
   }
 
   onCustomMove(move: CustomMove) {

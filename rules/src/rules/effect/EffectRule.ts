@@ -18,11 +18,14 @@ export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRu
 
   onRuleStart() {
     if (!this.isPossible()) {
-      console.log('removing')
       this.removeFirstEffect()
       return this.afterEffectPlayed()
     }
 
+    return []
+  }
+
+  getAutomaticEffectMoves(): MaterialMove[] {
     return []
   }
 
@@ -34,14 +37,16 @@ export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRu
     return this.material(MaterialType.CreditToken).money(credits)
   }
 
-  setQuantity(_quantity: number) {}
+  setExtraData(_extraData: Record<string, unknown>) {}
 
   decrement(_move: ItemMove | CustomMove) {
     return true
   }
 
-  getQuantityFromMove(_move: ItemMove | CustomMove) {
-    return 1
+  getExtraDataFromMove(_move: ItemMove | CustomMove): Record<string, unknown> {
+    return {
+      quantity: 1
+    }
   }
 
   get effects(): Effect[] {
@@ -57,7 +62,6 @@ export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRu
   }
 
   removeFirstEffect() {
-    console.log('removing 2')
     this.memorize(Memory.Effects, (effects: Effect[]) => {
       effects.shift()
       return effects

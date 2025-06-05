@@ -15,6 +15,6 @@ export class DiplomacyBoardRule extends PlayerTurnRule {
 
   onCustomMove(move: CustomMove) {
     if (!isCustomMoveType(CustomMoveType.Diplomacy)(move)) return []
-    return [this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer)]
+    return [this.startRule(RuleId.Refill)]
   }
 }

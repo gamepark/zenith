@@ -16,12 +16,12 @@ export class TechnologyBoardDescription extends BoardDescription {
     U: TechnologyU
   }
 
-  getSize(_id: string, newParam: ComponentSize = { height: 18.9, width: 7.25 }): ComponentSize {
+  getSize(_id: string, newParam: ComponentSize = { height: 20.5, width: 7.25 }): ComponentSize {
     switch (_id) {
       case 'O':
       case 'U':
         return {
-          height: 18.9,
+          height: 20.5,
           width: 6
         }
       default:

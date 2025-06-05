@@ -78,6 +78,9 @@ export class ZenithRules
       [LocationType.AgentDeck]: new PositiveSequenceStrategy(),
       [LocationType.AgentDiscard]: new PositiveSequenceStrategy(),
       [LocationType.Influence]: new PositiveSequenceStrategy()
+    },
+    [MaterialType.InfluenceDisc]: {
+      [LocationType.TeamPlanets]: new PositiveSequenceStrategy()
     }
   }
 

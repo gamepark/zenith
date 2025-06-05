@@ -47,23 +47,23 @@ export class ExileRule extends EffectRule<ExileEffect> {
     return []
   }
 
-  getQuantityFromMove(move: ItemMove) {
+  getExtraDataFromMove(move: ItemMove) {
     const firstEffect = this.firstEffect
     if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
       const isWinCredit = firstEffect?.type === EffectType.Conditional && firstEffect.effect.type === EffectType.WinCredit
       if (isWinCredit) {
         const card = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
-        return Agents[card.id].cost
+        return { quantity: Agents[card.id].cost }
       }
     }
 
     if (isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
       if (this.effect.quantities && this.effect.factors) {
-        return this.effect.factors[move.indexes.length - 1]
+        return { quantity: this.effect.factors[move.indexes.length - 1] }
       }
     }
 
-    return 0
+    return {}
   }
 
   exileOneCard() {

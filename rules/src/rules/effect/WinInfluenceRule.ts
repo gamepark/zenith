@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialGame, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { WinInfluenceEffect } from '../../material/effect/Effect'
 import { Influence } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
@@ -8,11 +8,7 @@ import { Memory } from '../Memory'
 import { EffectRule } from './index'
 
 export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
-  constructor(game: MaterialGame, effect?: WinInfluenceEffect) {
-    super(game, effect)
-  }
   onRuleStart() {
-    console.log('effects', this.effects)
     const moves: MaterialMove[] = super.onRuleStart()
     if (moves.length > 0) return moves
     if (this.effect.influence) {
@@ -33,7 +29,6 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     const planets = this.material(MaterialType.InfluenceDisc)
       .location(LocationType.PlanetBoardInfluenceDiscSpace)
       .filter<Influence>((item) => {
-        console.log(this.effect.except, item.id)
         if (this.effect.except) return item.id !== this.effect.except
         if (this.effect.differentPlanet) return !this.isAlreadyPlayed(item.id)
         return true
@@ -75,27 +70,52 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
 
   beforeItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.InfluenceDisc)(move)) return []
-    this.memorize(Memory.LastPlanetMoved, this.material(MaterialType.InfluenceDisc).getItem<Influence>(move.itemIndex).id)
+    this.memorize(Memory.LastPlanetsMoved, (planets: Influence[] = []) =>
+      planets.concat(this.material(MaterialType.InfluenceDisc).getItem<Influence>(move.itemIndex).id)
+    )
     const effect = this.effect
     if (effect.pattern) {
       //TODO: Something more difficult here
       return []
     }
-    console.log('???')
 
     this.removeFirstEffect()
     return this.afterEffectPlayed()
   }
 
+  afterItemMove(move: ItemMove) {
+    if (!isMoveItemType(MaterialType.InfluenceDisc)(move)) return []
+    const planet = this.material(MaterialType.InfluenceDisc).index(move.itemIndex)
+    const item = planet.getItem()!
+    if (Math.abs(item.location.x!) === 4) {
+      return planet.moveItems({
+        type: LocationType.TeamPlanets,
+        player: this.playerHelper.team
+      })
+    }
+
+    return []
+  }
+
   isAlreadyPlayed(influence: Influence) {
-    return this.lastPlanetMoved === influence
+    return this.lastPlanetsMoved?.includes(influence)
   }
 
-  get lastPlanetMoved() {
-    return this.remind<Influence | undefined>(Memory.LastPlanetMoved)
+  isPossible() {
+    return this.planets.length > 0
   }
 
-  setQuantity(quantity: number) {
-    this.effect.quantity ??= quantity
+  get lastPlanetsMoved() {
+    return this.remind<Influence[] | undefined>(Memory.LastPlanetsMoved)
+  }
+
+  setExtraData(_extraData: Record<string, unknown>) {
+    if (_extraData.quantity) {
+      this.effect.quantity ??= _extraData.quantity as number
+    }
+
+    if (_extraData.influence) {
+      this.effect.influence ??= _extraData.influence as Influence
+    }
   }
 }

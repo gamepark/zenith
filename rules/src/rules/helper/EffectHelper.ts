@@ -49,7 +49,6 @@ export class EffectHelper extends MaterialRulesPart {
       return []
     }
 
-    console.log('Applying effect:', this.effectRuleIds[effect.type])
     return [this.startRule(this.effectRuleIds[effect.type])]
   }
 
@@ -67,7 +66,7 @@ export class EffectHelper extends MaterialRulesPart {
   }
 }
 
-export const getEffectRule = (game: MaterialGame, effect: Effect): EffectRule | undefined => {
+export const getEffectRule = (game: MaterialGame, effect: Effect): EffectRule => {
   switch (effect.type) {
     case EffectType.ResetInfluence:
       return new ResetInfluenceRule(game, effect)

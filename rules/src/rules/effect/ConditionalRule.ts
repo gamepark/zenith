@@ -12,6 +12,11 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     const moves: MaterialMove[] = super.onRuleStart()
     if (moves.length > 0) return moves
 
+    if (this.isDoCondition(condition) && this.effect.mandatory) {
+      moves.push(...(getEffectRule(this.game, condition.effect).getAutomaticEffectMoves() ?? []))
+      return moves
+    }
+
     if (this.isLeaderCondition(condition) || this.isHaveCreditCondition(condition)) {
       return this.afterEffectPlayed()
     }
@@ -23,7 +28,10 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     const condition = this.effect.condition
     if (this.isDoCondition(condition)) {
       if (!this.isAutomaticEffect) {
-        return getEffectRule(this.game, condition.effect)?.getPlayerMoves() ?? []
+        const moves: MaterialMove[] = []
+        if (!this.effect.mandatory) moves.push(this.customMove(CustomMoveType.Pass))
+        moves.push(...(getEffectRule(this.game, condition.effect).getPlayerMoves() ?? []))
+        return moves
       }
 
       return [this.customMove(CustomMoveType.Pass), this.customMove(CustomMoveType.DoCondition)]
@@ -39,7 +47,13 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     }
 
     if (isCustomMoveType(CustomMoveType.DoCondition)(move)) {
-      this.addEffectAndRemoveCondition()
+      console.log('Do condition')
+      const condition = this.effect.condition as DoEffectCondition
+      if (!this.isDoCondition(condition)) return []
+      const conditionEffect = getEffectRule(this.game, condition.effect)
+      if (!conditionEffect) return []
+      const extraData = conditionEffect.getExtraDataFromMove(move)
+      this.addEffectAndRemoveCondition(extraData)
       return this.afterEffectPlayed()
     }
 
@@ -47,7 +61,7 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
 
     const condition = this.effect.condition
     if (this.isDoCondition(condition)) {
-      const moves: MaterialMove[] = getEffectRule(this.game, condition.effect)?.onCustomMove(move) ?? []
+      const moves: MaterialMove[] = getEffectRule(this.game, condition.effect).onCustomMove(move) ?? []
       moves.push(...this.afterEffectPlayed())
       return moves
     }
@@ -68,8 +82,8 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
       if (!conditionEffect) return
       const done = conditionEffect.decrement(move)
       if (done) {
-        const quantity = conditionEffect.getQuantityFromMove(move)
-        this.removeCondition(quantity)
+        const extraData = conditionEffect.getExtraDataFromMove(move)
+        this.removeCondition(extraData)
         return
       } else {
         this.memorize(Memory.CantPass, true)
@@ -99,8 +113,8 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     const condition = this.effect.condition
     if (this.isDoCondition(condition)) {
       const conditionEffect = getEffectRule(this.game, condition.effect)
-      if (!conditionEffect) return true
-      return conditionEffect.isPossible()
+
+      return conditionEffect.isPossible() && getEffectRule(this.game, this.effect.effect).isPossible()
     }
 
     if (this.isLeaderCondition(condition)) {
@@ -114,24 +128,21 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     return false
   }
 
-  removeCondition(quantity?: number) {
-    console.log('removin 3')
+  removeCondition(extraData: Record<string, unknown>) {
     this.memorize(Memory.Effects, (effects: Effect[]) => {
       const firstEffect = effects[0] as ConditionalEffect
       const { effect } = firstEffect
-      if (quantity !== undefined) {
-        getEffectRule(this.game, effect)?.setQuantity(quantity)
-      }
+      getEffectRule(this.game, effect).setExtraData(extraData)
 
       return [effect, ...effects.slice(1)]
     })
   }
 
-  addEffectAndRemoveCondition() {
-    console.log('removing 4')
+  addEffectAndRemoveCondition(extraData: Record<string, unknown>) {
     this.memorize(Memory.Effects, (effects: Effect[]) => {
       const firstEffect = effects[0] as ConditionalEffect
       const { condition, effect } = firstEffect
+      getEffectRule(this.game, effect).setExtraData(extraData)
 
       return [(condition as DoEffectCondition).effect, effect, ...effects.slice(1)]
     })

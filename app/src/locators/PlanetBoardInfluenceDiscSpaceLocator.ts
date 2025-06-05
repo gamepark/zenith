@@ -26,6 +26,7 @@ export class PlanetBoardInfluenceDiscSpaceLocator extends Locator {
     if (Math.abs(locationX) > 0) {
       y += factor * 4.6
     }
+
     y += 10.6 * location.x!
     switch (location.id) {
       case Influence.Mercury:

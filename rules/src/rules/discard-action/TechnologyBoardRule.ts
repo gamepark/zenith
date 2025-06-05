@@ -15,7 +15,7 @@ export class TechnologyBoardRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.TechMarker)(move)) return []
-    return [this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer)]
+    return [this.startRule(RuleId.Refill)]
   }
 
   get marker() {

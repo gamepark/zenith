@@ -7,15 +7,15 @@ export class TechnologyBoardPlaceLocator extends Locator {
   getCoordinates(location: Location, context: MaterialContext): Partial<Coordinates> {
     if (imWhiteTeam(context)) {
       return {
-        x: -27.9,
-        y: this.getYCoordinates(location),
+        x: -28.8 - this.getYCoordinates(location),
+        y: 0,
         z: 0.05
       }
     }
 
     return {
-      x: 27.9,
-      y: this.getReverseYCoordinates(location),
+      x: 28.8 + this.getReverseYCoordinates(location),
+      y: 0,
       z: 0.05
     }
   }
@@ -44,11 +44,6 @@ export class TechnologyBoardPlaceLocator extends Locator {
       default:
         return base + 23.37
     }
-  }
-
-  getRotateZ(_location: Location, context: MaterialContext): number {
-    if (imWhiteTeam(context)) return -90
-    return 90
   }
 }
 

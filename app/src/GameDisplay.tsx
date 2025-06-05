@@ -9,7 +9,7 @@ type GameDisplayProps = {
   players: number
 }
 
-export const GameDisplay: FC<GameDisplayProps> = ({ players }) => {
+export const GameDisplay: FC<GameDisplayProps> = () => {
   const margin = { top: 7, left: 0, right: 0, bottom: 0 }
 
   return (
@@ -18,7 +18,7 @@ export const GameDisplay: FC<GameDisplayProps> = ({ players }) => {
         verticalCenter
         collisionAlgorithm={pointerWithin}
         xMin={-50}
-        xMax={players === 2 ? 40 : 50}
+        xMax={50}
         yMin={-28}
         yMax={28}
         margin={margin}

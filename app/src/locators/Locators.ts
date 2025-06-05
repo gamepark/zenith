@@ -11,6 +11,8 @@ import { planetBoardInfluenceDiscSpaceLocator } from './PlanetBoardInfluenceDisc
 import { planetBoardPlaceLocator } from './PlanetBoardPlaceLocator'
 import { playerHandLocator } from './PlayerHandLocator'
 import { teamCreditLocator } from './TeamCreditLocator'
+import { teamLeaderBadgeLocator } from './TeamLeaderBadgeLocator'
+import { teamPlanetLocator } from './TeamPlanetLocator'
 import { teamZenithiumLocator } from './TeamZenithiumLocator'
 import { technologyBoardPlaceLocator } from './TechnologyBoardPlaceLocator'
 import { technologyBoardTechMarkerSpaceLocator } from './TechnologyBoardTechMarkerSpaceLocator'
@@ -27,5 +29,7 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.PlanetBoardPlace]: planetBoardPlaceLocator,
   [LocationType.Influence]: influenceLocator,
   [LocationType.TeamCredit]: teamCreditLocator,
-  [LocationType.TeamZenithium]: teamZenithiumLocator
+  [LocationType.TeamZenithium]: teamZenithiumLocator,
+  [LocationType.TeamPlanets]: teamPlanetLocator,
+  [LocationType.TeamLeaderBadge]: teamLeaderBadgeLocator
 }

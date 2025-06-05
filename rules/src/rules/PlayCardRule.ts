@@ -14,7 +14,7 @@ import { RuleId } from './RuleId'
 export class PlayCardRule extends PlayerTurnRule {
   onRuleStart() {
     this.forget(Memory.DiscardFaction)
-    this.forget(Memory.LastPlanetMoved)
+    this.forget(Memory.LastPlanetsMoved)
     return []
   }
 
@@ -71,7 +71,6 @@ export class PlayCardRule extends PlayerTurnRule {
       const effectMoves = helper.applyCard(item)
       if (effectMoves.some((move) => isStartRule(move) || isStartPlayerTurn(move))) {
         moves.push(...effectMoves)
-        console.log('PlayCardRule.beforeItemMove', this.remind(Memory.Effects), moves)
         return moves
       }
 

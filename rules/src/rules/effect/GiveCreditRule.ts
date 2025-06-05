@@ -21,9 +21,9 @@ export class GiveCreditRule extends EffectRule<GiveCreditEffect> {
     return moves
   }
 
-  getQuantityFromMove(move: ItemMove | CustomMove) {
-    if (!isCustomMoveType(CustomMoveType.GiveCredit)(move)) return 0
-    return move.data as number
+  getExtraDataFromMove(move: ItemMove | CustomMove) {
+    if (!isCustomMoveType(CustomMoveType.GiveCredit)(move)) return {}
+    return { quantity: move.data as number }
   }
 
   isPossible() {

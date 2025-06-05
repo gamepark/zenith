@@ -19,7 +19,7 @@ export class TakeLeaderBadgeRule extends EffectRule<TakeLeaderBadgeEffect> {
 
     moves.push(
       ...leaderBadge.moveItems({
-        type: LocationType.PlayerLeaderBadge,
+        type: LocationType.TeamLeaderBadge,
         rotation: this.effect.gold,
         player: team
       })

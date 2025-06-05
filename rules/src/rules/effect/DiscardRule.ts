@@ -37,17 +37,17 @@ export class DiscardRule extends EffectRule<DiscardEffect> {
     return moves
   }
 
-  getQuantityFromMove(move: ItemMove) {
+  getExtraDataFromMove(move: ItemMove) {
     const firstEffect = this.firstEffect!
     if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
       const isWinCredit = firstEffect.type === EffectType.Conditional && firstEffect.effect.type === EffectType.WinCredit
       if (isWinCredit) {
         const card = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
-        return Agents[card.id].cost
+        return { quantity: Agents[card.id].cost }
       }
     }
 
-    return 0
+    return {}
   }
 
   afterItemMove(move: ItemMove) {

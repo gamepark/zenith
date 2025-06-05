@@ -3,7 +3,7 @@ export enum Memory {
   FirstPlayer,
   DiscardFaction,
   Effects,
-  LastPlanetMoved,
+  LastPlanetsMoved,
   CantPass,
   AlreadyPlayedPlayers
 }

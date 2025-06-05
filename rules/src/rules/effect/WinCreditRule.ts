@@ -19,4 +19,10 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
     // TODO: other effects
     return 0
   }
+
+  setExtraData(_extraData: Record<string, unknown>) {
+    if (_extraData.quantity) {
+      this.effect.quantity ??= _extraData.quantity as number
+    }
+  }
 }

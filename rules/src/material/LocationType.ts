@@ -11,9 +11,10 @@ export enum LocationType {
   Influence,
   TeamCredit,
   TeamZenithium,
-  PlayerLeaderBadge,
+  TeamLeaderBadge,
   BonusTokenStock,
   PlayerBonus,
   PlanetBoardBonusSpace,
-  TechnologyBoardBonusSpace
+  TechnologyBoardBonusSpace,
+  TeamPlanets
 }

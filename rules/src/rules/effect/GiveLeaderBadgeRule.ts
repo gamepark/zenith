@@ -9,7 +9,7 @@ export class GiveLeaderBadgeRule extends EffectRule<GiveLeaderBadgeEffect> {
     const moves: MaterialMove[] = []
     moves.push(
       this.leaderBadge.moveItem({
-        type: LocationType.PlayerLeaderBadge,
+        type: LocationType.TeamLeaderBadge,
         player: this.opponentTeam
       })
     )

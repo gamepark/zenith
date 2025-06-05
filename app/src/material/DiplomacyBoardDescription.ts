@@ -12,10 +12,16 @@ export class DiplomacyBoardDescription extends BoardDescription {
   image = Diplomacy2Players
   backImage = Diplomacy4Players
 
-  staticItem = {
-    location: {
-      type: LocationType.DiplomacyBoardPlace
-    }
+  // TODO: manage 4-player
+  getStaticItems(context: MaterialContext): MaterialItem[] {
+    if (context.rules.players.length === 4) return []
+    return [
+      {
+        location: {
+          type: LocationType.DiplomacyBoardPlace
+        }
+      }
+    ]
   }
 
   isFlipped(_item: MaterialItem, context: MaterialContext) {
