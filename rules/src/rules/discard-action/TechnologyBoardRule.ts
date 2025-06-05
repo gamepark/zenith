@@ -1,13 +1,12 @@
-import { isMoveItemType, isStartPlayerTurn, isStartRule, ItemMove, MoveItem, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, isStartPlayerTurn, isStartRule, ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { Faction } from '../../material/Faction'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { EffectHelper } from '../helper/EffectHelper'
 import { PlayerHelper } from '../helper/PlayerHelper'
+import { TechnologyHelper } from '../helper/TechnologyHelper'
 import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
-import { getDiplomacyActions } from './DiplomacyActions'
-import { getTechnologyAction } from './TechnologyActions'
 
 export class TechnologyBoardRule extends PlayerTurnRule {
   getPlayerMoves() {
@@ -18,22 +17,13 @@ export class TechnologyBoardRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.TechMarker)(move)) return []
-    const effectMoves = this.applyTechnology(move)
+    new TechnologyHelper(this.game).applyTechnology(move)
+    const effectMoves = new EffectHelper(this.game, this.player).applyFirstEffect()
     if (effectMoves.some((move) => isStartRule(move) || isStartPlayerTurn(move))) {
-      console.log(effectMoves)
       return effectMoves
     }
 
     return [this.startRule(RuleId.Refill)]
-  }
-
-  applyTechnology(move: MoveItem) {
-    this.memorize(Memory.Effects, JSON.parse(JSON.stringify(getDiplomacyActions(this.game.players.length)[this.faction])))
-    const board = this.material(MaterialType.TechnologyBoard).location(LocationType.TechnologyBoardPlace).locationId(this.faction).getItem<string>()!
-    const boardId = board.id
-    const actions = getTechnologyAction(boardId)
-    this.memorize(Memory.Effects, JSON.parse(JSON.stringify(actions.slice(0, move.location.x).reverse().flat())))
-    return new EffectHelper(this.game, this.player).applyFirstEffect()
   }
 
   get marker() {

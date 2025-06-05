@@ -2,6 +2,7 @@ import { isMoveItemType, ItemMove } from '@gamepark/rules-api'
 import { DevelopTechnologyEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { TechnologyHelper } from '../helper/TechnologyHelper'
 import { EffectRule } from './index'
 
 export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
@@ -14,13 +15,16 @@ export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.TechMarker)(move)) return []
+    new TechnologyHelper(this.game).applyTechnology(move)
     this.removeFirstEffect()
     return this.afterEffectPlayed()
   }
 
   get technologies() {
     const zenithium = this.playerHelper.zenithium
-    const techBoard = this.material(MaterialType.TechnologyBoard).locationId(this.effect.faction).getIndexes()
+    const techBoard = this.material(MaterialType.TechnologyBoard)
+      .locationId((id) => id === (this.effect.faction ?? id))
+      .getIndexes()
     const tokens = this.technologyTokens.parent((p: number | undefined) => techBoard.includes(p!))
     if (!tokens.length) return tokens
     if (this.effect.free && this.effect.lowest) {
@@ -37,6 +41,7 @@ export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
   }
 
   isPossible() {
+    console.log('ASIMOV', this.technologies.length)
     return this.technologies.length > 0
   }
 
