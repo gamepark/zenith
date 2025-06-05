@@ -5,17 +5,14 @@ import { Influence } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
-import { getTeamColor, TeamColor } from '../../TeamColor'
+import { TeamColor } from '../../TeamColor'
 
 export class InfluenceHelper extends MaterialRulesPart {
-  team: TeamColor
-
   constructor(
     game: MaterialGame,
-    readonly playerId: PlayerId
+    readonly team: TeamColor
   ) {
     super(game)
-    this.team = getTeamColor(playerId)
   }
 
   getCost(item: MaterialItem<PlayerId, LocationType, Agent | undefined>) {
@@ -24,6 +21,10 @@ export class InfluenceHelper extends MaterialRulesPart {
   }
 
   getInfluence(influence: Influence) {
-    return this.material(MaterialType.AgentCard).location(LocationType.Influence).locationId(influence).player(this.team)
+    return this.influence.locationId(influence)
+  }
+
+  get influence() {
+    return this.material(MaterialType.AgentCard).location(LocationType.Influence).player(this.team)
   }
 }

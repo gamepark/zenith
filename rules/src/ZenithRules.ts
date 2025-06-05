@@ -12,9 +12,30 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
 import { DiscardActionRule } from './rules/DiscardActionRule'
-import { PlayCardRule } from './rules/PlayCardRule'
-import { RuleId } from './rules/RuleId'
+import {
+  ChoiceRule,
+  ConditionalRule,
+  DevelopTechnologyRule,
+  DiscardRule,
+  ExileRule,
+  GiveCreditRule,
+  GiveInfluenceRule,
+  GiveLeaderBadgeRule,
+  GiveZenithiumRule,
+  MobilizeRule,
+  ResetInfluenceRule,
+  SpendCreditRule,
+  TakeBonusRule,
+  TakeLeaderBadgeRule,
+  TransferRule,
+  WinCreditRule,
+  WinInfluenceRule,
+  WinZenithiumRule
+} from './rules/effect'
 import { MulliganRule } from './rules/MulliganRule'
+import { PlayCardRule } from './rules/PlayCardRule'
+import { RefillRule } from './rules/RefillRule'
+import { RuleId } from './rules/RuleId'
 
 /**
  * This class implements the rules of the board game.
@@ -29,7 +50,26 @@ export class ZenithRules
   rules = {
     [RuleId.Muligan]: MulliganRule,
     [RuleId.PlayCard]: PlayCardRule,
-    [RuleId.DiscardAction]: DiscardActionRule
+    [RuleId.DiscardAction]: DiscardActionRule,
+    [RuleId.Transfer]: TransferRule,
+    [RuleId.GiveCredit]: GiveCreditRule,
+    [RuleId.WinCredit]: WinCreditRule,
+    [RuleId.SpendCredit]: SpendCreditRule,
+    [RuleId.Conditional]: ConditionalRule,
+    [RuleId.WinZenithium]: WinZenithiumRule,
+    [RuleId.GiveZenithium]: GiveZenithiumRule,
+    [RuleId.Exile]: ExileRule,
+    [RuleId.WinInfluence]: WinInfluenceRule,
+    [RuleId.GiveInfluence]: GiveInfluenceRule,
+    [RuleId.ResetInfluence]: ResetInfluenceRule,
+    [RuleId.DevelopTechnology]: DevelopTechnologyRule,
+    [RuleId.GiveLeaderBadge]: GiveLeaderBadgeRule,
+    [RuleId.TakeLeaderBadge]: TakeLeaderBadgeRule,
+    [RuleId.Discard]: DiscardRule,
+    [RuleId.Mobilize]: MobilizeRule,
+    [RuleId.Choice]: ChoiceRule,
+    [RuleId.TakeBonus]: TakeBonusRule,
+    [RuleId.Refill]: RefillRule
   }
 
   locationsStrategies = {

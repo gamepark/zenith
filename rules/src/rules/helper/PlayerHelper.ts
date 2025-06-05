@@ -22,4 +22,8 @@ export class PlayerHelper extends MaterialRulesPart {
   get zenithium() {
     return this.material(MaterialType.ZenithiumToken).player(this.team).getQuantity()
   }
+
+  get isLeader() {
+    return this.material(MaterialType.LeaderBadgeToken).player(this.team).length > 0
+  }
 }

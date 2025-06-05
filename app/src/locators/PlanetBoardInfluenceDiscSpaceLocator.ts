@@ -1,13 +1,23 @@
-import { Locator, MaterialContext } from '@gamepark/react-game'
+import { css } from '@emotion/react'
+import { DropAreaDescription, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, XYCoordinates } from '@gamepark/rules-api'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
+import { influenceDiscDescription } from '../material/InfluenceDiscDescription'
 import { imWhiteTeam } from './position.utils'
 
 export class PlanetBoardInfluenceDiscSpaceLocator extends Locator {
   parentItemType = MaterialType.PlanetBoard
+
+  locationDescription = new DropAreaDescription({
+    ...influenceDiscDescription,
+    extraCss: css`
+      border-radius: 1.3em / 1.1em;
+      border: 0.1em dashed green;
+    `
+  })
 
   getPositionOnParent(location: Location<PlayerId, LocationType, Influence>, _context: MaterialContext): XYCoordinates {
     let y = 50

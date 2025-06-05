@@ -1,6 +1,5 @@
 export enum EffectType {
   Transfer = 1,
-  StealCredit,
   GiveCredit,
   WinCredit,
   SpendCredit,
@@ -9,7 +8,6 @@ export enum EffectType {
   GiveZenithium,
   Exile,
   WinInfluence,
-  SpendZenithium,
   GiveInfluence,
   ResetInfluence,
   DevelopTechnology,

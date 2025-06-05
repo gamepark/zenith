@@ -21,7 +21,7 @@ export type DoEffectCondition = {
   effect: Effect
 }
 
-type Condition = DoEffectCondition | LeaderCondition | HaveCreditsCondition
+export type Condition = DoEffectCondition | LeaderCondition | HaveCreditsCondition
 
 export type ConditionalEffect = {
   type: EffectType.Conditional
@@ -30,15 +30,10 @@ export type ConditionalEffect = {
   effect: Effect
 }
 
-export type StealCreditEffect = {
-  type: EffectType.StealCredit
-  quantity?: number
-}
-
 export type SpendCreditEffect = {
   type: EffectType.SpendCredit
-  factors?: number[]
-  quantities?: number[]
+  factors: number[]
+  quantities: number[]
 }
 
 export type WinCreditEffect = {
@@ -52,7 +47,7 @@ export type WinCreditEffect = {
 
 export type GiveCreditEffect = {
   type: EffectType.GiveCredit
-  quantity?: number
+  quantity: number
 }
 
 export type TransferEffect = {
@@ -71,13 +66,6 @@ export type WinZenithiumEffect = {
 export type TakeBonusEffect = {
   type: EffectType.TakeBonus
   visible?: boolean
-}
-
-export type SpendZenithiumEffect = {
-  type: EffectType.SpendZenithium
-  quantity?: number
-  factors?: number[]
-  quantities?: number[]
 }
 
 export type GiveZenithiumEffect = {
@@ -100,10 +88,9 @@ export type WinInfluenceEffect = {
   except?: Influence
   influence?: Influence
   quantity?: number
+  pattern?: number[]
   differentPlanet?: boolean
   fromCenter?: boolean
-  leftNeighbor?: boolean
-  rightNeighbor?: boolean
   opponentSide?: boolean
 }
 
@@ -141,6 +128,7 @@ export type DiscardEffect = {
 
 export type MobilizeEffect = {
   type: EffectType.Mobilize
+  quantity?: number
 }
 
 export type ChoiceEffect = {
@@ -151,13 +139,11 @@ export type ChoiceEffect = {
 
 export type Effect =
   | ConditionalEffect
-  | StealCreditEffect
   | WinCreditEffect
   | SpendCreditEffect
   | GiveCreditEffect
   | TransferEffect
   | WinZenithiumEffect
-  | SpendZenithiumEffect
   | GiveZenithiumEffect
   | ExileEffect
   | WinInfluenceEffect

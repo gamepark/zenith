@@ -1,4 +1,7 @@
 export enum CustomMoveType {
   Pass = 1,
-  Diplomacy
+  Diplomacy,
+  DoCondition,
+  SpendCredit,
+  GiveCredit
 }

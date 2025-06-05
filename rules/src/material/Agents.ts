@@ -115,7 +115,7 @@ export const Huxl3y: AgentCharacteristics = {
 export const Titus: AgentCharacteristics = {
   influence: Influence.Mars,
   cost: 1,
-  faction: Faction.Robot,
+  faction: Faction.Animod,
   effects: [
     {
       type: EffectType.WinInfluence,
@@ -376,8 +376,7 @@ export const Buj0ld: AgentCharacteristics = {
     {
       type: EffectType.DevelopTechnology,
       free: true,
-      lowest: true,
-      optional: true
+      lowest: true
     }
   ]
 }
@@ -1229,7 +1228,7 @@ export const H4milt0n: AgentCharacteristics = {
       quantity: 1
     },
     {
-      type: EffectType.Transfer,
+      type: EffectType.Mobilize,
       quantity: 2
     },
     {
@@ -1241,7 +1240,7 @@ export const H4milt0n: AgentCharacteristics = {
         }
       },
       effect: {
-        type: EffectType.Transfer,
+        type: EffectType.Mobilize,
         quantity: 3
       }
     }
@@ -1763,8 +1762,7 @@ export const Augustus: AgentCharacteristics = {
     {
       type: EffectType.WinInfluence,
       quantity: 2,
-      leftNeighbor: true,
-      rightNeighbor: true
+      pattern: [1, 2, 1]
     }
   ]
 }

@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { pointerWithin } from '@dnd-kit/core'
 import { css } from '@emotion/react'
 import { GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { FC } from 'react'
@@ -15,6 +16,7 @@ export const GameDisplay: FC<GameDisplayProps> = ({ players }) => {
     <>
       <GameTable
         verticalCenter
+        collisionAlgorithm={pointerWithin}
         xMin={-50}
         xMax={players === 2 ? 40 : 50}
         yMin={-28}

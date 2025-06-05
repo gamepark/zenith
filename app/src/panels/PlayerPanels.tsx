@@ -22,6 +22,7 @@ export const PlayerPanels = () => {
       {players.map((player, index) => (
         <StyledPlayerPanel
           key={player.id}
+          activeRing
           player={player}
           css={panelPosition(index)}
           counters={[

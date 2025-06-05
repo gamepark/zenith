@@ -18,7 +18,7 @@ export class InfluenceDiscDescription extends TokenDescription {
     [Influence.Jupiter]: Jupiter
   }
 
-  getItemExtraCss() {
+  getFrontExtraCss() {
     return css`
       border-radius: 1.3em / 1.1em;
     `

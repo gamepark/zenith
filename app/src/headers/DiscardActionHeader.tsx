@@ -10,9 +10,9 @@ export const DiscardActionHeader: FC = () => {
 
   return (
     <>
-      <PlayMoveButton move={diplomacy}>Diplomacy</PlayMoveButton>
-      {` OU `}
       <PlayMoveButton move={tech}>Avancer la technologie</PlayMoveButton>
+      {` OU `}
+      <PlayMoveButton move={diplomacy}>Diplomacy</PlayMoveButton>
     </>
   )
 }

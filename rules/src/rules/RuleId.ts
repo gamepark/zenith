@@ -1,5 +1,24 @@
 export enum RuleId {
   Muligan = 1,
   PlayCard,
-  DiscardAction
+  DiscardAction,
+  Transfer,
+  GiveCredit,
+  WinCredit,
+  SpendCredit,
+  Conditional,
+  WinZenithium,
+  GiveZenithium,
+  Exile,
+  WinInfluence,
+  GiveInfluence,
+  ResetInfluence,
+  DevelopTechnology,
+  GiveLeaderBadge,
+  TakeLeaderBadge,
+  Discard,
+  Mobilize,
+  Choice,
+  TakeBonus,
+  Refill
 }
