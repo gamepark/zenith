@@ -1,8 +1,12 @@
 import { CustomMove, isStartPlayerTurn, isStartRule, ItemMove, MaterialGame, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { RuleMove } from '@gamepark/rules-api/dist/material/moves'
+import { RuleStep } from '@gamepark/rules-api/dist/material/rules/RuleStep'
+import { PlayMoveContext } from '@gamepark/rules-api/dist/Rules'
 import { credits } from '../../material/Credit'
-import { Effect } from '../../material/effect/Effect'
+import { ConditionalEffect, Effect } from '../../material/effect/Effect'
 import { MaterialType } from '../../material/MaterialType'
 import { TeamColor } from '../../TeamColor'
+import { getEffectRule } from '../helper/EffectHelper'
 import { EffectRuleIds } from '../helper/EffectRuleIds'
 import { PlayerHelper } from '../helper/PlayerHelper'
 import { Memory } from '../Memory'
@@ -16,7 +20,7 @@ export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRu
     this.effect = effect ?? (this.firstEffect as E)
   }
 
-  onRuleStart() {
+  onRuleStart(_move?: RuleMove, _previousRule?: RuleStep, _context?: PlayMoveContext) {
     if (!this.isPossible()) {
       this.removeFirstEffect()
       return this.afterEffectPlayed()
@@ -87,5 +91,20 @@ export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRu
 
   get opponentTeam() {
     return this.playerHelper.team === TeamColor.White ? TeamColor.Black : TeamColor.White
+  }
+
+  removeCondition(extraData?: Record<string, unknown>) {
+    this.memorize(Memory.Effects, (effects: Effect[]) => {
+      const firstEffect = effects[0] as ConditionalEffect
+      const { effect } = firstEffect
+      console.log(firstEffect)
+
+      if (extraData) {
+        getEffectRule(this.game, effect).setExtraData(extraData)
+      }
+
+      console.log(effect)
+      return [effect, ...effects.slice(1)]
+    })
   }
 }

@@ -2,7 +2,6 @@ import { isMoveItemType, isMoveItemTypeAtOnce, ItemMove, MaterialMove } from '@g
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { ExileEffect } from '../../material/effect/Effect'
-import { EffectType } from '../../material/effect/EffectType'
 import { influences } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -22,44 +21,43 @@ export class ExileRule extends EffectRule<ExileEffect> {
   }
 
   decrement(move: ItemMove): boolean {
-    if (!isMoveItemType(MaterialType.AgentCard)(move) || move.location.type !== LocationType.AgentDiscard) return false
-
-    if (this.effect.quantity) {
-      this.effect.quantity--
-      return this.effect.quantity === 0
+    if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
+      console.log('QUANTITE', this.effect.quantity)
+      if (this.effect.quantity) {
+        this.effect.quantity--
+        return this.effect.quantity === 0
+      }
     }
 
     return true
   }
 
   afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.AgentCard)(move) || move.location.type !== LocationType.AgentDiscard) return []
+    if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
+      console.log('QUANTITE', this.effect.quantity)
+      if (this.effect.quantity) {
+        this.effect.quantity--
+      }
 
-    if (this.effect.quantity) {
-      this.effect.quantity--
-    }
-
-    if (!this.effect.quantity) {
-      this.removeFirstEffect()
-      return this.afterEffectPlayed()
+      if (!this.effect.quantity) {
+        this.removeFirstEffect()
+        return this.afterEffectPlayed()
+      }
     }
 
     return []
   }
 
   getExtraDataFromMove(move: ItemMove) {
-    const firstEffect = this.firstEffect
     if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
-      const isWinCredit = firstEffect?.type === EffectType.Conditional && firstEffect.effect.type === EffectType.WinCredit
-      if (isWinCredit) {
-        const card = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
-        return { quantity: Agents[card.id].cost }
-      }
+      const card = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
+      return { quantity: Agents[card.id].cost }
     }
 
     if (isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
       if (this.effect.quantities && this.effect.factors) {
-        return { quantity: this.effect.factors[move.indexes.length - 1] }
+        const index = this.effect.quantities.indexOf(move.indexes.length)
+        return { quantity: this.effect.factors[index] }
       }
     }
 

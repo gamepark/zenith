@@ -41,7 +41,6 @@ export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
   }
 
   isPossible() {
-    console.log('ASIMOV', this.technologies.length)
     return this.technologies.length > 0
   }
 

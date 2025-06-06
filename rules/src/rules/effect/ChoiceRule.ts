@@ -21,7 +21,6 @@ export class ChoiceRule extends EffectRule<ChoiceEffect> {
   }
 
   choice(choice: Choice) {
-    console.log(this.effects)
     this.memorize(Memory.Effects, (effects: Effect[]) => {
       const firstEffect = effects[0] as ChoiceEffect
       const { left, right } = firstEffect

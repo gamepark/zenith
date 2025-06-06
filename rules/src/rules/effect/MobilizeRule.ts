@@ -59,7 +59,6 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
   }
 
   getExtraDataFromMove(move: ItemMove) {
-    console.log(move)
     if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.Influence) {
       const card = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
       return { quantity: Agents[card.id].cost, influence: Agents[card.id].influence }

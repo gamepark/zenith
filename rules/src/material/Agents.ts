@@ -682,7 +682,7 @@ export const StessyPower: AgentCharacteristics = {
       condition: {
         type: ConditionType.DoEffect,
         effect: {
-          type: EffectType.SpendCredit,
+          type: EffectType.SpendZenithium,
           quantities: [1, 2, 4],
           factors: [1, 2, 3]
         }
@@ -876,6 +876,7 @@ export const F4rm3r: AgentCharacteristics = {
     },
     {
       type: EffectType.WinInfluence,
+      resetDifferentPlanet: true,
       quantity: 1
     },
     {
@@ -972,6 +973,7 @@ export const Th0mps0n: AgentCharacteristics = {
     },
     {
       type: EffectType.WinInfluence,
+      resetDifferentPlanet: true,
       quantity: 2
     },
     {
@@ -1204,6 +1206,7 @@ export const QueenSuzanne: AgentCharacteristics = {
     },
     {
       type: EffectType.WinInfluence,
+      resetDifferentPlanet: true,
       quantity: 2
     },
     {
@@ -1442,6 +1445,7 @@ export const Magellan: AgentCharacteristics = {
     },
     {
       type: EffectType.WinInfluence,
+      resetDifferentPlanet: true,
       quantity: 1
     },
     {
@@ -1979,6 +1983,7 @@ export const Cl4rke: AgentCharacteristics = {
     },
     {
       type: EffectType.WinInfluence,
+      resetDifferentPlanet: true,
       quantity: 2
     },
     {
@@ -2139,6 +2144,7 @@ export const Khan: AgentCharacteristics = {
     },
     {
       type: EffectType.WinInfluence,
+      resetDifferentPlanet: true,
       quantity: 2
     },
     {

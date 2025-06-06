@@ -21,5 +21,6 @@ export enum RuleId {
   Choice,
   TakeBonus,
   Refill,
-  StealCredit
+  StealCredit,
+  SpendZenithium
 }

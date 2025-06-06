@@ -18,10 +18,10 @@ export class RefillRule extends PlayerTurnRule {
       if (planet.length) continue
       moves.push(
         this.material(MaterialType.InfluenceDisc).createItem({
-          id: planet,
+          id: influence,
           location: {
             type: LocationType.PlanetBoardInfluenceDiscSpace,
-            id: planet,
+            id: influence,
             x: 0
           }
         })

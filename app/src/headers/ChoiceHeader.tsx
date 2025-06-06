@@ -5,8 +5,8 @@ import { Choice } from '@gamepark/zenith/rules/effect'
 import { FC } from 'react'
 
 export const ChoiceHeader: FC = () => {
-  const left = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Diplomacy)(move) && move.data === Choice.LEFT)
-  const right = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Diplomacy)(move) && move.data === Choice.RIGHT)
+  const left = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Choice)(move) && move.data === Choice.LEFT)
+  const right = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Choice)(move) && move.data === Choice.RIGHT)
 
   return (
     <>

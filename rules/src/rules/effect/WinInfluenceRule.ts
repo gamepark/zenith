@@ -11,15 +11,12 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   onRuleStart() {
     const moves: MaterialMove[] = super.onRuleStart()
     if (moves.length > 0) return moves
+    if (this.effect.resetDifferentPlanet) {
+      this.forget(Memory.LastPlanetsMoved)
+    }
+
     if (this.effect.influence) {
-      const planets = this.planets
-      moves.push(
-        ...planets.moveItems((item) => ({
-          ...item.location,
-          x: this.getPositionAfterPull(item, this.effect)
-        }))
-      )
-      return moves
+      return this.getPlayerMoves()
     }
 
     return []
@@ -51,51 +48,75 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     return planets
   }
 
-  getPositionAfterPull(item: MaterialItem, effect: WinInfluenceEffect) {
-    if (this.player === TeamColor.Black) {
-      return Math.min(4, item.location.x! + (effect.quantity ?? 1))
+  getPositionAfterPull(item: MaterialItem, effect: WinInfluenceEffect): number[] {
+    if (effect.times) {
+      const positions: number[] = []
+      for (let i = 1; i <= effect.times; i++) {
+        const newPosition = item.location.x! + i
+        if (this.player === TeamColor.Black && newPosition > 4) break
+        if (this.player === TeamColor.White && newPosition < -4) break
+        positions.push(newPosition)
+      }
+
+      return positions
     }
 
-    return Math.max(-4, item.location.x! - (effect.quantity ?? 1))
+    const quantity = effect.quantity ?? 1
+    if (this.player === TeamColor.Black) {
+      return [Math.min(4, item.location.x! + quantity)]
+    }
+
+    return [Math.max(-4, item.location.x! - quantity)]
   }
 
   getPlayerMoves(): MaterialMove[] {
     const effect = this.effect
     const planets = this.planets
-    return planets.moveItems((item) => ({
-      ...item.location,
-      x: this.getPositionAfterPull(item, effect)
-    }))
+    const moves: MaterialMove[] = []
+    for (const index of planets.getIndexes()) {
+      const item = planets.getItem(index)
+      const positions = this.getPositionAfterPull(item, effect)
+      moves.push(
+        ...positions.map((x) =>
+          planets.index(index).moveItem({
+            ...item.location,
+            x: x
+          })
+        )
+      )
+    }
+
+    return moves
   }
 
   beforeItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.InfluenceDisc)(move)) return []
-    this.memorize(Memory.LastPlanetsMoved, (planets: Influence[] = []) =>
-      planets.concat(this.material(MaterialType.InfluenceDisc).getItem<Influence>(move.itemIndex).id)
-    )
+    if (!isMoveItemType(MaterialType.InfluenceDisc)(move) || move.location.type !== LocationType.PlanetBoardInfluenceDiscSpace) return []
+    const planet = this.material(MaterialType.InfluenceDisc).index(move.itemIndex)
+    const item = planet.getItem<Influence>()!
+    this.memorize(Memory.LastPlanetsMoved, (planets: Influence[] = []) => planets.concat(item.id))
+    const moves: MaterialMove[] = []
     const effect = this.effect
-    if (effect.pattern) {
+
+    if (Math.abs(move.location.x!) === 4) {
+      moves.push(
+        ...planet.moveItems({
+          type: LocationType.TeamPlanets,
+          player: this.playerHelper.team
+        })
+      )
+    }
+
+    // TODO: Check if it possible to be soft locked (no planet to move ?)
+    if (effect.times) {
+      effect.times -= move.location.x! - item.location.x!
+      if (effect.times > 0) return moves
+    } else if (effect.pattern) {
       //TODO: Something more difficult here
-      this.removeFirstEffect()
-      return this.afterEffectPlayed()
     }
 
     this.removeFirstEffect()
-    return this.afterEffectPlayed()
-  }
-
-  afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.InfluenceDisc)(move)) return []
-    const planet = this.material(MaterialType.InfluenceDisc).index(move.itemIndex)
-    const item = planet.getItem()!
-    if (Math.abs(item.location.x!) === 4) {
-      return planet.moveItems({
-        type: LocationType.TeamPlanets,
-        player: this.playerHelper.team
-      })
-    }
-
-    return []
+    moves.push(...this.afterEffectPlayed())
+    return moves
   }
 
   isAlreadyPlayed(influence: Influence) {
@@ -113,6 +134,10 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   setExtraData(_extraData: Record<string, unknown>) {
     if (_extraData.quantity) {
       this.effect.quantity ??= _extraData.quantity as number
+    }
+
+    if (_extraData.factor) {
+      this.effect.times = _extraData.factor as number
     }
 
     if (_extraData.influence) {

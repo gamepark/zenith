@@ -22,6 +22,7 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
 
   setExtraData(_extraData: Record<string, unknown>) {
     if (_extraData.quantity) {
+      console.log('Set quantity on win credit', _extraData.quantity)
       this.effect.quantity ??= _extraData.quantity as number
     }
   }

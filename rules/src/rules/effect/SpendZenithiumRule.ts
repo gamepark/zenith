@@ -2,31 +2,35 @@ import { CustomMove, isCustomMoveType, ItemMove, MaterialMove } from '@gamepark/
 import { RuleMove } from '@gamepark/rules-api/dist/material/moves'
 import { RuleStep } from '@gamepark/rules-api/dist/material/rules/RuleStep'
 import { PlayMoveContext } from '@gamepark/rules-api/dist/Rules'
-import { SpendCreditEffect } from '../../material/effect/Effect'
+import { SpendZenithiumEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
 import { CustomMoveType } from '../CustomMoveType'
 import { EffectRule } from './index'
 
-export class SpendCreditRule extends EffectRule<SpendCreditEffect> {
+export class SpendZenithiumRule extends EffectRule<SpendZenithiumEffect> {
   onRuleStart(_move: RuleMove, _previousRule?: RuleStep, _context?: PlayMoveContext) {
     const cost: number = this.effect.quantity!
-    const money = this.creditMoney
-    const moves: MaterialMove[] = money.removeMoney(cost, { type: LocationType.TeamCredit, player: this.playerHelper.team })
+    const moves: MaterialMove[] = [this.zenithium.deleteItem(cost)]
     this.removeFirstEffect()
     moves.push(...this.afterEffectPlayed())
     return moves
   }
 
   getPlayerMoves() {
-    const credits = this.playerHelper.credits
+    const zenithium = this.playerHelper.zenithium
     const effect = this.effect
     const moves: MaterialMove[] = []
     for (const quantity of effect.quantities) {
-      if (credits < quantity) continue
+      if (zenithium < quantity) continue
       moves.push(this.customMove(CustomMoveType.DoCondition, quantity))
     }
 
     return moves
+  }
+
+  get zenithium() {
+    return this.material(MaterialType.ZenithiumToken).location(LocationType.TeamZenithium).player(this.playerHelper.team)
   }
 
   getExtraDataFromMove(move: ItemMove | CustomMove) {

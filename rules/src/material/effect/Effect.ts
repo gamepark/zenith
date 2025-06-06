@@ -34,6 +34,14 @@ export type SpendCreditEffect = {
   type: EffectType.SpendCredit
   factors: number[]
   quantities: number[]
+  quantity?: number
+}
+
+export type SpendZenithiumEffect = {
+  type: EffectType.SpendZenithium
+  factors: number[]
+  quantities: number[]
+  quantity?: number
 }
 
 export type WinCreditEffect = {
@@ -92,8 +100,12 @@ export type WinInfluenceEffect = {
   type: EffectType.WinInfluence
   except?: Influence
   influence?: Influence
+  // Forced quantity
   quantity?: number
   pattern?: number[]
+  // Number of time the effect can be played
+  times?: number
+  resetDifferentPlanet?: boolean
   differentPlanet?: boolean
   fromCenter?: boolean
   opponentSide?: boolean
@@ -150,6 +162,7 @@ export type Effect =
   | TransferEffect
   | WinZenithiumEffect
   | GiveZenithiumEffect
+  | SpendZenithiumEffect
   | StealCreditEffect
   | ExileEffect
   | WinInfluenceEffect
