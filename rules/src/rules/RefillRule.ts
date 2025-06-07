@@ -77,7 +77,8 @@ export class RefillRule extends PlayerTurnRule {
 
   refillHand(maxCount: number) {
     const deck = this.deck
-    const quantity = maxCount - this.hand.length
+    const quantity = Math.max(0, maxCount - this.hand.length)
+    if (!quantity) return []
     const moves: MaterialMove[] = deck.deal(
       {
         type: LocationType.PlayerHand,
