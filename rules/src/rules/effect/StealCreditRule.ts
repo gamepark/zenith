@@ -24,6 +24,6 @@ export class StealCreditRule extends EffectRule<StealCreditEffect> {
 
   isPossible() {
     const opponentCredits = this.material(MaterialType.CreditToken).money(credits).player(this.opponentTeam).count
-    return opponentCredits > this.effect.quantity
+    return opponentCredits >= this.effect.quantity
   }
 }
