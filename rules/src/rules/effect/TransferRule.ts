@@ -38,7 +38,7 @@ export class TransferRule extends EffectRule<TransferEffect> {
   }
 
   isPossible(): boolean {
-    return this.influenceCards.length > (this.effect.quantity ?? 1)
+    return this.influenceCards.length >= (this.effect.quantity ?? 1)
   }
 
   transferOneCard() {
