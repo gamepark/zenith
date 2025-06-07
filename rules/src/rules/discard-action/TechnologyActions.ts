@@ -151,6 +151,7 @@ const TechnologyNActions: Effect[][] = [
   [
     {
       type: EffectType.WinInfluence,
+      resetDifferentPlanet: true,
       quantity: 2
     }
   ]

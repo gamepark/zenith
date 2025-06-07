@@ -1,4 +1,4 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemTypeAtOnce, isShuffleItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { influences } from '../material/Influence'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -9,7 +9,6 @@ import { RuleId } from './RuleId'
 
 export class RefillRule extends PlayerTurnRule {
   onRuleStart() {
-    const leaderBadge = this.leaderBadge
     this.memorize(Memory.AlreadyPlayedPlayers, (p: PlayerId[] = []) => p.concat(this.player))
     const moves: MaterialMove[] = []
 
@@ -28,41 +27,76 @@ export class RefillRule extends PlayerTurnRule {
       )
     }
 
-    if (!leaderBadge.length) {
-      moves.push(...this.refillHand(4))
-    } else {
-      const item = leaderBadge.getItem()!
-      if (!item.location.rotation) {
-        moves.push(...this.refillHand(5))
-      } else {
-        moves.push(...this.refillHand(6))
-      }
+    const maxSize = this.handSize
+    moves.push(...this.refillHand(maxSize))
+    if (moves.some((move) => isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDeck)) {
+      return moves
     }
 
     /*
      * TODO: next player at 4-players is a choice
      */
-    const isTurnEnded = this.remind<PlayerId[]>(Memory.AlreadyPlayedPlayers).length === this.game.players.length
-    if (isTurnEnded) {
-      this.forget(Memory.AlreadyPlayedPlayers)
-      // TODO: GO to order choice
-      moves.push(this.startPlayerTurn(RuleId.PlayCard, this.game.players[0]))
-    } else {
-      moves.push(this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer))
-    }
+    moves.push(...this.endRuleMoves)
 
     return moves
   }
 
+  get endRuleMoves(): MaterialMove[] {
+    const isTurnEnded = this.remind<PlayerId[]>(Memory.AlreadyPlayedPlayers).length === this.game.players.length
+    if (isTurnEnded) {
+      this.forget(Memory.AlreadyPlayedPlayers)
+      // TODO: 4-p GO to order choice
+      return [this.startPlayerTurn(RuleId.PlayCard, this.game.players[0])]
+    } else {
+      return [this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer)]
+    }
+  }
+
+  get handSize() {
+    const leaderBadge = this.leaderBadge
+    if (!leaderBadge.length) {
+      return 4
+    } else {
+      const item = leaderBadge.getItem()!
+      if (!item.location.rotation) {
+        return 5
+      } else {
+        return 6
+      }
+    }
+  }
+
   refillHand(maxCount: number) {
     const deck = this.deck
-    return deck.deal(
+    const quantity = maxCount - this.hand.length
+    const moves: MaterialMove[] = deck.deal(
       {
         type: LocationType.PlayerHand,
         player: this.player
       },
-      maxCount - this.hand.length
+      quantity
     )
+
+    const remaining = quantity - moves.length
+    if (!remaining) return moves
+    moves.push(this.discard.moveItemsAtOnce({ type: LocationType.AgentDeck }))
+    return moves
+  }
+
+  get discard() {
+    return this.material(MaterialType.AgentCard).location(LocationType.AgentDiscard)
+  }
+
+  afterItemMove(move: ItemMove) {
+    if (isShuffleItemType(MaterialType.AgentCard)(move)) {
+      return [...this.refillHand(this.handSize), ...this.endRuleMoves]
+    }
+
+    if (isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDeck) {
+      return [this.deck.shuffle()]
+    }
+
+    return []
   }
 
   get hand() {
