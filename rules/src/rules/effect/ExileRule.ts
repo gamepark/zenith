@@ -34,7 +34,6 @@ export class ExileRule extends EffectRule<ExileEffect> {
 
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
-      console.log('QUANTITE', this.effect.quantity)
       if (this.effect.quantity) {
         this.effect.quantity--
       }

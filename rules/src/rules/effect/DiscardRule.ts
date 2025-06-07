@@ -2,7 +2,6 @@ import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { DiscardEffect } from '../../material/effect/Effect'
-import { EffectType } from '../../material/effect/EffectType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { EffectRule } from './index'
@@ -20,6 +19,7 @@ export class DiscardRule extends EffectRule<DiscardEffect> {
         })
       )
 
+      this.removeFirstEffect()
       moves.push(...this.afterEffectPlayed())
     }
 
@@ -38,13 +38,10 @@ export class DiscardRule extends EffectRule<DiscardEffect> {
   }
 
   getExtraDataFromMove(move: ItemMove) {
-    const firstEffect = this.firstEffect!
     if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
-      const isWinCredit = firstEffect.type === EffectType.Conditional && firstEffect.effect.type === EffectType.WinCredit
-      if (isWinCredit) {
-        const card = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
-        return { quantity: Agents[card.id].cost }
-      }
+      const card = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
+      const agent = Agents[card.id]
+      return { quantity: agent.cost, influence: agent.influence }
     }
 
     return {}
