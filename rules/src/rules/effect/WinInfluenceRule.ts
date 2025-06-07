@@ -30,11 +30,13 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
         if (this.effect.differentPlanet) return !this.isAlreadyPlayed(item.id)
         return true
       })
+
     if (!planets.length) return planets
     if (this.effect.fromCenter) {
       const centeredPlanets = planets.filter((planet) => planet.location.x === 0)
       if (!centeredPlanets.length) return centeredPlanets
       if (this.effect.influence) return centeredPlanets.id(this.effect.influence)
+      return centeredPlanets
     } else if (this.effect.opponentSide) {
       const opponentSidePlanets = planets.filter((planet) => (this.playerHelper.team === TeamColor.White ? planet.location.x! < 0 : planet.location.x! > 0))
       if (!opponentSidePlanets.length) return opponentSidePlanets
@@ -72,6 +74,7 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   getPlayerMoves(): MaterialMove[] {
     const effect = this.effect
     const planets = this.planets
+    console.log(planets, this.effect)
     const moves: MaterialMove[] = []
     for (const index of planets.getIndexes()) {
       const item = planets.getItem(index)
