@@ -1,5 +1,4 @@
 import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
-import sample from 'lodash/sample'
 import shuffle from 'lodash/shuffle'
 import { agents } from './material/Agent'
 import { Credit } from './material/Credit'
@@ -144,7 +143,8 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   }
 
   start() {
-    this.memorize(Memory.FirstPlayer, sample(this.game.players)!)
+    // AT 4 players, players must choose order
+    this.memorize(Memory.TurnOrder, shuffle(this.game.players))
     this.startSimultaneousRule(RuleId.Muligan)
   }
 }

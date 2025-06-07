@@ -66,6 +66,11 @@ export class MulliganRule extends SimultaneousRule {
       this.forget(Memory.Mulligan, player)
     }
 
-    return [this.startPlayerTurn(RuleId.PlayCard, this.remind(Memory.FirstPlayer))]
+    // CHoose order
+    return [this.startPlayerTurn(RuleId.PlayCard, this.turnOrder[0])]
+  }
+
+  get turnOrder(): PlayerId[] {
+    return this.remind<PlayerId[]>(Memory.TurnOrder)
   }
 }

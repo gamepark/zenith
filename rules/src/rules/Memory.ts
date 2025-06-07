@@ -1,6 +1,6 @@
 export enum Memory {
   Mulligan = 1,
-  FirstPlayer,
+  TurnOrder,
   DiscardFaction,
   Effects,
   LastPlanetsMoved,

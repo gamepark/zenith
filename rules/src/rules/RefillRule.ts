@@ -46,10 +46,19 @@ export class RefillRule extends PlayerTurnRule {
     if (isTurnEnded) {
       this.forget(Memory.AlreadyPlayedPlayers)
       // TODO: 4-p GO to order choice
-      return [this.startPlayerTurn(RuleId.PlayCard, this.game.players[0])]
+      return [this.startPlayerTurn(RuleId.PlayCard, this.turnOrder[0])]
     } else {
       return [this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer)]
     }
+  }
+
+  get turnOrder(): PlayerId[] {
+    return this.remind<PlayerId[]>(Memory.TurnOrder)
+  }
+
+  get nextPlayer(): PlayerId {
+    const players = this.turnOrder
+    return players[(players.indexOf(this.player) + 1) % players.length]
   }
 
   get handSize() {
