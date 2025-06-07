@@ -90,7 +90,7 @@ export const DonaldSmooth: AgentCharacteristics = {
       influence: Influence.Jupiter,
       quantity: 1
     },
-    { type: EffectType.Conditional, condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Exile } }, effect: { type: EffectType.WinCredit } }
+    { type: EffectType.Conditional, condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Discard } }, effect: { type: EffectType.WinCredit } }
   ]
 }
 
