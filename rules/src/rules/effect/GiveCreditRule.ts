@@ -27,6 +27,6 @@ export class GiveCreditRule extends EffectRule<GiveCreditEffect> {
   }
 
   isPossible() {
-    return this.playerHelper.credits > this.effect.quantity
+    return this.playerHelper.credits >= this.effect.quantity
   }
 }

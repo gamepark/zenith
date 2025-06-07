@@ -30,13 +30,13 @@ export class PlanetBoardInfluenceDiscSpaceLocator extends Locator {
     y += 10.6 * location.x!
     switch (location.id) {
       case Influence.Mercury:
-        return { x: 12.5, y }
+        return { x: 12.6, y }
       case Influence.Venus:
-        return { x: 30.8, y }
+        return { x: 31.2, y }
       case Influence.Terra:
         return { x: 49.6, y }
       case Influence.Mars:
-        return { x: 68.1, y }
+        return { x: 68.2, y }
       case Influence.Jupiter:
         return { x: 86.5, y }
     }

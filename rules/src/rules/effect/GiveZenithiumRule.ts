@@ -30,6 +30,6 @@ export class GiveZenithiumRule extends EffectRule<GiveZenithiumEffect> {
   }
 
   isPossible() {
-    return this.zenithium.getQuantity() > (this.effect.quantity ?? 1)
+    return this.zenithium.getQuantity() >= (this.effect.quantity ?? 1)
   }
 }
