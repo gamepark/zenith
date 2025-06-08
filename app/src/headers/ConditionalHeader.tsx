@@ -18,6 +18,12 @@ export const ConditionalHeader = () => {
       effect.condition.effect.type === EffectType.SpendCredit &&
       isCustomMoveType(CustomMoveType.DoCondition)(move)
   )
+  const spendZenithium = useLegalMoves<CustomMove>(
+    (move: MaterialMove) =>
+      effect.condition.type === ConditionType.DoEffect &&
+      effect.condition.effect.type === EffectType.SpendZenithium &&
+      isCustomMoveType(CustomMoveType.DoCondition)(move)
+  )
 
   const giveLeaderBadge = useLegalMove((move: MaterialMove) => isMoveItemType(MaterialType.LeaderBadgeToken)(move))
   if (giveLeaderBadge) {
@@ -29,6 +35,15 @@ export const ConditionalHeader = () => {
     )
   }
 
+  if (spendZenithium.length) {
+    return (
+      <>
+        {spendZenithium.map((move) => (
+          <PlayMoveButton move={move}>Spend {move.data}</PlayMoveButton>
+        ))}
+      </>
+    )
+  }
   if (spendCredits.length) {
     return (
       <>

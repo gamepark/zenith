@@ -949,7 +949,7 @@ export const Wul: AgentCharacteristics = {
         type: ConditionType.DoEffect,
         effect: {
           type: EffectType.Exile,
-          influence: Influence.Mars,
+          influence: Influence.Mercury,
           quantities: [2, 4, 7],
           factors: [2, 4, 7]
         }

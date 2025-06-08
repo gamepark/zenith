@@ -15,7 +15,7 @@ export class ResetInfluenceRule extends EffectRule<ResetInfluenceEffect> {
   }
 
   afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.InfluenceDisc)(move) || move.location.x === 0) return []
+    if (!isMoveItemType(MaterialType.InfluenceDisc)(move) || move.location.x !== 0) return []
     this.removeFirstEffect()
     return this.afterEffectPlayed()
   }
