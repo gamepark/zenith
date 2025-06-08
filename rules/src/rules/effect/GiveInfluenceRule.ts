@@ -3,6 +3,7 @@ import { GiveInfluenceEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { TeamColor } from '../../TeamColor'
+import { EndGameHelper } from '../helper/EndGameHelper'
 import { EffectRule } from './index'
 
 export class GiveInfluenceRule extends EffectRule<GiveInfluenceEffect> {
@@ -39,6 +40,9 @@ export class GiveInfluenceRule extends EffectRule<GiveInfluenceEffect> {
 
   afterItemMove(move: MaterialMove) {
     if (!isMoveItemType(MaterialType.InfluenceDisc)(move)) return []
+    if (new EndGameHelper(this.game).willEnd(this.opponentTeam)) {
+      return [this.endGame()]
+    }
     this.removeFirstEffect()
     return this.afterEffectPlayed()
   }

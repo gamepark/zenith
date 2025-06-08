@@ -4,6 +4,7 @@ import { Influence } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { TeamColor } from '../../TeamColor'
+import { EndGameHelper } from '../helper/EndGameHelper'
 import { Memory } from '../Memory'
 import { EffectRule } from './index'
 
@@ -74,7 +75,6 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   getPlayerMoves(): MaterialMove[] {
     const effect = this.effect
     const planets = this.planets
-    console.log(planets, this.effect)
     const moves: MaterialMove[] = []
     for (const index of planets.getIndexes()) {
       const item = planets.getItem(index)
@@ -101,12 +101,18 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     const effect = this.effect
 
     if (Math.abs(move.location.x!) === 4) {
+      const helper = new EndGameHelper(this.game)
+      const planets = this.material(MaterialType.InfluenceDisc).index([...helper.getTeamPlanet(this.playerHelper.team).getIndexes(), planet.getIndex()])
       moves.push(
         ...planet.moveItems({
           type: LocationType.TeamPlanets,
           player: this.playerHelper.team
         })
       )
+      if (helper.willEnd(this.playerHelper.team, planets)) {
+        moves.push(this.endGame())
+        return moves
+      }
     }
 
     // TODO: Check if it possible to be soft locked (no planet to move ?)

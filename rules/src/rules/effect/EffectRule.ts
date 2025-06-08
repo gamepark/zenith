@@ -97,13 +97,11 @@ export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRu
     this.memorize(Memory.Effects, (effects: Effect[]) => {
       const firstEffect = effects[0] as ConditionalEffect
       const { effect } = firstEffect
-      console.log(firstEffect)
 
       if (extraData) {
         getEffectRule(this.game, effect).setExtraData(extraData)
       }
 
-      console.log(effect)
       return [effect, ...effects.slice(1)]
     })
   }

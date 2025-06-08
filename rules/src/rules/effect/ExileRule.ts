@@ -22,7 +22,6 @@ export class ExileRule extends EffectRule<ExileEffect> {
 
   decrement(move: ItemMove): boolean {
     if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
-      console.log('QUANTITE', this.effect.quantity)
       if (this.effect.quantity) {
         this.effect.quantity--
         return this.effect.quantity === 0
@@ -50,7 +49,8 @@ export class ExileRule extends EffectRule<ExileEffect> {
   getExtraDataFromMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
       const card = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
-      return { quantity: Agents[card.id].cost }
+      const agent = Agents[card.id]
+      return { quantity: agent.cost, influence: agent.influence }
     }
 
     if (isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard) {
