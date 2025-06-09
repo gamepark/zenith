@@ -12,13 +12,12 @@ export class DiplomacyBoardDescription extends BoardDescription {
   image = Diplomacy2Players
   backImage = Diplomacy4Players
 
-  // TODO: manage 4-player
   getStaticItems(context: MaterialContext): MaterialItem[] {
-    if (context.rules.players.length === 4) return []
     return [
       {
         location: {
-          type: LocationType.DiplomacyBoardPlace
+          type: LocationType.DiplomacyBoardPlace,
+          rotation: context.rules.players.length === 4
         }
       }
     ]

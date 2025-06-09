@@ -1070,7 +1070,7 @@ export const MasterDin: AgentCharacteristics = {
 export const LordCreep: AgentCharacteristics = {
   influence: Influence.Terra,
   cost: 5,
-  faction: Faction.Robot,
+  faction: Faction.Human,
   effects: [
     {
       type: EffectType.WinInfluence,

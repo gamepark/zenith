@@ -1,3 +1,5 @@
+import { Influence } from '../material/Influence'
+
 export enum Memory {
   Mulligan = 1,
   TurnOrder,
@@ -5,5 +7,11 @@ export enum Memory {
   Effects,
   LastPlanetsMoved,
   CantPass,
-  AlreadyPlayedPlayers
+  AlreadyPlayedPlayers,
+  Pattern
+}
+
+export type PatternType = {
+  influence: Influence
+  count: number
 }

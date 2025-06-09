@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, Material, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { WinInfluenceEffect } from '../../material/effect/Effect'
 import { Influence } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
@@ -7,6 +7,7 @@ import { TeamColor } from '../../TeamColor'
 import { EndGameHelper } from '../helper/EndGameHelper'
 import { Memory } from '../Memory'
 import { EffectRule } from './index'
+import { calculateMoves, Move, Planet } from './possibilities_calculator'
 
 export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   onRuleStart() {
@@ -34,21 +35,53 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
 
     if (!planets.length) return planets
     if (this.effect.fromCenter) {
-      const centeredPlanets = planets.filter((planet) => planet.location.x === 0)
-      if (!centeredPlanets.length) return centeredPlanets
-      if (this.effect.influence) return centeredPlanets.id(this.effect.influence)
-      return centeredPlanets
+      return this.fromCenterPlanets(planets)
     } else if (this.effect.opponentSide) {
-      const opponentSidePlanets = planets.filter((planet) => (this.playerHelper.team === TeamColor.White ? planet.location.x! < 0 : planet.location.x! > 0))
-      if (!opponentSidePlanets.length) return opponentSidePlanets
-      if (this.effect.influence) return opponentSidePlanets.id(this.effect.influence)
-    } else {
-      if (this.effect.influence) {
-        return planets.id(this.effect.influence)
-      }
+      return this.opponentSidePlanets(planets)
+    } else if (this.effect.influence) {
+      return this.influencePlanet(planets)
+    } else if (this.effect.pattern) {
+      return this.patternPlanet(planets)
     }
 
     return planets
+  }
+
+  private patternPlanet(_planets: Material) {
+    let planets: Planet[] = [
+      { id: 1, location: { x: -1 } },
+      { id: 2, location: { x: 2 } },
+      { id: 3, location: { x: 3 } },
+      { id: 4, location: { x: -2 } },
+      { id: 5, location: { x: -1 } }
+    ]
+
+    const pattern = [1, 2, 1]
+    let prevMoves: Move[] = [{ planetId: 1, move: 2 }]
+
+    console.log(planets[1]) // Affiche { id: 2, location: { x: 2 } }
+    let possibilities = calculateMoves(planets[1], planets, pattern, prevMoves)
+
+    console.log(possibilities)
+    return _planets
+  }
+
+  private influencePlanet(planets: Material) {
+    return planets.id(this.effect.influence)
+  }
+
+  private opponentSidePlanets(planets: Material) {
+    const opponentSidePlanets = planets.filter((planet) => (this.playerHelper.team === TeamColor.White ? planet.location.x! < 0 : planet.location.x! > 0))
+    if (!opponentSidePlanets.length) return opponentSidePlanets
+    if (this.effect.influence) return opponentSidePlanets.id(this.effect.influence)
+    return planets
+  }
+
+  private fromCenterPlanets(planets: Material) {
+    const centeredPlanets = planets.filter((planet) => planet.location.x === 0)
+    if (!centeredPlanets.length) return centeredPlanets
+    if (this.effect.influence) return centeredPlanets.id(this.effect.influence)
+    return centeredPlanets
   }
 
   getPositionAfterPull(item: MaterialItem, effect: WinInfluenceEffect): number[] {
