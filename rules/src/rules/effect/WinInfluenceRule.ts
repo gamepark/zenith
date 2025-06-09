@@ -1,13 +1,12 @@
 import { isMoveItemType, ItemMove, Material, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { WinInfluenceEffect } from '../../material/effect/Effect'
-import { Influence } from '../../material/Influence'
+import { Influence, influences } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { TeamColor } from '../../TeamColor'
 import { EndGameHelper } from '../helper/EndGameHelper'
-import { Memory } from '../Memory'
+import { Memory, PatternType } from '../Memory'
 import { EffectRule } from './index'
-import { calculateMoves, Move, Planet } from './possibilities_calculator'
 
 export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   onRuleStart() {
@@ -40,30 +39,54 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
       return this.opponentSidePlanets(planets)
     } else if (this.effect.influence) {
       return this.influencePlanet(planets)
-    } else if (this.effect.pattern) {
-      return this.patternPlanet(planets)
     }
 
     return planets
   }
 
-  private patternPlanet(_planets: Material) {
-    let planets: Planet[] = [
-      { id: 1, location: { x: -1 } },
-      { id: 2, location: { x: 2 } },
-      { id: 3, location: { x: 3 } },
-      { id: 4, location: { x: -2 } },
-      { id: 5, location: { x: -1 } }
-    ]
+  private patternPlanet(): MaterialMove[] {
+    const pattern = this.effect.pattern
+    const planets = this.planets
+    const movedPlanets = this.remind<PatternType[] | undefined>(Memory.Pattern) ?? []
+    if (!pattern) return []
+    const moves: MaterialMove[] = []
 
-    const pattern = [1, 2, 1]
-    let prevMoves: Move[] = [{ planetId: 1, move: 2 }]
+    const possiblePatterns: PatternType[][] = this.computePossiblePatterns().filter((patternType) => {
+      if (!movedPlanets.length) return true
+      return movedPlanets.every((m) => patternType.some((p) => p.influence === m.influence && p.count === m.count))
+    })
 
-    console.log(planets[1]) // Affiche { id: 2, location: { x: 2 } }
-    let possibilities = calculateMoves(planets[1], planets, pattern, prevMoves)
+    for (const planetIndex of planets.getIndexes()) {
+      const material = planets.index(planetIndex)
+      const item = planets.getItem<Influence>(planetIndex)
+      if (movedPlanets.some((patternType) => patternType.influence === item.id)) continue
+      const planetPossiblePatterns = possiblePatterns
+        .filter((patternType) => patternType.some((p) => p.influence === item.id))
+        .map((patternType) => patternType.find((p) => p.influence === item.id)!)
 
-    console.log(possibilities)
-    return _planets
+      moves.push(
+        ...planetPossiblePatterns.map((type) =>
+          material.moveItem({
+            ...item.location,
+            x: this.getPositionForQuantity(item, type.count)
+          })
+        )
+      )
+    }
+
+    return moves
+  }
+
+  computePossiblePatterns() {
+    const pattern = this.effect.pattern
+    if (!pattern) return []
+    const patterns: PatternType[][] = []
+    for (let i = 1; i <= influences.length - (pattern.length - 1); i++) {
+      const patternInfluences = influences.slice(i - 1, i + pattern.length - 1)
+      patterns.push(patternInfluences.map((i, index) => ({ influence: i, count: pattern[index] })))
+    }
+
+    return patterns
   }
 
   private influencePlanet(planets: Material) {
@@ -97,17 +120,24 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
       return positions
     }
 
-    const quantity = effect.quantity ?? 1
+    return [this.getPositionForQuantity(item, effect.quantity ?? 1)]
+  }
+
+  private getPositionForQuantity(item: MaterialItem, quantity: number) {
     if (this.player === TeamColor.Black) {
-      return [Math.min(4, item.location.x! + quantity)]
+      return Math.min(4, item.location.x! + quantity)
     }
 
-    return [Math.max(-4, item.location.x! - quantity)]
+    return Math.max(-4, item.location.x! - quantity)
   }
 
   getPlayerMoves(): MaterialMove[] {
     const effect = this.effect
     const planets = this.planets
+    if (this.effect.pattern) {
+      return this.patternPlanet()
+    }
+
     const moves: MaterialMove[] = []
     for (const index of planets.getIndexes()) {
       const item = planets.getItem(index)
@@ -148,12 +178,17 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
       }
     }
 
-    // TODO: Check if it possible to be soft locked (no planet to move ?)
     if (effect.times) {
       effect.times -= move.location.x! - item.location.x!
       if (effect.times > 0) return moves
     } else if (effect.pattern) {
-      //TODO: Something more difficult here
+      this.memorize(Memory.Pattern, (patternTypes: PatternType[] = []) =>
+        patternTypes.concat({ influence: item.id, count: move.location.x! - item.location.x! })
+      )
+
+      const patternMoves = this.patternPlanet()
+      if (patternMoves.length >= 1 && patternMoves.length <= 2) return this.patternPlanet().slice(0, 1)
+      if (patternMoves.length > 0) return moves
     }
 
     this.removeFirstEffect()
