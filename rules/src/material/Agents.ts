@@ -1880,14 +1880,13 @@ export const V4nV0gt: AgentCharacteristics = {
       quantity: 1
     },
     {
-      type: EffectType.Choice,
-      left: {
-        type: EffectType.Transfer
-      },
-      right: {
-        type: EffectType.WinZenithium,
-        quantity: 1
-      }
+      type: EffectType.Exile,
+      opponent: true,
+      quantity: 2
+    },
+    {
+      type: EffectType.WinZenithium,
+      quantity: 2
     }
   ]
 }

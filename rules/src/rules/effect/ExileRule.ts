@@ -68,7 +68,7 @@ export class ExileRule extends EffectRule<ExileEffect> {
     const allCards = this.material(MaterialType.AgentCard).location(LocationType.Influence)
     const indexes: number[] = []
     for (const influence of allInfluences) {
-      if (this.effect.except && this.effect.influence === influence) continue
+      if (this.effect.except && this.effect.except === influence) continue
       if (this.effect.influence && this.effect.influence !== influence) continue
       const influenceCards = allCards.player((p) => (this.effect.opponent ? p !== this.playerHelper.team : p === this.playerHelper.team)).locationId(influence)
       indexes.push(...influenceCards.maxBy((item) => item.location.x!).getIndexes())

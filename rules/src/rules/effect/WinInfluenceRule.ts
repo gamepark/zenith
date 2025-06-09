@@ -53,8 +53,11 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
 
     const possiblePatterns: PatternType[][] = this.computePossiblePatterns().filter((patternType) => {
       if (!movedPlanets.length) return true
+      console.log(JSON.parse(JSON.stringify(movedPlanets)), patternType)
       return movedPlanets.every((m) => patternType.some((p) => p.influence === m.influence && p.count === m.count))
     })
+
+    console.log(possiblePatterns)
 
     for (const planetIndex of planets.getIndexes()) {
       const material = planets.index(planetIndex)
@@ -183,11 +186,11 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
       if (effect.times > 0) return moves
     } else if (effect.pattern) {
       this.memorize(Memory.Pattern, (patternTypes: PatternType[] = []) =>
-        patternTypes.concat({ influence: item.id, count: move.location.x! - item.location.x! })
+        patternTypes.concat({ influence: item.id, count: Math.abs(move.location.x! - item.location.x!) })
       )
 
       const patternMoves = this.patternPlanet()
-      if (patternMoves.length >= 1 && patternMoves.length <= 2) return this.patternPlanet().slice(0, 1)
+      if (patternMoves.length > 0 && patternMoves.length <= effect.pattern.length - 1) return [this.patternPlanet()[0]]
       if (patternMoves.length > 0) return moves
     }
 
@@ -220,5 +223,10 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     if (_extraData.influence) {
       this.effect.influence ??= _extraData.influence as Influence
     }
+  }
+
+  onRuleEnd() {
+    this.forget(Memory.Pattern)
+    return []
   }
 }
