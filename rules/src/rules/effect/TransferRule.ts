@@ -29,7 +29,7 @@ export class TransferRule extends EffectRule<TransferEffect> {
       this.effect.quantity--
     }
 
-    if (!this.effect.quantity) {
+    if (!this.effect.quantity || !this.isPossible()) {
       this.removeFirstEffect()
       return this.afterEffectPlayed()
     }
