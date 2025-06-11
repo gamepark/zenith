@@ -10,8 +10,8 @@ import { EffectRule } from './index'
 
 export class ExileRule extends EffectRule<ExileEffect> {
   isPossible(): boolean {
-    if (this.firstEffect?.type === EffectType.Conditional) {
-      return this.cards.length >= (this.effect.quantity ?? 1)
+    if (this.firstEffect?.type === EffectType.Conditional && !this.effect.quantities) {
+      return this.getPlayerMoves().length >= (this.effect.quantity ?? 1)
     }
 
     return this.getPlayerMoves().length > 0
@@ -73,9 +73,7 @@ export class ExileRule extends EffectRule<ExileEffect> {
     const allCards = this.cards
     const indexes: number[] = []
     for (const influence of allInfluences) {
-      if (this.effect.except && this.effect.except === influence) continue
-      if (this.effect.influence && this.effect.influence !== influence) continue
-      const influenceCards = allCards.player((p) => (this.effect.opponent ? p !== this.playerHelper.team : p === this.playerHelper.team)).locationId(influence)
+      const influenceCards = allCards.locationId(influence)
       indexes.push(...influenceCards.maxBy((item) => item.location.x!).getIndexes())
     }
 
@@ -100,9 +98,14 @@ export class ExileRule extends EffectRule<ExileEffect> {
 
   get cards() {
     const team = this.effect.opponent ? this.opponentTeam : this.playerHelper.team
+
     return this.material(MaterialType.AgentCard)
       .location(LocationType.Influence)
-      .locationId(this.effect.influence)
+      .filter((item) => {
+        if (this.effect.except && this.effect.except === item.location.id) return false
+        if (this.effect.influence && this.effect.influence !== item.location.id) return false
+        return true
+      })
       .player(team)
       .sort((item) => -item.location.x!)
   }

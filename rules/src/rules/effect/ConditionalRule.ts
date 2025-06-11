@@ -69,8 +69,12 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
   }
 
   afterItemMove(move: ItemMove) {
-    this.onEffectPlayed(move)
-    return this.afterEffectPlayed()
+    const done = this.onEffectPlayed(move)
+    if (done) {
+      return this.afterEffectPlayed()
+    }
+
+    return []
   }
 
   onEffectPlayed(move: ItemMove | CustomMove) {
@@ -85,7 +89,10 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
       } else {
         this.memorize(Memory.CantPass, true)
       }
+      return done
     }
+
+    return true
   }
 
   get isAutomaticEffect() {

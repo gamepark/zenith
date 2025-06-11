@@ -53,7 +53,6 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
 
     const possiblePatterns: PatternType[][] = this.computePossiblePatterns().filter((patternType) => {
       if (!movedPlanets.length) return true
-      console.log(JSON.parse(JSON.stringify(movedPlanets)), patternType)
       return movedPlanets.every((m) => patternType.some((p) => p.influence === m.influence && p.count === m.count))
     })
 
