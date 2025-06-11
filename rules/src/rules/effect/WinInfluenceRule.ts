@@ -57,8 +57,6 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
       return movedPlanets.every((m) => patternType.some((p) => p.influence === m.influence && p.count === m.count))
     })
 
-    console.log(possiblePatterns)
-
     for (const planetIndex of planets.getIndexes()) {
       const material = planets.index(planetIndex)
       const item = planets.getItem<Influence>(planetIndex)
