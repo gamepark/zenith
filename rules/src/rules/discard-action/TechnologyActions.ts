@@ -156,3 +156,18 @@ const TechnologyNActions: Effect[][] = [
     }
   ]
 ]
+
+export const TechnologyLineBonuses: Effect[] = [
+  {
+    type: EffectType.WinInfluence,
+    quantity: 1
+  },
+  {
+    type: EffectType.WinInfluence,
+    quantity: 2
+  },
+  {
+    type: EffectType.WinInfluence,
+    quantity: 3
+  }
+]

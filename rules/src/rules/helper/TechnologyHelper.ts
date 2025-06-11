@@ -1,7 +1,8 @@
 import { MoveItem, PlayerTurnRule } from '@gamepark/rules-api'
 import { Effect } from '../../material/effect/Effect'
+import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { getTechnologyAction } from '../discard-action/TechnologyActions'
+import { getTechnologyAction, TechnologyLineBonuses } from '../discard-action/TechnologyActions'
 import { Memory } from '../Memory'
 
 export class TechnologyHelper extends PlayerTurnRule {
@@ -13,5 +14,18 @@ export class TechnologyHelper extends PlayerTurnRule {
       effects.push(...newEffects)
       return effects
     })
+
+    const hasLine =
+      this.material(MaterialType.TechMarker)
+        .location(LocationType.TechnologyBoardTokenSpace)
+        .player(move.location.player)
+        .filter((item) => item.location.x! >= move.location.x!).length === 3
+    if (hasLine && TechnologyLineBonuses[move.location.x! - 1]) {
+      this.memorize(Memory.Effects, (effects: Effect[] = []) => {
+        const effect: Effect = JSON.parse(JSON.stringify(TechnologyLineBonuses[move.location.x! - 1]))
+        effects.push(effect)
+        return effects
+      })
+    }
   }
 }
