@@ -30,7 +30,7 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     if (this.isDoCondition(condition)) {
       if (!this.isAutomaticEffect) {
         const moves: MaterialMove[] = []
-        if (!this.effect.mandatory) moves.push(this.customMove(CustomMoveType.Pass))
+        if (!this.effect.mandatory && !this.remind(Memory.CantPass)) moves.push(this.customMove(CustomMoveType.Pass))
         moves.push(...getEffectRule(this.game, condition.effect).getPlayerMoves())
         return moves
       }

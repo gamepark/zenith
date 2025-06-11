@@ -2,6 +2,7 @@ import { isMoveItemType, isMoveItemTypeAtOnce, ItemMove, MaterialMove } from '@g
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { ExileEffect } from '../../material/effect/Effect'
+import { EffectType } from '../../material/effect/EffectType'
 import { influences } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -9,6 +10,10 @@ import { EffectRule } from './index'
 
 export class ExileRule extends EffectRule<ExileEffect> {
   isPossible(): boolean {
+    if (this.firstEffect?.type === EffectType.Conditional) {
+      return this.cards.length >= (this.effect.quantity ?? 1)
+    }
+
     return this.getPlayerMoves().length > 0
   }
 
@@ -65,7 +70,7 @@ export class ExileRule extends EffectRule<ExileEffect> {
 
   exileOneCard() {
     const allInfluences = influences
-    const allCards = this.material(MaterialType.AgentCard).location(LocationType.Influence)
+    const allCards = this.cards
     const indexes: number[] = []
     for (const influence of allInfluences) {
       if (this.effect.except && this.effect.except === influence) continue
@@ -81,12 +86,7 @@ export class ExileRule extends EffectRule<ExileEffect> {
 
   exileMultipleCards() {
     if (!this.effect.quantities) return []
-    const team = this.effect.opponent ? this.opponentTeam : this.playerHelper.team
-    const allCards = this.material(MaterialType.AgentCard)
-      .location(LocationType.Influence)
-      .locationId(this.effect.influence)
-      .player(team)
-      .sort((item) => -item.location.x!)
+    const allCards = this.cards
 
     const moves: MaterialMove[] = []
 
@@ -96,5 +96,14 @@ export class ExileRule extends EffectRule<ExileEffect> {
     }
 
     return moves
+  }
+
+  get cards() {
+    const team = this.effect.opponent ? this.opponentTeam : this.playerHelper.team
+    return this.material(MaterialType.AgentCard)
+      .location(LocationType.Influence)
+      .locationId(this.effect.influence)
+      .player(team)
+      .sort((item) => -item.location.x!)
   }
 }
