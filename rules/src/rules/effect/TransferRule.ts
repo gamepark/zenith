@@ -16,7 +16,7 @@ export class TransferRule extends EffectRule<TransferEffect> {
     if (!isMoveItemType(MaterialType.AgentCard)(move) || move.location.type !== LocationType.Influence) return false
     if (this.effect.quantity) {
       this.effect.quantity--
-      return this.effect.quantity === 0
+      return this.effect.quantity === 0 || !this.isPossible()
     }
 
     return true
