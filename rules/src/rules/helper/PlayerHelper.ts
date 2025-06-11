@@ -20,7 +20,11 @@ export class PlayerHelper extends MaterialRulesPart {
   }
 
   get zenithium() {
-    return this.material(MaterialType.ZenithiumToken).player(this.team).getQuantity()
+    return this.zenithiumMaterial.getQuantity()
+  }
+
+  get zenithiumMaterial() {
+    return this.material(MaterialType.ZenithiumToken).player(this.team)
   }
 
   get isLeader() {

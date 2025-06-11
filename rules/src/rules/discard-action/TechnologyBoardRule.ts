@@ -1,4 +1,4 @@
-import { isMoveItemType, isStartPlayerTurn, isStartRule, ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, isStartPlayerTurn, isStartRule, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { Faction } from '../../material/Faction'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -11,19 +11,25 @@ import { RuleId } from '../RuleId'
 export class TechnologyBoardRule extends PlayerTurnRule {
   getPlayerMoves() {
     const marker = this.marker
-    if (marker.getItem()!.location.x! >= 5) return []
+    const item = marker.getItem()!
+    if (item.location.x! >= 5) return []
+    const zenithiumCost = item.location.x! + 1
+    if (new PlayerHelper(this.game, this.player).zenithium < zenithiumCost) return []
     return this.marker.moveItems((item) => ({ ...item.location, x: item.location.x! + 1 }))
   }
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.TechMarker)(move)) return []
     new TechnologyHelper(this.game).applyTechnology(move)
+    const moves: MaterialMove[] = [new PlayerHelper(this.game, this.player).zenithiumMaterial.deleteItem(move.location.x)]
     const effectMoves = new EffectHelper(this.game, this.player).applyFirstEffect()
     if (effectMoves.some((move) => isStartRule(move) || isStartPlayerTurn(move))) {
-      return effectMoves
+      moves.push(...effectMoves)
+      return moves
     }
 
-    return [this.startRule(RuleId.Refill)]
+    moves.push(this.startRule(RuleId.Refill))
+    return moves
   }
 
   get marker() {

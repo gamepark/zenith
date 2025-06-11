@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { DevelopTechnologyEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -15,9 +15,17 @@ export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.TechMarker)(move)) return []
+    const moves: MaterialMove[] = []
+    if (!this.effect.free) {
+      const cost = move.location.x! - (this.effect.discount ?? 0)
+      if (cost) {
+        moves.push(this.playerHelper.zenithiumMaterial.deleteItem(cost))
+      }
+    }
     new TechnologyHelper(this.game).applyTechnology(move)
     this.removeFirstEffect()
-    return this.afterEffectPlayed()
+    moves.push(...this.afterEffectPlayed())
+    return moves
   }
 
   get technologies() {
