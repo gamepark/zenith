@@ -84,7 +84,8 @@ export class ZenithRules
       [LocationType.Influence]: new PositiveSequenceStrategy()
     },
     [MaterialType.InfluenceDisc]: {
-      [LocationType.TeamPlanets]: new PositiveSequenceStrategy()
+      [LocationType.TeamPlanets]: new PositiveSequenceStrategy(),
+      [LocationType.InfluenceDiscStock]: new PositiveSequenceStrategy()
     }
   }
 

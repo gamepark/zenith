@@ -1,4 +1,5 @@
 import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
+import { times } from 'lodash'
 import shuffle from 'lodash/shuffle'
 import { agents } from './material/Agent'
 import { Credit } from './material/Credit'
@@ -26,6 +27,21 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     this.setupLeaderBadge()
     this.setupTechnologyBoard()
     this.setupTeams()
+    this.setupInfluenceDisc()
+  }
+
+  setupInfluenceDisc() {
+    for (const influence of influences) {
+      times(3, () => {
+        this.material(MaterialType.InfluenceDisc).createItem({
+          id: influence,
+          location: {
+            type: LocationType.InfluenceDiscStock,
+            id: influence
+          }
+        })
+      })
+    }
   }
 
   setupLeaderBadge() {

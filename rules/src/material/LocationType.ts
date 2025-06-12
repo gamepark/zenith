@@ -16,5 +16,8 @@ export enum LocationType {
   PlayerBonus,
   PlanetBoardBonusSpace,
   TechnologyBoardBonusSpace,
-  TeamPlanets
+  TeamPlanets,
+  InfluenceDiscStock,
+  ZenithiumStock,
+  CreditStock
 }
