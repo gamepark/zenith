@@ -97,7 +97,7 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     const opponentSidePlanets = planets.filter((planet) => (this.playerHelper.team === TeamColor.White ? planet.location.x! < 0 : planet.location.x! > 0))
     if (!opponentSidePlanets.length) return opponentSidePlanets
     if (this.effect.influence) return opponentSidePlanets.id(this.effect.influence)
-    return planets
+    return opponentSidePlanets
   }
 
   private fromCenterPlanets(planets: Material) {
