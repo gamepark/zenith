@@ -1,6 +1,7 @@
 import { MaterialDescription } from '@gamepark/react-game'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { agentCardDescription } from './AgentCardDescription'
+import { bonusTokenDescription } from './BonusTokenDescription'
 import { creditTokenDescription } from './CreditTokendescription'
 import { diplomacyBoardDescription } from './DiplomacyBoardDescription'
 import { influenceDiscDescription } from './InfluenceDiscDescription'
@@ -19,5 +20,6 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.LeaderBadgeToken]: leaderBadgeDescription,
   [MaterialType.TechMarker]: techMarkerDescription,
   [MaterialType.CreditToken]: creditTokenDescription,
-  [MaterialType.ZenithiumToken]: zenithiumTokenDescription
+  [MaterialType.ZenithiumToken]: zenithiumTokenDescription,
+  [MaterialType.BonusToken]: bonusTokenDescription
 }

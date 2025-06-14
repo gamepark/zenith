@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { TransferEffect } from '../../material/effect/Effect'
@@ -8,6 +8,13 @@ import { MaterialType } from '../../material/MaterialType'
 import { EffectRule } from './index'
 
 export class TransferRule extends EffectRule<TransferEffect> {
+  onRuleStart() {
+    const moves: MaterialMove[] = super.onRuleStart()
+    if (moves.length > 0) return moves
+    if (this.effect.influence && (this.effect.quantity ?? 1) === 1) return this.transferOneCard()
+    return moves
+  }
+
   getPlayerMoves() {
     return this.transferOneCard()
   }
@@ -59,7 +66,9 @@ export class TransferRule extends EffectRule<TransferEffect> {
   }
 
   get influenceCards() {
-    return this.material(MaterialType.AgentCard).location(LocationType.Influence).player(this.opponentTeam)
+    const cards = this.material(MaterialType.AgentCard).location(LocationType.Influence).player(this.opponentTeam)
+    if (this.effect.influence) return cards.filter<Agent>((item) => Agents[item.id].influence === this.effect.influence)
+    return cards
   }
 
   getExtraDataFromMove(move: ItemMove) {

@@ -22,7 +22,7 @@ export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
         moves.push(this.playerHelper.zenithiumMaterial.deleteItem(cost))
       }
     }
-    new TechnologyHelper(this.game).applyTechnology(move)
+    moves.push(...new TechnologyHelper(this.game).applyTechnology(move))
     this.removeFirstEffect()
     moves.push(...this.afterEffectPlayed())
     return moves

@@ -86,6 +86,10 @@ export class ZenithRules
     [MaterialType.InfluenceDisc]: {
       [LocationType.TeamPlanets]: new PositiveSequenceStrategy(),
       [LocationType.InfluenceDiscStock]: new PositiveSequenceStrategy()
+    },
+    [MaterialType.BonusToken]: {
+      [LocationType.BonusDiscard]: new PositiveSequenceStrategy(),
+      [LocationType.BonusStock]: new PositiveSequenceStrategy()
     }
   }
 
@@ -93,6 +97,9 @@ export class ZenithRules
     [MaterialType.AgentCard]: {
       [LocationType.PlayerHand]: hideItemIdToOthers,
       [LocationType.AgentDeck]: hideItemId
+    },
+    [MaterialType.BonusToken]: {
+      [LocationType.BonusStock]: hideItemId
     }
   }
 

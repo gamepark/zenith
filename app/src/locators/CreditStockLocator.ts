@@ -9,13 +9,13 @@ export class CreditStockLocator extends PileLocator {
 
   getCoordinates(location: Location, context: MaterialContext) {
     if (imWhiteTeam(context)) {
-      return { x: 36, y: -7 + this.getLocationYDelta(location) * 6 }
+      return { x: 34 + this.getLocationDelta(location) * 5, y: 7 }
     }
 
-    return { x: 44, y: -6 + this.getLocationYDelta(location) * 6 }
+    return { x: 44, y: -7 + this.getLocationDelta(location) * 6 }
   }
 
-  getLocationYDelta(location: Location) {
+  getLocationDelta(location: Location) {
     switch (location.id) {
       case Credit.Credit1:
         return 0

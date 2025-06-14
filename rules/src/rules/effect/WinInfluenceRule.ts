@@ -4,6 +4,7 @@ import { Influence, influences } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { TeamColor } from '../../TeamColor'
+import { BonusHelper } from '../helper/BonusHelper'
 import { EndGameHelper } from '../helper/EndGameHelper'
 import { Memory, PatternType } from '../Memory'
 import { EffectRule } from './index'
@@ -175,6 +176,8 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
       if (helper.willEnd(this.playerHelper.team, planets)) {
         moves.push(this.endGame())
         return moves
+      } else {
+        moves.push(...new BonusHelper(this.game).applyInfluenceBonus(item.id))
       }
     }
 

@@ -1,13 +1,14 @@
-import { isMoveItemType, ItemMove } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { TakeBonusEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { BonusHelper } from '../helper/BonusHelper'
 import { EffectRule } from './index'
 
 export class TakeBonusRule extends EffectRule<TakeBonusEffect> {
   getPlayerMoves() {
     return this.bonusTokens.moveItems({
-      type: LocationType.PlayerBonus,
+      type: LocationType.BonusDiscard,
       player: this.playerHelper.team
     })
   }
@@ -21,10 +22,12 @@ export class TakeBonusRule extends EffectRule<TakeBonusEffect> {
   }
 
   afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.BonusToken)(move) || move.location.type !== LocationType.PlayerBonus) return []
-
-    // TODO: add effect
-    return []
+    if (!isMoveItemType(MaterialType.BonusToken)(move) || move.location.type !== LocationType.BonusDiscard) return []
+    const bonusToken = this.material(MaterialType.BonusToken).index(move.itemIndex)
+    const moves: MaterialMove[] = new BonusHelper(this.game).applyBonusEffect(bonusToken)
+    this.removeFirstEffect()
+    moves.push(...this.applyFirstEffect())
+    return moves
   }
 
   isPossible() {

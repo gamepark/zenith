@@ -2,6 +2,7 @@ import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
 import { times } from 'lodash'
 import shuffle from 'lodash/shuffle'
 import { agents } from './material/Agent'
+import { allBonuses } from './material/Bonus'
 import { Credit } from './material/Credit'
 import { factions } from './material/Faction'
 import { Influence, influences } from './material/Influence'
@@ -28,6 +29,41 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     this.setupTechnologyBoard()
     this.setupTeams()
     this.setupInfluenceDisc()
+    this.setupBonuses()
+  }
+
+  setupBonuses() {
+    const shuffledBonuses = shuffle(allBonuses)
+    for (const influence of influences) {
+      const bonus = shuffledBonuses.shift()!
+      this.material(MaterialType.BonusToken).createItem({
+        id: bonus,
+        location: {
+          type: LocationType.PlanetBoardBonusSpace,
+          id: influence
+        }
+      })
+    }
+
+    const technologyBoards = this.material(MaterialType.TechnologyBoard).getIndexes()
+    for (const technologyBoardIndex of technologyBoards) {
+      this.material(MaterialType.BonusToken).createItem({
+        id: shuffledBonuses.shift()!,
+        location: {
+          type: LocationType.TechnologyBoardBonusSpace,
+          parent: technologyBoardIndex
+        }
+      })
+    }
+
+    for (const bonus of shuffledBonuses) {
+      this.material(MaterialType.BonusToken).createItem({
+        id: bonus,
+        location: {
+          type: LocationType.BonusStock
+        }
+      })
+    }
   }
 
   setupInfluenceDisc() {

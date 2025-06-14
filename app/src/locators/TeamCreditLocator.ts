@@ -6,8 +6,8 @@ import { getMyTeamColor } from './position.utils'
 export class TeamCreditLocator extends PileLocator {
   radius = 2
   getCoordinates(location: Location, context: MaterialContext) {
-    if (this.isMyTeam(location, context)) return { x: -46, y: 16, z: 0 }
-    return { x: -46, y: -16, z: 0 }
+    if (this.isMyTeam(location, context)) return { x: -46, y: 15, z: 0 }
+    return { x: -46, y: -15, z: 0 }
   }
 
   isMyTeam(location: Location, context: MaterialContext) {

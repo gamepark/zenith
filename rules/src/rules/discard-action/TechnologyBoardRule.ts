@@ -20,8 +20,8 @@ export class TechnologyBoardRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.TechMarker)(move)) return []
-    new TechnologyHelper(this.game).applyTechnology(move)
-    const moves: MaterialMove[] = [new PlayerHelper(this.game, this.player).zenithiumMaterial.deleteItem(move.location.x)]
+    const moves: MaterialMove[] = new TechnologyHelper(this.game).applyTechnology(move)
+    moves.push(new PlayerHelper(this.game, this.player).zenithiumMaterial.deleteItem(move.location.x))
     const effectMoves = new EffectHelper(this.game, this.player).applyFirstEffect()
     if (effectMoves.some((move) => isStartRule(move) || isStartPlayerTurn(move))) {
       moves.push(...effectMoves)
