@@ -8,7 +8,8 @@ export enum Memory {
   LastPlanetsMoved,
   CantPass,
   AlreadyPlayedPlayers,
-  Pattern
+  Pattern,
+  CardPlayed
 }
 
 export type PatternType = {

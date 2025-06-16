@@ -50,10 +50,8 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     if (isCustomMoveType(CustomMoveType.DoCondition)(move)) {
       const condition = this.effect.condition
       if (!this.isDoCondition(condition)) return []
-      console.log(condition)
       const conditionEffect = getEffectRule(this.game, condition.effect)
       const extraData = conditionEffect.getExtraDataFromMove(move)
-      console.log(extraData)
       this.addEffectAndRemoveCondition(extraData)
       return this.afterEffectPlayed()
     }

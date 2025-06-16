@@ -32,7 +32,6 @@ export class TakeBonusRule extends EffectRule<TakeBonusEffect> {
   }
 
   isPossible() {
-    console.log(this.material(MaterialType.BonusToken))
     return this.bonusTokens.length > 0
   }
 

@@ -138,7 +138,6 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     if (this.effect.pattern) {
       return this.patternPlanet()
     }
-    console.log('gPM', effect.times)
 
     const moves: MaterialMove[] = []
     for (const index of planets.getIndexes()) {

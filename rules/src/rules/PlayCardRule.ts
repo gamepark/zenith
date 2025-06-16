@@ -62,6 +62,7 @@ export class PlayCardRule extends PlayerTurnRule {
     if (move.location.type === LocationType.Influence) {
       const influenceHelper = this.influenceHelper
       const item = this.material(MaterialType.AgentCard).getItem<Agent | undefined>(move.itemIndex)
+      this.memorize(Memory.CardPlayed, item.id)
       // Here we must add one since the card we just bought is already in place
       // If we put it in beforeItemMove, there is issue since in some case, the card is not known
       const cost = influenceHelper.getCost(item, 1)
@@ -76,7 +77,7 @@ export class PlayCardRule extends PlayerTurnRule {
         return moves
       }
 
-      moves.push(this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer))
+      moves.push(this.startRule(RuleId.Refill))
     }
     return moves
   }
