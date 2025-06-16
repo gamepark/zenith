@@ -43,10 +43,8 @@ export class BonusHelper extends MaterialRulesPart {
         })
       )
 
-      this.memorize(Memory.Effects, (e: Effect[]) => {
-        const [first, ...other] = e
-        return [first, bonusEffect, ...other]
-      })
+      const effects = this.remind<Effect[]>(Memory.Effects)
+      effects.splice(1, 0, bonusEffect)
     }
 
     return moves

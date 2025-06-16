@@ -3,6 +3,7 @@ import { pointerWithin } from '@dnd-kit/core'
 import { css } from '@emotion/react'
 import { GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { FC } from 'react'
+import { PlayerPanels } from './panels/PlayerPanels'
 
 type GameDisplayProps = {
   players: number
@@ -24,7 +25,7 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
         css={process.env.NODE_ENV === 'development' && tableBorder}
       >
         <GameTableNavigation />
-        {/**<PlayerPanels />**/}
+        <PlayerPanels />
       </GameTable>
     </>
   )

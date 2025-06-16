@@ -7,7 +7,6 @@ export class BonusDiscardLocator extends ListLocator {
   gap = { y: 0.2, z: 0.5 }
   maxCount = 8
   getCoordinates(_location: Location, context: MaterialContext) {
-    console.log(_location)
     if (imWhiteTeam(context)) {
       return { x: 32, y: -9.5 }
     }

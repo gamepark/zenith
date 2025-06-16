@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { PlayMoveButton, useLegalMove, useLegalMoves, useRules } from '@gamepark/react-game'
 import { CustomMove, isCustomMoveType, isMoveItemType, MaterialMove, MaterialRules } from '@gamepark/rules-api'
-import { ConditionalEffect, ConditionType, Effect } from '@gamepark/zenith/material/effect/Effect'
+import { ConditionalEffect, ConditionType, Effect, isDoEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
@@ -25,24 +25,41 @@ export const ConditionalHeader = () => {
       isCustomMoveType(CustomMoveType.DoCondition)(move)
   )
 
-  const giveLeaderBadge = useLegalMove((move: MaterialMove) => isMoveItemType(MaterialType.LeaderBadgeToken)(move))
-  if (giveLeaderBadge) {
-    return (
-      <>
-        <PlayMoveButton move={pass}>Passez</PlayMoveButton>
-        <PlayMoveButton move={giveLeaderBadge}>Donner le badge</PlayMoveButton>
-      </>
-    )
-  }
+  const condition = effect.condition
+  if (isDoEffect(condition)) {
+    if (condition.effect.type === EffectType.SpendZenithium) {
+      const quantities = condition.effect.quantities
+      return (
+        <>
+          {quantities.map((quantity) => {
+            const move = spendZenithium.find((move) => move.data === quantity)
+            return <PlayMoveButton move={move}>Spend {quantity}</PlayMoveButton>
+          })}
+        </>
+      )
+    }
 
-  if (spendZenithium.length) {
-    return (
-      <>
-        {spendZenithium.map((move) => (
-          <PlayMoveButton move={move}>Spend {move.data}</PlayMoveButton>
-        ))}
-      </>
-    )
+    if (condition.effect.type === EffectType.SpendCredit) {
+      const quantities = condition.effect.quantities
+      return (
+        <>
+          {quantities.map((quantity) => {
+            const move = spendCredits.find((move) => move.data === quantity)
+            return <PlayMoveButton move={move}>Spend {quantity}</PlayMoveButton>
+          })}
+        </>
+      )
+    }
+
+    const giveLeaderBadge = useLegalMove((move: MaterialMove) => isMoveItemType(MaterialType.LeaderBadgeToken)(move))
+    if (condition.effect.type === EffectType.GiveLeaderBadge) {
+      return (
+        <>
+          <PlayMoveButton move={pass}>Passez</PlayMoveButton>
+          <PlayMoveButton move={giveLeaderBadge}>Donner le badge</PlayMoveButton>
+        </>
+      )
+    }
   }
   if (spendCredits.length) {
     return (

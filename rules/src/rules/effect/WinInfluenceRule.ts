@@ -138,6 +138,7 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     if (this.effect.pattern) {
       return this.patternPlanet()
     }
+    console.log('gPM', effect.times)
 
     const moves: MaterialMove[] = []
     for (const index of planets.getIndexes()) {
@@ -182,7 +183,8 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     }
 
     if (effect.times) {
-      effect.times -= move.location.x! - item.location.x!
+      const consumed = move.location.x! - item.location.x!
+      effect.times -= consumed
       if (effect.times > 0) return moves
     } else if (effect.pattern) {
       this.memorize(Memory.Pattern, (patternTypes: PatternType[] = []) =>

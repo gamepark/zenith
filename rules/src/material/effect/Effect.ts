@@ -175,3 +175,6 @@ export type Effect =
   | MobilizeEffect
   | ChoiceEffect
   | TakeBonusEffect
+
+export const isSpendZenithium = (effect: Effect): effect is SpendZenithiumEffect => effect.type === EffectType.SpendZenithium
+export const isDoEffect = (condition: Condition): condition is DoEffectCondition => condition.type === ConditionType.DoEffect
