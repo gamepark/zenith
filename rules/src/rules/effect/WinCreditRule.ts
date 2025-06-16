@@ -1,5 +1,6 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { Agent } from '../../material/Agent'
+import { Agents } from '../../material/Agents'
 import { WinCreditEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -37,7 +38,7 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
       .location(LocationType.Influence)
       .player(this.playerHelper.team)
       .getItems<Agent>()
-      .map((a) => a.id)
+      .map((a) => Agents[a.id].influence)
     return uniq(items).length
   }
 
@@ -46,7 +47,7 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
       .location(LocationType.Influence)
       .player(this.opponentTeam)
       .getItems<Agent>()
-      .map((a) => a.id)
+      .map((a) => Agents[a.id].influence)
     return uniq(items).length
   }
 

@@ -13,7 +13,7 @@ import WinInfluence from '../images/bonuses/WinInfluence.jpg'
 export class BonusTokenDescription extends TokenDescription {
   height = 1.5
   width = 2.3
-  borderRadius = 4
+  borderRadius = 0.8
   images = {
     [Bonus.Exile2OpponentCards]: Exile2OpponentCards,
     [Bonus.Mobilize2]: Mobilize2,

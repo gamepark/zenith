@@ -60,7 +60,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
       this.material(MaterialType.BonusToken).createItem({
         id: bonus,
         location: {
-          type: LocationType.BonusStock
+          type: LocationType.BonusTokenStock
         }
       })
     }

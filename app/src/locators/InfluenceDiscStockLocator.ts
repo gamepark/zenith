@@ -4,7 +4,7 @@ import { influenceDiscDescription } from '../material/InfluenceDiscDescription'
 import { imWhiteTeam } from './position.utils'
 
 export class InfluenceDiscStockLocator extends ListLocator {
-  gap = { x: influenceDiscDescription.width + 0.2 }
+  gap = { x: influenceDiscDescription.width + 0.1 }
 
   getCoordinates(location: Location, context: MaterialContext) {
     if (imWhiteTeam(context)) {

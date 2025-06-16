@@ -1,5 +1,7 @@
-import { CardDescription } from '@gamepark/react-game'
+import { CardDescription, ItemContext } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
 import { Agent } from '@gamepark/zenith/material/Agent'
+import { LocationType } from '@gamepark/zenith/material/LocationType'
 import Elisabeth from '../images/agents/Elisabeth.jpg'
 import Pkd1ck from '../images/agents/Pkd1ck.jpg'
 import AgentEzra from '../images/agents/AgentEzra.jpg'
@@ -188,6 +190,11 @@ export class AgentCardDescription extends CardDescription {
     [Agent.SecretKali]: SecretKali,
     [Agent.CaptainAndreev]: CaptainAndreev,
     [Agent.MiladyJones]: MiladyJones
+  }
+
+  isFlippedOnTable(item: MaterialItem, context: ItemContext) {
+    if (item.location.type === LocationType.AgentDeck) return true
+    return (item.location.type === LocationType.PlayerHand && item.location.player !== context.player) || super.isFlippedOnTable(item, context)
   }
 }
 

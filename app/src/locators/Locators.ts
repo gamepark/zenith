@@ -44,6 +44,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.CreditStock]: creditStockLocator,
   [LocationType.PlanetBoardBonusSpace]: planetBoardBonusSpaceLocator,
   [LocationType.TechnologyBoardBonusSpace]: technologyBoardBonusSpaceLocator,
-  [LocationType.BonusStock]: bonusStockLocator,
+  [LocationType.BonusTokenStock]: bonusStockLocator,
   [LocationType.BonusDiscard]: bonusDiscardLocator
 }

@@ -8,8 +8,7 @@ import { EffectRule } from './index'
 export class TakeBonusRule extends EffectRule<TakeBonusEffect> {
   getPlayerMoves() {
     return this.bonusTokens.moveItems({
-      type: LocationType.BonusDiscard,
-      player: this.playerHelper.team
+      type: LocationType.BonusDiscard
     })
   }
 
@@ -24,13 +23,16 @@ export class TakeBonusRule extends EffectRule<TakeBonusEffect> {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.BonusToken)(move) || move.location.type !== LocationType.BonusDiscard) return []
     const bonusToken = this.material(MaterialType.BonusToken).index(move.itemIndex)
-    const moves: MaterialMove[] = new BonusHelper(this.game).applyBonusEffect(bonusToken)
+    const moves: MaterialMove[] = []
+    // Ignore move since token is already discard
+    new BonusHelper(this.game).applyBonusEffect(bonusToken)
     this.removeFirstEffect()
     moves.push(...this.applyFirstEffect())
     return moves
   }
 
   isPossible() {
+    console.log(this.material(MaterialType.BonusToken))
     return this.bonusTokens.length > 0
   }
 

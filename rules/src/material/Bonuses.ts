@@ -55,7 +55,7 @@ export const Win4Credits: BonusDescription = {
 export const WinInfluence: BonusDescription = {
   effect: {
     type: EffectType.WinInfluence,
-    quantity: 13
+    quantity: 1
   }
 }
 

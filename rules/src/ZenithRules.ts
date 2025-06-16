@@ -89,7 +89,7 @@ export class ZenithRules
     },
     [MaterialType.BonusToken]: {
       [LocationType.BonusDiscard]: new PositiveSequenceStrategy(),
-      [LocationType.BonusStock]: new PositiveSequenceStrategy()
+      [LocationType.BonusTokenStock]: new PositiveSequenceStrategy()
     }
   }
 
@@ -99,7 +99,7 @@ export class ZenithRules
       [LocationType.AgentDeck]: hideItemId
     },
     [MaterialType.BonusToken]: {
-      [LocationType.BonusStock]: hideItemId
+      [LocationType.BonusTokenStock]: hideItemId
     }
   }
 
