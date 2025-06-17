@@ -3,5 +3,6 @@ export enum CustomMoveType {
   Diplomacy,
   DoCondition,
   SpendCredit,
-  Choice
+  Choice,
+  WinCredit
 }
