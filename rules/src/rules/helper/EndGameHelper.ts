@@ -4,7 +4,7 @@ import maxBy from 'lodash/maxBy'
 import { Influence, influences } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { TeamColor } from '../../TeamColor'
+import { TeamColor, teamColors } from '../../TeamColor'
 
 export class EndGameHelper extends MaterialRulesPart {
   willEnd(team: TeamColor, planets = this.getTeamPlanet(team)) {
@@ -13,6 +13,10 @@ export class EndGameHelper extends MaterialRulesPart {
     if (maxSameInfluence && maxSameInfluence.count >= 3) return true
     if (this.getCountDifferentInfluence(planets) >= 4) return true
     return false
+  }
+
+  get winningTeam() {
+    return teamColors.find((team) => this.willEnd(team))
   }
 
   getTeamPlanet(team: TeamColor) {

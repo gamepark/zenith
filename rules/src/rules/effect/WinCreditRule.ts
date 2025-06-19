@@ -4,7 +4,6 @@ import { Agents } from '../../material/Agents'
 import { WinCreditEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { CustomMoveType } from '../CustomMoveType'
 import { EffectRule } from './index'
 import uniq from 'lodash/uniq'
 
@@ -12,9 +11,7 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const money = this.creditMoney
-    const wonCredit = this.wonCredit
-    moves.push(this.customMove(CustomMoveType.WinCredit, wonCredit))
-    moves.push(...money.addMoney(wonCredit, { type: LocationType.TeamCredit, player: this.effect.opponent ? this.opponentTeam : this.playerHelper.team }))
+    moves.push(...money.addMoney(this.wonCredit, { type: LocationType.TeamCredit, player: this.effect.opponent ? this.opponentTeam : this.playerHelper.team }))
 
     this.removeFirstEffect()
     moves.push(...this.afterEffectPlayed())

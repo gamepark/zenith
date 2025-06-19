@@ -34,10 +34,12 @@ import {
 } from './rules/effect'
 import { SpendZenithiumRule } from './rules/effect/SpendZenithiumRule'
 import { StealCreditRule } from './rules/effect/StealCreditRule'
+import { EndGameHelper } from './rules/helper/EndGameHelper'
 import { MulliganRule } from './rules/MulliganRule'
 import { PlayCardRule } from './rules/PlayCardRule'
 import { RefillRule } from './rules/RefillRule'
 import { RuleId } from './rules/RuleId'
+import { getTeamColor } from './TeamColor'
 
 /**
  * This class implements the rules of the board game.
@@ -104,7 +106,9 @@ export class ZenithRules
   }
 
   rankPlayers(_playerA: PlayerId, _playerB: PlayerId): number {
-    return 0
+    const winners = new EndGameHelper(this.game).winningTeam
+    if (getTeamColor(_playerA) === winners) return 1
+    return -1
   }
 
   giveTime(): number {

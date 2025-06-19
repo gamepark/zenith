@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom'
 import { gameAnimations } from './animations/GameAnimations'
 import App from './App'
 import { Locators } from './locators/Locators'
+import { ZenithLogDescription } from './logs/ZenithLogDescription'
 import { Material } from './material/Material'
 import translations from './translations.json'
 
@@ -21,6 +22,7 @@ ReactDOM.render(
       optionsSpec={ZenithOptionsSpec}
       GameSetup={ZenithSetup}
       material={Material}
+      logs={new ZenithLogDescription()}
       locators={Locators}
       animations={gameAnimations}
     >
