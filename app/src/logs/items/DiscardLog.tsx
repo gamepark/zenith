@@ -6,7 +6,7 @@ import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
-export const RecruitLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
+export const DiscardLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props
   const { t } = useTranslation()
   const move: MoveItem = props.move as MoveItem
@@ -18,7 +18,7 @@ export const RecruitLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.recruit"
+        defaults="log.discard"
         values={{
           player: playerName,
           agent: t(`agent.${itemId}`)

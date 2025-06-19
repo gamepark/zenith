@@ -191,7 +191,10 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
       )
 
       const patternMoves = this.patternPlanet()
-      if (patternMoves.length > 0 && patternMoves.length <= effect.pattern.length - 1) return [this.patternPlanet()[0]]
+      if (patternMoves.length > 0 && patternMoves.length <= effect.pattern.length - 1) {
+        moves.push(this.patternPlanet()[0])
+        return moves
+      }
       if (patternMoves.length > 0) return moves
     }
 

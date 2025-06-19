@@ -93,6 +93,9 @@ import SecretKali from '../images/agents/SecretKali.jpg'
 import CaptainAndreev from '../images/agents/CaptainAndreev.jpg'
 import MiladyJones from '../images/agents/MiladyJones.jpg'
 import Back from '../images/agents/Back.jpg'
+import Animod from '../images/icons/animod.jpg'
+import Humanoid from '../images/icons/humanoid.jpg'
+import Robot from '../images/icons/robot.jpg'
 
 export class AgentCardDescription extends CardDescription {
   height = 8.9
@@ -195,6 +198,14 @@ export class AgentCardDescription extends CardDescription {
   isFlippedOnTable(item: MaterialItem, context: ItemContext) {
     if (item.location.type === LocationType.AgentDeck) return true
     return (item.location.type === LocationType.PlayerHand && item.location.player !== context.player) || super.isFlippedOnTable(item, context)
+  }
+
+  getImages(): string[] {
+    const images = super.getImages()
+    images.push(Animod)
+    images.push(Humanoid)
+    images.push(Robot)
+    return images
   }
 }
 
