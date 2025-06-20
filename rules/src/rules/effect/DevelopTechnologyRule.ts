@@ -42,7 +42,9 @@ export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
 
     const discount = this.effect.discount
     if (discount !== undefined) {
-      return tokens.filter((item) => item.location.x! + 1 - discount < zenithium)
+      return tokens.filter((item) => {
+        return item.location.x! + 1 - discount <= zenithium
+      })
     }
 
     return tokens
