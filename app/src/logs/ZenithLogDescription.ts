@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { isCreateItemType, isCustomMoveType, isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { Effect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
@@ -15,7 +15,9 @@ import { DiscardLog } from './items/DiscardLog'
 import { GiveInfluenceLog } from './items/GiveInfluenceLog'
 import { InfluenceLog } from './items/InfluenceLog'
 import { RecruitLog } from './items/RecruitLog'
+import { TakeLeaderBadgeLog } from './items/TakeLeaderBadgeLog'
 import { WinCreditLog } from './items/WinCreditLog'
+import { WinZenithiumLog } from './items/WinZenithiumLog'
 
 export class ZenithLogDescription implements LogDescription<MaterialMove, PlayerId, MaterialGame> {
   getMovePlayedLogDescription(move: MaterialMove, context: MoveComponentContext<MaterialMove, PlayerId, MaterialGame>): MovePlayedLogDescription | undefined {
@@ -53,6 +55,14 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       }
     }
 
+    if (context.game.rule?.id === RuleId.WinZenithium && isCreateItemType(MaterialType.ZenithiumToken)(move)) {
+      return {
+        depth: 1,
+        Component: WinZenithiumLog,
+        css: depthCss
+      }
+    }
+
     if (
       context.game.rule?.id === RuleId.WinInfluence &&
       isMoveItemType(MaterialType.InfluenceDisc)(move) &&
@@ -61,6 +71,15 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: InfluenceLog,
+        css: depthCss
+      }
+    }
+
+    if (context.game.rule?.id === RuleId.TakeLeaderBadge && isMoveItemType(MaterialType.LeaderBadgeToken)(move)) {
+      console.log('TAKE')
+      return {
+        depth: 1,
+        Component: TakeLeaderBadgeLog,
         css: depthCss
       }
     }

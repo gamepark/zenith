@@ -54,7 +54,7 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
   }
 
   get level1Technology() {
-    return this.material(MaterialType.TechnologyBoard)
+    return this.material(MaterialType.TechMarker)
       .player(this.playerHelper.team)
       .location((l) => l.type === LocationType.TechnologyBoardTokenSpace && l.x === 1).length
   }

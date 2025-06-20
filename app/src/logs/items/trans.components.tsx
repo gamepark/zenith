@@ -12,6 +12,9 @@ import Terra from '../../images/planet/Terra.png'
 import Mars from '../../images/planet/Mars.png'
 import Jupiter from '../../images/planet/Jupiter.png'
 import Credit from '../../images/credit/Credit1.png'
+import Zenithium from '../../images/zenithium/Zenithium.png'
+import LeaderSilver from '../../images/icons/leader-silver.png'
+import LeaderGold from '../../images/icons/leader-gold.png'
 
 const pictureCss = css`
   height: 2em;
@@ -47,5 +50,8 @@ export const TransComponents: Record<string, ReactElement> = {
   terra: <Picture src={Terra} css={pictureCss} />,
   mars: <Picture src={Mars} css={pictureCss} />,
   jupiter: <Picture src={Jupiter} css={pictureCss} />,
-  credit: <Picture src={Credit} css={pictureCss} />
+  credit: <Picture src={Credit} css={pictureCss} />,
+  zenithium: <Picture src={Zenithium} css={pictureCss} />,
+  leaderSilver: <Picture src={LeaderSilver} css={pictureCss} />,
+  leaderGold: <Picture src={LeaderGold} css={pictureCss} />
 }
