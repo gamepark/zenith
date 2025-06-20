@@ -1,16 +1,20 @@
-import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { DevelopTechnologyEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { CustomMoveType } from '../CustomMoveType'
 import { TechnologyHelper } from '../helper/TechnologyHelper'
 import { EffectRule } from './index'
 
 export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
   getPlayerMoves() {
-    return this.technologies.moveItems((item) => ({
-      ...item.location,
-      x: item.location.x! + 1
-    }))
+    return [
+      ...this.technologies.moveItems((item) => ({
+        ...item.location,
+        x: item.location.x! + 1
+      })),
+      this.customMove(CustomMoveType.Pass)
+    ]
   }
 
   afterItemMove(move: ItemMove) {
@@ -26,6 +30,12 @@ export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
     this.removeFirstEffect()
     moves.push(...this.afterEffectPlayed())
     return moves
+  }
+
+  onCustomMove(move: CustomMove) {
+    if (!isCustomMoveType(CustomMoveType.Pass)(move)) return []
+    this.removeFirstEffect()
+    return this.afterEffectPlayed()
   }
 
   get technologies() {
