@@ -9,7 +9,7 @@ import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getPlanet } from './trans.components'
 
-export const InfluenceLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
+export const WinPlanetLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props
   const { t } = useTranslation()
   const move: MoveItem = props.move as MoveItem
@@ -22,7 +22,7 @@ export const InfluenceLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.influence"
+        defaults="log.win.planet"
         values={{
           player: playerName,
           count: count,

@@ -27,6 +27,7 @@ import {
 } from '../effect'
 import { SpendZenithiumRule } from '../effect/SpendZenithiumRule'
 import { StealCreditRule } from '../effect/StealCreditRule'
+import { TakeTechnologyBonusTokenRule } from '../effect/TakeTechnologyBonusTokenRule'
 import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
 import { EffectRuleIds } from './EffectRuleIds'
@@ -110,5 +111,7 @@ export const getEffectRule = (game: MaterialGame, effect: Effect): EffectRule =>
       return new StealCreditRule(game, effect)
     case EffectType.SpendZenithium:
       return new SpendZenithiumRule(game, effect)
+    case EffectType.TakeTechnologyBonusToken:
+      return new TakeTechnologyBonusTokenRule(game, effect)
   }
 }

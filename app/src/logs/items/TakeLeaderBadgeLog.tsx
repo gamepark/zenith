@@ -1,5 +1,5 @@
 import { MoveComponentProps, PlayMoveButton, usePlayerName } from '@gamepark/react-game'
-import { MaterialGame, MaterialMove, MaterialMoveBuilder, MoveItem, Location } from '@gamepark/rules-api'
+import { Location, MaterialGame, MaterialMove, MaterialMoveBuilder, MoveItem } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
@@ -32,9 +32,22 @@ export const TakeLeaderBadgeLog: FC<MoveComponentProps<MaterialMove>> = (props) 
               transient
             />
           ),
-          leaderBadge: move.location.rotation ? TransComponents.leaderGold : TransComponents.leaderSilver
+          leaderBadge: <LeaderItem move={move} />
         }}
       />
     </>
+  )
+}
+
+const LeaderItem = ({ move }: { move: MoveItem }) => {
+  return (
+    <PlayMoveButton
+      move={displayMaterialHelp(MaterialType.LeaderBadgeToken, {
+        location: move.location as Location
+      })}
+      transient
+    >
+      {move.location.rotation ? TransComponents.leaderGold : TransComponents.leaderSilver}
+    </PlayMoveButton>
   )
 }

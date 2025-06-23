@@ -51,7 +51,8 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
         id: shuffledBonuses.shift()!,
         location: {
           type: LocationType.TechnologyBoardBonusSpace,
-          parent: technologyBoardIndex
+          parent: technologyBoardIndex,
+          x: 2
         }
       })
     }

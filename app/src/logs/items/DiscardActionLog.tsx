@@ -1,14 +1,13 @@
-import { MoveComponentProps, PlayMoveButton, usePlayerName } from '@gamepark/react-game'
-import { MaterialGame, MaterialMove, MaterialMoveBuilder, MoveItem } from '@gamepark/rules-api'
+import { MoveComponentProps, usePlayerName } from '@gamepark/react-game'
+import { MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
-import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
+import { Trans } from 'react-i18next'
+import { AgentCardLog } from './components/AgentCardLog'
 
-export const DiscardLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
+export const DiscardActionLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props
-  const { t } = useTranslation()
   const move: MoveItem = props.move as MoveItem
   const rules = new ZenithRules(context.game as MaterialGame)
   const item = rules.material(MaterialType.AgentCard).getItem(move.itemIndex)
@@ -20,11 +19,10 @@ export const DiscardLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
       <Trans
         defaults="log.discard"
         values={{
-          player: playerName,
-          agent: t(`agent.${itemId}`)
+          player: playerName
         }}
         components={{
-          card: <PlayMoveButton move={displayMaterialHelp(MaterialType.AgentCard, { id: itemId })} transient />
+          agent: <AgentCardLog agent={itemId} />
         }}
       />
     </>

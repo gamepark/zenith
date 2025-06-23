@@ -154,6 +154,12 @@ export type ChoiceEffect = {
   right: Effect
 }
 
+export type TakeTechnologyBonusToken = {
+  type: EffectType.TakeTechnologyBonusToken
+  faction: Faction
+  x: number
+}
+
 export type Effect =
   | ConditionalEffect
   | WinCreditEffect
@@ -175,6 +181,7 @@ export type Effect =
   | MobilizeEffect
   | ChoiceEffect
   | TakeBonusEffect
+  | TakeTechnologyBonusToken
 
 export const isSpendZenithium = (effect: Effect): effect is SpendZenithiumEffect => effect.type === EffectType.SpendZenithium
 export const isDoEffect = (condition: Condition): condition is DoEffectCondition => condition.type === ConditionType.DoEffect

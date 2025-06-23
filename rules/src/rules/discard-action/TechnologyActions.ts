@@ -1,5 +1,6 @@
 import { ConditionType, Effect } from '../../material/effect/Effect'
 import { EffectType } from '../../material/effect/EffectType'
+import { Faction } from '../../material/Faction'
 
 // TODO: Alternative boards
 export const getTechnologyAction = (id: string): Effect[][] => {
@@ -25,6 +26,11 @@ const TechnologySActions: Effect[][] = [
     {
       type: EffectType.WinInfluence,
       pattern: [1, 1]
+    },
+    {
+      type: EffectType.TakeTechnologyBonusToken,
+      faction: Faction.Animod,
+      x: 2
     }
   ],
   [
@@ -96,6 +102,11 @@ const TechnologyUActions: Effect[][] = [
     {
       type: EffectType.Mobilize,
       quantity: 2
+    },
+    {
+      type: EffectType.TakeTechnologyBonusToken,
+      faction: Faction.Human,
+      x: 2
     }
   ],
   [
@@ -128,6 +139,11 @@ const TechnologyNActions: Effect[][] = [
   [
     {
       type: EffectType.TakeLeaderBadge
+    },
+    {
+      type: EffectType.TakeTechnologyBonusToken,
+      faction: Faction.Robot,
+      x: 2
     }
   ],
   [

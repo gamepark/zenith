@@ -18,5 +18,6 @@ export enum EffectType {
   Choice,
   TakeBonus,
   StealCredit,
-  SpendZenithium
+  SpendZenithium,
+  TakeTechnologyBonusToken
 }

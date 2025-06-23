@@ -34,6 +34,7 @@ import {
 } from './rules/effect'
 import { SpendZenithiumRule } from './rules/effect/SpendZenithiumRule'
 import { StealCreditRule } from './rules/effect/StealCreditRule'
+import { TakeTechnologyBonusTokenRule } from './rules/effect/TakeTechnologyBonusTokenRule'
 import { EndGameHelper } from './rules/helper/EndGameHelper'
 import { MulliganRule } from './rules/MulliganRule'
 import { PlayCardRule } from './rules/PlayCardRule'
@@ -75,7 +76,8 @@ export class ZenithRules
     [RuleId.TakeBonus]: TakeBonusRule,
     [RuleId.Refill]: RefillRule,
     [RuleId.StealCredit]: StealCreditRule,
-    [RuleId.SpendZenithium]: SpendZenithiumRule
+    [RuleId.SpendZenithium]: SpendZenithiumRule,
+    [RuleId.TakeTechnologyBonusToken]: TakeTechnologyBonusTokenRule
   }
 
   locationsStrategies = {

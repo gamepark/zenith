@@ -24,21 +24,21 @@ export class PlanetBoardInfluenceDiscSpaceLocator extends Locator {
     const locationX = location.x!
     const factor = locationX < 0 ? -1 : 1
     if (Math.abs(locationX) > 0) {
-      y += factor * 4.6
+      y += factor * 5.3
     }
 
-    y += 10.6 * location.x!
+    y += 10.5 * location.x!
     switch (location.id) {
       case Influence.Mercury:
         return { x: 12.6, y }
       case Influence.Venus:
-        return { x: 31.2, y }
+        return { x: 31.1, y }
       case Influence.Terra:
         return { x: 49.6, y }
       case Influence.Mars:
-        return { x: 68.2, y }
+        return { x: 68.15, y }
       case Influence.Jupiter:
-        return { x: 86.5, y }
+        return { x: 86.6, y }
     }
 
     return { x: 0, y }

@@ -6,7 +6,7 @@ import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { AgentCardLog } from './components/AgentCardLog'
 
-export const RecruitLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
+export const MobilizeLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props
   const move: MoveItem = props.move as MoveItem
   const rules = new ZenithRules(context.game as MaterialGame)
@@ -17,7 +17,7 @@ export const RecruitLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.recruit"
+        defaults="log.mobilize"
         values={{
           player: playerName
         }}

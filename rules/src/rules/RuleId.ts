@@ -22,5 +22,6 @@ export enum RuleId {
   TakeBonus,
   Refill,
   StealCredit,
-  SpendZenithium
+  SpendZenithium,
+  TakeTechnologyBonusToken
 }
