@@ -7,7 +7,7 @@ import { getTeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { getPlanet } from './trans.components'
+import { getPlanet } from '../../i18n/trans.components'
 
 export const WinPlanetLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props

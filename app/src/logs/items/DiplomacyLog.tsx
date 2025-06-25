@@ -4,7 +4,7 @@ import { MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { DiplomacyBoardRule } from '@gamepark/zenith/rules/discard-action/DiplomacyBoardRule'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { getFactionIcon } from './trans.components'
+import { getFactionIcon } from '../../i18n/trans.components'
 
 export const DiplomacyLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props

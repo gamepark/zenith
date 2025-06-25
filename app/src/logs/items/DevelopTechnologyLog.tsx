@@ -6,7 +6,7 @@ import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { getFactionIcon } from './trans.components'
+import { getFactionIcon } from '../../i18n/trans.components'
 
 export const DevelopTechnologyLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props

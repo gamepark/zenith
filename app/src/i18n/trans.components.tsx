@@ -4,18 +4,18 @@ import { Picture } from '@gamepark/react-game'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { ReactElement } from 'react'
-import Credit from '../../images/credit/Credit1.png'
-import Animod from '../../images/icons/animod.jpg'
-import Humanoid from '../../images/icons/humanoid.jpg'
-import LeaderGold from '../../images/icons/leader-gold.png'
-import LeaderSilver from '../../images/icons/leader-silver.png'
-import Robot from '../../images/icons/robot.jpg'
-import Jupiter from '../../images/planet/Jupiter.png'
-import Mars from '../../images/planet/Mars.png'
-import Mercury from '../../images/planet/Mercury.png'
-import Terra from '../../images/planet/Terra.png'
-import Venus from '../../images/planet/Venus.png'
-import Zenithium from '../../images/zenithium/Zenithium.png'
+import Credit from '../images/credit/Credit1.png'
+import Animod from '../images/icons/animod.jpg'
+import Humanoid from '../images/icons/humanoid.jpg'
+import LeaderGold from '../images/icons/leader-gold.png'
+import LeaderSilver from '../images/icons/leader-silver.png'
+import Robot from '../images/icons/robot.jpg'
+import Jupiter from '../images/planet/Jupiter.png'
+import Mars from '../images/planet/Mars.png'
+import Mercury from '../images/planet/Mercury.png'
+import Terra from '../images/planet/Terra.png'
+import Venus from '../images/planet/Venus.png'
+import Zenithium from '../images/zenithium/Zenithium.png'
 
 export const pictureCss = (jpg?: boolean) => css`
   height: 2em;
@@ -86,5 +86,7 @@ export const TransComponents: Record<string, ReactElement> = {
   credit: <Picture src={Credit} css={pictureCss()} />,
   zenithium: <Picture src={Zenithium} css={pictureCss()} />,
   leaderSilver: <Picture src={LeaderSilver} css={pictureCss()} />,
-  leaderGold: <Picture src={LeaderGold} css={pictureCss()} />
+  leaderGold: <Picture src={LeaderGold} css={pictureCss()} />,
+  bold: <strong />,
+  italic: <i />
 }

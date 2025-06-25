@@ -7,7 +7,7 @@ import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { bonusTokenDescription } from '../../material/BonusTokenDescription'
-import { pictureCss } from './trans.components'
+import { pictureCss } from '../../i18n/trans.components'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
 
 export const WinBonusLog: FC<MoveComponentProps<MaterialMove>> = (props) => {

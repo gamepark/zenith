@@ -7,9 +7,11 @@ import { DevelopTechnologyHeader } from './DevelopTechnologyHeader'
 import { DiscardActionHeader } from './DiscardActionHeader'
 import { GiveInfluenceHeader } from './GiveInfluenceHeader'
 import { MuliganHeader } from './MuliganHeader'
+import { PlayCardHeader } from './PlayCardHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.Muligan]: MuliganHeader,
+  [RuleId.PlayCard]: PlayCardHeader,
   [RuleId.DiscardAction]: DiscardActionHeader,
   [RuleId.GiveInfluence]: GiveInfluenceHeader,
   [RuleId.Conditional]: ConditionalHeader,
