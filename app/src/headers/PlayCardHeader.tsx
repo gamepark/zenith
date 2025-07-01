@@ -3,7 +3,7 @@ import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { Trans } from 'react-i18next'
-import { TransComponents } from '../i18n/trans.components'
+import { HeaderTransComponents } from '../i18n/trans.components'
 
 export const PlayCardHeader = () => {
   const rules = useRules<ZenithRules>()!
@@ -16,5 +16,5 @@ export const PlayCardHeader = () => {
     return <Trans defaults="header.play" />
   }
 
-  return <Trans defaults="header.play.other" values={{ player: name }} components={TransComponents} />
+  return <Trans defaults="header.play.player" values={{ player: name }} components={HeaderTransComponents} />
 }

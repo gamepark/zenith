@@ -5,7 +5,7 @@ import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { Trans } from 'react-i18next'
-import { TransComponents } from '../i18n/trans.components'
+import { HeaderTransComponents } from '../i18n/trans.components'
 
 export const MuliganHeader = () => {
   const endTurn = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Pass)(move))
@@ -15,12 +15,12 @@ export const MuliganHeader = () => {
   const imActive = me && players.includes(me)
   const name = usePlayerName(players[0])
   if (me && imActive) {
-    return <Trans defaults="header.mulligan" components={{ ...TransComponents, pass: <PlayMoveButton move={endTurn} /> }} />
+    return <Trans defaults="header.mulligan" components={{ ...HeaderTransComponents, pass: <PlayMoveButton move={endTurn} /> }} />
   }
 
   if (players.length > 1) {
-    return <Trans defaults="header.mulligan.others" components={TransComponents} />
+    return <Trans defaults="header.mulligan.others" components={HeaderTransComponents} />
   }
 
-  return <Trans defaults="header.mulligan.other" values={{ player: name }} components={TransComponents} />
+  return <Trans defaults="header.mulligan.other" values={{ player: name }} components={HeaderTransComponents} />
 }

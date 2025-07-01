@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
 import { isCreateItemType, isCustomMoveType, isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { Agent } from '@gamepark/zenith/material/Agent'
-import { Effect } from '@gamepark/zenith/material/effect/Effect'
+import { ExpandedEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
@@ -186,7 +186,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       isMoveItemType(MaterialType.InfluenceDisc)(move) &&
       move.location.type === LocationType.PlanetBoardInfluenceDiscSpace
     ) {
-      const effects: Effect[] = context.game.memory[Memory.Effects] ?? []
+      const effects: ExpandedEffect[] = context.game.memory[Memory.Effects] ?? []
       const firstEffect = effects[0]
       const player = context.game.rule.player!
       if (firstEffect.type === EffectType.Conditional) {
@@ -224,6 +224,10 @@ const getTeamCss = (player: PlayerId) => {
 const colorCss = (player: PlayerId) => {
   const teamCss = getTeamCss(player)
   return css`
+    picture,
+    img {
+      height: 2em;
+    }
     width: calc(100% - 0.2em);
     > div:last-of-type {
       display: flex;

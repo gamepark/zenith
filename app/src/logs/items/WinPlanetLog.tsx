@@ -7,7 +7,7 @@ import { getTeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { getPlanet } from '../../i18n/trans.components'
+import { getPlanetForLog } from '../../i18n/trans.components'
 
 export const WinPlanetLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props
@@ -29,7 +29,7 @@ export const WinPlanetLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
           team: t(`team.${getTeamColor(activePlayer)}`)
         }}
         components={{
-          influenceIcon: getPlanet(item.id)
+          influenceIcon: getPlanetForLog(item.id)
         }}
       />
     </>

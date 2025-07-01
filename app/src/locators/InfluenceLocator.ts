@@ -38,7 +38,7 @@ export class InfluenceLocator extends ListLocator {
 
   getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
     if (this.isMyTeam(item.location, context)) {
-      return [`translateY(${item.location.x! > 2 ? -20 * (item.location.x! - 2) : 0}%)`, 'translateZ(10em)', 'scale(2)']
+      return [`translateY(${item.location.x! > 2 ? -20 * Math.min(item.location.x! - 2, 2) : 0}%)`, 'translateZ(10em)', 'scale(2)']
     }
 
     if (item.location.x! > 3) {

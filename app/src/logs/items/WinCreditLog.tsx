@@ -5,7 +5,7 @@ import { WinCreditRule } from '@gamepark/zenith/rules/effect'
 import { getTeamColor } from '@gamepark/zenith/TeamColor'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { TransComponents } from '../../i18n/trans.components'
+import { LogTransComponents } from '../../i18n/trans.components'
 
 export const WinCreditLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props
@@ -25,7 +25,7 @@ export const WinCreditLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
           count: count,
           team: t(`team.${getTeamColor(activePlayer)}`)
         }}
-        components={TransComponents}
+        components={LogTransComponents}
       />
     </>
   )

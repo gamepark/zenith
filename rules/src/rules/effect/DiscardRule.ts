@@ -4,12 +4,14 @@ import { Agents } from '../../material/Agents'
 import { DiscardEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { Memory } from '../Memory'
 import { EffectRule } from './index'
 
 export class DiscardRule extends EffectRule<DiscardEffect> {
   onRuleStart() {
     const moves: MaterialMove[] = super.onRuleStart()
     if (moves.length > 0) return moves
+    this.memorize(Memory.CurrentEffect, JSON.parse(JSON.stringify(this.effect)))
 
     const effect = this.effect
     if (effect.full) {
@@ -59,5 +61,10 @@ export class DiscardRule extends EffectRule<DiscardEffect> {
 
   get hand() {
     return this.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(this.player)
+  }
+
+  onRuleEnd() {
+    this.forget(Memory.CurrentEffect)
+    return []
   }
 }

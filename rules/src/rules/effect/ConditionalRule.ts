@@ -1,5 +1,13 @@
 import { CustomMove, isCustomMoveType, ItemMove, MaterialMove } from '@gamepark/rules-api'
-import { Condition, ConditionalEffect, ConditionType, DoEffectCondition, Effect, HaveCreditsCondition, LeaderCondition } from '../../material/effect/Effect'
+import {
+  Condition,
+  ConditionalEffect,
+  ConditionType,
+  DoEffectCondition,
+  ExpandedEffect,
+  HaveCreditsCondition,
+  LeaderCondition
+} from '../../material/effect/Effect'
 import { EffectType } from '../../material/effect/EffectType'
 import { CustomMoveType } from '../CustomMoveType'
 import { getEffectRule } from '../helper/EffectHelper'
@@ -133,15 +141,19 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
   }
 
   addEffectAndRemoveCondition(extraData?: Record<string, unknown>) {
-    this.memorize(Memory.Effects, (effects: Effect[]) => {
-      const firstEffect = effects[0] as ConditionalEffect
+    this.memorize(Memory.Effects, (effects: ExpandedEffect[]) => {
+      const firstEffect = effects[0] as ExpandedEffect<ConditionalEffect>
       const { condition, effect } = firstEffect
 
       if (extraData) {
         getEffectRule(this.game, effect).setExtraData(extraData)
       }
 
-      return [(condition as DoEffectCondition).effect, effect, ...effects.slice(1)]
+      return [
+        { ...(condition as DoEffectCondition).effect, effectSource: firstEffect.effectSource },
+        { ...effect, effectSource: firstEffect.effectSource },
+        ...effects.slice(1)
+      ]
     })
   }
 

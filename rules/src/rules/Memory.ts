@@ -1,4 +1,5 @@
 import { Influence } from '../material/Influence'
+import { MaterialType } from '../material/MaterialType'
 
 export enum Memory {
   Mulligan = 1,
@@ -9,10 +10,19 @@ export enum Memory {
   CantPass,
   AlreadyPlayedPlayers,
   Pattern,
-  CardPlayed
+  CardPlayed,
+  Credit,
+  Zenithium,
+  CurrentEffect,
+  WonBonus
 }
 
 export type PatternType = {
   influence: Influence
   count: number
+}
+
+export type EffectSourceType = {
+  type: MaterialType
+  value: unknown
 }

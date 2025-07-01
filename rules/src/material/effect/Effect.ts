@@ -1,5 +1,6 @@
 import { Faction } from '../Faction'
 import { Influence } from '../Influence'
+import { MaterialType } from '../MaterialType'
 import { EffectType } from './EffectType'
 
 export enum ConditionType {
@@ -182,6 +183,13 @@ export type Effect =
   | ChoiceEffect
   | TakeBonusEffect
   | TakeTechnologyBonusToken
+
+export type ExpandedEffect<T extends Effect = Effect> = T & {
+  effectSource: {
+    type: MaterialType
+    value: unknown
+  }
+}
 
 export const isSpendZenithium = (effect: Effect): effect is SpendZenithiumEffect => effect.type === EffectType.SpendZenithium
 export const isDoEffect = (condition: Condition): condition is DoEffectCondition => condition.type === ConditionType.DoEffect

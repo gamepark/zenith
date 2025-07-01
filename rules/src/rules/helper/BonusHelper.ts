@@ -1,7 +1,7 @@
 import { Material, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
 import { Bonus } from '../../material/Bonus'
 import { Bonuses } from '../../material/Bonuses'
-import { Effect } from '../../material/effect/Effect'
+import { Effect, ExpandedEffect } from '../../material/effect/Effect'
 import { Influence } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -10,6 +10,7 @@ import { Memory } from '../Memory'
 export type TechnologyBonusResult = {
   effect: Effect
   moves: MaterialMove[]
+  bonusId: Bonus
 }
 
 export class BonusHelper extends MaterialRulesPart {
@@ -29,7 +30,8 @@ export class BonusHelper extends MaterialRulesPart {
         bonusToken.moveItem({
           type: LocationType.BonusDiscard
         })
-      ]
+      ],
+      bonusId: bonusToken.getItem()!.id
     }
   }
 
@@ -43,8 +45,14 @@ export class BonusHelper extends MaterialRulesPart {
         })
       )
 
-      const effects = this.remind<Effect[]>(Memory.Effects)
-      effects.splice(1, 0, bonusEffect)
+      const effects = this.remind<ExpandedEffect[]>(Memory.Effects)
+      effects.splice(1, 0, {
+        ...bonusEffect,
+        effectSource: {
+          type: MaterialType.BonusToken,
+          value: bonusToken.getItem()!.id
+        }
+      })
     }
 
     return moves
@@ -54,7 +62,7 @@ export class BonusHelper extends MaterialRulesPart {
     if (bonusToken.length) {
       const bonusItem = bonusToken.getItem<Bonus>()!
       const bonusId = bonusItem.id
-      return Bonuses[bonusId].effect
+      return JSON.parse(JSON.stringify(Bonuses[bonusId].effect)) as Effect
     }
     return
   }

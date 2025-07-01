@@ -1,19 +1,23 @@
 import { MaterialMove } from '@gamepark/rules-api'
+import uniq from 'lodash/uniq'
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { WinCreditEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { CustomMoveType } from '../CustomMoveType'
+import { Memory } from '../Memory'
 import { EffectRule } from './index'
-import uniq from 'lodash/uniq'
 
 export class WinCreditRule extends EffectRule<WinCreditEffect> {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const money = this.creditMoney
-    moves.push(this.customMove(CustomMoveType.WinCreditLog, this.wonCredit))
-    moves.push(...money.addMoney(this.wonCredit, { type: LocationType.TeamCredit, player: this.effect.opponent ? this.opponentTeam : this.playerHelper.team }))
+    const credits = this.wonCredit
+    this.memorize(Memory.Credit, credits)
+    this.memorize(Memory.CurrentEffect, JSON.parse(JSON.stringify(this.effect)))
+    moves.push(this.customMove(CustomMoveType.WinCreditLog, credits))
+    moves.push(...money.addMoney(credits, { type: LocationType.TeamCredit, player: this.effect.opponent ? this.opponentTeam : this.playerHelper.team }))
 
     this.removeFirstEffect()
     moves.push(...this.afterEffectPlayed())
@@ -63,5 +67,11 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
     if (_extraData.quantity) {
       this.effect.quantity ??= _extraData.quantity as number
     }
+  }
+
+  onRuleEnd() {
+    this.forget(Memory.Credit)
+    this.forget(Memory.CurrentEffect)
+    return []
   }
 }

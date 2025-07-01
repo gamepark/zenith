@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css, Interpolation, Theme } from '@emotion/react'
 import { Picture } from '@gamepark/react-game'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { Influence } from '@gamepark/zenith/material/Influence'
@@ -32,29 +32,64 @@ export const pictureCss = (jpg?: boolean) => css`
   }
 `
 
+export const headerCss = (jpg?: boolean) => css`
+  ${pictureCss(jpg)}
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  height: 1em;
+  top: -0.1em;
+`
+
 export const getFactionIcon = (faction: Faction) => {
   switch (faction) {
     case Faction.Animod:
-      return TransComponents.animod
+      return LogTransComponents.animod
     case Faction.Human:
-      return TransComponents.humanoid
+      return LogTransComponents.humanoid
     case Faction.Robot:
-      return TransComponents.robot
+      return LogTransComponents.robot
   }
 }
 
-export const getPlanet = (influence: Influence) => {
+export const getPlanetForLog = (influence: Influence) => {
   switch (influence) {
     case Influence.Mercury:
-      return TransComponents.mercury
+      return LogTransComponents.mercury
     case Influence.Venus:
-      return TransComponents.venus
+      return LogTransComponents.venus
     case Influence.Terra:
-      return TransComponents.terra
+      return LogTransComponents.terra
     case Influence.Jupiter:
-      return TransComponents.jupiter
+      return LogTransComponents.jupiter
     case Influence.Mars:
-      return TransComponents.mars
+      return LogTransComponents.mars
+  }
+}
+
+export const getPlanetForHeader = (influence: Influence) => {
+  switch (influence) {
+    case Influence.Mercury:
+      return HeaderTransComponents.mercury
+    case Influence.Venus:
+      return HeaderTransComponents.venus
+    case Influence.Terra:
+      return HeaderTransComponents.terra
+    case Influence.Jupiter:
+      return HeaderTransComponents.jupiter
+    case Influence.Mars:
+      return HeaderTransComponents.mars
+  }
+}
+
+export const getFactionForHeader = (faction: Faction) => {
+  switch (faction) {
+    case Faction.Animod:
+      return HeaderTransComponents.animod
+    case Faction.Human:
+      return HeaderTransComponents.humanoid
+    case Faction.Robot:
+      return HeaderTransComponents.robot
   }
 }
 
@@ -74,19 +109,24 @@ export const getColorForInfluence = (influence?: Influence) => {
   }
 }
 
-export const TransComponents: Record<string, ReactElement> = {
-  animod: <Picture src={Animod} css={pictureCss(true)} />,
-  humanoid: <Picture src={Humanoid} css={pictureCss(true)} />,
-  robot: <Picture src={Robot} css={pictureCss(true)} />,
-  mercury: <Picture src={Mercury} css={pictureCss()} />,
-  venus: <Picture src={Venus} css={pictureCss()} />,
-  terra: <Picture src={Terra} css={pictureCss()} />,
-  mars: <Picture src={Mars} css={pictureCss()} />,
-  jupiter: <Picture src={Jupiter} css={pictureCss()} />,
-  credit: <Picture src={Credit} css={pictureCss()} />,
-  zenithium: <Picture src={Zenithium} css={pictureCss()} />,
-  leaderSilver: <Picture src={LeaderSilver} css={pictureCss()} />,
-  leaderGold: <Picture src={LeaderGold} css={pictureCss()} />,
+type customCssFunc = (jpg?: boolean) => Interpolation<Theme>
+const TransComponents = (customCss: customCssFunc) => ({
+  animod: <Picture src={Animod} css={customCss(true)} />,
+  humanoid: <Picture src={Humanoid} css={customCss(true)} />,
+  robot: <Picture src={Robot} css={customCss(true)} />,
+  mercury: <Picture src={Mercury} css={customCss()} />,
+  venus: <Picture src={Venus} css={customCss()} />,
+  terra: <Picture src={Terra} css={customCss()} />,
+  mars: <Picture src={Mars} css={customCss()} />,
+  jupiter: <Picture src={Jupiter} css={customCss()} />,
+  credit: <Picture src={Credit} css={customCss()} />,
+  zenithium: <Picture src={Zenithium} css={customCss()} />,
+  leaderSilver: <Picture src={LeaderSilver} css={customCss()} />,
+  leaderGold: <Picture src={LeaderGold} css={customCss()} />,
   bold: <strong />,
-  italic: <i />
-}
+  italic: <i />,
+  u: <u />
+})
+
+export const HeaderTransComponents: Record<string, ReactElement> = TransComponents(headerCss)
+export const LogTransComponents: Record<string, ReactElement> = TransComponents(pictureCss)

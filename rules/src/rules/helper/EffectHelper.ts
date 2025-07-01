@@ -1,8 +1,9 @@
 import { MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
-import { Effect } from '../../material/effect/Effect'
+import { Effect, ExpandedEffect } from '../../material/effect/Effect'
 import { EffectType } from '../../material/effect/EffectType'
+import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
 import {
   ChoiceRule,
@@ -42,7 +43,20 @@ export class EffectHelper extends MaterialRulesPart {
 
   applyCard(item: MaterialItem) {
     const agent = Agents[item.id as Agent]
-    this.memorize(Memory.Effects, JSON.parse(JSON.stringify(agent.effects)))
+    this.memorize(
+      Memory.Effects,
+      JSON.parse(
+        JSON.stringify(
+          agent.effects.map((e) => ({
+            ...e,
+            effectSource: {
+              type: MaterialType.AgentCard,
+              value: item.id
+            }
+          }))
+        )
+      )
+    )
     return this.applyFirstEffect()
   }
 
@@ -60,8 +74,8 @@ export class EffectHelper extends MaterialRulesPart {
     return effects[0]
   }
 
-  get effects(): Effect[] {
-    return this.remind<Effect[]>(Memory.Effects)
+  get effects(): ExpandedEffect[] {
+    return this.remind<ExpandedEffect[]>(Memory.Effects)
   }
 
   get effectRuleIds(): Record<EffectType, RuleId> {

@@ -1,5 +1,5 @@
 import { CustomMove, isCustomMoveType } from '@gamepark/rules-api'
-import { ChoiceEffect, Effect } from '../../material/effect/Effect'
+import { ChoiceEffect, ExpandedEffect } from '../../material/effect/Effect'
 import { MaterialType } from '../../material/MaterialType'
 import { CustomMoveType } from '../CustomMoveType'
 import { Memory } from '../Memory'
@@ -21,15 +21,15 @@ export class ChoiceRule extends EffectRule<ChoiceEffect> {
   }
 
   choice(choice: Choice) {
-    this.memorize(Memory.Effects, (effects: Effect[]) => {
-      const firstEffect = effects[0] as ChoiceEffect
+    this.memorize(Memory.Effects, (effects: ExpandedEffect[]) => {
+      const firstEffect = effects[0] as ExpandedEffect<ChoiceEffect>
       const { left, right } = firstEffect
 
       if (choice === Choice.LEFT) {
-        return [left, ...effects.slice(1)]
+        return [{ ...left, effectSource: firstEffect.effectSource }, ...effects.slice(1)]
       }
 
-      return [right, ...effects.slice(1)]
+      return [{ ...right, effectSource: firstEffect.effectSource }, ...effects.slice(1)]
     })
   }
 }

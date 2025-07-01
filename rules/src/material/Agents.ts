@@ -1965,7 +1965,7 @@ export const Nero: AgentCharacteristics = {
     },
     {
       type: EffectType.WinZenithium,
-      quantity: 2
+      quantity: 3
     }
   ]
 }

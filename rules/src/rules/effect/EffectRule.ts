@@ -3,7 +3,7 @@ import { RuleMove } from '@gamepark/rules-api/dist/material/moves'
 import { RuleStep } from '@gamepark/rules-api/dist/material/rules/RuleStep'
 import { PlayMoveContext } from '@gamepark/rules-api/dist/Rules'
 import { credits } from '../../material/Credit'
-import { ConditionalEffect, Effect } from '../../material/effect/Effect'
+import { ConditionalEffect, Effect, ExpandedEffect } from '../../material/effect/Effect'
 import { MaterialType } from '../../material/MaterialType'
 import { TeamColor } from '../../TeamColor'
 import { getEffectRule } from '../helper/EffectHelper'
@@ -13,11 +13,11 @@ import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
 
 export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRule {
-  effect: E
+  effect: ExpandedEffect<E>
 
   constructor(game: MaterialGame, effect?: E) {
     super(game)
-    this.effect = effect ?? (this.firstEffect as E)
+    this.effect = (effect ?? this.firstEffect) as ExpandedEffect<E>
   }
 
   onRuleStart(_move?: RuleMove, _previousRule?: RuleStep, _context?: PlayMoveContext) {
@@ -53,11 +53,11 @@ export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRu
     }
   }
 
-  get effects(): Effect[] {
-    return this.remind<Effect[]>(Memory.Effects)
+  get effects(): ExpandedEffect[] {
+    return this.remind<ExpandedEffect[]>(Memory.Effects)
   }
 
-  get firstEffect(): Effect | undefined {
+  get firstEffect(): ExpandedEffect | undefined {
     return this.effects[0]
   }
 
@@ -66,7 +66,7 @@ export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRu
   }
 
   removeFirstEffect() {
-    this.memorize(Memory.Effects, (effects: Effect[]) => {
+    this.memorize(Memory.Effects, (effects: ExpandedEffect[]) => {
       effects.shift()
       return effects
     })
@@ -94,15 +94,15 @@ export abstract class EffectRule<E extends Effect = Effect> extends PlayerTurnRu
   }
 
   removeCondition(extraData?: Record<string, unknown>) {
-    this.memorize(Memory.Effects, (effects: Effect[]) => {
-      const firstEffect = effects[0] as ConditionalEffect
+    this.memorize(Memory.Effects, (effects: ExpandedEffect[]) => {
+      const firstEffect = effects[0] as ExpandedEffect<ConditionalEffect>
       const { effect } = firstEffect
 
       if (extraData) {
         getEffectRule(this.game, effect).setExtraData(extraData)
       }
 
-      return [effect, ...effects.slice(1)]
+      return [{ ...effect, effectSource: firstEffect.effectSource }, ...effects.slice(1)]
     })
   }
 }

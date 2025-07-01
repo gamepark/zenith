@@ -7,7 +7,7 @@ import { getTeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { TransComponents } from '../../i18n/trans.components'
+import { LogTransComponents } from '../../i18n/trans.components'
 
 export const GiveInfluenceLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props
@@ -39,14 +39,14 @@ export const GiveInfluenceLog: FC<MoveComponentProps<MaterialMove>> = (props) =>
 const getPlanet = (influence: Influence) => {
   switch (influence) {
     case Influence.Mercury:
-      return TransComponents.mercury
+      return LogTransComponents.mercury
     case Influence.Venus:
-      return TransComponents.venus
+      return LogTransComponents.venus
     case Influence.Terra:
-      return TransComponents.terra
+      return LogTransComponents.terra
     case Influence.Jupiter:
-      return TransComponents.jupiter
+      return LogTransComponents.jupiter
     case Influence.Mars:
-      return TransComponents.mars
+      return LogTransComponents.mars
   }
 }

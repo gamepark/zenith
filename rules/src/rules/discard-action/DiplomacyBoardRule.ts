@@ -1,5 +1,6 @@
 import { CustomMove, isCustomMoveType, isStartPlayerTurn, isStartRule, PlayerTurnRule } from '@gamepark/rules-api'
 import { Faction } from '../../material/Faction'
+import { MaterialType } from '../../material/MaterialType'
 import { CustomMoveType } from '../CustomMoveType'
 import { EffectHelper } from '../helper/EffectHelper'
 import { Memory } from '../Memory'
@@ -16,7 +17,17 @@ export class DiplomacyBoardRule extends PlayerTurnRule {
   }
 
   applyDiplomacy() {
-    this.memorize(Memory.Effects, JSON.parse(JSON.stringify(getDiplomacyActions(this.game.players.length)[this.faction])))
+    this.memorize(
+      Memory.Effects,
+      JSON.parse(
+        JSON.stringify(
+          getDiplomacyActions(this.game.players.length)[this.faction].map((effect) => ({
+            ...effect,
+            effectSource: { type: MaterialType.DiplomacyBoard, key: this.faction }
+          }))
+        )
+      )
+    )
     return new EffectHelper(this.game, this.player).applyFirstEffect()
   }
 
