@@ -1538,6 +1538,7 @@ export const Charlemagne: AgentCharacteristics = {
     },
     {
       type: EffectType.WinInfluence,
+      resetDifferentPlanet: true,
       quantity: 1
     },
     {
