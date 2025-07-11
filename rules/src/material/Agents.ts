@@ -200,9 +200,10 @@ export const Atlas: AgentCharacteristics = {
       quantity: 1
     },
     {
-      type: EffectType.Conditional,
-      condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Discard } },
-      effect: { type: EffectType.TakeLeaderBadge }
+      type: EffectType.Discard
+    },
+    {
+      type: EffectType.TakeLeaderBadge
     }
   ]
 }

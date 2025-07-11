@@ -90,7 +90,12 @@ export class ExileRule extends EffectRule<ExileEffect> {
 
     for (const quantity of this.effect.quantities) {
       if (allCards.length < quantity) continue
-      moves.push(allCards.limit(quantity).moveItemsAtOnce({ type: LocationType.AgentDiscard }))
+      moves.push(
+        allCards
+          .limit(quantity)
+          .sort((item) => item.location.x!)
+          .moveItemsAtOnce({ type: LocationType.AgentDiscard })
+      )
     }
 
     return moves

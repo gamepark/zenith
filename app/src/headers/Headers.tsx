@@ -10,6 +10,7 @@ import { ExileHeader } from './ExileHeader'
 import { GiveInfluenceHeader } from './GiveInfluenceHeader'
 import { MuliganHeader } from './MuliganHeader'
 import { PlayCardHeader } from './PlayCardHeader'
+import { RefillHeader } from './RefillHeader'
 import { TakeBonusTokenHeader } from './TakeBonusTokenHeader'
 import { TakeLeaderBadgeHeader } from './TakeLeaderBadgeHeader'
 import { TakeTechnologyBonusTokenHeader } from './TakeTechnologyBonusTokenHeader'
@@ -22,17 +23,18 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.Muligan]: MuliganHeader,
   [RuleId.PlayCard]: PlayCardHeader,
   [RuleId.DiscardAction]: DiscardActionHeader,
+  [RuleId.Transfer]: TransfertHeader,
   [RuleId.GiveInfluence]: GiveInfluenceHeader,
   [RuleId.Conditional]: ConditionalHeader,
   [RuleId.DevelopTechnology]: DevelopTechnologyHeader,
   [RuleId.Choice]: ChoiceHeader,
   [RuleId.Exile]: ExileHeader,
-  [RuleId.Transfer]: TransfertHeader,
   [RuleId.TakeBonus]: TakeBonusTokenHeader,
   [RuleId.TakeLeaderBadge]: TakeLeaderBadgeHeader,
   [RuleId.WinCredit]: WinCreditHeader,
   [RuleId.WinZenithium]: WinZenithiumHeader,
   [RuleId.WinInfluence]: WinInfluenceHeader,
   [RuleId.Discard]: DiscardHeader,
-  [RuleId.TakeTechnologyBonusToken]: TakeTechnologyBonusTokenHeader
+  [RuleId.TakeTechnologyBonusToken]: TakeTechnologyBonusTokenHeader,
+  [RuleId.Refill]: RefillHeader
 }
