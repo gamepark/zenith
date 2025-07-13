@@ -26,6 +26,8 @@ export const ExileHeader: FC<ExileHeaderProps> = ({ effect }) => {
   const source = <EffectSource effectSource={exileEffect.effectSource} />
   const components = { ...HeaderTransComponents, source }
 
+  console.log(exileEffect.quantity)
+
   if (itsMe) {
     if (exileEffect.opponent) {
       return <Trans defaults="header.exile.opponent-area" values={{ count: exileEffect.quantity ?? 1 }} components={components} />

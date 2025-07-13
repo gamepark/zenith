@@ -12,7 +12,7 @@ export const ExileOneConditionHeader = () => {
   const { itsMe, name, conditionEffect } = useDoConditionHeaderContext<ExileEffect>()
   const rules = useRules<MaterialRules>()!
   const effect = rules.remind<ExpandedEffect[]>(Memory.Effects)[0] as ExpandedEffect<ConditionalEffect>
-  const quantity = conditionEffect.quantity
+  const quantity = conditionEffect.quantity ?? 1
 
   // Legal Moves
   const pass = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Pass)(move))
