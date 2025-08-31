@@ -17,19 +17,24 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
       <GameTable
         verticalCenter
         collisionAlgorithm={pointerWithin}
-        xMin={-50}
-        xMax={50}
+        xMin={-53}
+        xMax={53}
         yMin={-28}
         yMax={28}
         margin={margin}
         css={process.env.NODE_ENV === 'development' && tableBorder}
       >
-        <GameTableNavigation />
+        <GameTableNavigation css={navigationCss} />
         <PlayerPanels />
       </GameTable>
     </>
   )
 }
+
+const navigationCss = css`
+  left: 50%;
+  transform: translateX(-50%);
+`
 
 const tableBorder = css`
   border: 1px solid white;
