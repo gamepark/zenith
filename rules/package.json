@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/zenith",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "The rules of Zenith adapted for Game Park",
   "type": "module",
   "sideEffects": false,
