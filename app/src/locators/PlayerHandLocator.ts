@@ -1,25 +1,24 @@
-import { getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { getTeamColor } from '@gamepark/zenith/TeamColor'
 import { getMyTeamColor } from './position.utils'
 
 export class PlayerHandLocator extends HandLocator {
   getCoordinates(location: Location, context: MaterialContext): Partial<Coordinates> {
-    const index = getRelativePlayerIndex(context, location.player)
-    switch (index) {
-      case 0:
-        return { x: -30, y: 20, z: 0.05 }
-      case 1:
-        return { x: -30, y: -20, z: 0.05 }
-      case 2:
-        return { x: 30, y: -20, z: 0.05 }
-      default:
-        return { x: 30, y: 20, z: 0.05 }
+    const itsMyTeam = this.isMyTeam(location.player!, context)
+    if (itsMyTeam) {
+      const itsMe = (context.player ?? context.rules.players[0]) === location.player
+      return { x: itsMe ? -30 : 30, y: 16.5, z: 0.05 }
+    } else {
+      const opponents = context.rules.players.filter((p) => !this.isMyTeam(p, context))
+      const left = opponents[0] !== location.player
+      return { x: left ? -30 : 30, y: -16.5, z: 0.05 }
     }
   }
 
   getBaseAngle(location: Location, context: MaterialContext): number {
-    if (this.isMyTeam(location, context)) return 0
+    if (this.isMyTeam(location.player!, context)) return 0
     return 180
   }
 
@@ -31,8 +30,8 @@ export class PlayerHandLocator extends HandLocator {
     return ['translateZ(15em)', `translateY(-45%)`, `rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
   }
 
-  isMyTeam(location: Location, context: MaterialContext) {
-    return getMyTeamColor(context) === getTeamColor(location.player!)
+  isMyTeam(player: PlayerId, context: MaterialContext) {
+    return getMyTeamColor(context) === getTeamColor(player)
   }
 }
 

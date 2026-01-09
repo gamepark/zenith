@@ -5,8 +5,8 @@ import { getMyTeamColor } from './position.utils'
 
 export class TeamLeaderBadgeLocator extends Locator {
   getCoordinates(location: Location, context: MaterialContext) {
-    if (this.isMyTeam(location, context)) return { x: -29, y: 13, z: 0 }
-    return { x: -29, y: -13, z: 0 }
+    if (this.isMyTeam(location, context)) return { x: -47.5, y: 13, z: 0 }
+    return { x: -47.5, y: -14, z: 0 }
   }
 
   isMyTeam(location: Location, context: MaterialContext) {

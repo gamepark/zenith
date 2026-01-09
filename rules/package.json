@@ -1,7 +1,8 @@
 {
   "name": "@gamepark/zenith",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "The rules of Zenith adapted for Game Park",
+  "type": "module",
   "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,7 +25,7 @@
     "lodash": ">=4.17"
   },
   "devDependencies": {
-    "@gamepark/rules-api": "~6.36.7",
+    "@gamepark/rules-api": "~6.37.8",
     "@types/lodash": "^4.17.7",
     "i18next": "^22.0.3",
     "lodash": "^4.17.21"

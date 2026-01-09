@@ -1,7 +1,7 @@
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { ConditionalEffect, DoEffectCondition, Effect, ExpandedEffect } from '@gamepark/zenith/material/effect/Effect'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { MaterialRules } from '../../../../../rules-api/src'
+import { MaterialRules } from '@gamepark/rules-api'
 
 export const useDoConditionHeaderContext = <T extends Effect = Effect>() => {
   const rules = useRules<MaterialRules>()!

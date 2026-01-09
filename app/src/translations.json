@@ -22,6 +22,7 @@
       "Sign in": "Sign in",
       "authors.1": "A game by <0>{name}</0>",
       "authors.2": "A game by <0>{name1}</0> and <0>{name2}</0>",
+      "authors.3": "A game by <0>{name1}</0>, <0>{name2}</0> and <0>{name3}</0>",
       "artists.1": "Illustrated by <0>{name}</0>",
       "artists.2": "Illustrated by <0>{name1}</0> and <0>{name2}</0>",
       "graphics.1": "Graphic design by <0>{name}</0>",
@@ -368,6 +369,7 @@
       "header.win-planet": "Votre équipe remporte une planète <influenceIcon />",
       "header.win-planet.player": "L'équipe {team} remporte une planète <influenceIcon />",
       "header.develop": "<source /> : <develop>Développer <faction /></develop> ou <pass>renoncer</pass>",
+      "header.develop.choice": "<source /> : Développer <developAnimod><animod /></developAnimod>, <developHumanoid><humanoid /></developHumanoid>, <developRobot><robot /></developRobot> ou <pass>renoncer</pass>",
       "header.develop.player": "<source /> : {player} peut développer <faction />",
       "header.recruit": "Vous recrutez <agent />",
       "header.discard-action": "<faction /> : <technology>Développer la technologie </technology> ou <diplomacy>Activer la diplomacie</diplomacy>",
@@ -391,6 +393,7 @@
       "Sign in": "Connexion",
       "authors.1": "Un jeu de <0>{name}</0>",
       "authors.2": "Un jeu de <0>{name1}</0> et <0>{name2}</0>",
+      "authors.3": "Un jeu de <0>{name1}</0>, <0>{name2}</0> et <0>{name3}</0>",
       "artists.1": "Illustré par <0>{name}</0>",
       "artists.2": "Illustré par <0>{name1}</0> et <0>{name2}</0>",
       "graphics.1": "Graphismes par <0>{name}</0>",
@@ -511,6 +514,7 @@
       "Sign in": "Iniciar sesión",
       "authors.1": "Un juego de <0>{name}</0>",
       "authors.2": "Un juego de <0>{name1}</0> y <0>{name2}</0>",
+      "authors.3": "Un juego de <0>{name1}</0>, <0>{name2}</0> y <0>{name3}</0>",
       "artists.1": "Ilustrado por <0>{name}</0>",
       "artists.2": "Ilustrado por <0>{name1}</0> y <0>{name2}</0>",
       "graphics.1": "Diseño gráfico por <0>{name}</0>",
@@ -601,7 +605,9 @@
       "time.wait.max": "Tiempo de espera máximo",
       "time.awaited": "Hizo esperar a los demás (promedio)",
       "tuto.over": "¡Felicidades, has completado el tutorial! ¿Listo para jugar con otros jugadores?",
-      "quantity.tooltip": "Cantidad: {n}"
+      "quantity.tooltip": "Cantidad: {n}",
+      "history.game.start": "Inicio de la partida",
+      "history.game.over": "Fin de la partida"
     }
   },
   "de": {
@@ -621,6 +627,7 @@
       "Sign in": "Anmelden",
       "authors.1": "Ein Spiel von <0>{name}</0>",
       "authors.2": "Ein Spiel von <0>{name1}</0> und <0>{name2}</0>",
+      "authors.3": "Ein Spiel von <0>{name1}</0>, <0>{name2}</0> und <0>{name3}</0>",
       "artists.1": "Illustriert von <0>{name}</0>",
       "artists.2": "Illustriert von <0>{name1}</0> und <0>{name2}</0>",
       "publishers.1": "Herausgegeben von <0>{name}</0>",
@@ -689,6 +696,7 @@
       "Sign in": "Войти",
       "authors.1": "Игра <0>{name}</0>",
       "authors.2": "Игра <0>{name1}</0> и <0>{name2}</0>",
+      "authors.3": "Игра <0>{name1}</0>, <0>{name2}</0> и <0>{name3}</0>",
       "artists.1": "Иллюстрации <0>{name}</0>",
       "artists.2": "Иллюстрации <0>{name1}</0> и <0>{name2}</0>",
       "publishers.1": "Издано <0>{name}</0>",

@@ -5,10 +5,10 @@ import { Location } from '@gamepark/rules-api'
 import { getMyTeamColor } from './position.utils'
 
 export class TeamZenithiumLocator extends PileLocator {
-  radius = 2
+  radius = 1.5
   getCoordinates(location: Location, context: MaterialContext) {
-    if (this.isMyTeam(location, context)) return { x: -46, y: 22, z: 0 }
-    return { x: -46, y: -22, z: 0 }
+    if (this.isMyTeam(location, context)) return { x: -50, y: 19.5, z: 0 }
+    return { x: -50, y: -19.5, z: 0 }
   }
 
   isMyTeam(location: Location, context: MaterialContext) {
