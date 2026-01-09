@@ -110,6 +110,7 @@ export const getColorForInfluence = (influence?: Influence) => {
 }
 
 type customCssFunc = (jpg?: boolean) => Interpolation<Theme>
+
 const TransComponents = (customCss: customCssFunc) => ({
   animod: <Picture src={Animod} css={customCss(true)} />,
   humanoid: <Picture src={Humanoid} css={customCss(true)} />,
@@ -128,5 +129,56 @@ const TransComponents = (customCss: customCssFunc) => ({
   u: <u />
 })
 
+export const helpCss = (jpg?: boolean) => css`
+  display: inline-block;
+  height: 1.2em;
+  width: auto;
+  border-radius: ${jpg ? '0.15em' : '0'};
+  vertical-align: middle;
+  margin: 0 0.1em;
+  filter: drop-shadow(0 0.05em 0.1em rgba(0, 0, 0, 0.2));
+`
+
 export const HeaderTransComponents: Record<string, ReactElement> = TransComponents(headerCss)
 export const LogTransComponents: Record<string, ReactElement> = TransComponents(pictureCss)
+const gainCss = css`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15em;
+  color: #059669;
+  font-weight: 600;
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  padding: 0.1em 0.4em;
+  border-radius: 0.3em;
+  white-space: nowrap;
+
+  picture,
+  img {
+    position: relative;
+    top: -0.05em;
+  }
+`
+
+const lossCss = css`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15em;
+  color: #dc2626;
+  font-weight: 600;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  padding: 0.1em 0.4em;
+  border-radius: 0.3em;
+  white-space: nowrap;
+
+  picture,
+  img {
+    position: relative;
+    top: -0.05em;
+  }
+`
+
+export const HelpTransComponents: Record<string, ReactElement> = {
+  ...TransComponents(helpCss),
+  gain: <span css={gainCss} />,
+  loss: <span css={lossCss} />
+}

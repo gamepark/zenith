@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn start)",
+      "Bash(timeout:*)",
+      "Bash(yarn install)",
+      "Bash(powershell -Command:*)",
+      "Bash(netstat:*)",
+      "Bash(curl:*)",
+      "Bash(yarn build)",
+      "Bash(yarn tsc:*)",
+      "Bash(npm test:*)",
+      "Bash(node -e:*)"
+    ]
+  }
+}

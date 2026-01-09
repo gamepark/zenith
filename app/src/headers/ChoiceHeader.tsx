@@ -6,7 +6,8 @@ import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Choice, ChoiceRule } from '@gamepark/zenith/rules/effect'
 import { FC } from 'react'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+import { TooltipButton } from '../components/TooltipButton'
 import { HeaderTransComponents } from '../i18n/trans.components'
 import { EffectSource } from './EffectSource'
 
@@ -43,41 +44,50 @@ type ChoiceEffectType = {
   choiceEffect: ExpandedEffect<ChoiceEffect>
 }
 const ChoiceEffectButton: FC<ChoiceEffectType> = ({ choice, choiceEffect }) => {
+  const { t } = useTranslation()
   const effect = choice === Choice.RIGHT ? choiceEffect.right : choiceEffect.left
   const move = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Choice)(move) && move.data === choice)
 
   if (effect.type === EffectType.WinCredit) {
     return (
-      <PlayMoveButton move={move}>
-        <Trans defaults="header.choice.win-credit" values={{ count: effect.quantity }} components={HeaderTransComponents} />
-      </PlayMoveButton>
+      <TooltipButton tooltip={t('tooltip.win-credit', { count: effect.quantity })}>
+        <PlayMoveButton move={move}>
+          <Trans defaults="header.choice.win-credit" values={{ count: effect.quantity }} components={HeaderTransComponents} />
+        </PlayMoveButton>
+      </TooltipButton>
     )
   }
 
   if (effect.type === EffectType.WinZenithium) {
     return (
-      <PlayMoveButton move={move}>
-        <Trans defaults="header.choice.win-zenithium" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
-      </PlayMoveButton>
+      <TooltipButton tooltip={t('tooltip.win-zenithium', { count: effect.quantity ?? 1 })}>
+        <PlayMoveButton move={move}>
+          <Trans defaults="header.choice.win-zenithium" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
+        </PlayMoveButton>
+      </TooltipButton>
     )
   }
 
   if (effect.type === EffectType.TakeLeaderBadge) {
     return (
-      <PlayMoveButton move={move}>
-        <Trans
-          defaults="header.choice.take-leader"
-          components={{ ...HeaderTransComponents, leaderBadge: effect.gold ? HeaderTransComponents.leaderGold : HeaderTransComponents.leaderSilver }}
-        />
-      </PlayMoveButton>
+      <TooltipButton tooltip={t('tooltip.take-leader')}>
+        <PlayMoveButton move={move}>
+          <Trans
+            defaults="header.choice.take-leader"
+            components={{ ...HeaderTransComponents, leaderBadge: effect.gold ? HeaderTransComponents.leaderGold : HeaderTransComponents.leaderSilver }}
+          />
+        </PlayMoveButton>
+      </TooltipButton>
     )
   }
 
   if (effect.type === EffectType.Transfer) {
     return (
-      <PlayMoveButton move={move}>
-        <Trans defaults="header.choice.transfert" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
-      </PlayMoveButton>
+      <TooltipButton tooltip={t('tooltip.transfer', { count: effect.quantity ?? 1 })}>
+        <PlayMoveButton move={move}>
+          <Trans defaults="header.choice.transfert" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
+        </PlayMoveButton>
+      </TooltipButton>
     )
   }
 

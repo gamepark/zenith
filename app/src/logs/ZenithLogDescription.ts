@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
 import { isCreateItemType, isCustomMoveType, isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { Agent } from '@gamepark/zenith/material/Agent'
@@ -221,9 +221,23 @@ const getTeamCss = (player: PlayerId) => {
   `
 }
 
+// Animation for log entries appearing
+const slideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`
+
 const colorCss = (player: PlayerId) => {
   const teamCss = getTeamCss(player)
   return css`
+    animation: ${slideIn} 0.3s ease-out;
+
     picture,
     img {
       height: 2em;

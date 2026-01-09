@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import { Credit } from '@gamepark/zenith/material/Credit'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { StyledPlayerPanel, usePlayers, useRules } from '@gamepark/react-game'
@@ -26,10 +26,9 @@ export const PlayerPanels = () => {
           player={player}
           css={panelPosition(index)}
           counters={[
-            { image: creditTokenDescription.images[Credit.Credit1], value: new PlayerHelper(rules.game, player.id).credits },
-            { image: zenithiumTokenDescription.image, value: new PlayerHelper(rules.game, player.id).zenithium }
+            { image: creditTokenDescription.images[Credit.Credit1], value: new PlayerHelper(rules.game, player.id).credits, imageCss: counterImageStyle },
+            { image: zenithiumTokenDescription.image, value: new PlayerHelper(rules.game, player.id).zenithium, imageCss: counterImageStyle }
           ]}
-          //mainCounter={{ image: creditTokenDescription.images[Credit.Credit1], value: new PlayerHelper(rules.game, player.id).credits }}
         />
       ))}
     </>,
@@ -37,9 +36,26 @@ export const PlayerPanels = () => {
   )
 }
 
+const pulse = keyframes`
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+`
+
+const counterImageStyle = css`
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    animation: ${pulse} 0.4s ease-in-out;
+  }
+`
+
 const panelPosition = (index: number) => css`
   position: absolute;
   right: 1em;
   top: ${8.5 + index * 16}em;
   width: 28em;
+
+  /* Smooth transitions for counter value changes */
+  & [class*="counter"], & [class*="Counter"] {
+    transition: all 0.3s ease-out;
+  }
 `

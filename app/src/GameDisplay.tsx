@@ -3,6 +3,7 @@ import { pointerWithin } from '@dnd-kit/core'
 import { css } from '@emotion/react'
 import { GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { FC } from 'react'
+import { AgentCardHoverPreview } from './components/AgentCardHoverPreview'
 import { PlayerPanels } from './panels/PlayerPanels'
 
 type GameDisplayProps = {
@@ -27,6 +28,7 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
         <GameTableNavigation />
         <PlayerPanels />
       </GameTable>
+      <AgentCardHoverPreview />
     </>
   )
 }

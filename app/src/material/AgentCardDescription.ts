@@ -1,7 +1,11 @@
+import { css } from '@emotion/react'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { Agent } from '@gamepark/zenith/material/Agent'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
+import { MaterialType } from '@gamepark/zenith/material/MaterialType'
+import { PlayerId } from '@gamepark/zenith/PlayerId'
+import { AgentCardHelp } from './AgentCardHelp'
 import Elisabeth from '../images/agents/Elisabeth.jpg'
 import Pkd1ck from '../images/agents/Pkd1ck.jpg'
 import AgentEzra from '../images/agents/AgentEzra.jpg'
@@ -100,6 +104,7 @@ import Robot from '../images/icons/robot.jpg'
 export class AgentCardDescription extends CardDescription {
   height = 8.9
   width = 5.8
+  help = AgentCardHelp
 
   backImage = Back
   images = {
@@ -198,6 +203,12 @@ export class AgentCardDescription extends CardDescription {
   isFlippedOnTable(item: MaterialItem, context: ItemContext) {
     if (item.location.type === LocationType.AgentDeck) return true
     return (item.location.type === LocationType.PlayerHand && item.location.player !== context.player) || super.isFlippedOnTable(item, context)
+  }
+
+  getItemExtraCss(item: MaterialItem<PlayerId, LocationType>, _context: ItemContext<PlayerId, MaterialType, LocationType>) {
+    return css`
+      --agent-id: ${item.id as Agent};
+    `
   }
 
   getImages(): string[] {

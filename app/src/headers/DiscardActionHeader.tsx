@@ -1,4 +1,4 @@
-import { PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { isCustomMoveType, isMoveItemType } from '@gamepark/rules-api'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
@@ -7,10 +7,12 @@ import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Memory } from '@gamepark/zenith/rules/Memory'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+import { TooltipPlayMoveButton } from '../components/TooltipButton'
 import { getFactionForHeader, HeaderTransComponents } from '../i18n/trans.components'
 
 export const DiscardActionHeader: FC = () => {
+  const { t } = useTranslation()
   const diplomacy = useLegalMove(isCustomMoveType(CustomMoveType.Diplomacy))
   const tech = useLegalMove(isMoveItemType(MaterialType.TechMarker))
   const rules = useRules<ZenithRules>()!
@@ -29,8 +31,8 @@ export const DiscardActionHeader: FC = () => {
         defaults="header.discard-action"
         components={{
           ...components,
-          technology: <PlayMoveButton move={tech} />,
-          diplomacy: <PlayMoveButton move={diplomacy} />
+          technology: <TooltipPlayMoveButton move={tech} tooltip={t('tooltip.develop-technology')} />,
+          diplomacy: <TooltipPlayMoveButton move={diplomacy} tooltip={t('tooltip.diplomacy')} />
         }}
       />
     )
