@@ -62,11 +62,33 @@ const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }
   switch (effect.type) {
     case EffectType.WinInfluence: {
       const count = countValue(effect.quantity ?? 1)
+      if (effect.pattern) {
+        return (
+          <Trans
+            i18nKey="help.win-influence.pattern"
+            values={{ left: effect.pattern[0], center: effect.pattern[1], right: effect.pattern[2] }}
+            components={components}
+          />
+        )
+      }
+      if (effect.fromCenter) {
+        return <Trans i18nKey="help.win-influence.from-center" values={{ count }} components={components} shouldUnescape={!!factors} />
+      }
       if (effect.differentPlanet) {
         return <Trans i18nKey="help.win-influence.different" values={{ count }} components={components} shouldUnescape={!!factors} />
       }
       if (effect.opponentSide) {
         return <Trans i18nKey="help.win-influence.opponent-side" values={{ count }} components={components} shouldUnescape={!!factors} />
+      }
+      if (effect.except !== undefined) {
+        return (
+          <Trans
+            i18nKey="help.win-influence.except"
+            values={{ count }}
+            components={{ ...components, planet: getPlanetIcon(effect.except) }}
+            shouldUnescape={!!factors}
+          />
+        )
       }
       if (effect.influence !== undefined) {
         return (
@@ -108,10 +130,9 @@ const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }
         return (
           <Trans
             i18nKey="help.win-credit.per-tech"
-            components={{
-              ...components,
-              levels: <span>{effect.perLevel1Technology.join('/')}</span>
-            }}
+            values={{ levels: effect.perLevel1Technology.join('/') }}
+            components={components}
+            shouldUnescape
           />
         )
       }
@@ -122,6 +143,16 @@ const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }
       const count = effect.quantity ?? 1
       if (effect.opponent) {
         return <Trans i18nKey="help.win-zenithium.for-opponent" values={{ count }} components={components} />
+      }
+      if (effect.perLevel1Technology) {
+        return (
+          <Trans
+            i18nKey="help.win-zenithium.per-tech"
+            values={{ levels: effect.perLevel1Technology.join('/') }}
+            components={components}
+            shouldUnescape
+          />
+        )
       }
       return <Trans i18nKey="help.win-zenithium" values={{ count }} components={components} />
     }
@@ -317,9 +348,41 @@ const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }
 }
 
 export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item }) => {
-  const agentId = item.id as Agent
+  const { t } = useTranslation()
+  const agentId = item.id as Agent | undefined
+
+  // Handle hidden/unknown cards
+  if (agentId === undefined || !Agents[agentId]) {
+    return (
+      <div css={hiddenCardCss}>
+        <div css={hiddenTitleCss}>{t('help.agent.hidden')}</div>
+        <div css={hiddenDescCss}>{t('help.agent.hidden.desc')}</div>
+      </div>
+    )
+  }
+
   return <AgentCardHelpContent agentId={agentId} item={item} />
 }
+
+const hiddenCardCss = css`
+  min-width: 16em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.5em;
+`
+
+const hiddenTitleCss = css`
+  font-size: 1.1em;
+  font-weight: 700;
+  color: #1f2937;
+`
+
+const hiddenDescCss = css`
+  font-size: 0.95em;
+  color: #6b7280;
+  font-style: italic;
+`
 
 type AgentCardHelpContentProps = {
   agentId: Agent

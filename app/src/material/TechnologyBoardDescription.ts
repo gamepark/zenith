@@ -1,4 +1,5 @@
 import { BoardDescription, ComponentSize } from '@gamepark/react-game'
+import { TechnologyBoardHelp } from './TechnologyBoardHelp'
 import TechnologyD from '../images/technology-boards/TechnologyD.jpg'
 import TechnologyN from '../images/technology-boards/TechnologyN.jpg'
 import TechnologyO from '../images/technology-boards/TechnologyO.jpg'
@@ -7,6 +8,8 @@ import TechnologyS from '../images/technology-boards/TechnologyS.jpg'
 import TechnologyU from '../images/technology-boards/TechnologyU.jpg'
 
 export class TechnologyBoardDescription extends BoardDescription {
+  help = TechnologyBoardHelp
+
   images = {
     D: TechnologyD,
     N: TechnologyN,

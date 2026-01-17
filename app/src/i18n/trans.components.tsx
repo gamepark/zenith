@@ -3,7 +3,7 @@ import { css, Interpolation, Theme } from '@emotion/react'
 import { Picture } from '@gamepark/react-game'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { Influence } from '@gamepark/zenith/material/Influence'
-import { ReactElement } from 'react'
+import { FC, ReactElement, ReactNode } from 'react'
 import Credit from '../images/credit/Credit1.png'
 import Animod from '../images/icons/animod.jpg'
 import Humanoid from '../images/icons/humanoid.jpg'
@@ -33,12 +33,14 @@ export const pictureCss = (jpg?: boolean) => css`
 `
 
 export const headerCss = (jpg?: boolean) => css`
-  ${pictureCss(jpg)}
-  position: relative;
   display: inline-block;
-  vertical-align: middle;
   height: 1em;
-  top: -0.1em;
+  width: ${jpg ? '1em' : 'auto'};
+  border-radius: ${jpg ? '50%' : '0'};
+  box-shadow: ${jpg ? '0 0 0.1em black' : 'none'};
+  margin: 0 0.2em;
+  vertical-align: -0.15em;
+  object-fit: cover;
 `
 
 export const getFactionIcon = (faction: Faction) => {
@@ -132,10 +134,11 @@ const TransComponents = (customCss: customCssFunc) => ({
 export const helpCss = (jpg?: boolean) => css`
   display: inline-block;
   height: 1.2em;
-  width: auto;
-  border-radius: ${jpg ? '0.15em' : '0'};
-  vertical-align: middle;
-  margin: 0 0.1em;
+  width: ${jpg ? '1.2em' : 'auto'};
+  border-radius: ${jpg ? '50%' : '0'};
+  vertical-align: -0.25em;
+  margin: 0 0.15em;
+  object-fit: cover;
   filter: drop-shadow(0 0.05em 0.1em rgba(0, 0, 0, 0.2));
 `
 
@@ -179,6 +182,30 @@ const lossCss = css`
 
 export const HelpTransComponents: Record<string, ReactElement> = {
   ...TransComponents(helpCss),
+  human: <Picture src={Humanoid} css={helpCss(true)} />,
   gain: <span css={gainCss} />,
   loss: <span css={lossCss} />
 }
+
+const linkButtonCss = css`
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
+type LinkButtonProps = {
+  onClick?: () => void
+  children?: ReactNode
+}
+
+export const LinkButton: FC<LinkButtonProps> = ({ onClick, children }) => (
+  <button css={linkButtonCss} onClick={onClick}>{children}</button>
+)

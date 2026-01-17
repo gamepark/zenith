@@ -5,13 +5,17 @@ import { LocationType } from '@gamepark/zenith/material/LocationType'
 import Credit1 from '../images/credit/Credit1.png'
 import Credit3 from '../images/credit/Credit3.png'
 import Credit5 from '../images/credit/Credit5.png'
+import { CreditTokenHelp } from './CreditTokenHelp'
 
 class CreditTokenDescription extends TokenDescription {
+  help = CreditTokenHelp
   images = {
     [Credit.Credit1]: Credit1,
     [Credit.Credit3]: Credit3,
     [Credit.Credit5]: Credit5
   }
+
+  transparency = true
 
   getSize(itemId: Credit) {
     switch (itemId) {

@@ -6,8 +6,10 @@ import Venus from '../images/planet/Venus.png'
 import Terra from '../images/planet/Terra.png'
 import Mars from '../images/planet/Mars.png'
 import Jupiter from '../images/planet/Jupiter.png'
+import { InfluenceDiscHelp } from './InfluenceDiscHelp'
 
 export class InfluenceDiscDescription extends TokenDescription {
+  help = InfluenceDiscHelp
   height = 2.35
   width = 2.6
   images = {
@@ -17,6 +19,8 @@ export class InfluenceDiscDescription extends TokenDescription {
     [Influence.Mars]: Mars,
     [Influence.Jupiter]: Jupiter
   }
+
+  transparency = true
 
   getFrontExtraCss() {
     return css`

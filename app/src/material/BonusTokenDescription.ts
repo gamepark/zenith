@@ -1,5 +1,6 @@
 import { TokenDescription } from '@gamepark/react-game'
 import { Bonus } from '@gamepark/zenith/material/Bonus'
+import { BonusTokenHelp } from './BonusTokenHelp'
 import BonusBack from '../images/bonuses/BonusBack.jpg'
 import Exile2OpponentCards from '../images/bonuses/Exile2OpponentCards.jpg'
 import Mobilize2 from '../images/bonuses/Mobilize2.jpg'
@@ -11,6 +12,7 @@ import Win4Credits from '../images/bonuses/Win4Credits.jpg'
 import WinInfluence from '../images/bonuses/WinInfluence.jpg'
 
 export class BonusTokenDescription extends TokenDescription {
+  help = BonusTokenHelp
   height = 1.5
   width = 2.3
   borderRadius = 0.8
