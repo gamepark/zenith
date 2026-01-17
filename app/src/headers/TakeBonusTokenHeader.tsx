@@ -20,15 +20,15 @@ export const TakeBonusTokenHeader = () => {
 
   if (itsMe) {
     if (effect.visible) {
-      return <Trans defaults="header.take-bonus.visible" components={components} />
+      return <Trans i18nKey="header.take-bonus.visible" components={components} />
     }
 
-    return <Trans defaults="header.take-bonus" components={components} />
+    return <Trans i18nKey="header.take-bonus" components={components} />
   }
 
   if (effect.visible) {
-    return <Trans defaults="header.take-bonus.player.visible" values={{ player: name }} components={components} />
+    return <Trans i18nKey="header.take-bonus.player.visible" values={{ player: name }} components={components} />
   }
 
-  return <Trans defaults="header.take-bonus.player" values={{ player: name }} components={components} />
+  return <Trans i18nKey="header.take-bonus.player" values={{ player: name }} components={components} />
 }

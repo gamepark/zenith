@@ -315,6 +315,8 @@
       "header.discard.player": "{player} doit défausser  {count, plural, one{# carte} other{# cartes}} de sa main",
       "header.discard.full": "Vous défaussez toute votre main",
       "header.discard.full.player": "{player} défausse toute sa main",
+      "header.share-card": "Vous pouvez donner jusqu'à {count} {count, plural, one{carte} other{cartes}} à votre coéquipier (ou passer)",
+      "header.share-card.player": "{player} peut donner jusqu'à {count} {count, plural, one{carte} other{cartes}} à son coéquipier",
       "header.condition.spend-credits": "<source /> : Dépenser <spendCredits /> ou <pass>renoncer</pass>",
       "header.condition.spend-credits.player": "<source /> : {player} peut dépenser des crédits",
       "header.condition.spend-zenithium": "<source /> : Dépenser <spendZenithium /> ou <pass>renoncer</pass>",

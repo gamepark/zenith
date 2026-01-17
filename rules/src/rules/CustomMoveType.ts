@@ -4,5 +4,6 @@ export enum CustomMoveType {
   DoCondition,
   SpendCredit,
   Choice,
-  WinCreditLog
+  WinCreditLog,
+  PickFirst
 }

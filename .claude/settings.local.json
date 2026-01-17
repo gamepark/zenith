@@ -10,7 +10,22 @@
       "Bash(yarn build)",
       "Bash(yarn tsc:*)",
       "Bash(npm test:*)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(npm run build:*)",
+      "Bash(yarn workspace @gamepark/zenith-app build:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx tsc:*)",
+      "Bash(yarn)",
+      "Bash(yarn workspace @gamepark/zenith-app eslint:*)",
+      "Bash(grep:*)",
+      "Bash(wc:*)",
+      "WebSearch",
+      "WebFetch(domain:gamepark.github.io)",
+      "Skill(mgrep)",
+      "Bash(mgrep:*)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

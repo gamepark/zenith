@@ -12,7 +12,7 @@ export class DiscardActionRule extends PlayerTurnRule {
     moves.push(...new DiplomacyBoardRule(this.game).getPlayerMoves())
 
     if (!moves.length) {
-      moves.push(this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer))
+      moves.push(this.startRule(RuleId.Refill))
     }
 
     return moves

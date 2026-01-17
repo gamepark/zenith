@@ -29,7 +29,7 @@ export const SpendCreditHeader = () => {
   const source = <EffectSource effectSource={effect.effectSource} />
   return (
     <Trans
-      defaults={itsMe ? 'header.condition.spend-credits' : 'header.condition.spend-credits.player'}
+      i18nKey={itsMe ? 'header.condition.spend-credits' : 'header.condition.spend-credits.player'}
       values={{
         player: name
       }}

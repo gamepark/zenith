@@ -4,7 +4,9 @@ import { css } from '@emotion/react'
 import { GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { FC } from 'react'
 import { AgentCardHoverPreview } from './components/AgentCardHoverPreview'
+import { DevCardViewer } from './components/DevCardViewer'
 import { PlayerPanels } from './panels/PlayerPanels'
+import { VictoryProgressPanel } from './panels/VictoryProgressPanel'
 
 type GameDisplayProps = {
   players: number
@@ -27,6 +29,8 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
       >
         <GameTableNavigation css={navigationCss} />
         <PlayerPanels />
+        <VictoryProgressPanel />
+        {process.env.NODE_ENV === 'development' && <DevCardViewer />}
       </GameTable>
       <AgentCardHoverPreview />
     </>

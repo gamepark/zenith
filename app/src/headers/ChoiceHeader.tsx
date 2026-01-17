@@ -25,7 +25,7 @@ export const ChoiceHeader: FC = () => {
   if (itsMe) {
     return (
       <Trans
-        defaults="header.choice"
+        i18nKey="header.choice"
         components={{
           ...HeaderTransComponents,
           source,
@@ -52,7 +52,7 @@ const ChoiceEffectButton: FC<ChoiceEffectType> = ({ choice, choiceEffect }) => {
     return (
       <TooltipButton tooltip={t('tooltip.win-credit', { count: effect.quantity })}>
         <PlayMoveButton move={move}>
-          <Trans defaults="header.choice.win-credit" values={{ count: effect.quantity }} components={HeaderTransComponents} />
+          <Trans i18nKey="header.choice.win-credit" values={{ count: effect.quantity }} components={HeaderTransComponents} />
         </PlayMoveButton>
       </TooltipButton>
     )
@@ -62,7 +62,7 @@ const ChoiceEffectButton: FC<ChoiceEffectType> = ({ choice, choiceEffect }) => {
     return (
       <TooltipButton tooltip={t('tooltip.win-zenithium', { count: effect.quantity ?? 1 })}>
         <PlayMoveButton move={move}>
-          <Trans defaults="header.choice.win-zenithium" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
+          <Trans i18nKey="header.choice.win-zenithium" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
         </PlayMoveButton>
       </TooltipButton>
     )
@@ -73,7 +73,7 @@ const ChoiceEffectButton: FC<ChoiceEffectType> = ({ choice, choiceEffect }) => {
       <TooltipButton tooltip={t('tooltip.take-leader')}>
         <PlayMoveButton move={move}>
           <Trans
-            defaults="header.choice.take-leader"
+            i18nKey="header.choice.take-leader"
             components={{ ...HeaderTransComponents, leaderBadge: effect.gold ? HeaderTransComponents.leaderGold : HeaderTransComponents.leaderSilver }}
           />
         </PlayMoveButton>
@@ -85,7 +85,7 @@ const ChoiceEffectButton: FC<ChoiceEffectType> = ({ choice, choiceEffect }) => {
     return (
       <TooltipButton tooltip={t('tooltip.transfer', { count: effect.quantity ?? 1 })}>
         <PlayMoveButton move={move}>
-          <Trans defaults="header.choice.transfert" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
+          <Trans i18nKey="header.choice.transfert" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
         </PlayMoveButton>
       </TooltipButton>
     )

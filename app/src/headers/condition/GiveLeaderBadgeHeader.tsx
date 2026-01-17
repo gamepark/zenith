@@ -32,7 +32,7 @@ export const GiveLeaderBadgeHeader = () => {
 
   return (
     <Trans
-      defaults={itsMe ? 'header.condition.give-leader-badge' : 'header.condition.give-leader-badge.player'}
+      i18nKey={itsMe ? 'header.condition.give-leader-badge' : 'header.condition.give-leader-badge.player'}
       values={{
         player: name
       }}

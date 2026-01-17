@@ -30,7 +30,7 @@ export const GiveCreditHeader = () => {
   const source = <EffectSource effectSource={effect.effectSource} />
   return (
     <Trans
-      defaults={itsMe ? 'header.condition.give-credit' : 'header.condition.give-credit.player'}
+      i18nKey={itsMe ? 'header.condition.give-credit' : 'header.condition.give-credit.player'}
       values={{
         player: name,
         count: quantity

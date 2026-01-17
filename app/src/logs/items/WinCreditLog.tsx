@@ -19,7 +19,7 @@ export const WinCreditLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.win.credit"
+        i18nKey="log.win.credit"
         values={{
           player: playerName,
           count: count,

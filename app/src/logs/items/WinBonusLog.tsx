@@ -21,7 +21,7 @@ export const WinBonusLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults={item.location.type === LocationType.BonusTokenStock ? 'log.bonus.draw' : 'log.bonus.take'}
+        i18nKey={item.location.type === LocationType.BonusTokenStock ? 'log.bonus.draw' : 'log.bonus.take'}
         values={{
           player: playerName
         }}

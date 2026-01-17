@@ -15,12 +15,12 @@ export const MuliganHeader = () => {
   const imActive = me && players.includes(me)
   const name = usePlayerName(players[0])
   if (me && imActive) {
-    return <Trans defaults="header.mulligan" components={{ ...HeaderTransComponents, pass: <PlayMoveButton move={endTurn} /> }} />
+    return <Trans i18nKey="header.mulligan" components={{ ...HeaderTransComponents, pass: <PlayMoveButton move={endTurn} /> }} />
   }
 
   if (players.length > 1) {
-    return <Trans defaults="header.mulligan.others" components={HeaderTransComponents} />
+    return <Trans i18nKey="header.mulligan.others" components={HeaderTransComponents} />
   }
 
-  return <Trans defaults="header.mulligan.other" values={{ player: name }} components={HeaderTransComponents} />
+  return <Trans i18nKey="header.mulligan.other" values={{ player: name }} components={HeaderTransComponents} />
 }

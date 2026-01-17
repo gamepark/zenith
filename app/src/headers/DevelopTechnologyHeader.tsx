@@ -35,7 +35,7 @@ export const DevelopTechnologyHeader = () => {
     if (!effect.faction) {
       return (
         <Trans
-          defaults="header.develop.choice"
+          i18nKey="header.develop.choice"
           components={{
             ...components,
             developAnimod: <PlayMoveButton move={findMoveFor(rules, doThem, Faction.Animod)} />,
@@ -48,10 +48,10 @@ export const DevelopTechnologyHeader = () => {
     }
 
     const doIt = doThem[0]
-    return <Trans defaults="header.develop" components={{ ...components, develop: <PlayMoveButton move={doIt} />, pass: <PlayMoveButton move={pass} /> }} />
+    return <Trans i18nKey="header.develop" components={{ ...components, develop: <PlayMoveButton move={doIt} />, pass: <PlayMoveButton move={pass} /> }} />
   }
 
-  return <Trans defaults="header.develop" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
+  return <Trans i18nKey="header.develop" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
 }
 
 const findMoveFor = (rules: DevelopTechnologyRule, moves: MoveItem[], faction: Faction) => {

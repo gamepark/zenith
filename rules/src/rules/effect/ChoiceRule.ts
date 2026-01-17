@@ -1,6 +1,5 @@
 import { CustomMove, isCustomMoveType } from '@gamepark/rules-api'
 import { ChoiceEffect, ExpandedEffect } from '../../material/effect/Effect'
-import { MaterialType } from '../../material/MaterialType'
 import { CustomMoveType } from '../CustomMoveType'
 import { Memory } from '../Memory'
 import { EffectRule } from './index'
@@ -15,7 +14,7 @@ export class ChoiceRule extends EffectRule<ChoiceEffect> {
   }
 
   onCustomMove(move: CustomMove) {
-    if (!isCustomMoveType(MaterialType.InfluenceDisc)(move)) return []
+    if (!isCustomMoveType(CustomMoveType.Choice)(move)) return []
     this.choice(move.data as Choice)
     return this.applyFirstEffect()
   }

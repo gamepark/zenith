@@ -23,7 +23,7 @@ export const ExileOneConditionHeader = () => {
     if (conditionEffect.opponent) {
       return (
         <Trans
-          defaults="header.condition.exile.opponent"
+          i18nKey="header.condition.exile.opponent"
           values={{ count: quantity }}
           components={{
             ...HeaderTransComponents,
@@ -36,7 +36,7 @@ export const ExileOneConditionHeader = () => {
 
     return (
       <Trans
-        defaults="header.condition.exile"
+        i18nKey="header.condition.exile"
         values={{ count: quantity }}
         components={{
           ...HeaderTransComponents,
@@ -50,7 +50,7 @@ export const ExileOneConditionHeader = () => {
   if (conditionEffect.opponent) {
     return (
       <Trans
-        defaults="header.condition.exile.opponent.player"
+        i18nKey="header.condition.exile.opponent.player"
         values={{ count: quantity, player: name }}
         components={{
           ...HeaderTransComponents,
@@ -62,7 +62,7 @@ export const ExileOneConditionHeader = () => {
 
   return (
     <Trans
-      defaults="header.condition.exile.player"
+      i18nKey="header.condition.exile.player"
       values={{ count: quantity, player: name }}
       components={{
         ...HeaderTransComponents,

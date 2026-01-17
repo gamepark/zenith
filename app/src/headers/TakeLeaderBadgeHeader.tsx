@@ -32,8 +32,8 @@ export const TakeLeaderBadgeHeader = () => {
   }
 
   if (itsMe) {
-    return <Trans defaults="header.take-badge" components={components} />
+    return <Trans i18nKey="header.take-badge" components={components} />
   }
 
-  return <Trans defaults="header.take-badge.player" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
+  return <Trans i18nKey="header.take-badge.player" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
 }

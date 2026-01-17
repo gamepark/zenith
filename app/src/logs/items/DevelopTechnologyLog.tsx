@@ -19,7 +19,7 @@ export const DevelopTechnologyLog: FC<MoveComponentProps<MaterialMove>> = (props
   return (
     <>
       <Trans
-        defaults="log.develop.technology"
+        i18nKey="log.develop.technology"
         values={{
           player: playerName,
           faction: t(`faction.${parent.location.id}`)

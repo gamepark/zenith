@@ -18,7 +18,7 @@ export const DiscardEffectLog: FC<MoveComponentProps<MaterialMove>> = (props) =>
   return (
     <>
       <Trans
-        defaults={effect.full ? 'log.discard.effect.full' : 'log.discard'}
+        i18nKey={effect.full ? 'log.discard.effect.full' : 'log.discard'}
         values={{
           player: playerName
         }}

@@ -9,7 +9,9 @@ import { DiscardHeader } from './DiscardHeader'
 import { ExileHeader } from './ExileHeader'
 import { GiveInfluenceHeader } from './GiveInfluenceHeader'
 import { MuliganHeader } from './MuliganHeader'
+import { PickOrderHeader } from './PickOrderHeader'
 import { PlayCardHeader } from './PlayCardHeader'
+import { ShareCardHeader } from './ShareCardHeader'
 import { RefillHeader } from './RefillHeader'
 import { TakeBonusTokenHeader } from './TakeBonusTokenHeader'
 import { TakeLeaderBadgeHeader } from './TakeLeaderBadgeHeader'
@@ -36,5 +38,7 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.WinInfluence]: WinInfluenceHeader,
   [RuleId.Discard]: DiscardHeader,
   [RuleId.TakeTechnologyBonusToken]: TakeTechnologyBonusTokenHeader,
-  [RuleId.Refill]: RefillHeader
+  [RuleId.Refill]: RefillHeader,
+  [RuleId.PickOrder]: PickOrderHeader,
+  [RuleId.ShareCard]: ShareCardHeader
 }

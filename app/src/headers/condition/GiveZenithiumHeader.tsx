@@ -30,7 +30,7 @@ export const GiveZenithiumHeader = () => {
   const source = <EffectSource effectSource={effect.effectSource} />
   return (
     <Trans
-      defaults={itsMe ? 'header.condition.give-zenithium' : 'header.condition.give-zenithium.player'}
+      i18nKey={itsMe ? 'header.condition.give-zenithium' : 'header.condition.give-zenithium.player'}
       values={{
         player: name,
         count: quantity

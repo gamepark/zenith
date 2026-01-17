@@ -21,8 +21,8 @@ export const TransfertHeader = () => {
   const components = { ...HeaderTransComponents, source }
 
   if (itsMe) {
-    return <Trans defaults="header.transfert" values={{ count: effect.quantity ?? 1 }} components={components} />
+    return <Trans i18nKey="header.transfert" values={{ count: effect.quantity ?? 1 }} components={components} />
   }
 
-  return <Trans defaults="header.transfert.player" values={{ count: effect.quantity ?? 1, player: name }} components={components} />
+  return <Trans i18nKey="header.transfert.player" values={{ count: effect.quantity ?? 1, player: name }} components={components} />
 }

@@ -1,20 +1,14 @@
-import { useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType } from '@gamepark/rules-api'
+import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Faction } from '@gamepark/zenith/material/Faction'
-import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
-import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Memory } from '@gamepark/zenith/rules/Memory'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
-import { TooltipPlayMoveButton } from '../components/TooltipButton'
+import { Trans } from 'react-i18next'
 import { getFactionForHeader, HeaderTransComponents } from '../i18n/trans.components'
+import { DiscardActionDialog } from './DiscardActionDialog'
 
 export const DiscardActionHeader: FC = () => {
-  const { t } = useTranslation()
-  const diplomacy = useLegalMove(isCustomMoveType(CustomMoveType.Diplomacy))
-  const tech = useLegalMove(isMoveItemType(MaterialType.TechMarker))
   const rules = useRules<ZenithRules>()!
   const activePlayer = rules.getActivePlayer()
   const itsMe = usePlayerId<PlayerId>() === activePlayer
@@ -27,16 +21,12 @@ export const DiscardActionHeader: FC = () => {
 
   if (itsMe) {
     return (
-      <Trans
-        defaults="header.discard-action"
-        components={{
-          ...components,
-          technology: <TooltipPlayMoveButton move={tech} tooltip={t('tooltip.develop-technology')} />,
-          diplomacy: <TooltipPlayMoveButton move={diplomacy} tooltip={t('tooltip.diplomacy')} />
-        }}
-      />
+      <>
+        <Trans i18nKey="header.discard-action.choose" components={components} />
+        <DiscardActionDialog onClose={() => {}} />
+      </>
     )
   }
 
-  return <Trans defaults="header.discard-action.player" values={{ player: name }} components={components} />
+  return <Trans i18nKey="header.discard-action.player" values={{ player: name }} components={components} />
 }

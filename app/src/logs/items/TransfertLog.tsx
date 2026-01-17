@@ -17,7 +17,7 @@ export const TransfertLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.transfert"
+        i18nKey="log.transfert"
         values={{
           player: playerName
         }}

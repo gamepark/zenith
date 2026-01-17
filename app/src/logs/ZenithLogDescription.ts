@@ -20,6 +20,7 @@ import { ExileLog } from './items/ExileLog'
 import { GiveInfluenceLog } from './items/GiveInfluenceLog'
 import { InfluenceLog } from './items/InfluenceLog'
 import { MobilizeLog } from './items/MobilizeLog'
+import { PickOrderLog } from './items/PickOrderLog'
 import { RecruitLog } from './items/RecruitLog'
 import { TakeLeaderBadgeLog } from './items/TakeLeaderBadgeLog'
 import { TransfertLog } from './items/TransfertLog'
@@ -30,6 +31,15 @@ import { WinZenithiumLog } from './items/WinZenithiumLog'
 
 export class ZenithLogDescription implements LogDescription<MaterialMove, PlayerId, MaterialGame> {
   getMovePlayedLogDescription(move: MaterialMove, context: MoveComponentContext<MaterialMove, PlayerId, MaterialGame>): MovePlayedLogDescription | undefined {
+    // Pick order log
+    if (context.game.rule?.id === RuleId.PickOrder && isCustomMoveType(CustomMoveType.PickFirst)(move)) {
+      const chosenPlayer = move.data as PlayerId
+      return {
+        Component: PickOrderLog,
+        css: colorCss(chosenPlayer)
+      }
+    }
+
     if (context.game.rule?.id === RuleId.PlayCard) {
       if (isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.Influence) {
         const player = context.game.rule.player!

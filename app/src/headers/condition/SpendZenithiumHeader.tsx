@@ -29,7 +29,7 @@ export const SpendZenithiumHeader = () => {
   const source = <EffectSource effectSource={effect.effectSource} />
   return (
     <Trans
-      defaults={itsMe ? 'header.condition.spend-zenithium' : 'header.condition.spend-zenithium.player'}
+      i18nKey={itsMe ? 'header.condition.spend-zenithium' : 'header.condition.spend-zenithium.player'}
       values={{
         player: name
       }}

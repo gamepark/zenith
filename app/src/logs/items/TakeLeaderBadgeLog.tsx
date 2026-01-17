@@ -18,7 +18,7 @@ export const TakeLeaderBadgeLog: FC<MoveComponentProps<MaterialMove>> = (props) 
   return (
     <>
       <Trans
-        defaults="log.take.leaderBadge"
+        i18nKey="log.take.leaderBadge"
         values={{
           player: playerName,
           team: t(`team.${move.location.player}`)

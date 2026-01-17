@@ -23,5 +23,7 @@ export enum RuleId {
   Refill,
   StealCredit,
   SpendZenithium,
-  TakeTechnologyBonusToken
+  TakeTechnologyBonusToken,
+  PickOrder,
+  ShareCard
 }

@@ -2,6 +2,7 @@ import { CustomMove, isCustomMoveType, isMoveItemType, MaterialMove, MoveItem, S
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
+import { getTeamColor, TeamColor } from '../TeamColor'
 import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -66,7 +67,13 @@ export class MulliganRule extends SimultaneousRule {
       this.forget(Memory.Mulligan, player)
     }
 
-    // CHoose order
+    if (this.game.players.length === 4) {
+      const currentTeam = this.remind<TeamColor>(Memory.CurrentTeam)
+      const teamPlayers = this.game.players.filter(p => getTeamColor(p) === currentTeam)
+      return [this.startSimultaneousRule(RuleId.PickOrder, teamPlayers)]
+    }
+
+    // 2 players: use first player from TurnOrder
     return [this.startPlayerTurn(RuleId.PlayCard, this.turnOrder[0])]
   }
 

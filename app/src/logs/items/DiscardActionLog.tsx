@@ -17,7 +17,7 @@ export const DiscardActionLog: FC<MoveComponentProps<MaterialMove>> = (props) =>
   return (
     <>
       <Trans
-        defaults="log.discard"
+        i18nKey="log.discard"
         values={{
           player: playerName
         }}

@@ -51,6 +51,9 @@ export class PlayCardRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.AgentCard)(move)) return []
 
+    // Clear speech bubble when the chosen player plays their card
+    this.forget(Memory.TeamFirst)
+
     if (move.location.type === LocationType.AgentDiscard) {
       const item = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
       const agent = Agents[item.id]

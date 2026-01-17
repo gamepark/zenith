@@ -22,12 +22,12 @@ export const WinCreditHeader = () => {
   const source = <EffectSource effectSource={effect.effectSource} />
 
   if (itsMe) {
-    return <Trans defaults="header.win-credit" values={{ count: count }} components={{ ...HeaderTransComponents, source }} />
+    return <Trans i18nKey="header.win-credit" values={{ count: count }} components={{ ...HeaderTransComponents, source }} />
   }
 
   return (
     <Trans
-      defaults="header.win-credit.player"
+      i18nKey="header.win-credit.player"
       values={{ team: t(`team.${getTeamColor(activePlayer)}`), count: count }}
       components={{ ...HeaderTransComponents, source }}
     />

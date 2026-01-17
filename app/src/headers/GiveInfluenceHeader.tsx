@@ -31,27 +31,27 @@ export const GiveInfluenceHeader = () => {
   if (itsMe) {
     if (winPlanet && activeTeam !== getTeamColor(me)) {
       const item = rules.material(MaterialType.InfluenceDisc).getItem<Influence>(winPlanet.move.itemIndex)
-      return <Trans defaults="header.win-planet" components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }} />
+      return <Trans i18nKey="header.win-planet" components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }} />
     }
 
     if (effect.influence) {
       return (
         <Trans
-          defaults="header.give-influence.planet"
+          i18nKey="header.give-influence.planet"
           values={{ count: effect.quantity ?? 1 }}
           components={{ ...components, influenceIcon: getPlanetForHeader(effect.influence) }}
         />
       )
     }
 
-    return <Trans defaults="header.give-influence" components={components} />
+    return <Trans i18nKey="header.give-influence" components={components} />
   }
 
   if (winPlanet) {
     const item = rules.material(MaterialType.InfluenceDisc).getItem<Influence>(winPlanet.move.itemIndex)
     return (
       <Trans
-        defaults="header.win-planet.player"
+        i18nKey="header.win-planet.player"
         values={{ team: t(`team.${opponentTeam}`) }}
         components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }}
       />
@@ -61,12 +61,12 @@ export const GiveInfluenceHeader = () => {
   if (effect.influence) {
     return (
       <Trans
-        defaults="header.give-influence.planet.player"
+        i18nKey="header.give-influence.planet.player"
         values={{ count: effect.quantity ?? 1, team: t(`team.${opponentTeam}`) }}
         components={{ ...components, influenceIcon: getPlanetForHeader(effect.influence) }}
       />
     )
   }
 
-  return <Trans defaults="header.give-influence.player" values={{ player: name }} components={components} />
+  return <Trans i18nKey="header.give-influence.player" values={{ player: name }} components={components} />
 }

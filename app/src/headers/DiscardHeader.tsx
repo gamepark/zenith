@@ -21,12 +21,12 @@ export const DiscardHeader = () => {
   const components = { ...HeaderTransComponents, source }
   if (itsMe) {
     if (effect.full) {
-      return <Trans defaults="header.discard.full" components={components} />
+      return <Trans i18nKey="header.discard.full" components={components} />
     }
-    return <Trans defaults="header.discard" values={{ count: 1 }} components={components} />
+    return <Trans i18nKey="header.discard" values={{ count: 1 }} components={components} />
   }
   if (effect.full) {
-    return <Trans defaults="header.discard.full.player" values={{ player: name }} components={components} />
+    return <Trans i18nKey="header.discard.full.player" values={{ player: name }} components={components} />
   }
-  return <Trans defaults="header.discard.player" values={{ count: 1, player: name }} components={components} />
+  return <Trans i18nKey="header.discard.player" values={{ count: 1, player: name }} components={components} />
 }

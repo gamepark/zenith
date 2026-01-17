@@ -20,13 +20,13 @@ export const PlayCardHeader = () => {
   const id = recruit?.move.reveal?.id
 
   if (itsMe) {
-    return <Trans defaults="header.play" />
+    return <Trans i18nKey="header.play" />
   }
 
   if (recruit) {
     return (
       <Trans
-        defaults="header.recruit.player"
+        i18nKey="header.recruit.player"
         values={{ player: name }}
         components={{
           ...HeaderTransComponents,
@@ -40,5 +40,5 @@ export const PlayCardHeader = () => {
     )
   }
 
-  return <Trans defaults="header.play.player" values={{ player: name }} components={HeaderTransComponents} />
+  return <Trans i18nKey="header.play.player" values={{ player: name }} components={HeaderTransComponents} />
 }

@@ -161,6 +161,11 @@ export type TakeTechnologyBonusToken = {
   x: number
 }
 
+export type ShareCardEffect = {
+  type: EffectType.ShareCard
+  maxQuantity: number
+}
+
 export type Effect =
   | ConditionalEffect
   | WinCreditEffect
@@ -183,6 +188,7 @@ export type Effect =
   | ChoiceEffect
   | TakeBonusEffect
   | TakeTechnologyBonusToken
+  | ShareCardEffect
 
 export type ExpandedEffect<T extends Effect = Effect> = T & {
   effectSource: {

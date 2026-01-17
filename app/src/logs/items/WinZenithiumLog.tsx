@@ -25,7 +25,7 @@ export const WinZenithiumLog: FC<MoveComponentProps<MaterialMove>> = (props) => 
   return (
     <>
       <Trans
-        defaults="log.win.zenithium"
+        i18nKey="log.win.zenithium"
         values={{
           player: playerName,
           count: count,

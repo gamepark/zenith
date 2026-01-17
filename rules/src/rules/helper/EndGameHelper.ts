@@ -1,6 +1,5 @@
 import { Material, MaterialRulesPart } from '@gamepark/rules-api'
-import { uniqBy } from 'lodash'
-import maxBy from 'lodash/maxBy'
+import { uniqBy, maxBy } from 'es-toolkit/compat'
 import { Influence, influences } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'

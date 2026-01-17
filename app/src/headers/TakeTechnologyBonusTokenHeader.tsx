@@ -33,15 +33,11 @@ export const TakeTechnologyBonusTokenHeader = () => {
   }
 
   if (itsMe) {
-    return <Trans defaults="header.develop-techno.take-bonus" components={components} />
+    return <Trans i18nKey="header.develop-techno.take-bonus" components={components} />
   }
 
   return (
-    <Trans
-      defaults="header.develop-techno.take-bonus.player"
-      values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }}
-      components={components}
-    />
+    <Trans i18nKey="header.develop-techno.take-bonus.player" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
   )
 }
 

@@ -28,15 +28,15 @@ export const ExileHeader: FC<ExileHeaderProps> = ({ effect }) => {
 
   if (itsMe) {
     if (exileEffect.opponent) {
-      return <Trans defaults="header.exile.opponent-area" values={{ count: exileEffect.quantity ?? 1 }} components={components} />
+      return <Trans i18nKey="header.exile.opponent-area" values={{ count: exileEffect.quantity ?? 1 }} components={components} />
     }
 
-    return <Trans defaults="header.exile" values={{ count: exileEffect.quantity ?? 1 }} components={components} />
+    return <Trans i18nKey="header.exile" values={{ count: exileEffect.quantity ?? 1 }} components={components} />
   }
 
   if (exileEffect.opponent) {
-    return <Trans defaults="header.exile.player.opponent-area" values={{ count: exileEffect.quantity ?? 1, player: name }} components={components} />
+    return <Trans i18nKey="header.exile.player.opponent-area" values={{ count: exileEffect.quantity ?? 1, player: name }} components={components} />
   }
 
-  return <Trans defaults="header.exile.player" values={{ count: exileEffect.quantity ?? 1, player: name }} components={components} />
+  return <Trans i18nKey="header.exile.player" values={{ count: exileEffect.quantity ?? 1, player: name }} components={components} />
 }

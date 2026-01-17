@@ -22,7 +22,7 @@ export const ExileLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults={effect.opponent ? 'log.exile.opponent' : 'log.exile'}
+        i18nKey={effect.opponent ? 'log.exile.opponent' : 'log.exile'}
         values={{
           player: playerName,
           team: t(`team.${opponentTeam}`)

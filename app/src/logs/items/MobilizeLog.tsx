@@ -17,7 +17,7 @@ export const MobilizeLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.mobilize"
+        i18nKey="log.mobilize"
         values={{
           player: playerName
         }}

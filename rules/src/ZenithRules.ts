@@ -24,6 +24,7 @@ import {
   GiveZenithiumRule,
   MobilizeRule,
   ResetInfluenceRule,
+  ShareCardRule,
   SpendCreditRule,
   TakeBonusRule,
   TakeLeaderBadgeRule,
@@ -37,6 +38,7 @@ import { StealCreditRule } from './rules/effect/StealCreditRule'
 import { TakeTechnologyBonusTokenRule } from './rules/effect/TakeTechnologyBonusTokenRule'
 import { EndGameHelper } from './rules/helper/EndGameHelper'
 import { MulliganRule } from './rules/MulliganRule'
+import { PickOrderRule } from './rules/PickOrderRule'
 import { PlayCardRule } from './rules/PlayCardRule'
 import { RefillRule } from './rules/RefillRule'
 import { RuleId } from './rules/RuleId'
@@ -77,7 +79,9 @@ export class ZenithRules
     [RuleId.Refill]: RefillRule,
     [RuleId.StealCredit]: StealCreditRule,
     [RuleId.SpendZenithium]: SpendZenithiumRule,
-    [RuleId.TakeTechnologyBonusToken]: TakeTechnologyBonusTokenRule
+    [RuleId.TakeTechnologyBonusToken]: TakeTechnologyBonusTokenRule,
+    [RuleId.PickOrder]: PickOrderRule,
+    [RuleId.ShareCard]: ShareCardRule
   }
 
   locationsStrategies = {

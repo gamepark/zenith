@@ -20,12 +20,12 @@ export const EffectSource: FC<EffectSourceProps> = ({ effectSource }) => {
   }
 
   if (effectSource.type === MaterialType.DiplomacyBoard) {
-    return <Trans defaults="header.source.diplomacy" />
+    return <Trans i18nKey="header.source.diplomacy" />
   }
   if (effectSource.type === MaterialType.TechnologyBoard) {
     return (
       <Trans
-        defaults="header.source.technology"
+        i18nKey="header.source.technology"
         components={{
           faction: getFactionForHeader(effectSource.value as Faction)
         }}
@@ -35,7 +35,7 @@ export const EffectSource: FC<EffectSourceProps> = ({ effectSource }) => {
 
   if (effectSource.type === MaterialType.AgentCard) {
     const agentId = effectSource.value as Agent
-    return <Trans defaults={`agent.${agentId}`} />
+    return <Trans i18nKey={`agent.${agentId}`} />
   }
 
   return null

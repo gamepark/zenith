@@ -32,27 +32,27 @@ export const WinInfluenceHeader = () => {
     if (winPlanet && team === getTeamColor(me)) {
       const item = rules.material(MaterialType.InfluenceDisc).getItem<Influence>(winPlanet.move.itemIndex)
       return (
-        <Trans defaults="header.win-planet" values={{ team: t(`team.${team}`) }} components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }} />
+        <Trans i18nKey="header.win-planet" values={{ team: t(`team.${team}`) }} components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }} />
       )
     }
     if (effect.influence) {
       return (
         <Trans
-          defaults="header.influence.planet"
+          i18nKey="header.influence.planet"
           values={{ count: effect.quantity ?? 1 }}
           components={{ ...components, influenceIcon: getPlanetForHeader(effect.influence) }}
         />
       )
     }
 
-    return <Trans defaults="header.influence" components={components} />
+    return <Trans i18nKey="header.influence" components={components} />
   }
 
   if (winPlanet) {
     const item = rules.material(MaterialType.InfluenceDisc).getItem<Influence>(winPlanet.move.itemIndex)
     return (
       <Trans
-        defaults="header.win-planet.player"
+        i18nKey="header.win-planet.player"
         values={{ team: t(`team.${team}`) }}
         components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }}
       />
@@ -62,12 +62,12 @@ export const WinInfluenceHeader = () => {
   if (effect.influence) {
     return (
       <Trans
-        defaults="header.influence.planet.player"
+        i18nKey="header.influence.planet.player"
         values={{ count: effect.quantity ?? 1, team: t(`team.${team}`) }}
         components={{ ...components, influenceIcon: getPlanetForHeader(effect.influence) }}
       />
     )
   }
 
-  return <Trans defaults="header.influence.player" values={{ player: name, team: team }} components={components} />
+  return <Trans i18nKey="header.influence.player" values={{ player: name, team: team }} components={components} />
 }

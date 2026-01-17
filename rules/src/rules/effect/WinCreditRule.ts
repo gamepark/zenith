@@ -1,5 +1,5 @@
 import { MaterialMove } from '@gamepark/rules-api'
-import uniq from 'lodash/uniq'
+import { uniq } from 'es-toolkit/compat'
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { WinCreditEffect } from '../../material/effect/Effect'

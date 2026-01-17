@@ -22,12 +22,12 @@ export const WinZenithiumHeader = () => {
   const source = <EffectSource effectSource={effect.effectSource} />
 
   if (itsMe && !effect.opponent) {
-    return <Trans defaults="header.win-zenithium" values={{ count: count }} components={{ ...HeaderTransComponents, source }} />
+    return <Trans i18nKey="header.win-zenithium" values={{ count: count }} components={{ ...HeaderTransComponents, source }} />
   }
 
   const activeTeam = getTeamColor(activePlayer)
   const targetTeam = effect.opponent ? rules.opponentTeam : activeTeam
   return (
-    <Trans defaults="header.win-zenithium.player" values={{ team: t(`team.${targetTeam}`), count: count }} components={{ ...HeaderTransComponents, source }} />
+    <Trans i18nKey="header.win-zenithium.player" values={{ team: t(`team.${targetTeam}`), count: count }} components={{ ...HeaderTransComponents, source }} />
   )
 }

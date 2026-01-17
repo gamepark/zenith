@@ -14,7 +14,10 @@ export enum Memory {
   Credit,
   Zenithium,
   CurrentEffect,
-  WonBonus
+  WonBonus,
+  CurrentTeam,
+  TeamFirst,
+  ShareCardRemaining
 }
 
 export type PatternType = {

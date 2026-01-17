@@ -246,7 +246,7 @@ export const Septimus: AgentCharacteristics = {
         effect: {
           type: EffectType.Exile,
           influence: Influence.Mars,
-          factors: [2, 4, 7],
+          factors: [1, 2, 3],
           quantities: [2, 4, 7]
         }
       },

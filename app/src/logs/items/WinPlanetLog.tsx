@@ -22,7 +22,7 @@ export const WinPlanetLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.win.planet"
+        i18nKey="log.win.planet"
         values={{
           player: playerName,
           count: count,

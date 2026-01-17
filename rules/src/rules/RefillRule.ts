@@ -3,6 +3,7 @@ import { Influence, influences } from '../material/Influence'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
+import { getTeamColor, TeamColor } from '../TeamColor'
 import { PlayerHelper } from './helper/PlayerHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -30,9 +31,6 @@ export class RefillRule extends PlayerTurnRule {
       return moves
     }
 
-    /*
-     * TODO: next player at 4-players is a choice
-     */
     moves.push(...this.endRuleMoves)
 
     return moves
@@ -46,22 +44,41 @@ export class RefillRule extends PlayerTurnRule {
   }
 
   get endRuleMoves(): MaterialMove[] {
-    const isTurnEnded = this.remind<PlayerId[]>(Memory.AlreadyPlayedPlayers).length === this.game.players.length
-    if (isTurnEnded) {
-      this.forget(Memory.AlreadyPlayedPlayers)
-      // TODO: 4-p GO to order choice
-      return [this.startPlayerTurn(RuleId.PlayCard, this.turnOrder[0])]
+    const alreadyPlayed = this.remind<PlayerId[]>(Memory.AlreadyPlayedPlayers) ?? []
+    const currentTeam = this.currentTeam
+    const teamPlayers = this.getTeamPlayers(currentTeam)
+    const teamPlayersPlayed = alreadyPlayed.filter(p => getTeamColor(p) === currentTeam).length
+
+    if (this.game.players.length === 4) {
+      // 4 players mode: teams alternate, each team plays 2 turns
+      if (teamPlayersPlayed < 2) {
+        // Teammate still needs to play
+        const nextPlayer = teamPlayers.find(p => !alreadyPlayed.includes(p))!
+        return [this.startPlayerTurn(RuleId.PlayCard, nextPlayer)]
+      } else {
+        // Team finished, switch to other team
+        const otherTeam = currentTeam === TeamColor.White ? TeamColor.Black : TeamColor.White
+        this.memorize(Memory.CurrentTeam, otherTeam)
+        this.memorize(Memory.AlreadyPlayedPlayers, [])
+        const otherTeamPlayers = this.getTeamPlayers(otherTeam)
+        return [this.startSimultaneousRule(RuleId.PickOrder, otherTeamPlayers)]
+      }
     } else {
+      // 2 players mode: simple alternation
       return [this.startPlayerTurn(RuleId.PlayCard, this.nextPlayer)]
     }
   }
 
-  get turnOrder(): PlayerId[] {
-    return this.remind<PlayerId[]>(Memory.TurnOrder)
+  get currentTeam(): TeamColor {
+    return this.remind<TeamColor>(Memory.CurrentTeam) ?? TeamColor.White
+  }
+
+  getTeamPlayers(team: TeamColor): PlayerId[] {
+    return this.game.players.filter(p => getTeamColor(p) === team)
   }
 
   get nextPlayer(): PlayerId {
-    const players = this.turnOrder
+    const players = this.game.players
     return players[(players.indexOf(this.player) + 1) % players.length]
   }
 

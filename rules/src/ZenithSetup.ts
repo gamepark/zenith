@@ -1,6 +1,5 @@
 import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
-import { times } from 'lodash'
-import shuffle from 'lodash/shuffle'
+import { times, shuffle, sample } from 'es-toolkit/compat'
 import { agents } from './material/Agent'
 import { allBonuses } from './material/Bonus'
 import { Credit } from './material/Credit'
@@ -196,8 +195,14 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   }
 
   start() {
-    // AT 4 players, players must choose order
     this.memorize(Memory.TurnOrder, shuffle(this.game.players))
+
+    if (this.game.players.length === 4) {
+      // Random team starts first
+      const startingTeam = sample(teamColors)!
+      this.memorize(Memory.CurrentTeam, startingTeam)
+    }
+
     this.startSimultaneousRule(RuleId.Muligan)
   }
 }

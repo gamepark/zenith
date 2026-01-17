@@ -17,7 +17,7 @@ export const RecruitLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.recruit"
+        i18nKey="log.recruit"
         values={{
           player: playerName
         }}

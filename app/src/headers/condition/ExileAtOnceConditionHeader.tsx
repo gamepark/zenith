@@ -27,7 +27,7 @@ export const ExileAtOnceConditionHeader = () => {
   const source = <EffectSource effectSource={effect.effectSource} />
   return (
     <Trans
-      defaults={itsMe ? 'header.condition.exile-at-once' : 'header.condition.exile-at-once.player'}
+      i18nKey={itsMe ? 'header.condition.exile-at-once' : 'header.condition.exile-at-once.player'}
       values={{
         player: name
       }}

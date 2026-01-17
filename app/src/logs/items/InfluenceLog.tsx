@@ -22,7 +22,7 @@ export const InfluenceLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.influence"
+        i18nKey="log.influence"
         values={{
           player: playerName,
           count: count,

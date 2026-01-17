@@ -16,7 +16,7 @@ export const DiplomacyLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   return (
     <>
       <Trans
-        defaults="log.diplomacy"
+        i18nKey="log.diplomacy"
         values={{
           player: playerName,
           faction: t(`faction.${faction}`)
