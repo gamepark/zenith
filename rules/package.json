@@ -1,9 +1,9 @@
 {
   "name": "@gamepark/zenith",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "The rules of Zenith adapted for Game Park",
-  "type": "module",
   "sideEffects": false,
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -15,19 +15,19 @@
     "access": "public"
   },
   "scripts": {
+    "test": "vitest",
     "build": "tsc",
     "prepublishOnly": "tsc",
     "publish": "lerna publish",
     "lint": "eslint --fix"
   },
   "peerDependencies": {
-    "@gamepark/rules-api": ">=6.33",
-    "lodash": ">=4.17"
+    "@gamepark/rules-api": ">=7",
+    "es-toolkit": "^1.43.0"
   },
   "devDependencies": {
-    "@gamepark/rules-api": "~6.37.8",
-    "@types/lodash": "^4.17.7",
-    "i18next": "^22.0.3",
-    "lodash": "^4.17.21"
+    "@gamepark/rules-api": "~7.2.0",
+    "es-toolkit": "^1.43.0",
+    "vitest": "^4.0.15"
   }
 }

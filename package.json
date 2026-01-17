@@ -7,30 +7,27 @@
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
   "license": "ISC",
   "devDependencies": {
-    "@eslint/js": "^9.22.0",
-    "eslint": "^9.22.0",
-    "eslint-config-prettier": "^10.1.1",
-    "eslint-plugin-prettier": "^5.2.3",
-    "globals": "^16.0.0",
-    "lerna": "^8.1.8",
-    "prettier": "3.5.3",
-    "typescript": "^5.4.5",
-    "typescript-eslint": "^8.26.1"
-  },
-  "resolutions": {
-    "@types/react": "^17"
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.5.0",
+    "lerna": "^9.0.3",
+    "prettier": "3.7.4",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.50.0",
+    "vitest": "^4.0.15"
   },
   "scripts": {
-    "linkall": "yarn link react @types/react react-dom react-redux @dnd-kit/core @emotion/react react-i18next @gamepark/rules-api @gamepark/react-client @gamepark/react-game",
-    "unlinkall": "yarn unlink react @types/react react-dom react-redux @dnd-kit/core @emotion/react react-i18next @gamepark/rules-api @gamepark/react-client @gamepark/react-game",
-    "linkgp": "yarn link @gamepark/react-client @gamepark/rules-api @gamepark/react-game",
-    "unlinkgp": "yarn unlink @gamepark/react-client @gamepark/rules-api @gamepark/react-game",
-    "start": "yarn workspace @gamepark/zenith-app run start",
+    "dev": "yarn workspace @gamepark/zenith-app run dev",
+    "test": "yarn workspace @gamepark/game-template run test && yarn workspace @gamepark/zenith-app run test",
+    "preview": "yarn workspace @gamepark/zenith-app run preview",
     "build": "yarn workspace @gamepark/zenith-app run build",
     "deploy": "yarn workspace @gamepark/zenith-app run deploy",
-    "cwebp-osx": "rm -f ./node_modules/cwebp-bin/vendor/cwebp && ln -s /opt/homebrew/bin/cwebp ./node_modules/cwebp-bin/vendor/cwebp",
     "publish": "lerna publish",
-    "lint": "yarn workspace @gamepark/zenith run lint && yarn workspace @gamepark/zenith-app run lint"
+    "lint": "yarn workspace @gamepark/game-template run lint && yarn workspace @gamepark/zenith-app run lint",
+    "linkgp": "yarn link ../rules-api ../react-client ../react-game -r",
+    "unlinkgp": "yarn unlink ../react-game ../react-client ../rules-api"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "yarn@4.9.4"
 }

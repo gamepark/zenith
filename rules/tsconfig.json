@@ -3,11 +3,11 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "lib": [
-      "ESNext"
-    ],
+    "lib": ["ESNext"],
     "moduleResolution": "node",
     "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true,
     "outDir": "dist",
     "rootDir": "src"
   },
