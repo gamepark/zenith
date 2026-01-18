@@ -61,6 +61,18 @@ export const DevCardViewer: FC = () => {
 
   const handleMouseEnter = (agent: Agent, e: React.MouseEvent) => {
     setCursor({ x: e.clientX, y: e.clientY })
+
+    // If tooltip is already showing, update immediately
+    if (hoveredAgent !== null) {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
+        hoverTimeoutRef.current = null
+      }
+      setHoveredAgent(agent)
+      return
+    }
+
+    // Otherwise, wait before showing
     hoverTimeoutRef.current = setTimeout(() => {
       setHoveredAgent(agent)
     }, 300)

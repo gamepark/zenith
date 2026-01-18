@@ -71,6 +71,14 @@ export const AgentCardHoverPreview: FC = () => {
         clearHoverTimeout()
 
         if (agent !== null) {
+          // If tooltip is already showing, update immediately
+          if (hoveredAgent !== null) {
+            setCursor({ ...cursorRef.current })
+            setHoveredAgent(agent)
+            return
+          }
+
+          // Otherwise wait before showing
           timeoutRef.current = setTimeout(() => {
             // Don't show tooltip if mouse is down (dragging)
             if (isMouseDownRef.current) return
@@ -87,7 +95,7 @@ export const AgentCardHoverPreview: FC = () => {
         }
       }
     },
-    [clearHoverTimeout]
+    [clearHoverTimeout, hoveredAgent]
   )
 
   const handleMouseDown = useCallback(() => {
