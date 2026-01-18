@@ -4,7 +4,8 @@ import { MaterialHelpProps, Picture } from '@gamepark/react-game'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { FC } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+import { HelpTransComponents } from '../i18n/trans.components'
 import LeaderGold from '../images/icons/leader-gold.png'
 import LeaderSilver from '../images/icons/leader-silver.png'
 
@@ -21,13 +22,10 @@ export const LeaderBadgeHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({
 
       <div css={sectionsCss}>
         <div css={sectionCss}>
-          <span css={sectionTitleCss}>{t('help.leader.voting')}</span>
-          <span css={sectionTextCss}>{t('help.leader.voting.desc')}</span>
-        </div>
-
-        <div css={sectionCss}>
-          <span css={sectionTitleCss}>{t('help.leader.diplomacy')}</span>
-          <span css={sectionTextCss}>{t('help.leader.diplomacy.desc')}</span>
+          <span css={sectionTitleCss}>{t('help.leader.hand-limit')}</span>
+          <span css={sectionTextCss}>
+            <Trans i18nKey="help.leader.hand-limit.desc" components={HelpTransComponents} />
+          </span>
         </div>
 
         <div css={sideCss(isGold)}>
