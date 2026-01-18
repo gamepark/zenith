@@ -98,10 +98,12 @@ export const PlayerPanels = () => {
 
 const panelPosition = css`
   position: absolute;
-  width: 30em;
+  width: 22em;
 `
 
 const panelContentCss = css`
+  border-radius: 0.8em !important;
+
   > div:last-of-type {
     flex-direction: row;
 
@@ -113,11 +115,11 @@ const panelContentCss = css`
 
 const leaderBadgeCss = css`
   position: absolute;
-  left: 1.2em;
-  bottom: 1.2em;
-  width: 5em;
+  right: -0.8em;
+  top: -0.8em;
+  width: 3em;
   height: auto;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 `
 
 const getPanelPosition = (player: PlayerId, context: MaterialContext) => {
@@ -166,20 +168,24 @@ const bottomRightPanelCss = css`
 
 // Team White
 const whitePanelCss = css`
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.9) 100%);
-  border: 2px solid rgba(200, 200, 200, 0.8);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-  border-radius: 1em;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.97) 0%, rgba(235, 235, 240, 0.95) 100%);
+  border: 2px solid #d0d0d5;
+  border-left: 4px solid #a0a0a8;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 `
 
 // Team Black
 const blackPanelCss = css`
-  background: linear-gradient(135deg, rgba(40, 40, 40, 0.95) 0%, rgba(25, 25, 25, 0.9) 100%);
-  border: 2px solid rgba(80, 80, 80, 0.8);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  border-radius: 1em;
+  background: linear-gradient(145deg, rgba(50, 50, 55, 0.97) 0%, rgba(30, 30, 35, 0.95) 100%);
+  border: 2px solid #505055;
+  border-left: 4px solid #707078;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
   > h2 {
-    color: #e0e0e0;
+    color: #e8e8ec;
   }
 `
