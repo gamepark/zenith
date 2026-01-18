@@ -33,14 +33,19 @@ export const pictureCss = (jpg?: boolean) => css`
 `
 
 export const headerCss = (jpg?: boolean) => css`
-  display: inline-block;
   height: 1em;
   width: ${jpg ? '1em' : 'auto'};
   border-radius: ${jpg ? '50%' : '0'};
   box-shadow: ${jpg ? '0 0 0.1em black' : 'none'};
   margin: 0 0.2em;
-  vertical-align: -0.15em;
-  object-fit: cover;
+
+  img {
+    height: 1em;
+    width: ${jpg ? '1em' : 'auto'};
+    border-radius: ${jpg ? '50%' : '0'};
+    object-fit: cover;
+    vertical-align: middle;
+  }
 `
 
 export const getFactionIcon = (faction: Faction) => {
@@ -136,10 +141,17 @@ export const helpCss = (jpg?: boolean) => css`
   height: 1.2em;
   width: ${jpg ? '1.2em' : 'auto'};
   border-radius: ${jpg ? '50%' : '0'};
-  vertical-align: -0.25em;
   margin: 0 0.15em;
-  object-fit: cover;
+  vertical-align: middle;
   filter: drop-shadow(0 0.05em 0.1em rgba(0, 0, 0, 0.2));
+
+  img {
+    height: 1.2em;
+    width: ${jpg ? '1.2em' : 'auto'};
+    border-radius: ${jpg ? '50%' : '0'};
+    object-fit: cover;
+    vertical-align: middle;
+  }
 `
 
 export const HeaderTransComponents: Record<string, ReactElement> = TransComponents(headerCss)
