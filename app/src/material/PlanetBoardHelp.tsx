@@ -90,22 +90,24 @@ const planetIconCss = css`
 `
 
 const victorySection = css`
-  margin-top: 0.5em;
-  padding-top: 0.8em;
-  border-top: 1px solid #e5e7eb;
+  padding: 0.6em;
+  background: #fef3c7;
+  border-radius: 0.4em;
+  border-left: 3px solid #f59e0b;
 `
 
 const victoryTitleCss = css`
-  font-size: 0.95em;
+  font-size: 0.85em;
   font-weight: 600;
-  color: #4b5563;
-  margin-bottom: 0.4em;
+  color: #92400e;
+  text-transform: uppercase;
+  margin-bottom: 0.3em;
 `
 
 const victoryListCss = css`
   margin: 0;
   padding-left: 1.2em;
-  font-size: 0.9em;
-  color: #374151;
+  font-size: 0.85em;
+  color: #78350f;
   line-height: 1.5;
 `

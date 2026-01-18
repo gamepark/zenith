@@ -34,7 +34,15 @@ export const InfluenceDiscHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = 
         </ul>
       </div>
 
+      <div css={victoryCss}>
+        <div css={victoryTitleCss}>{t('help.planet-board.victory')}</div>
+        <ul css={victoryListCss}>
+          <li>{t('help.planet-board.victory.absolute')}</li>
+          <li>{t('help.planet-board.victory.democratic')}</li>
+          <li>{t('help.planet-board.victory.popular')}</li>
+        </ul>
       </div>
+    </div>
   )
 }
 
@@ -106,5 +114,28 @@ const listCss = css`
   padding-left: 1.2em;
   font-size: 0.9em;
   color: #374151;
+  line-height: 1.5;
+`
+
+const victoryCss = css`
+  padding: 0.6em;
+  background: #fef3c7;
+  border-radius: 0.4em;
+  border-left: 3px solid #f59e0b;
+`
+
+const victoryTitleCss = css`
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #92400e;
+  text-transform: uppercase;
+  margin-bottom: 0.3em;
+`
+
+const victoryListCss = css`
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: 0.85em;
+  color: #78350f;
   line-height: 1.5;
 `
