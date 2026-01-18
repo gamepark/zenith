@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { Avatar, PlayMoveButton, RulesDialog, useLegalMoves, usePlayerName, useRules } from '@gamepark/react-game'
+import { Avatar, PlayMoveButton, useLegalMoves, usePlayerName, useRules } from '@gamepark/react-game'
 import { isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
@@ -8,6 +8,7 @@ import { Memory } from '@gamepark/zenith/rules/Memory'
 import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { useTranslation } from 'react-i18next'
+import { ZenithDialog } from '../components/ZenithDialog'
 
 export const PickOrderHeader = () => {
   const { t } = useTranslation()
@@ -29,18 +30,18 @@ export const PickOrderHeader = () => {
     return (
       <>
         <span>{t('header.pick-order.choose')}</span>
-        <RulesDialog open={true} css={[dialogCss, isWhiteTeam ? whiteDialogCss : blackDialogCss]}>
+        <ZenithDialog open={true} css={isWhiteTeam ? whiteDialogCss : blackDialogCss}>
           <div css={dialogContentCss}>
-            <h2 css={[titleCss, isWhiteTeam ? whiteTitleCss : blackTitleCss]}>{t('header.pick-order.title')}</h2>
+            <h2 css={titleCss}>{t('header.pick-order.title')}</h2>
             <p css={subtitleCss}>{t('header.pick-order.subtitle')}</p>
             <div css={buttonContainerCss}>
-              <PlayMoveButton move={legalMoves[0]} css={[dialogButtonCss, isWhiteTeam ? whiteButtonCss : blackButtonCss]}>
+              <PlayMoveButton move={legalMoves[0]} css={dialogButtonCss}>
                 <div css={avatarWrapperCss}>
                   <Avatar playerId={player1} css={avatarCss} />
                 </div>
                 <span css={buttonTextCss}>{player1Name}</span>
               </PlayMoveButton>
-              <PlayMoveButton move={legalMoves[1]} css={[dialogButtonCss, isWhiteTeam ? whiteButtonCss : blackButtonCss]}>
+              <PlayMoveButton move={legalMoves[1]} css={dialogButtonCss}>
                 <div css={avatarWrapperCss}>
                   <Avatar playerId={player2} css={avatarCss} />
                 </div>
@@ -48,7 +49,7 @@ export const PickOrderHeader = () => {
               </PlayMoveButton>
             </div>
           </div>
-        </RulesDialog>
+        </ZenithDialog>
       </>
     )
   }
@@ -61,49 +62,42 @@ export const PickOrderHeader = () => {
   return null
 }
 
-const dialogCss = css`
-  border-radius: 1.5em;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
-`
-
 const whiteDialogCss = css`
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 240, 245, 0.95) 100%);
-  border: 3px solid rgba(200, 200, 210, 0.8);
+  border-left: 4px solid #a0a0a8;
 `
 
 const blackDialogCss = css`
-  background: linear-gradient(135deg, rgba(35, 35, 40, 0.98) 0%, rgba(20, 20, 25, 0.95) 100%);
-  border: 3px solid rgba(70, 70, 80, 0.8);
+  background: linear-gradient(135deg, rgba(50, 50, 55, 0.97) 0%, rgba(35, 35, 40, 0.95) 100%);
+  border-left: 4px solid #707078;
+
+  h2, span {
+    color: #e8e8ec;
+  }
+  p {
+    color: #a0a0a8;
+  }
 `
 
 const dialogContentCss = css`
-  padding: 2.5em 4em 3em;
   text-align: center;
 `
 
 const titleCss = css`
-  font-size: 3em;
+  font-size: 2.2em;
   margin: 0 0 0.2em 0;
   font-weight: 600;
-`
-
-const whiteTitleCss = css`
-  color: #333;
-`
-
-const blackTitleCss = css`
-  color: #e8e8e8;
+  color: #2d3748;
 `
 
 const subtitleCss = css`
-  color: #888;
-  font-size: 1.5em;
+  color: #666;
+  font-size: 1.2em;
   margin: 0 0 1.5em 0;
 `
 
 const buttonContainerCss = css`
   display: flex;
-  gap: 3em;
+  gap: 2em;
   justify-content: center;
 `
 
@@ -111,43 +105,25 @@ const dialogButtonCss = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.8em;
-  padding: 1.5em 2em;
-  border-radius: 1em;
+  gap: 0.6em;
+  padding: 1.2em 1.8em;
+  border-radius: 0.8em;
   cursor: pointer;
   transition: all 0.15s ease;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 0, 0, 0.1);
 
   &:hover {
-    transform: translateY(-4px);
-  }
-`
-
-const whiteButtonCss = css`
-  background: linear-gradient(135deg, #f0f0f5 0%, #e0e0e8 100%);
-  border: 2px solid #c0c0c8;
-  color: #333;
-
-  &:hover {
-    background: linear-gradient(135deg, #e8e8f0 0%, #d8d8e0 100%);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  }
-`
-
-const blackButtonCss = css`
-  background: linear-gradient(135deg, #3a3a42 0%, #2a2a32 100%);
-  border: 2px solid #505058;
-  color: #e8e8e8;
-
-  &:hover {
-    background: linear-gradient(135deg, #454550 0%, #353540 100%);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    transform: translateY(-3px);
+    background: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   }
 `
 
 const avatarWrapperCss = css`
   position: relative;
-  width: 5em;
-  height: 5em;
+  width: 4em;
+  height: 4em;
   flex-shrink: 0;
 `
 
@@ -160,6 +136,6 @@ const avatarCss = css`
 `
 
 const buttonTextCss = css`
-  font-size: 1.6em;
+  font-size: 1.3em;
   font-weight: 600;
 `
