@@ -3,33 +3,29 @@ import { css } from '@emotion/react'
 import { Picture, useLegalMove, usePlay, useRules, useUndo } from '@gamepark/react-game'
 import { isCustomMoveType, isMoveItemType } from '@gamepark/rules-api'
 import { Effect } from '@gamepark/zenith/material/effect/Effect'
-import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
+import { getDiplomacyActions } from '@gamepark/zenith/rules/discard-action/DiplomacyActions'
 import { getTechnologyAction } from '@gamepark/zenith/rules/discard-action/TechnologyActions'
 import { Memory } from '@gamepark/zenith/rules/Memory'
 import { getTeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
+import { EffectText } from '../components/EffectText'
 import { ZenithDialog } from '../components/ZenithDialog'
-import { HelpTransComponents } from '../i18n/trans.components'
-import AgentBack from '../images/agents/Back.jpg'
-import Credit1 from '../images/credit/Credit1.png'
 import AnimodIcon from '../images/icons/animod.jpg'
 import HumanoidIcon from '../images/icons/humanoid.jpg'
-import LeaderGoldIcon from '../images/icons/leader-gold.png'
-import LeaderSilverIcon from '../images/icons/leader-silver.png'
 import RobotIcon from '../images/icons/robot.jpg'
 import Zenithium from '../images/zenithium/Zenithium.png'
 
 type Props = {
-  onClose: () => void
+  onMinimize: () => void
 }
 
-export const DiscardActionDialog: FC<Props> = ({ onClose }) => {
+export const DiscardActionDialog: FC<Props> = ({ onMinimize }) => {
   const { t } = useTranslation()
   const rules = useRules<ZenithRules>()!
   const [undo, canUndo] = useUndo()
@@ -41,25 +37,17 @@ export const DiscardActionDialog: FC<Props> = ({ onClose }) => {
   const handleTechClick = () => {
     if (techMove) {
       play(techMove)
-      onClose()
     }
   }
 
   const handleDiplomacyClick = () => {
     if (diplomacyMove) {
       play(diplomacyMove)
-      onClose()
     }
   }
 
   const activePlayer = rules.getActivePlayer()
   const myTeam = activePlayer ? getTeamColor(activePlayer) : undefined
-
-  // Badge state after diplomacy
-  const leaderBadge = rules.material(MaterialType.LeaderBadgeToken).getItem()
-  const currentlyHaveBadge = leaderBadge?.location.player === myTeam
-  const willBeGold = currentlyHaveBadge
-  const BadgeIcon = willBeGold ? LeaderGoldIcon : LeaderSilverIcon
 
   // Tech position and cost
   const techBoard = rules.material(MaterialType.TechnologyBoard)
@@ -72,23 +60,30 @@ export const DiscardActionDialog: FC<Props> = ({ onClose }) => {
   const currentPos = techMarker.getItem()?.location.x ?? 0
   const techCost = currentPos + 1
 
-  // Get tech bonuses - cumulative: level N gives bonuses from N down to 1
+  // Get tech bonuses per level (reversed: highest level first)
   const techActions = boardItem ? getTechnologyAction(boardItem.id) : []
-  const allBonuses = techActions.slice(0, currentPos + 1).flat()
+  const techLevels = techActions.slice(0, currentPos + 1).map((effects, i) => ({ level: i + 1, effects })).reverse()
+
+  // Get diplomacy effects
+  const diplomacyEffects = faction ? getDiplomacyActions(rules.game.players.length)[faction] : []
 
   if (!faction) return null
 
   const factionConfig = {
-    [Faction.Animod]: { icon: AnimodIcon, color: '#4a9e5c', bonusIcon: AgentBack, bonusCount: 2 },
-    [Faction.Human]: { icon: HumanoidIcon, color: '#3b82c4', bonusIcon: Credit1, bonusCount: 3 },
-    [Faction.Robot]: { icon: RobotIcon, color: '#9b5de5', bonusIcon: Zenithium, bonusCount: 1 }
+    [Faction.Animod]: { icon: AnimodIcon, color: '#4a9e5c' },
+    [Faction.Human]: { icon: HumanoidIcon, color: '#3b82c4' },
+    [Faction.Robot]: { icon: RobotIcon, color: '#9b5de5' }
   }
 
-  const { icon, color, bonusIcon, bonusCount } = factionConfig[faction]
+  const { icon, color } = factionConfig[faction]
 
   return (
     <ZenithDialog open={true}>
       <div css={dialogContentCss}>
+      {/* Minimize button */}
+      <button css={minimizeButtonCss} onClick={onMinimize} title={t('discard-action.minimize')}>
+        −
+      </button>
       {/* Header */}
       <div css={headerCss}>
         <Picture src={icon} css={factionIconCss} />
@@ -122,9 +117,15 @@ export const DiscardActionDialog: FC<Props> = ({ onClose }) => {
             <div css={gainsContainerCss}>
               <span css={gainsLabelCss}>{t('discard-action.gains')}</span>
               <div css={effectsListCss}>
-                {allBonuses.length > 0 ? (
-                  allBonuses.map((effect, i) => (
-                    <EffectDisplay key={i} effect={effect} />
+                {techLevels.length > 0 ? (
+                  techLevels.map(({ level, effects }, i) => (
+                    <div key={level} css={levelBlockCss}>
+                      {i > 0 && <div css={levelSeparatorCss} />}
+                      <div css={levelHeaderCss}>Niveau {level}</div>
+                      {effects.map((effect, j) => (
+                        <EffectDisplay key={j} effect={effect} />
+                      ))}
+                    </div>
                   ))
                 ) : (
                   <span css={noBonusCss}>—</span>
@@ -160,16 +161,10 @@ export const DiscardActionDialog: FC<Props> = ({ onClose }) => {
             {/* Gains */}
             <div css={gainsContainerCss}>
               <span css={gainsLabelCss}>{t('discard-action.gains')}</span>
-              <div css={diplomacyGainsCss}>
-                <div css={diplomacyItemCss}>
-                  <Picture src={BadgeIcon} css={diplomacyIconCss} />
-                  <span css={diplomacyLabelCss}>{t('discard-action.leader-badge')}</span>
-                </div>
-                <span css={plusSignCss}>+</span>
-                <div css={diplomacyItemCss}>
-                  <Picture src={bonusIcon} css={diplomacyIconCss} />
-                  <span css={diplomacyValueCss}>×{bonusCount}</span>
-                </div>
+              <div css={effectsListCss}>
+                {diplomacyEffects.map((effect, i) => (
+                  <EffectDisplay key={i} effect={effect} />
+                ))}
               </div>
             </div>
           </div>
@@ -181,8 +176,8 @@ export const DiscardActionDialog: FC<Props> = ({ onClose }) => {
       </div>
 
       {canUndo() && (
-        <button onClick={() => { undo(); onClose() }} css={cancelButtonCss}>
-          {t('Cancel')}
+        <button onClick={() => undo()} css={cancelButtonCss}>
+          {t('discard-action.cancel')}
         </button>
       )}
       </div>
@@ -190,87 +185,47 @@ export const DiscardActionDialog: FC<Props> = ({ onClose }) => {
   )
 }
 
-// Effect display component - uses same translations as AgentCardHelp
-const EffectDisplay: FC<{ effect: Effect }> = ({ effect }) => {
-  const { t } = useTranslation()
-  const components = { ...HelpTransComponents, badge: HelpTransComponents.leaderSilver }
-
-  switch (effect.type) {
-    case EffectType.WinCredit:
-      return (
-        <div css={effectRowCss}>
-          <span css={bulletCss}>•</span>
-          <Trans i18nKey="help.win-credit" values={{ count: effect.quantity ?? 1 }} components={components} />
-        </div>
-      )
-    case EffectType.WinInfluence: {
-      const count = effect.quantity ?? (effect.pattern ? effect.pattern.reduce((a, b) => a + b, 0) : 1)
-      return (
-        <div css={effectRowCss}>
-          <span css={bulletCss}>•</span>
-          <span>
-            <Trans i18nKey="help.win-influence" values={{ count }} components={components} />
-            <span css={noteCss}> ({t('help.choice')})</span>
-          </span>
-        </div>
-      )
-    }
-    case EffectType.WinZenithium:
-      return (
-        <div css={effectRowCss}>
-          <span css={bulletCss}>•</span>
-          <Trans i18nKey="help.win-zenithium" values={{ count: effect.quantity ?? 1 }} components={components} />
-        </div>
-      )
-    case EffectType.Transfer:
-      return (
-        <div css={effectRowCss}>
-          <span css={bulletCss}>•</span>
-          <span>
-            <Trans i18nKey="help.transfer" values={{ count: effect.quantity ?? 1 }} components={components} />
-            <span css={noteCss}> ({t('help.choice')})</span>
-          </span>
-        </div>
-      )
-    case EffectType.Mobilize:
-      return (
-        <div css={effectRowCss}>
-          <span css={bulletCss}>•</span>
-          <div>
-            <Trans i18nKey="help.mobilize.short" values={{ count: effect.quantity ?? 1 }} components={components} />
-            <div css={effectNoteCss}>{t('help.mobilize.note')}</div>
-          </div>
-        </div>
-      )
-    case EffectType.TakeLeaderBadge:
-      return (
-        <div css={effectRowCss}>
-          <span css={bulletCss}>•</span>
-          <Trans i18nKey="help.take-leader" components={components} />
-        </div>
-      )
-    case EffectType.TakeTechnologyBonusToken:
-      return (
-        <div css={effectRowCss}>
-          <span css={bulletCss}>•</span>
-          <Trans i18nKey="help.take-tech-token" components={components} />
-        </div>
-      )
-    case EffectType.Conditional:
-      return <EffectDisplay effect={effect.effect} />
-    default:
-      return null
-  }
-}
+// Effect display component with bullet point styling
+const EffectDisplay: FC<{ effect: Effect }> = ({ effect }) => (
+  <div css={effectRowCss}>
+    <span css={bulletCss}>•</span>
+    <EffectText effect={effect} />
+  </div>
+)
 
 // ============ DIALOG STYLES ============
 
 const dialogContentCss = css`
+  position: relative;
   min-width: 85em;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   text-align: left;
+  font-size: 1.3em;
+`
+
+const minimizeButtonCss = css`
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  width: 2em;
+  height: 2em;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.3em;
+  background: rgba(0, 0, 0, 0.05);
+  color: #666;
+  font-size: 1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
 `
 
 const headerCss = css`
@@ -333,14 +288,12 @@ const clickableCardCss = (color: string) => css`
   cursor: pointer;
 
   &:hover {
-    transform: translateY(-0.3em);
-    box-shadow: 0 0.5em 2em rgba(0,0,0,0.15);
+    box-shadow: 0 0.3em 1.5em rgba(0,0,0,0.2), 0 0 0 0.2em ${color}40;
     border-color: ${color};
   }
 
   &:active {
-    transform: translateY(-0.1em);
-    box-shadow: 0 0.2em 1em rgba(0,0,0,0.12);
+    box-shadow: 0 0.15em 0.8em rgba(0,0,0,0.15);
   }
 `
 
@@ -455,65 +408,28 @@ const bulletCss = css`
   font-weight: bold;
 `
 
-const noteCss = css`
-  font-style: italic;
-  color: #059669;
-  font-size: 0.9em;
-`
-
-const effectNoteCss = css`
-  font-style: italic;
-  color: #059669;
-  font-size: 0.95em;
-`
-
 const noBonusCss = css`
   font-size: 1.2em;
   color: #999;
 `
 
-// ============ DIPLOMACY GAINS ============
-
-const diplomacyGainsCss = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2em;
-  padding: 1.5em;
-  background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
-  border-radius: 0.6em;
-  border: 1px solid #f9a8d4;
+const levelBlockCss = css`
+  width: 100%;
 `
 
-const diplomacyItemCss = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5em;
+const levelSeparatorCss = css`
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #86efac, transparent);
+  margin: 0.8em 0;
 `
 
-const diplomacyIconCss = css`
-  width: 4em;
-  height: 4em;
-  object-fit: contain;
-`
-
-const diplomacyLabelCss = css`
-  font-size: 1em;
-  color: #9d174d;
-  font-weight: 500;
-`
-
-const diplomacyValueCss = css`
-  font-size: 1.4em;
+const levelHeaderCss = css`
+  font-size: 0.85em;
   font-weight: 700;
-  color: #9d174d;
-`
-
-const plusSignCss = css`
-  font-size: 2.5em;
-  font-weight: 700;
-  color: #db2777;
+  color: #059669;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4em;
 `
 
 // ============ SEPARATOR ============
@@ -548,19 +464,19 @@ const actionLabelCss = (color: string) => css`
 
 const cancelButtonCss = css`
   margin-top: 1em;
-  padding: 0.7em 2em;
-  border: 0.15em solid #ccc;
+  padding: 0.6em 1.5em;
+  border: 0.15em solid #e57373;
   border-radius: 0.5em;
   background: transparent;
-  color: #666;
-  font-size: 1.1em;
+  color: #c62828;
+  font-size: 1.2em;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
 
   &:hover {
-    background: rgba(0,0,0,0.05);
-    border-color: #999;
+    background: #ffebee;
+    border-color: #c62828;
   }
 
   &:active {
@@ -568,3 +484,4 @@ const cancelButtonCss = css`
     box-shadow: 0 0.05em 0.15em rgba(0,0,0,0.1);
   }
 `
+
