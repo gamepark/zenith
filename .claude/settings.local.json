@@ -25,7 +25,26 @@
       "Bash(mgrep:*)",
       "Bash(git add:*)",
       "Bash(git reset:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npm link)",
+      "Bash(yarn link)",
+      "Bash(yarn link:*)",
+      "Bash(yarn -v)",
+      "Bash(yarn linkgp:*)",
+      "Bash(./node_modules/.bin/tsc:*)",
+      "Bash(tsc:*)",
+      "Bash(node node_modules/typescript/lib/tsc.js:*)",
+      "Bash(readlink:*)",
+      "Bash(yarn:*)",
+      "Bash(/c/Program Files/nodejs/yarn --version)",
+      "Bash(corepack yarn:*)",
+      "Bash(bash -c:*)",
+      "Bash(ls:*)",
+      "Bash(npm install:*)",
+      "Bash(echo:*)",
+      "Bash(dir:*)",
+      "Bash(git restore:*)",
+      "Bash(xargs basename:*)"
     ]
   }
 }

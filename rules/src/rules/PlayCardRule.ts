@@ -3,7 +3,7 @@ import { Agent } from '../material/Agent'
 import { Agents } from '../material/Agents'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { getTeamColor } from '../TeamColor'
+import { getAllowedPlanets, getTeamColor } from '../TeamColor'
 import { CreditHelper } from './helper/CreditHelper'
 import { EffectHelper } from './helper/EffectHelper'
 import { InfluenceHelper } from './helper/InfluenceHelper'
@@ -29,8 +29,20 @@ export class PlayCardRule extends PlayerTurnRule {
   placeInInfluence(cards: Material) {
     const influenceHelper = this.influenceHelper
     const playerHelper = this.playerHelper
+    const is4Players = this.game.players.length === 4
+    const allowedPlanets = getAllowedPlanets(this.player)
+
     return cards
-      .filter<Agent>((item) => influenceHelper.getCost(item) <= playerHelper.credits)
+      .filter<Agent>((item) => {
+        // Check credit cost
+        if (influenceHelper.getCost(item) > playerHelper.credits) return false
+        // In 4-player mode, restrict to allowed planets based on player side
+        if (is4Players) {
+          const cardPlanet = Agents[item.id as Agent].influence
+          if (!allowedPlanets.includes(cardPlanet)) return false
+        }
+        return true
+      })
       .moveItems((item) => ({
         type: LocationType.Influence,
         id: Agents[item.id as Agent].influence,
