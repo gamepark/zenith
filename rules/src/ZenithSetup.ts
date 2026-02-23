@@ -10,7 +10,7 @@ import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
 import { Memory } from './rules/Memory'
 import { RuleId } from './rules/RuleId'
-import { TeamColor, teamColors } from './TeamColor'
+import { getTeamColor, TeamColor, teamColors } from './TeamColor'
 import { ZenithOptions } from './ZenithOptions'
 import { ZenithRules } from './ZenithRules'
 
@@ -21,6 +21,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   Rules = ZenithRules
 
   setupMaterial(_options: ZenithOptions) {
+    this.setupTurnOrder()
     this.setupDeck()
     this.setupPlayers()
     this.setupInfluences()
@@ -29,6 +30,13 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     this.setupTeams()
     this.setupInfluenceDisc()
     this.setupBonuses()
+  }
+
+  setupTurnOrder() {
+    this.memorize(Memory.TurnOrder, shuffle(this.game.players))
+    if (this.game.players.length === 4) {
+      this.memorize(Memory.CurrentTeam, sample(teamColors)!)
+    }
   }
 
   setupBonuses() {
@@ -101,8 +109,22 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     }
   }
 
+  get secondTeam(): TeamColor {
+    if (this.game.players.length === 4) {
+      const startingTeam = this.game.memory[Memory.CurrentTeam] as TeamColor
+      return startingTeam === TeamColor.White ? TeamColor.Black : TeamColor.White
+    }
+    const turnOrder = this.game.memory[Memory.TurnOrder] as PlayerId[]
+    return getTeamColor(turnOrder[1])
+  }
+
   getPlanetStartPosition(planet: Influence) {
-    if (planet === Influence.Terra) return -1
+    const direction = this.secondTeam === TeamColor.White ? -1 : 1
+    if (this.game.players.length === 4) {
+      if (planet === Influence.Mars || planet === Influence.Venus) return direction
+    } else {
+      if (planet === Influence.Terra) return direction
+    }
     return 0
   }
 
@@ -195,14 +217,6 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   }
 
   start() {
-    this.memorize(Memory.TurnOrder, shuffle(this.game.players))
-
-    if (this.game.players.length === 4) {
-      // Random team starts first
-      const startingTeam = sample(teamColors)!
-      this.memorize(Memory.CurrentTeam, startingTeam)
-    }
-
     this.startSimultaneousRule(RuleId.Muligan)
   }
 }

@@ -15,6 +15,7 @@ import Terra from '../images/planet/Terra.png'
 import Mars from '../images/planet/Mars.png'
 import Jupiter from '../images/planet/Jupiter.png'
 import { uniqBy } from 'es-toolkit/compat'
+import { useTranslation } from 'react-i18next'
 
 const planetImages: Record<Influence, string> = {
   [Influence.Mercury]: Mercury,
@@ -110,6 +111,7 @@ const CollapsedTeamProgress = ({ team, stats }: { team: TeamColor; stats: TeamSt
 }
 
 const TeamProgress = ({ team, stats, isMe }: TeamProgressProps) => {
+  const { t } = useTranslation()
   const { total, differentPlanets, maxSamePlanet, counts } = stats
 
   const hasAbsolute = maxSamePlanet >= 3
@@ -118,7 +120,7 @@ const TeamProgress = ({ team, stats, isMe }: TeamProgressProps) => {
 
   return (
     <div css={[teamProgressCss, isMe ? myTeamCss : opponentTeamCss, team === TeamColor.White ? whiteTeamCss : blackTeamCss]}>
-      <div css={teamLabelCss}>{isMe ? 'Vous' : 'Adversaire'}</div>
+      <div css={teamLabelCss}>{isMe ? t('victory.you') : t('victory.opponent')}</div>
       <div css={victoryRowCss}>
         <span css={labelCss} title="3 disques sur la même planète">
           3=

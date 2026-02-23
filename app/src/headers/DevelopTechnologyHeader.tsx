@@ -51,7 +51,7 @@ export const DevelopTechnologyHeader = () => {
     return <Trans i18nKey="header.develop" components={{ ...components, develop: <PlayMoveButton move={doIt} />, pass: <PlayMoveButton move={pass} /> }} />
   }
 
-  return <Trans i18nKey="header.develop" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
+  return <Trans i18nKey="header.develop.player" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
 }
 
 const findMoveFor = (rules: DevelopTechnologyRule, moves: MoveItem[], faction: Faction) => {

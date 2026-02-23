@@ -46,15 +46,16 @@ export class GiveInfluenceRule extends EffectRule<GiveInfluenceEffect> {
     if (Math.abs(move.location.x!) === 4) {
       const planet = this.material(MaterialType.InfluenceDisc).index(move.itemIndex)
       const helper = new EndGameHelper(this.game)
+      const opponentTeam = this.opponentTeam
       const moves: MaterialMove[] = []
       moves.push(
         ...planet.moveItems({
           type: LocationType.TeamPlanets,
-          player: this.playerHelper.team
+          player: opponentTeam
         })
       )
 
-      if (helper.willEnd(this.playerHelper.team)) {
+      if (helper.willEnd(opponentTeam)) {
         moves.push(this.endGame())
       } else {
         const item = planet.getItem<Influence>()!

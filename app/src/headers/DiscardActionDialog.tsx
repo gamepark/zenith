@@ -121,7 +121,7 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize }) => {
                   techLevels.map(({ level, effects }, i) => (
                     <div key={level} css={levelBlockCss}>
                       {i > 0 && <div css={levelSeparatorCss} />}
-                      <div css={levelHeaderCss}>Niveau {level}</div>
+                      <div css={levelHeaderCss}>{t('discard-action.level', { level })}</div>
                       {effects.map((effect, j) => (
                         <EffectDisplay key={j} effect={effect} />
                       ))}

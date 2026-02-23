@@ -11,6 +11,7 @@ import { GiveInfluenceHeader } from './GiveInfluenceHeader'
 import { MuliganHeader } from './MuliganHeader'
 import { PickOrderHeader } from './PickOrderHeader'
 import { PlayCardHeader } from './PlayCardHeader'
+import { ResetInfluenceHeader } from './ResetInfluenceHeader'
 import { ShareCardHeader } from './ShareCardHeader'
 import { RefillHeader } from './RefillHeader'
 import { TakeBonusTokenHeader } from './TakeBonusTokenHeader'
@@ -27,6 +28,7 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DiscardAction]: DiscardActionHeader,
   [RuleId.Transfer]: TransfertHeader,
   [RuleId.GiveInfluence]: GiveInfluenceHeader,
+  [RuleId.ResetInfluence]: ResetInfluenceHeader,
   [RuleId.Conditional]: ConditionalHeader,
   [RuleId.DevelopTechnology]: DevelopTechnologyHeader,
   [RuleId.Choice]: ChoiceHeader,
