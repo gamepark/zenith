@@ -105,4 +105,9 @@ const helpDialogOverrides = css`
   .help-open div:has(> .fa-chevron-right) {
     right: -0.6em !important;
   }
+
+  /* Keep undo button above dialog backdrop */
+  button:has(> .fa-rotate-left) {
+    z-index: 1200 !important;
+  }
 `
