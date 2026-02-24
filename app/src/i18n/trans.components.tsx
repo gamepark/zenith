@@ -86,6 +86,8 @@ export const getPlanetForHeader = (influence: Influence) => {
       return HeaderTransComponents.jupiter
     case Influence.Mars:
       return HeaderTransComponents.mars
+    default:
+      return HeaderTransComponents.terra
   }
 }
 
@@ -97,6 +99,8 @@ export const getFactionForHeader = (faction: Faction) => {
       return HeaderTransComponents.humanoid
     case Faction.Robot:
       return HeaderTransComponents.robot
+    default:
+      return HeaderTransComponents.humanoid
   }
 }
 
