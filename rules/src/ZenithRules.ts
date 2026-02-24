@@ -112,9 +112,12 @@ export class ZenithRules
   }
 
   rankPlayers(_playerA: PlayerId, _playerB: PlayerId): number {
+    const teamA = getTeamColor(_playerA)
+    const teamB = getTeamColor(_playerB)
+    if (teamA === teamB) return 0
     const winners = new EndGameHelper(this.game).winningTeam
-    if (getTeamColor(_playerA) === winners) return 1
-    return -1
+    if (teamA === winners) return -1
+    return 1
   }
 
   giveTime(): number {

@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { MaterialHelpProps, Picture, useGame, usePlayerId } from '@gamepark/react-game'
-import { MaterialGame } from '@gamepark/rules-api'
+import { MaterialHelpProps, Picture, PlayMoveButton, useGame, useLegalMoves, usePlayerId } from '@gamepark/react-game'
+import { isMoveItemType, MaterialGame, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
+import { TFunction } from 'i18next'
 import { Agent } from '@gamepark/zenith/material/Agent'
 import { Agents } from '@gamepark/zenith/material/Agents'
 import { ConditionType, Effect, isDoEffect } from '@gamepark/zenith/material/effect/Effect'
@@ -16,6 +17,7 @@ import { getTeamColor } from '@gamepark/zenith/TeamColor'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getColorForInfluence, helpCss, HelpTransComponents } from '../i18n/trans.components'
+import { actionButtonCss, actionSectionCss } from './HelpActionButton'
 import Credit from '../images/credit/Credit1.png'
 import Animod from '../images/icons/animod.jpg'
 import Humanoid from '../images/icons/humanoid.jpg'
@@ -347,9 +349,10 @@ const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }
   }
 }
 
-export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item }) => {
+export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item, itemIndex, closeDialog }) => {
   const { t } = useTranslation()
   const agentId = item.id as Agent | undefined
+  const moves = useLegalMoves<MoveItem>((move: MaterialMove) => isMoveItemType(MaterialType.AgentCard)(move) && move.itemIndex === itemIndex)
 
   // Handle hidden/unknown cards
   if (agentId === undefined || !Agents[agentId]) {
@@ -361,7 +364,32 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
     )
   }
 
-  return <AgentCardHelpContent agentId={agentId} item={item} />
+  return (
+    <>
+      {moves.length > 0 && (
+        <div css={actionSectionCss}>
+          {moves.map((move, i) => (
+            <PlayMoveButton key={i} move={move} onPlay={closeDialog} css={actionButtonCss}>
+              {getActionLabel(t, item, move)}
+            </PlayMoveButton>
+          ))}
+        </div>
+      )}
+      <AgentCardHelpContent agentId={agentId} item={item} />
+    </>
+  )
+}
+
+const getActionLabel = (t: TFunction, item: Partial<MaterialItem>, move: MoveItem): string => {
+  const fromHand = item.location?.type === LocationType.PlayerHand
+  if (fromHand) {
+    if (move.location.type === LocationType.Influence) return t('help.action.recruit')
+    if (move.location.type === LocationType.PlayerHand) return t('help.action.share')
+    return t('help.action.discard')
+  }
+  if (move.location.type === LocationType.AgentDiscard) return t('help.action.exile')
+  if (move.location.type === LocationType.Influence) return t('help.action.transfer')
+  return t('help.action.discard')
 }
 
 const hiddenCardCss = css`

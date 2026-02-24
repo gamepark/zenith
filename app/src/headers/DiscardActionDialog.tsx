@@ -37,12 +37,14 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize }) => {
   const handleTechClick = () => {
     if (techMove) {
       play(techMove)
+      onMinimize()
     }
   }
 
   const handleDiplomacyClick = () => {
     if (diplomacyMove) {
       play(diplomacyMove)
+      onMinimize()
     }
   }
 

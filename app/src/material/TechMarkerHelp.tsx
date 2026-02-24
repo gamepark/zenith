@@ -1,30 +1,42 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { MaterialHelpProps } from '@gamepark/react-game'
+import { MaterialHelpProps, PlayMoveButton, useLegalMoves } from '@gamepark/react-game'
+import { isMoveItemType, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
+import { actionButtonCss, actionSectionCss } from './HelpActionButton'
 
-export const TechMarkerHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item }) => {
+export const TechMarkerHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item, itemIndex, closeDialog }) => {
   const { t } = useTranslation()
   const teamColor = item.id as TeamColor
+  const moves = useLegalMoves<MoveItem>((move: MaterialMove) => isMoveItemType(MaterialType.TechMarker)(move) && move.itemIndex === itemIndex)
 
   return (
-    <div css={containerCss}>
-      <div css={headerCss}>
-        <span css={titleCss}>{t('help.tech-marker.title')}</span>
-        <span css={teamNameCss}>{t(`team.${teamColor}`)}</span>
-      </div>
+    <>
+      {moves.length > 0 && (
+        <div css={actionSectionCss}>
+          <PlayMoveButton move={moves[0]} onPlay={closeDialog} css={actionButtonCss}>
+            {t('help.action.develop')}
+          </PlayMoveButton>
+        </div>
+      )}
+      <div css={containerCss}>
+        <div css={headerCss}>
+          <span css={titleCss}>{t('help.tech-marker.title')}</span>
+          <span css={teamNameCss}>{t(`team.${teamColor}`)}</span>
+        </div>
 
-      <div css={descCss}>{t('help.tech-marker.desc')}</div>
+        <div css={descCss}>{t('help.tech-marker.desc')}</div>
 
-      <div css={infoCss}>
-        <span css={infoLabelCss}>{t('help.tech-marker.position')}</span>
-        <span css={infoTextCss}>{t('help.tech-marker.position.desc')}</span>
+        <div css={infoCss}>
+          <span css={infoLabelCss}>{t('help.tech-marker.position')}</span>
+          <span css={infoTextCss}>{t('help.tech-marker.position.desc')}</span>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

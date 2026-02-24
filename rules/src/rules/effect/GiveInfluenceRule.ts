@@ -55,7 +55,8 @@ export class GiveInfluenceRule extends EffectRule<GiveInfluenceEffect> {
         })
       )
 
-      if (helper.willEnd(opponentTeam)) {
+      const planets = this.material(MaterialType.InfluenceDisc).index([...helper.getTeamPlanet(opponentTeam).getIndexes(), planet.getIndex()])
+      if (helper.willEnd(opponentTeam, planets)) {
         moves.push(this.endGame())
       } else {
         const item = planet.getItem<Influence>()!
