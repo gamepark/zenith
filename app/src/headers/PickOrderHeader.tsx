@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Avatar, PlayMoveButton, useLegalMoves, usePlayerName, useRules } from '@gamepark/react-game'
-import { isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Memory } from '@gamepark/zenith/rules/Memory'
@@ -16,7 +16,7 @@ export const PickOrderHeader = () => {
   const players = rules.game.rule?.players ?? []
   const currentTeam = rules.remind<TeamColor>(Memory.CurrentTeam)
 
-  const legalMoves = useLegalMoves<MaterialMove>((move) => isCustomMoveType(CustomMoveType.PickFirst)(move))
+  const legalMoves = useLegalMoves<CustomMove>((move) => isCustomMoveType(CustomMoveType.PickFirst)(move))
 
   const player1 = legalMoves[0]?.data as PlayerId | undefined
   const player2 = legalMoves[1]?.data as PlayerId | undefined

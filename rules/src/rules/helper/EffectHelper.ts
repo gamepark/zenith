@@ -26,6 +26,7 @@ import {
   WinInfluenceRule,
   WinZenithiumRule
 } from '../effect'
+import { ShareCardRule } from '../effect/ShareCardRule'
 import { SpendZenithiumRule } from '../effect/SpendZenithiumRule'
 import { StealCreditRule } from '../effect/StealCreditRule'
 import { TakeTechnologyBonusTokenRule } from '../effect/TakeTechnologyBonusTokenRule'
@@ -127,5 +128,7 @@ export const getEffectRule = (game: MaterialGame, effect: Effect): EffectRule =>
       return new SpendZenithiumRule(game, effect)
     case EffectType.TakeTechnologyBonusToken:
       return new TakeTechnologyBonusTokenRule(game, effect)
+    case EffectType.ShareCard:
+      return new ShareCardRule(game, effect)
   }
 }

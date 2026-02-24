@@ -7,7 +7,7 @@ import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
 import { Memory } from '../rules/Memory'
 import { RuleId } from '../rules/RuleId'
-import { TeamColor, teamColors } from '../TeamColor'
+import { TeamColor } from '../TeamColor'
 import { ZenithSetup } from '../ZenithSetup'
 
 export const me: PlayerId = 1

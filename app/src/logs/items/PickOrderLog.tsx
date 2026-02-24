@@ -14,7 +14,7 @@ export const PickOrderLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
 
   // Find the player who made the choice (from the rule's players list, the one who is not chosen might be the chooser)
   const rulePlayers = context.game.rule?.players ?? []
-  const chooser = rulePlayers.find(p => p !== chosenPlayer) ?? rulePlayers[0]
+  const chooser = rulePlayers.find((p: PlayerId) => p !== chosenPlayer) ?? rulePlayers[0]
   const chooserName = usePlayerName(chooser)
 
   return (

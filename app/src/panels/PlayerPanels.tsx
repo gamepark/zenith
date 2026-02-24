@@ -45,6 +45,7 @@ export const PlayerPanels = () => {
     }
 
     prevChosenFirst.current = chosenFirst
+    return undefined
   }, [chosenFirst])
 
   // Get leader badge info

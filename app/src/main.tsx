@@ -17,10 +17,7 @@ setupTranslation(translations, { debug: false })
 const theme: Partial<GameTheme> = {
   dialog: {
     backgroundColor: '#f5f0e8',
-    color: '#2d3748',
-    borderRadius: '1.5em',
-    boxShadow: '0 12px 48px rgba(0, 0, 0, 0.25)',
-    border: '3px solid #d4c8b8'
+    color: '#2d3748'
   }
 }
 
