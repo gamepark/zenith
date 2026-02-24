@@ -3,12 +3,14 @@ import { credits } from '../../material/Credit'
 import { StealCreditEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { CustomMoveType } from '../CustomMoveType'
 import { EffectRule } from './index'
 
 export class StealCreditRule extends EffectRule<StealCreditEffect> {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const money = this.creditMoney
+    moves.push(this.customMove(CustomMoveType.StealCreditLog, this.effect.quantity))
     moves.push(
       ...money.moveMoney(
         { type: LocationType.TeamCredit, player: this.opponentTeam },

@@ -5,5 +5,8 @@ export enum CustomMoveType {
   SpendCredit,
   Choice,
   WinCreditLog,
-  PickFirst
+  PickFirst,
+  GiveCreditLog,
+  StealCreditLog,
+  GiveZenithiumLog
 }

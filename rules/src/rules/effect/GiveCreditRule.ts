@@ -11,6 +11,7 @@ export class GiveCreditRule extends EffectRule<GiveCreditEffect> {
     const money = this.creditMoney
     this.memorize(Memory.CurrentEffect, JSON.parse(JSON.stringify(this.effect)))
     this.memorize(Memory.Credit, this.effect.quantity)
+    moves.push(this.customMove(CustomMoveType.GiveCreditLog, this.effect.quantity))
     moves.push(
       ...money.moveMoney(
         { type: LocationType.TeamCredit, player: this.playerHelper.team },

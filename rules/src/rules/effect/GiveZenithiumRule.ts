@@ -2,6 +2,7 @@ import { MaterialMove } from '@gamepark/rules-api'
 import { GiveZenithiumEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { CustomMoveType } from '../CustomMoveType'
 import { Memory } from '../Memory'
 import { EffectRule } from './index'
 
@@ -11,7 +12,7 @@ export class GiveZenithiumRule extends EffectRule<GiveZenithiumEffect> {
     if (moves.length > 0) return moves
     this.memorize(Memory.CurrentEffect, JSON.parse(JSON.stringify(this.effect)))
     this.memorize(Memory.Zenithium, this.effect.quantity)
-
+    moves.push(this.customMove(CustomMoveType.GiveZenithiumLog, this.effect.quantity))
     moves.push(
       ...this.zenithium.moveItems(
         {

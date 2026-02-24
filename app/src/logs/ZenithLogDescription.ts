@@ -17,11 +17,17 @@ import { DiplomacyLog } from './items/DiplomacyLog'
 import { DiscardActionLog } from './items/DiscardActionLog'
 import { DiscardEffectLog } from './items/DiscardEffectLog'
 import { ExileLog } from './items/ExileLog'
+import { GiveCreditLog } from './items/GiveCreditLog'
 import { GiveInfluenceLog } from './items/GiveInfluenceLog'
+import { GiveLeaderBadgeLog } from './items/GiveLeaderBadgeLog'
+import { GiveZenithiumLog } from './items/GiveZenithiumLog'
 import { InfluenceLog } from './items/InfluenceLog'
 import { MobilizeLog } from './items/MobilizeLog'
 import { PickOrderLog } from './items/PickOrderLog'
 import { RecruitLog } from './items/RecruitLog'
+import { ResetInfluenceLog } from './items/ResetInfluenceLog'
+import { ShareCardLog } from './items/ShareCardLog'
+import { StealCreditLog } from './items/StealCreditLog'
 import { TakeLeaderBadgeLog } from './items/TakeLeaderBadgeLog'
 import { TransfertLog } from './items/TransfertLog'
 import { WinBonusLog } from './items/WinBonusLog'
@@ -188,6 +194,72 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
           Component: WinCreditLog,
           css: colorCss(player)
         }
+      }
+    }
+
+    if (isCustomMoveType(CustomMoveType.GiveCreditLog)(move)) {
+      const player = context.game.rule!.player!
+      return {
+        depth: 1,
+        Component: GiveCreditLog,
+        css: colorCss(player)
+      }
+    }
+
+    if (isCustomMoveType(CustomMoveType.StealCreditLog)(move)) {
+      const player = context.game.rule!.player!
+      return {
+        depth: 1,
+        Component: StealCreditLog,
+        css: colorCss(player)
+      }
+    }
+
+    if (isCustomMoveType(CustomMoveType.GiveZenithiumLog)(move)) {
+      const player = context.game.rule!.player!
+      return {
+        depth: 1,
+        Component: GiveZenithiumLog,
+        css: colorCss(player)
+      }
+    }
+
+    if (
+      context.game.rule?.id === RuleId.ResetInfluence &&
+      isMoveItemType(MaterialType.InfluenceDisc)(move) &&
+      move.location.type === LocationType.PlanetBoardInfluenceDiscSpace &&
+      move.location.x === 0
+    ) {
+      const player = context.game.rule.player!
+      return {
+        depth: 1,
+        Component: ResetInfluenceLog,
+        css: colorCss(player)
+      }
+    }
+
+    if (
+      context.game.rule?.id === RuleId.GiveLeaderBadge &&
+      isMoveItemType(MaterialType.LeaderBadgeToken)(move)
+    ) {
+      const player = context.game.rule.player!
+      return {
+        depth: 1,
+        Component: GiveLeaderBadgeLog,
+        css: colorCss(player)
+      }
+    }
+
+    if (
+      context.game.rule?.id === RuleId.ShareCard &&
+      isMoveItemType(MaterialType.AgentCard)(move) &&
+      move.location.type === LocationType.PlayerHand
+    ) {
+      const player = context.game.rule.player!
+      return {
+        depth: 1,
+        Component: ShareCardLog,
+        css: colorCss(player)
       }
     }
 
