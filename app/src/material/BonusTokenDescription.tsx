@@ -1,5 +1,11 @@
-import { TokenDescription } from '@gamepark/react-game'
+/** @jsxImportSource @emotion/react */
+import { faHandBackFist } from '@fortawesome/free-solid-svg-icons/faHandBackFist'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
+import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { Bonus } from '@gamepark/zenith/material/Bonus'
+import { MaterialType } from '@gamepark/zenith/material/MaterialType'
+import { Trans } from 'react-i18next'
 import { BonusTokenHelp } from './BonusTokenHelp'
 import BonusBack from '../images/bonuses/BonusBack.jpg'
 import Exile2OpponentCards from '../images/bonuses/Exile2OpponentCards.jpg'
@@ -16,6 +22,7 @@ export class BonusTokenDescription extends TokenDescription {
   height = 1.5
   width = 2.3
   borderRadius = 0.8
+  menuAlwaysVisible = true
   images = {
     [Bonus.Exile2OpponentCards]: Exile2OpponentCards,
     [Bonus.Mobilize2]: Mobilize2,
@@ -28,6 +35,17 @@ export class BonusTokenDescription extends TokenDescription {
   }
 
   backImage = BonusBack
+
+  getItemMenu(_item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
+    const move = legalMoves.find(m => isMoveItemType(MaterialType.BonusToken)(m) && m.itemIndex === context.index)
+    if (move) {
+      return (
+        <ItemMenuButton move={move} y={-2} x={0} label={<Trans i18nKey="help.action.take-bonus" />}>
+          <FontAwesomeIcon icon={faHandBackFist} />
+        </ItemMenuButton>
+      )
+    }
+  }
 }
 
 export const bonusTokenDescription = new BonusTokenDescription()

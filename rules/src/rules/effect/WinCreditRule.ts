@@ -26,7 +26,7 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
 
   get wonCredit() {
     if (this.effect.quantity) return this.effect.quantity
-    if (this.effect.perLevel1Technology) return this.effect.perLevel1Technology[this.level1Technology - 1]
+    if (this.effect.perLevel1Technology) return this.effect.perLevel1Technology[this.level1Technology - 1] ?? 0
     if (this.effect.factorPerDifferentInfluence) return this.distinctInfluence * this.effect.factorPerDifferentInfluence
     if (this.effect.factorPerDifferentOpponentInfluence) return this.opponentDistinctInfluence * this.effect.factorPerDifferentOpponentInfluence
     return 0
@@ -60,7 +60,7 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
   get level1Technology() {
     return this.material(MaterialType.TechMarker)
       .player(this.playerHelper.team)
-      .location((l) => l.type === LocationType.TechnologyBoardTokenSpace && l.x === 1).length
+      .location((l) => l.type === LocationType.TechnologyBoardTokenSpace && l.x! >= 1).length
   }
 
   setExtraData(_extraData: Record<string, unknown>) {

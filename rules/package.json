@@ -29,5 +29,6 @@
     "@gamepark/rules-api": "~7.2.0",
     "es-toolkit": "^1.43.0",
     "vitest": "^4.0.15"
-  }
+  },
+  "gitHead": "e77b0234033a9852f64ec35ec68c242f10e082c5"
 }

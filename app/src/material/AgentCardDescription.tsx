@@ -1,6 +1,12 @@
+/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { CardDescription, ItemContext } from '@gamepark/react-game'
-import { isMoveItemsAtOnce, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons/faArrowDown'
+import { faBan } from '@fortawesome/free-solid-svg-icons/faBan'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons/faTrashCan'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { isMoveItemsAtOnce, isMoveItemType, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
+import { Trans } from 'react-i18next'
 import { Agent } from '@gamepark/zenith/material/Agent'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
@@ -105,6 +111,7 @@ export class AgentCardDescription extends CardDescription {
   height = 8.9
   width = 5.8
   help = AgentCardHelp
+  menuAlwaysVisible = true
 
   backImage = Back
   images = {
@@ -222,6 +229,33 @@ export class AgentCardDescription extends CardDescription {
     images.push(Humanoid)
     images.push(Robot)
     return images
+  }
+
+  getItemMenu(item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
+    // Only show menu for cards NOT in hand (exile, transfer, discard from influence)
+    if (item.location?.type === LocationType.PlayerHand) return
+
+    const moves = legalMoves.filter(
+      (m): m is MoveItem => isMoveItemType(MaterialType.AgentCard)(m) && m.itemIndex === context.index
+    )
+    if (!moves.length) return
+
+    return (
+      <>
+        {moves.map((move, i) => {
+          const isExile = move.location.type === LocationType.AgentDiscard
+          const isTransfer = move.location.type === LocationType.Influence
+          const icon = isExile ? faBan : isTransfer ? faArrowDown : faTrashCan
+          const labelKey = isExile ? 'help.action.exile' : isTransfer ? 'help.action.transfer' : 'help.action.discard'
+          return (
+            <ItemMenuButton key={i} move={move} angle={i * 50} radius={5}
+              label={<Trans i18nKey={labelKey} />}>
+              <FontAwesomeIcon icon={icon} />
+            </ItemMenuButton>
+          )
+        })}
+      </>
+    )
   }
 }
 
