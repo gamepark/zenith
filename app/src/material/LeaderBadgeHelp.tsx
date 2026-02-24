@@ -4,8 +4,7 @@ import { MaterialHelpProps, Picture } from '@gamepark/react-game'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { FC } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
-import { HelpTransComponents } from '../i18n/trans.components'
+import { useTranslation } from 'react-i18next'
 import LeaderGold from '../images/icons/leader-gold.png'
 import LeaderSilver from '../images/icons/leader-silver.png'
 
@@ -17,21 +16,29 @@ export const LeaderBadgeHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({
     <div css={containerCss}>
       <div css={headerCss}>
         <Picture src={isGold ? LeaderGold : LeaderSilver} css={badgeIconCss} />
-        <span css={titleCss}>{t('help.leader.title')}</span>
+        <div>
+          <div css={titleCss}>{t('help.leader.title')}</div>
+          <div css={subtitleCss}>{isGold ? t('help.leader.side.gold') : t('help.leader.side.silver')}</div>
+        </div>
       </div>
 
       <div css={sectionsCss}>
         <div css={sectionCss}>
           <span css={sectionTitleCss}>{t('help.leader.hand-limit')}</span>
-          <span css={sectionTextCss}>
-            <Trans i18nKey="help.leader.hand-limit.desc" components={HelpTransComponents} />
-          </span>
+          <div css={progressionCss}>
+            <span css={stepCss(!isGold)}>
+              <Picture src={LeaderSilver} css={stepIconCss} />
+              {t('help.leader.step.silver')}
+            </span>
+            <span css={arrowCss}>&rarr;</span>
+            <span css={stepCss(isGold)}>
+              <Picture src={LeaderGold} css={stepIconCss} />
+              {t('help.leader.step.gold')}
+            </span>
+          </div>
         </div>
 
-        <div css={sideCss(isGold)}>
-          <Picture src={isGold ? LeaderGold : LeaderSilver} css={sideIconCss} />
-          <span>{isGold ? t('help.leader.side.gold') : t('help.leader.side.silver')}</span>
-        </div>
+        <p css={descCss}>{t('help.leader.desc')}</p>
       </div>
     </div>
   )
@@ -62,6 +69,11 @@ const titleCss = css`
   color: #1f2937;
 `
 
+const subtitleCss = css`
+  font-size: 0.85em;
+  color: #6b7280;
+`
+
 const sectionsCss = css`
   display: flex;
   flex-direction: column;
@@ -71,7 +83,7 @@ const sectionsCss = css`
 const sectionCss = css`
   display: flex;
   flex-direction: column;
-  gap: 0.2em;
+  gap: 0.4em;
 `
 
 const sectionTitleCss = css`
@@ -81,25 +93,38 @@ const sectionTitleCss = css`
   text-transform: uppercase;
 `
 
-const sectionTextCss = css`
-  font-size: 1em;
-  color: #374151;
-  line-height: 1.4;
-`
-
-const sideCss = (isGold: boolean) => css`
+const progressionCss = css`
   display: flex;
   align-items: center;
   gap: 0.5em;
-  padding: 0.6em;
-  background: ${isGold ? '#fef3c7' : '#f3f4f6'};
-  border-radius: 0.5em;
-  font-weight: 500;
-  color: ${isGold ? '#92400e' : '#4b5563'};
 `
 
-const sideIconCss = css`
-  width: 1.5em;
-  height: 1.5em;
+const stepCss = (active: boolean) => css`
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.3em 0.6em;
+  border-radius: 0.4em;
+  font-size: 0.95em;
+  background: ${active ? '#fef3c7' : '#f3f4f6'};
+  color: ${active ? '#92400e' : '#4b5563'};
+  font-weight: ${active ? 600 : 400};
+`
+
+const stepIconCss = css`
+  width: 1.2em;
+  height: 1.2em;
   object-fit: contain;
+`
+
+const arrowCss = css`
+  color: #9ca3af;
+  font-size: 1.1em;
+`
+
+const descCss = css`
+  font-size: 0.9em;
+  color: #6b7280;
+  line-height: 1.4;
+  margin: 0;
 `

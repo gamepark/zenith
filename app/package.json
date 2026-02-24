@@ -7,7 +7,7 @@
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
   "license": "ISC",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "test": "vitest",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
