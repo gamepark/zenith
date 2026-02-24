@@ -1,4 +1,5 @@
 import { GameProvider, GameTheme, setupTranslation } from '@gamepark/react-game'
+import { ZenithTutorial } from './tutorial/ZenithTutorial'
 import { ZenithOptionsSpec } from '@gamepark/zenith/ZenithOptions'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { ZenithSetup } from '@gamepark/zenith/ZenithSetup'
@@ -35,6 +36,7 @@ createRoot(document.getElementById('root')!).render(
       locators={Locators}
       animations={gameAnimations}
       theme={theme}
+      tutorial={new ZenithTutorial()}
     >
       <App />
     </GameProvider>

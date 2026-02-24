@@ -19,5 +19,7 @@ export enum LocationType {
   InfluenceDiscStock,
   ZenithiumStock,
   CreditStock,
-  BonusDiscard
+  BonusDiscard,
+  AgentCardFaction,
+  DiplomacyBoardAction
 }

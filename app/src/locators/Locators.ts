@@ -2,11 +2,13 @@ import { Locator } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
+import { agentCardFactionLocator } from './AgentCardFactionLocator'
 import { agentDeckLocator } from './AgentDeckLocator'
 import { agentDiscardLocator } from './AgentDiscardLocator'
 import { bonusDiscardLocator } from './BonusDiscardLocator'
 import { bonusStockLocator } from './BonusStockLocator'
 import { creditStockLocator } from './CreditStockLocator'
+import { diplomacyBoardActionLocator } from './DiplomacyBoardActionLocator'
 import { diplomacyBoardLeaderBadgeSpaceLocator } from './DiplomacyBoardLeaderBadgeSpaceLocator'
 import { diplomacyBoardPlaceLocator } from './DiplomacyBoardPlaceLocator'
 import { influenceDiscStockLocator } from './InfluenceDiscStockLocator'
@@ -45,5 +47,7 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.PlanetBoardBonusSpace]: planetBoardBonusSpaceLocator,
   [LocationType.TechnologyBoardBonusSpace]: technologyBoardBonusSpaceLocator,
   [LocationType.BonusTokenStock]: bonusStockLocator,
-  [LocationType.BonusDiscard]: bonusDiscardLocator
+  [LocationType.BonusDiscard]: bonusDiscardLocator,
+  [LocationType.AgentCardFaction]: agentCardFactionLocator,
+  [LocationType.DiplomacyBoardAction]: diplomacyBoardActionLocator
 }
