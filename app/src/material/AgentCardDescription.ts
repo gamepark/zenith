@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { CardDescription, ItemContext } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { isMoveItemsAtOnce, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { Agent } from '@gamepark/zenith/material/Agent'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
@@ -198,6 +198,11 @@ export class AgentCardDescription extends CardDescription {
     [Agent.SecretKali]: SecretKali,
     [Agent.CaptainAndreev]: CaptainAndreev,
     [Agent.MiladyJones]: MiladyJones
+  }
+
+  canDrag(move: MaterialMove, context: ItemContext) {
+    if (isMoveItemsAtOnce(move) && move.location.type === LocationType.AgentDiscard) return false
+    return super.canDrag(move, context)
   }
 
   isFlippedOnTable(item: MaterialItem, context: ItemContext) {

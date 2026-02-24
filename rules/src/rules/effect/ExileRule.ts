@@ -83,12 +83,13 @@ export class ExileRule extends EffectRule<ExileEffect> {
   }
 
   exileMultipleCards() {
-    if (!this.effect.quantities) return []
+    if (!this.effect.quantities || !this.effect.factors) return []
     const allCards = this.cards
 
     const moves: MaterialMove[] = []
 
-    for (const quantity of this.effect.quantities) {
+    for (let i = 0; i < this.effect.quantities.length; i++) {
+      const quantity = this.effect.quantities[i]
       if (allCards.length < quantity) continue
       moves.push(
         allCards

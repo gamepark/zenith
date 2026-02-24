@@ -20,21 +20,34 @@ export const WinInfluenceHeader = () => {
   const activePlayer = rules.getActivePlayer()
   const itsMe = me === activePlayer
   const name = usePlayerName(activePlayer)
-  const source = <EffectSource effectSource={effect.effectSource} />
   const winPlanet = useAnimation<MoveItem>(
     (a: Animation<MaterialMove>) => isMoveItemType(MaterialType.InfluenceDisc)(a.move) && a.move.location.type === LocationType.TeamPlanets
   )
-  const components = { ...HeaderTransComponents, source }
 
   const team = getTeamColor(activePlayer)
+  const source = effect ? <EffectSource effectSource={effect.effectSource} /> : <span />
+  const components = { ...HeaderTransComponents, source }
 
-  if (itsMe) {
-    if (winPlanet && team === getTeamColor(me)) {
-      const item = rules.material(MaterialType.InfluenceDisc).getItem<Influence>(winPlanet.move.itemIndex)
+  // Planet capture animation (effect may already be consumed)
+  if (winPlanet) {
+    const item = rules.material(MaterialType.InfluenceDisc).getItem<Influence>(winPlanet.move.itemIndex)
+    if (itsMe && team === getTeamColor(me)) {
       return (
         <Trans i18nKey="header.win-planet" values={{ team: t(`team.${team}`) }} components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }} />
       )
     }
+    return (
+      <Trans
+        i18nKey="header.win-planet.player"
+        values={{ team: t(`team.${team}`) }}
+        components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }}
+      />
+    )
+  }
+
+  if (!effect) return null
+
+  if (itsMe) {
     if (effect.influence) {
       return (
         <Trans
@@ -46,17 +59,6 @@ export const WinInfluenceHeader = () => {
     }
 
     return <Trans i18nKey="header.influence" components={components} />
-  }
-
-  if (winPlanet) {
-    const item = rules.material(MaterialType.InfluenceDisc).getItem<Influence>(winPlanet.move.itemIndex)
-    return (
-      <Trans
-        i18nKey="header.win-planet.player"
-        values={{ team: t(`team.${team}`) }}
-        components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }}
-      />
-    )
   }
 
   if (effect.influence) {
