@@ -63,25 +63,25 @@ const iconCss = css`
 const titleCss = css`
   font-size: 1.2em;
   font-weight: 700;
-  color: #1f2937;
+  color: #3e3020;
 `
 
 const descCss = css`
   font-size: 0.95em;
-  color: #374151;
+  color: #3e3020;
   line-height: 1.4;
 `
 
 const effectsSectionCss = css`
   padding: 0.6em;
-  background: #f9fafb;
+  background: rgba(212, 135, 42, 0.05);
   border-radius: 0.5em;
 `
 
 const effectTitleCss = css`
   font-size: 0.85em;
   font-weight: 600;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   text-transform: uppercase;
   margin-bottom: 0.4em;
 `
@@ -94,13 +94,13 @@ const effectsCss = css`
 
 const effectCss = css`
   font-size: 0.95em;
-  color: #374151;
+  color: #3e3020;
   padding-left: 0.5em;
   border-left: 2px solid #d1d5db;
 `
 
 const noteCss = css`
   font-size: 0.85em;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   font-style: italic;
 `

@@ -91,7 +91,7 @@ const headerCss = css`
   align-items: center;
   gap: 0.6em;
   padding-bottom: 0.5em;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(212, 135, 42, 0.15);
 `
 
 const factionIconCss = css`
@@ -109,12 +109,12 @@ const headerTextCss = css`
 const titleCss = css`
   font-size: 1.1em;
   font-weight: 700;
-  color: #1f2937;
+  color: #3e3020;
 `
 
 const subtitleCss = css`
   font-size: 0.9em;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
 `
 
 const descCss = css`
@@ -127,7 +127,7 @@ const descCss = css`
 const howCss = css`
   margin: 0;
   font-size: 0.9em;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   font-style: italic;
   line-height: 1.4;
 `
@@ -182,7 +182,7 @@ const levelEffectsCss = css`
   flex-direction: column;
   gap: 0.2em;
   font-size: 0.9em;
-  color: #374151;
+  color: #3e3020;
 `
 
 const effectTextCss = css`

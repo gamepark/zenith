@@ -58,12 +58,12 @@ const containerCss = css`
 const titleCss = css`
   font-size: 1.2em;
   font-weight: 700;
-  color: #1f2937;
+  color: #3e3020;
 `
 
 const descCss = css`
   font-size: 0.95em;
-  color: #374151;
+  color: #3e3020;
   line-height: 1.4;
 `
 
@@ -78,7 +78,7 @@ const planetRowCss = css`
   align-items: center;
   gap: 0.4em;
   padding: 0.3em 0.6em;
-  background: #f3f4f6;
+  background: rgba(212, 135, 42, 0.08);
   border-radius: 0.4em;
   font-size: 0.9em;
 `

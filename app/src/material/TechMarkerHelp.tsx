@@ -56,18 +56,18 @@ const headerCss = css`
 const titleCss = css`
   font-size: 1.1em;
   font-weight: 700;
-  color: #1f2937;
+  color: #3e3020;
 `
 
 const teamNameCss = css`
   font-size: 0.9em;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   text-transform: capitalize;
 `
 
 const descCss = css`
   font-size: 0.95em;
-  color: #374151;
+  color: #3e3020;
   line-height: 1.4;
 `
 
@@ -80,11 +80,11 @@ const infoCss = css`
 const infoLabelCss = css`
   font-size: 0.85em;
   font-weight: 600;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   text-transform: uppercase;
 `
 
 const infoTextCss = css`
   font-size: 0.95em;
-  color: #374151;
+  color: #3e3020;
 `

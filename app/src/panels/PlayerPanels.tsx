@@ -163,7 +163,7 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
             <span>{gpDelta > 0 ? `+${gpDelta}` : gpDelta}</span>
           </div>
         ) : (
-          <div css={timerBadgeCss}>
+          <div css={[timerBadgeCss, !isWhite && timerBlackCss]}>
             <span>⏱</span>
             <PlayerTimer playerId={playerId} css={timerCss} />
           </div>
@@ -250,17 +250,17 @@ const panelCss = css`
 `
 
 const panelWhiteCss = css`
-  background: linear-gradient(145deg, #fff 0%, #f0f0f5 100%);
-  border: 1px solid #d0d0d5;
-  border-left: 4px solid #a0a0a8;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(145deg, #fff 0%, #f5f5fa 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #d4872a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 `
 
 const panelBlackCss = css`
-  background: linear-gradient(145deg, #35353a 0%, #25252a 100%);
-  border: 1px solid #505055;
-  border-left: 4px solid #707078;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(145deg, #38383d 0%, #28282d 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-left: 4px solid #d4872a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 `
 
 const leftSideCss = css`
@@ -296,7 +296,7 @@ const infoCss = css`
 const nameCss = css`
   font-weight: 600;
   font-size: 1.1em;
-  color: #2d3748;
+  color: #2d2d32;
   max-width: 7em;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -304,7 +304,7 @@ const nameCss = css`
 `
 
 const nameBlackCss = css`
-  color: #e8e8ec;
+  color: #e0e0e5;
 `
 
 const statsCss = css`
@@ -312,11 +312,11 @@ const statsCss = css`
   gap: 1em;
   font-size: 1em;
   font-weight: 500;
-  color: #4a5568;
+  color: rgba(45, 45, 50, 0.55);
 `
 
 const statsBlackCss = css`
-  color: #a0aec0;
+  color: rgba(144, 144, 154, 1);
 `
 
 const statCss = css`
@@ -341,13 +341,19 @@ const timerBadgeCss = css`
   display: flex;
   align-items: center;
   gap: 0.3em;
-  background: linear-gradient(135deg, #e8f4fd 0%, #d0e8f8 100%);
-  border: 1px solid #90cdf4;
-  border-radius: 0.4em;
-  padding: 0.45em 0.8em;
+  background: rgba(212, 135, 42, 0.08);
+  border: 1px solid rgba(212, 135, 42, 0.25);
+  border-radius: 0.35em;
+  padding: 0.25em 0.5em;
   font-size: 1.05em;
   font-weight: 700;
-  color: #2b6cb0;
+  color: #d4872a;
+`
+
+const timerBlackCss = css`
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #b0b0b8;
 `
 
 const timerCss = css`
@@ -403,6 +409,6 @@ const activeRingCircleCss = css`
   right: -0.35em;
   bottom: -0.35em;
   border-radius: 50%;
-  background: linear-gradient(to bottom, gold 0%, #28b8ce 100%);
-  animation: ${rotateAnimation} 1s linear infinite;
+  background: conic-gradient(#d4872a, #f0c878, #d4872a);
+  animation: ${rotateAnimation} 1.4s linear infinite;
 `

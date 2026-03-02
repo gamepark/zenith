@@ -82,17 +82,17 @@ const headerCss = css`
 const titleCss = css`
   font-size: 1.1em;
   font-weight: 700;
-  color: #1f2937;
+  color: #3e3020;
 `
 
 const planetNameCss = css`
   font-size: 0.95em;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
 `
 
 const descCss = css`
   font-size: 0.95em;
-  color: #374151;
+  color: #3e3020;
   line-height: 1.4;
 `
 
@@ -125,7 +125,7 @@ const sectionCss = css`
 const sectionTitleCss = css`
   font-size: 0.85em;
   font-weight: 600;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   text-transform: uppercase;
 `
 
@@ -133,7 +133,7 @@ const listCss = css`
   margin: 0;
   padding-left: 1.2em;
   font-size: 0.9em;
-  color: #374151;
+  color: #3e3020;
   line-height: 1.5;
 `
 

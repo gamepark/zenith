@@ -9,14 +9,14 @@ export const actionSectionCss = css`
   flex-wrap: wrap;
   padding: 0.3em 0.5em 0.5em;
   margin: 0 -0.5em 0.5em;
-  border-bottom: 1px solid #e5e7eb;
-  background: #f5f0e8;
+  border-bottom: 1px solid rgba(212, 135, 42, 0.15);
+  background: #f5efe4;
 `
 
 export const actionButtonCss = css`
-  background: #f5f0e8;
-  color: #2d3748;
-  border: 2px solid #d4c8b8;
+  background: linear-gradient(180deg, #f5efe4, #efe7d8);
+  color: #3e3020;
+  border: 1px solid rgba(212, 135, 42, 0.25);
   border-radius: 0.4em;
   padding: 0.35em 0.9em;
   font-weight: 600;
@@ -24,17 +24,17 @@ export const actionButtonCss = css`
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
-  box-shadow: 0 0.05em 0.15em rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0.05em 0.15em rgba(0, 0, 0, 0.08);
 
   &:hover {
-    background: #ebe4d8;
-    border-color: #b8a99a;
-    box-shadow: 0 0.08em 0.25em rgba(0, 0, 0, 0.18);
+    background: linear-gradient(180deg, #efe7d8, #e8dece);
+    border-color: rgba(212, 135, 42, 0.4);
+    box-shadow: 0 0.08em 0.25em rgba(212, 135, 42, 0.15);
   }
 
   &:active {
-    background: #e0d7c9;
-    box-shadow: 0 0.02em 0.05em rgba(0, 0, 0, 0.1);
+    background: #e8dece;
+    box-shadow: 0 0.02em 0.05em rgba(0, 0, 0, 0.06);
     transform: scale(0.97);
   }
 

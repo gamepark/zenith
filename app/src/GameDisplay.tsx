@@ -42,25 +42,6 @@ const navigationCss = css`
   top: auto;
   bottom: 1em;
   gap: 0.4em;
-
-  button {
-    background: rgba(45, 55, 72, 0.7) !important;
-    border: 1px solid rgba(212, 200, 184, 0.5) !important;
-    box-shadow: 0 0.1em 0.4em rgba(0, 0, 0, 0.3) !important;
-    filter: none !important;
-    transition: all 0.15s ease !important;
-
-    &:not(:disabled):hover {
-      background: rgba(45, 55, 72, 0.9) !important;
-      border-color: #d4c8b8 !important;
-      box-shadow: 0 0.15em 0.6em rgba(0, 0, 0, 0.4) !important;
-    }
-
-    &:disabled {
-      opacity: 0.3 !important;
-      border-color: rgba(255, 255, 255, 0.15) !important;
-    }
-  }
 `
 
 const tableBorder = css`

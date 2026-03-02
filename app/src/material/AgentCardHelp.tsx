@@ -403,12 +403,12 @@ const hiddenCardCss = css`
 const hiddenTitleCss = css`
   font-size: 1.1em;
   font-weight: 700;
-  color: #1f2937;
+  color: #3e3020;
 `
 
 const hiddenDescCss = css`
   font-size: 0.95em;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   font-style: italic;
 `
 
@@ -563,7 +563,7 @@ const sectionIconCss = css`
 
 const sectionContentCss = css`
   padding: 0.5em;
-  background: white;
+  background: #faf6ef;
 `
 
 const identityGridCss = css`
@@ -578,15 +578,15 @@ const identityItemCss = css`
   align-items: center;
   gap: 0.25em;
   padding: 0.4em;
-  background: #f8fafc;
+  background: rgba(212, 135, 42, 0.05);
   border-radius: 0.3em;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(212, 135, 42, 0.12);
 `
 
 const identityLabelCss = css`
   font-size: 0.75em;
   font-weight: 600;
-  color: #64748b;
+  color: rgba(62, 48, 32, 0.5);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 `
@@ -596,7 +596,7 @@ const identityValueCss = css`
   align-items: center;
   gap: 0.25em;
   font-weight: 600;
-  color: #1e293b;
+  color: #3e3020;
   font-size: 1.05em;
 `
 
@@ -660,7 +660,7 @@ const effectRowCss = css`
   align-items: baseline;
   gap: 0.3em;
   padding: 0.3em 0;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid rgba(212, 135, 42, 0.08);
 
   &:last-child {
     border-bottom: none;
@@ -681,12 +681,12 @@ const bulletCss = css`
 const effectTextCss = css`
   flex: 1;
   line-height: 1.7;
-  color: #374151;
+  color: #3e3020;
   font-size: 1em;
 `
 
 const noteCss = css`
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   font-style: italic;
   font-size: 0.9em;
 `
@@ -784,8 +784,8 @@ const choiceOrCss = css`
 
 // Compact mode styles
 const compactContainerCss = css`
-  width: 380px;
-  background: white;
+  width: 24em;
+  background: #faf6ef;
   font-size: 14px;
 `
 
@@ -806,6 +806,6 @@ const compactEffectRowCss = css`
   gap: 0.3em;
   padding: 0.2em 0;
   &:not(:last-child) {
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid rgba(212, 135, 42, 0.08);
   }
 `

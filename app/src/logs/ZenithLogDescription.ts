@@ -297,9 +297,9 @@ const getTeamCss = (player: PlayerId) => {
   }
 
   return css`
-    color: black;
-    background-color: white;
-    border: 0.1em solid black;
+    color: #3e3020;
+    background-color: #fffdf8;
+    border: 0.1em solid rgba(212, 135, 42, 0.15);
   `
 }
 

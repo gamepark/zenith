@@ -46,11 +46,11 @@ const containerCss = css`
 const titleCss = css`
   font-size: 1.1em;
   font-weight: 700;
-  color: #1f2937;
+  color: #3e3020;
 `
 
 const descriptionCss = css`
   font-size: 1em;
-  color: #374151;
+  color: #3e3020;
   line-height: 1.5;
 `

@@ -66,12 +66,12 @@ const badgeIconCss = css`
 const titleCss = css`
   font-size: 1.3em;
   font-weight: 700;
-  color: #1f2937;
+  color: #3e3020;
 `
 
 const subtitleCss = css`
   font-size: 0.85em;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
 `
 
 const sectionsCss = css`
@@ -89,7 +89,7 @@ const sectionCss = css`
 const sectionTitleCss = css`
   font-size: 0.9em;
   font-weight: 600;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   text-transform: uppercase;
 `
 
@@ -106,7 +106,7 @@ const stepCss = (active: boolean) => css`
   padding: 0.3em 0.6em;
   border-radius: 0.4em;
   font-size: 0.95em;
-  background: ${active ? '#fef3c7' : '#f3f4f6'};
+  background: ${active ? '#fef3c7' : 'rgba(212, 135, 42, 0.08)'};
   color: ${active ? '#92400e' : '#4b5563'};
   font-weight: ${active ? 600 : 400};
 `
@@ -124,7 +124,7 @@ const arrowCss = css`
 
 const descCss = css`
   font-size: 0.9em;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   line-height: 1.4;
   margin: 0;
 `

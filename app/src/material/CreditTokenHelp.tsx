@@ -89,12 +89,12 @@ const headerCss = css`
 const titleCss = css`
   font-size: 1.1em;
   font-weight: 700;
-  color: #1f2937;
+  color: #3e3020;
 `
 
 const valueCss = css`
   font-size: 0.9em;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
 `
 
 const teamInfoCss = (isWhite: boolean) => css`
@@ -102,9 +102,9 @@ const teamInfoCss = (isWhite: boolean) => css`
   justify-content: space-between;
   align-items: center;
   padding: 0.5em 0.7em;
-  background: ${isWhite ? '#f3f4f6' : '#374151'};
+  background: ${isWhite ? 'rgba(212, 135, 42, 0.08)' : '#3e3020'};
   border-radius: 0.4em;
-  color: ${isWhite ? '#1f2937' : '#f3f4f6'};
+  color: ${isWhite ? '#3e3020' : 'rgba(212, 135, 42, 0.08)'};
 `
 
 const teamLabelCss = css`
@@ -119,7 +119,7 @@ const teamValueCss = css`
 
 const descCss = css`
   font-size: 0.95em;
-  color: #374151;
+  color: #3e3020;
   line-height: 1.4;
 `
 
@@ -132,7 +132,7 @@ const sectionCss = css`
 const sectionTitleCss = css`
   font-size: 0.85em;
   font-weight: 600;
-  color: #6b7280;
+  color: rgba(62, 48, 32, 0.5);
   text-transform: uppercase;
 `
 
@@ -140,6 +140,6 @@ const listCss = css`
   margin: 0;
   padding-left: 1.2em;
   font-size: 0.9em;
-  color: #374151;
+  color: #3e3020;
   line-height: 1.5;
 `

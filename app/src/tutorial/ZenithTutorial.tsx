@@ -29,13 +29,13 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     // ===== INTRODUCTION (steps 0–4) =====
     {
       popup: {
-        text: () => <Trans defaults="tuto.welcome" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.welcome" defaults="Welcome to <bold>Zenith</bold>! Two teams compete for control of 5 planets. Let's learn the basics!" components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.planets" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.planets" defaults="Here are the <bold>5 planets</bold>: Mercury, Venus, Terra, Mars and Jupiter. Each has an influence track that works like a tug of war." components={{ bold: <strong/> }}/>,
         position: { y: -20 }
       },
       focus: (game) => ({
@@ -47,7 +47,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.discs" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.discs" defaults="These <bold>influence discs</bold> move along the tracks. Push a disc all the way to your side to capture it!" components={{ bold: <strong/> }}/>,
         position: { y: -20 }
       },
       focus: (game) => ({
@@ -59,13 +59,13 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.victory" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.victory" defaults='There are <bold>3 ways to win</bold>: capture 3 discs of the same planet (<bold>absolute victory</bold>), 4 discs of different planets (<bold>democratic victory</bold>), or 5 discs total (<bold>popular victory</bold>).' components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.actions" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.actions" defaults="Each turn, play <bold>1 card</bold> from your hand to perform one of 3 actions: <bold>Recruit</bold> an agent, <bold>Develop</bold> a technology, or take <bold>Leadership</bold>." components={{ bold: <strong/> }}/>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -79,7 +79,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     // ===== TURN 1 P1: Recruit Mc4ffr3y (steps 5–8) =====
     {
       popup: {
-        text: () => <Trans defaults="tuto.recruit" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.recruit" defaults="Let's start by <bold>recruiting</bold> an agent! Play <bold>Mc4ffr3y</bold> to your influence zone. This costs credits and gives you influence on Mars." components={{ bold: <strong/> }}/>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -98,7 +98,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.recruit.done" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.recruit.done" defaults="Great! The Mars influence disc has moved toward your side. Recruiting agents is the main way to gain influence on planets." components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       },
       focus: (game) => ({
@@ -110,7 +110,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.end-turn" />,
+        text: () => <Trans i18nKey="tuto.end-turn" defaults="Your turn is over. At the end of each turn, you draw cards back up to your hand limit." />,
         position: { y: -15 }
       },
       move: {}
@@ -119,7 +119,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     // ===== TURN 1 P2: Opponent recruits Bruss0l0 (steps 8–9) =====
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent-turn" />,
+        text: () => <Trans i18nKey="tuto.opponent-turn" defaults="It's your opponent's turn to play..." />,
         position: { y: -15 }
       }
     },
@@ -136,7 +136,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     // ===== TURN 2 P1: Develop Animod tech (steps 10–16) =====
     {
       popup: {
-        text: () => <Trans defaults="tuto.discover-tech" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.discover-tech" defaults="Now let's discover the second action: <bold>Develop a technology</bold>. To do this, you must discard a card from your hand." components={{ bold: <strong/> }}/>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -148,7 +148,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tech-boards" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.tech-boards" defaults="There are <bold>3 technology tracks</bold>, one per faction: Animod, Human, and Robot. Each track has 3 levels with cumulative bonuses." components={{ bold: <strong/> }}/>,
         position: { x: 40 }
       },
       focus: (game) => ({
@@ -158,7 +158,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tech-how" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.tech-how" defaults="To develop a technology, <bold>discard a card</bold> (its faction determines which track), then <bold>pay zenithium</bold> to advance your marker." components={{ bold: <strong/> }}/>,
         position: { x: 40 }
       },
       focus: (game) => ({
@@ -171,7 +171,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tech-discard" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.tech-discard" defaults="Discard <bold>Elisabeth</bold> (Animod faction) to develop Animod technology." components={{ bold: <strong/> }}/>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -195,7 +195,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tech-develop" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.tech-develop" defaults="Now <bold>develop</bold> the Animod technology by advancing your marker. This costs 1 zenithium for level 1." components={{ bold: <strong/> }}/>,
         position: { x: 40 }
       },
       focus: (game) => ({
@@ -214,7 +214,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tech-done" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.tech-done" defaults="You developed Animod technology level 1! Each level grants bonuses, and all lower levels apply again when you advance." components={{ bold: <strong/> }}/>,
         position: { x: 40 }
       },
       focus: (game) => ({
@@ -229,7 +229,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     // ===== TURN 2 P2: Opponent develops Human tech (steps 17–20) =====
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent-turn" />,
+        text: () => <Trans i18nKey="tuto.opponent-turn" defaults="It's your opponent's turn to play..." />,
         position: { y: -15 }
       }
     },
@@ -261,7 +261,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent-tech" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.opponent-tech" defaults="Your opponent developed <bold>Human technology</bold> and gained 1 influence on a planet of their choice." components={{ bold: <strong/> }}/>,
         position: { x: 40 }
       },
       focus: (game) => ({
@@ -276,13 +276,13 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     // ===== TURN 3 P1: Take Leadership (steps 22–28) =====
     {
       popup: {
-        text: () => <Trans defaults="tuto.discover-leadership" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.discover-leadership" defaults="Time for the third action: <bold>Take Leadership</bold> (Diplomacy). This also requires discarding a card." components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.leadership-explain" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.leadership-explain" defaults="The <bold>Diplomacy board</bold> shows the 3 faction effects. Each one gives you the <bold>Leader Badge</bold> plus a faction bonus." components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       },
       focus: () => ({
@@ -296,7 +296,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.leadership-discard" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.leadership-discard" defaults="Discard <bold>Titus</bold> (Animod faction) to activate Animod diplomacy." components={{ bold: <strong/> }}/>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -320,7 +320,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.leadership-activate" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.leadership-activate" defaults="Now <bold>activate the diplomacy</bold> to take the Leader Badge and mobilize 2 agents." components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       },
       focus: () => ({
@@ -339,7 +339,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.leader-badge" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.leader-badge" defaults="You now have the <bold>Leader Badge</bold>! It increases your hand limit: Silver side = 5 cards, Gold side = 6 cards." components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       },
       focus: (game) => ({
@@ -348,7 +348,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.mobilize" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.mobilize" defaults="<bold>Mobilize</bold> means drawing cards and placing them directly in your influence zone — without triggering their effects, but reducing future recruitment costs." components={{ bold: <strong/> }}/>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -361,7 +361,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.draw-5" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.draw-5" defaults="With the Leader Badge (Silver), you now draw up to <bold>5 cards</bold> instead of 4 at the end of your turn." components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       },
       move: {}
@@ -370,7 +370,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     // ===== TURN 3 P2: Opponent recruits LordCreep — Terra captured (steps 30–39) =====
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent-turn" />,
+        text: () => <Trans i18nKey="tuto.opponent-turn" defaults="It's your opponent's turn to play..." />,
         position: { y: -15 }
       }
     },
@@ -395,7 +395,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent-captures" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.opponent-captures" defaults="The opponent has <bold>captured Terra</bold>! Their influence disc reached their control zone and they won this planet's disc." components={{ bold: <strong/> }}/>,
         position: { y: -18 }
       },
       focus: (game) => ({
@@ -407,7 +407,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.bonus-tokens" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.bonus-tokens" defaults="Each planet and technology track has <bold>bonus tokens</bold>. The first team to capture a planet's disc earns that planet's bonus." components={{ bold: <strong/> }}/>,
         position: { y: -20 }
       },
       focus: (game) => ({
@@ -416,7 +416,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent-leader" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.opponent-leader" defaults="The opponent also <bold>took the Leader Badge</bold> from you through a card effect. The badge changes hands throughout the game!" components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       },
       focus: (game) => ({
@@ -425,19 +425,19 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.card-effects" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.card-effects" defaults="Agent cards have many different effects. <bold>Click on any card</bold> during the game to see its effects in detail." components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.victory-recap" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.victory-recap" defaults='Remember: capture <bold>3 same-planet discs</bold>, <bold>4 different-planet discs</bold>, or <bold>5 total discs</bold> to win!' components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.good-luck" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.good-luck" defaults="You now know the basics of <bold>Zenith</bold>! Recruit wisely, develop your technologies, and conquer the planets. Good luck!" components={{ bold: <strong/> }}/>,
         position: { y: -15 }
       }
     }
