@@ -152,7 +152,7 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize }) => {
 
         {/* Diplomacy Option */}
         <div
-          css={[optionCardCss(color), diplomacyMove && clickableCardCss(color)]}
+          css={[optionCardCss(color), diplomacyMove && clickableCardCss(color), !diplomacyMove && disabledCardCss]}
           onClick={handleDiplomacyClick}
         >
           <div css={optionHeaderCss(color)}>
@@ -172,7 +172,11 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize }) => {
           </div>
 
           <div css={optionFooterCss}>
-            <span css={actionLabelCss(color)}>{t('discard-action.diplomacy.button')}</span>
+            {diplomacyMove ? (
+              <span css={actionLabelCss(color)}>{t('discard-action.diplomacy.button')}</span>
+            ) : (
+              <span css={unavailableCss}>{t('discard-action.diplomacy.unavailable')}</span>
+            )}
           </div>
         </div>
       </div>
