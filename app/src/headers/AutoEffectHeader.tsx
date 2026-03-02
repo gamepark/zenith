@@ -23,9 +23,8 @@ export const AutoEffectHeader: FC<AutoEffectHeaderProps> = ({ i18nKey, defaults,
   const itsMe = me === activePlayer
   const name = usePlayerName(activePlayer)
   const { t } = useTranslation()
-  const currentEffect = rules.remind<ExpandedEffect | undefined>(Memory.CurrentEffect as number)
-  const effects = rules.remind<ExpandedEffect[] | undefined>(Memory.Effects as number)
-  const effectSource = currentEffect?.effectSource ?? effects?.[0]?.effectSource
+  const effects = rules.remind<ExpandedEffect[]>(Memory.Effects)
+  const effectSource = effects?.[0]?.effectSource
   const source = effectSource ? <EffectSource effectSource={effectSource} /> : <></>
   const components = { ...HeaderTransComponents, source }
 

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
-import { Avatar, MaterialContext, PlayerTimer, SpeechBubbleDirection, useMaterialContext, usePlayer, usePlayerName, usePlayers, useRules } from '@gamepark/react-game'
+import { Avatar, MaterialContext, PlayerTimer, SpeechBubbleDirection, useMaterialContext, usePlayer, usePlayerName, usePlayerTime, usePlayers, useRules } from '@gamepark/react-game'
 import { Credit } from '@gamepark/zenith/material/Credit'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
@@ -115,6 +115,7 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
 }) => {
   const playerName = usePlayerName(playerId)
   const player = usePlayer(playerId)
+  const playerTime = usePlayerTime(playerId)
   const isWhite = team === TeamColor.White
   const panelRef = useRef<HTMLDivElement>(null)
   const gpDelta = player?.gamePointsDelta
@@ -162,12 +163,12 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
             <span css={gpIconCss}>🏆</span>
             <span>{gpDelta > 0 ? `+${gpDelta}` : gpDelta}</span>
           </div>
-        ) : (
+        ) : playerTime !== undefined ? (
           <div css={[timerBadgeCss, !isWhite && timerBlackCss]}>
             <span>⏱</span>
             <PlayerTimer playerId={playerId} css={timerCss} />
           </div>
-        )}
+        ) : null}
         {hasLeaderBadge && (
           <img
             src={isGoldBadge ? LeaderGoldIcon : LeaderSilverIcon}

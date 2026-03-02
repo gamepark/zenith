@@ -22,10 +22,11 @@ import RobotIcon from '../images/icons/robot.jpg'
 import Zenithium from '../images/zenithium/Zenithium.png'
 
 type Props = {
-  onMinimize: () => void
+  onMinimize?: () => void
+  onChosen?: () => void
 }
 
-export const DiscardActionDialog: FC<Props> = ({ onMinimize }) => {
+export const DiscardActionDialog: FC<Props> = ({ onMinimize, onChosen }) => {
   const { t } = useTranslation()
   const rules = useRules<ZenithRules>()!
   const [undo, canUndo] = useUndo()
@@ -37,14 +38,14 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize }) => {
   const handleTechClick = () => {
     if (techMove) {
       play(techMove)
-      onMinimize()
+      onChosen?.()
     }
   }
 
   const handleDiplomacyClick = () => {
     if (diplomacyMove) {
       play(diplomacyMove)
-      onMinimize()
+      onChosen?.()
     }
   }
 
@@ -83,9 +84,11 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize }) => {
     <ZenithDialog open={true}>
       <div css={dialogContentCss}>
       {/* Minimize button */}
-      <button css={minimizeButtonCss} onClick={onMinimize} title={t('discard-action.minimize')}>
-        −
-      </button>
+      {onMinimize && (
+        <button css={minimizeButtonCss} onClick={onMinimize} title={t('discard-action.minimize')}>
+          −
+        </button>
+      )}
       {/* Header */}
       <div css={headerCss}>
         <Picture src={icon} css={factionIconCss} />

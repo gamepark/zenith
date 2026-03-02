@@ -1,6 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { isCustomMoveType, isMoveItemType } from '@gamepark/rules-api'
+import { MaterialType } from '@gamepark/zenith/material/MaterialType'
+import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { Memory } from '@gamepark/zenith/rules/Memory'
@@ -18,6 +21,10 @@ export const DiscardActionHeader: FC = () => {
   const faction = rules.remind<Faction>(Memory.DiscardFaction)
   const name = usePlayerName(activePlayer)
   const [minimized, setMinimized] = useState(false)
+  const [chosen, setChosen] = useState(false)
+  const hasActionMoves = useLegalMoves(move => isMoveItemType(MaterialType.TechMarker)(move) || isCustomMoveType(CustomMoveType.Diplomacy)(move)).length > 0
+  const effectiveChosen = chosen && !hasActionMoves
+
   const components = {
     ...HeaderTransComponents,
     faction: getFactionForHeader(faction)
@@ -27,12 +34,12 @@ export const DiscardActionHeader: FC = () => {
     return (
       <>
         <Trans i18nKey="header.discard-action.choose" components={components} />
-        {minimized ? (
+        {effectiveChosen ? null : minimized ? (
           <button css={minimizedButtonCss} onClick={() => setMinimized(false)}>
             {t('discard-action.minimized')} 👁
           </button>
         ) : (
-          <DiscardActionDialog onMinimize={() => setMinimized(true)} />
+          <DiscardActionDialog onMinimize={() => setMinimized(true)} onChosen={() => setChosen(true)} />
         )}
       </>
     )
