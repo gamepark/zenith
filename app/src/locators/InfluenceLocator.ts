@@ -1,4 +1,4 @@
-import { isItemContext, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { isWhite } from '@gamepark/zenith/TeamColor'
@@ -7,6 +7,7 @@ import { getMyTeamColor } from './position.utils'
 
 export class InfluenceLocator extends ListLocator {
   parentItemType = MaterialType.PlanetBoard
+  locationDescription = new DropAreaDescription({ width: 5.8, height: 16.1, borderRadius: 0.5 })
   maxCount = 5
   gap = { y: 2 }
   getGap(location: Location, _context: MaterialContext): Partial<Coordinates> {
@@ -50,11 +51,6 @@ export class InfluenceLocator extends ListLocator {
 
   isMyTeam(location: Location, context: MaterialContext) {
     return getMyTeamColor(context) === location.player
-  }
-
-  getLocationDescription(location: Location, context: MaterialContext) {
-    if (isItemContext(context)) return this.generateLocationDescriptionFromDraggedItem(location, context)
-    return
   }
 }
 
