@@ -4,6 +4,7 @@ import { Picture, useLegalMove, useLegalMoves, usePlay, useRules } from '@gamepa
 import { isCustomMoveType, isMoveItemTypeAtOnce, MaterialMove, MoveItemsAtOnce } from '@gamepark/rules-api'
 import { Agent } from '@gamepark/zenith/material/Agent'
 import { ExileEffect } from '@gamepark/zenith/material/effect/Effect'
+import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
@@ -22,7 +23,7 @@ type Props = {
 
 export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
   const { t } = useTranslation()
-  const { conditionEffect } = useDoConditionHeaderContext<ExileEffect>()
+  const { conditionEffect, resultingEffect } = useDoConditionHeaderContext<ExileEffect>()
   const rules = useRules<ZenithRules>()!
   const play = usePlay()
 
@@ -40,7 +41,9 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
     .sort(item => -item.location.x!)
   const availableCount = influenceCards.length
 
-  // Max gain based on disc position on the tug-of-war track
+  const isZenithiumReward = resultingEffect.type === EffectType.WinZenithium
+
+  // Max gain based on disc position on the tug-of-war track (only for influence rewards)
   const disc = rules.material(MaterialType.InfluenceDisc)
     .location(LocationType.PlanetBoardInfluenceDiscSpace)
     .id(influence)
@@ -58,7 +61,7 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
     .map((quantity, i) => ({
       quantity,
       factor: factors[i],
-      effectiveGain: Math.min(factors[i], maxGain),
+      effectiveGain: isZenithiumReward ? factors[i] : Math.min(factors[i], maxGain),
       move: exileMoves.find(m => m.indexes.length === quantity)
     }))
     .filter(opt => !!opt.move)
@@ -100,7 +103,9 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
               >
                 {/* Reward header */}
                 <div css={optionHeaderCss(color)}>
-                  <span css={optionTitleCss}>{t('exile-dialog.influence-gain', { count: effectiveGain })}</span>
+                  <span css={optionTitleCss}>
+                    {t(resultingEffect.type === EffectType.WinZenithium ? 'exile-dialog.zenithium-gain' : 'exile-dialog.influence-gain', { count: effectiveGain })}
+                  </span>
                 </div>
 
                 <div css={optionContentCss}>
