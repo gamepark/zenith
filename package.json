@@ -29,8 +29,5 @@
     "linkgp": "yarn link ../rules-api ../react-client ../react-game -r",
     "unlinkgp": "yarn unlink ../react-game ../react-client ../rules-api"
   },
-  "packageManager": "yarn@4.9.4",
-  "resolutions": {
-    "@gamepark/react-game": "portal:../react-game"
-  }
+  "packageManager": "yarn@4.9.4"
 }

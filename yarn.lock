@@ -813,9 +813,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@portal:../react-game::locator=root-workspace-0b6124%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@gamepark/react-game@portal:../react-game::locator=root-workspace-0b6124%40workspace%3A."
+"@gamepark/react-game@npm:~7.5.0":
+  version: 7.5.0
+  resolution: "@gamepark/react-game@npm:7.5.0"
   dependencies:
     "@datadog/browser-logs": "npm:^6.28.1"
     "@dnd-kit/modifiers": "npm:^9.0.0"
@@ -849,8 +849,9 @@ __metadata:
     react-dom: 19.x
     react-i18next: 16.x
     react-redux: 9.x
+  checksum: 10c0/ee3d725017fb8a8e418cc8267e8332cdf15c0b585451e167d486d1e9155c670cde3303e5c4fc35ce232ce5a121fa060e19044d404991cae36c91d2cca8c7ddbb
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@gamepark/rules-api@npm:~7.5.0":
   version: 7.5.0
