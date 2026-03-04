@@ -4,6 +4,7 @@ import { ConditionalEffect, ConditionType, ExpandedEffect, SpendCreditEffect } f
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Memory } from '@gamepark/zenith/rules/Memory'
+import { Fragment } from 'react'
 import { Trans } from 'react-i18next'
 import { HeaderTransComponents } from '../../i18n/trans.components'
 import { EffectSource } from '../EffectSource'
@@ -42,13 +43,13 @@ export const SpendCreditHeader = () => {
             {quantities.map((quantity) => {
               const move = spendCredits.find((move) => move.data === quantity)
               return (
-                <>
+                <Fragment key={quantity}>
                   <PlayMoveButton move={move} css={headerPictureCss}>
                     {quantity}
                     {HeaderTransComponents.credit}
                   </PlayMoveButton>
                   &nbsp;
-                </>
+                </Fragment>
               )
             })}
           </>
