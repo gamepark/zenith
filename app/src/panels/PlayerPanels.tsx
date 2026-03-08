@@ -218,12 +218,18 @@ const getPanelPosition = (player: PlayerId, context: MaterialContext) => {
 
 const topLeftCss = css`
   left: 1em;
-  top: 6em;
+  top: 5.3em;
+  @media (max-width: 1200px) {
+    top: 4.5em;
+  }
 `
 
 const topRightCss = css`
   right: 1em;
-  top: 6em;
+  top: 5.3em;
+  @media (max-width: 1200px) {
+    top: 4.5em;
+  }
 `
 
 const bottomLeftCss = css`
@@ -241,13 +247,17 @@ const bottomRightCss = css`
 const panelCss = css`
   position: absolute;
   z-index: 100;
-  font-size: 1.5em;
+  font-size: 1.7em;
   width: 22em;
   padding: 0.9em;
   border-radius: 0.7em;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 1200px) {
+    font-size: 2em;
+  }
 `
 
 const panelWhiteCss = css`
@@ -311,7 +321,7 @@ const nameBlackCss = css`
 const statsCss = css`
   display: flex;
   gap: 1em;
-  font-size: 1em;
+  font-size: 1.15em;
   font-weight: 500;
   color: rgba(45, 45, 50, 0.55);
 `
@@ -327,8 +337,8 @@ const statCss = css`
 `
 
 const iconCss = css`
-  width: 1.3em;
-  height: 1.3em;
+  width: 1.5em;
+  height: 1.5em;
   object-fit: contain;
 `
 
