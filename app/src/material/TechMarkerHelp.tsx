@@ -7,37 +7,44 @@ import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { actionButtonCss, actionSectionCss } from './HelpActionButton'
+import { actionButtonCss, actionSectionCss, CollapsibleDetails } from './HelpActionButton'
 
 export const TechMarkerHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item, itemIndex, closeDialog }) => {
   const { t } = useTranslation()
   const teamColor = item.id as TeamColor
   const moves = useLegalMoves<MoveItem>((move: MaterialMove) => isMoveItemType(MaterialType.TechMarker)(move) && move.itemIndex === itemIndex)
 
-  return (
-    <>
-      {moves.length > 0 && (
+  const content = (
+    <div css={containerCss}>
+      <div css={headerCss}>
+        <span css={titleCss}>{t('help.tech-marker.title')}</span>
+        <span css={teamNameCss}>{t(`team.${teamColor}`)}</span>
+      </div>
+
+      <div css={descCss}>{t('help.tech-marker.desc')}</div>
+
+      <div css={infoCss}>
+        <span css={infoLabelCss}>{t('help.tech-marker.position')}</span>
+        <span css={infoTextCss}>{t('help.tech-marker.position.desc')}</span>
+      </div>
+    </div>
+  )
+
+  if (moves.length > 0) {
+    return (
+      <CollapsibleDetails actions={
         <div css={actionSectionCss}>
           <PlayMoveButton move={moves[0]} onPlay={closeDialog} css={actionButtonCss}>
             {t('help.action.develop')}
           </PlayMoveButton>
         </div>
-      )}
-      <div css={containerCss}>
-        <div css={headerCss}>
-          <span css={titleCss}>{t('help.tech-marker.title')}</span>
-          <span css={teamNameCss}>{t(`team.${teamColor}`)}</span>
-        </div>
+      }>
+        {content}
+      </CollapsibleDetails>
+    )
+  }
 
-        <div css={descCss}>{t('help.tech-marker.desc')}</div>
-
-        <div css={infoCss}>
-          <span css={infoLabelCss}>{t('help.tech-marker.position')}</span>
-          <span css={infoTextCss}>{t('help.tech-marker.position.desc')}</span>
-        </div>
-      </div>
-    </>
-  )
+  return content
 }
 
 const containerCss = css`

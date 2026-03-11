@@ -10,11 +10,7 @@ import { RuleId } from '../RuleId'
 
 export class TechnologyBoardRule extends PlayerTurnRule {
   getPlayerMoves() {
-    const marker = this.marker
-    const item = marker.getItem()!
-    if (item.location.x! >= 5) return []
-    const zenithiumCost = item.location.x! + 1
-    if (new PlayerHelper(this.game, this.player).zenithium < zenithiumCost) return []
+    if (!new PlayerHelper(this.game, this.player).canDevelopTechnology(this.faction)) return []
     return this.marker.moveItems((item) => ({ ...item.location, x: item.location.x! + 1 }))
   }
 

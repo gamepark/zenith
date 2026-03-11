@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { MaterialHelpProps, Picture, PlayMoveButton, useGame, useLegalMoves, usePlayerId } from '@gamepark/react-game'
-import { isMoveItemType, MaterialGame, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, isMoveItemType, MaterialGame, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { TFunction } from 'i18next'
 import { Agent } from '@gamepark/zenith/material/Agent'
 import { Agents } from '@gamepark/zenith/material/Agents'
@@ -11,13 +11,14 @@ import { Faction } from '@gamepark/zenith/material/Faction'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
+import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { InfluenceHelper } from '@gamepark/zenith/rules/helper/InfluenceHelper'
 import { getTeamColor } from '@gamepark/zenith/TeamColor'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getColorForInfluence, helpCss, HelpTransComponents } from '../i18n/trans.components'
-import { actionButtonCss, actionSectionCss } from './HelpActionButton'
+import { actionButtonCss, actionSectionCss, CollapsibleDetails } from './HelpActionButton'
 import Credit from '../images/credit/Credit1.png'
 import Animod from '../images/icons/animod.jpg'
 import Humanoid from '../images/icons/humanoid.jpg'
@@ -352,7 +353,12 @@ const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }
 export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item, itemIndex, closeDialog }) => {
   const { t } = useTranslation()
   const agentId = item.id as Agent | undefined
-  const moves = useLegalMoves<MoveItem>((move: MaterialMove) => isMoveItemType(MaterialType.AgentCard)(move) && move.itemIndex === itemIndex)
+  const moves = useLegalMoves<MoveItem>((move: MaterialMove) =>
+    isMoveItemType(MaterialType.AgentCard)(move) && move.itemIndex === itemIndex && move.location.type !== LocationType.AgentDiscard
+  )
+  const discardForTech = useLegalMoves<CustomMove>((move: MaterialMove) => isCustomMoveType(CustomMoveType.DiscardForTech)(move) && move.data === itemIndex)
+  const discardForDiplomacy = useLegalMoves<CustomMove>((move: MaterialMove) => isCustomMoveType(CustomMoveType.DiscardForDiplomacy)(move) && move.data === itemIndex)
+  const hasActions = moves.length > 0 || discardForTech.length > 0 || discardForDiplomacy.length > 0
 
   // Handle hidden/unknown cards
   if (agentId === undefined || !Agents[agentId]) {
@@ -364,20 +370,37 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
     )
   }
 
-  return (
-    <>
-      {moves.length > 0 && (
-        <div css={actionSectionCss}>
-          {moves.map((move, i) => (
-            <PlayMoveButton key={i} move={move} onPlay={closeDialog} css={actionButtonCss}>
-              {getActionLabel(t, item, move)}
-            </PlayMoveButton>
-          ))}
-        </div>
+  const actions = (
+    <div css={actionSectionCss}>
+      {moves.map((move, i) => (
+        <PlayMoveButton key={i} move={move} onPlay={closeDialog} css={actionButtonCss}>
+          {getActionLabel(t, item, move)}
+        </PlayMoveButton>
+      ))}
+      {discardForTech.length > 0 && (
+        <PlayMoveButton move={discardForTech[0]} onPlay={closeDialog} css={actionButtonCss}>
+          {t('help.action.develop')}
+        </PlayMoveButton>
       )}
-      <AgentCardHelpContent agentId={agentId} item={item} />
-    </>
+      {discardForDiplomacy.length > 0 && (
+        <PlayMoveButton move={discardForDiplomacy[0]} onPlay={closeDialog} css={actionButtonCss}>
+          {t('help.action.diplomacy', 'Diplomacy')}
+        </PlayMoveButton>
+      )}
+    </div>
   )
+
+  const content = <AgentCardHelpContent agentId={agentId} item={item} />
+
+  if (hasActions) {
+    return (
+      <CollapsibleDetails actions={actions}>
+        {content}
+      </CollapsibleDetails>
+    )
+  }
+
+  return content
 }
 
 const getActionLabel = (t: TFunction, item: Partial<MaterialItem>, move: MoveItem): string => {
@@ -523,7 +546,7 @@ export const AgentCardHelpContent: FC<AgentCardHelpContentProps> = ({ agentId, c
 }
 
 const containerCss = css`
-  min-width: 24em;
+  width: 100%;
   margin-right: 0.5em;
   display: flex;
   flex-direction: column;

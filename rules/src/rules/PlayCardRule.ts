@@ -1,10 +1,11 @@
-import { isMoveItemType, isStartPlayerTurn, isStartRule, ItemMove, Material, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, isMoveItemType, isStartPlayerTurn, isStartRule, ItemMove, Material, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { Agent } from '../material/Agent'
 import { Agents } from '../material/Agents'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { getAllowedPlanets, getTeamColor } from '../TeamColor'
 import { CreditHelper } from './helper/CreditHelper'
+import { CustomMoveType } from './CustomMoveType'
 import { EffectHelper } from './helper/EffectHelper'
 import { InfluenceHelper } from './helper/InfluenceHelper'
 import { PlayerHelper } from './helper/PlayerHelper'
@@ -23,6 +24,16 @@ export class PlayCardRule extends PlayerTurnRule {
     const hand = this.hand
     moves.push(...this.discardAgents(hand))
     moves.push(...this.placeInInfluence(hand))
+    const playerHelper = this.playerHelper
+    for (const index of hand.getIndexes()) {
+      const item = hand.getItem<Agent>(index)
+      if (item.id !== undefined) {
+        if (playerHelper.canDevelopTechnology(Agents[item.id].faction)) {
+          moves.push(this.customMove(CustomMoveType.DiscardForTech, index))
+        }
+      }
+      moves.push(this.customMove(CustomMoveType.DiscardForDiplomacy, index))
+    }
     return moves
   }
 
@@ -58,6 +69,21 @@ export class PlayCardRule extends PlayerTurnRule {
 
   get creditHelper() {
     return new CreditHelper(this.game, this.player)
+  }
+
+  onCustomMove(move: CustomMove) {
+    if (isCustomMoveType(CustomMoveType.DiscardForTech)(move) || isCustomMoveType(CustomMoveType.DiscardForDiplomacy)(move)) {
+      const card = this.material(MaterialType.AgentCard).index(move.data)
+      const item = card.getItem<Agent>()!
+      const agent = Agents[item.id]
+      this.memorize(Memory.DiscardFaction, agent.faction)
+      this.forget(Memory.TeamFirst)
+      return [
+        card.moveItem({ type: LocationType.AgentDiscard }),
+        this.startRule(RuleId.DiscardAction)
+      ]
+    }
+    return []
   }
 
   afterItemMove(move: ItemMove) {

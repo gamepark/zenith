@@ -9,7 +9,7 @@ import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EffectText } from '../components/EffectText'
-import { actionButtonCss, actionSectionCss } from './HelpActionButton'
+import { actionButtonCss, actionSectionCss, CollapsibleDetails } from './HelpActionButton'
 
 export const BonusTokenHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item, itemIndex, closeDialog }) => {
   const { t } = useTranslation()
@@ -17,23 +17,30 @@ export const BonusTokenHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ 
   const bonusEffect = Bonuses[bonusId]?.effect
   const moves = useLegalMoves<MoveItem>((move: MaterialMove) => isMoveItemType(MaterialType.BonusToken)(move) && move.itemIndex === itemIndex)
 
-  return (
-    <>
-      {moves.length > 0 && (
+  const content = (
+    <div css={containerCss}>
+      <div css={titleCss}>{t('help.bonus.title')}</div>
+      <div css={descriptionCss}>
+        {bonusEffect && <EffectText effect={bonusEffect} />}
+      </div>
+    </div>
+  )
+
+  if (moves.length > 0) {
+    return (
+      <CollapsibleDetails actions={
         <div css={actionSectionCss}>
           <PlayMoveButton move={moves[0]} onPlay={closeDialog} css={actionButtonCss}>
             {t('help.action.take-bonus')}
           </PlayMoveButton>
         </div>
-      )}
-      <div css={containerCss}>
-        <div css={titleCss}>{t('help.bonus.title')}</div>
-        <div css={descriptionCss}>
-          {bonusEffect && <EffectText effect={bonusEffect} />}
-        </div>
-      </div>
-    </>
-  )
+      }>
+        {content}
+      </CollapsibleDetails>
+    )
+  }
+
+  return content
 }
 
 const containerCss = css`
