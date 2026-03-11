@@ -98,7 +98,6 @@ export class InfluenceDiscDescription extends TokenDescription {
       <>
         {allSorted.map(({ move, gaining }, i) => {
           const deltaY = getYDeltaEm(item.location.x!, move.location.x!, isWhite)
-          const quantity = Math.abs(move.location.x! - item.location.x!)
           return (
             <ItemMenuButton key={i} move={move} x={0} y={deltaY}
               label={<Trans i18nKey="help.action.influence" />}>
