@@ -202,7 +202,7 @@ const getPanelPosition = (player: PlayerId, context: MaterialContext) => {
 
   if (is2Players) {
     const itsMe = (context.player ?? context.rules.players[0]) === player
-    return itsMe ? bottomRightCss : topLeftCss
+    return itsMe ? bottomLeftCss : topLeftCss
   }
 
   if (itsMyTeam) {
