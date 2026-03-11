@@ -4,7 +4,7 @@ import { css } from '@emotion/react'
 import { GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { FC } from 'react'
 import { AgentCardHoverPreview } from './components/AgentCardHoverPreview'
-import { DevCardViewer } from './components/DevCardViewer'
+import { DevToolsHub } from './components/DevToolsHub'
 import { PlayerPanels } from './panels/PlayerPanels'
 import { VictoryProgressPanel } from './panels/VictoryProgressPanel'
 
@@ -30,7 +30,7 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
         <GameTableNavigation css={navigationCss} />
         <PlayerPanels />
         <VictoryProgressPanel />
-        {process.env.NODE_ENV === 'development' && <DevCardViewer />}
+        {process.env.NODE_ENV === 'development' && <DevToolsHub />}
       </GameTable>
       <AgentCardHoverPreview />
     </>
@@ -38,10 +38,41 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
 }
 
 const navigationCss = css`
-  left: 1em;
   top: auto;
-  bottom: 1em;
-  gap: 0.4em;
+  bottom: 16px;
+  left: ${process.env.NODE_ENV === 'development' ? '64px' : '16px'};
+  gap: 6px;
+  z-index: 100;
+
+  button {
+    font-size: 14px !important;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(212, 135, 42, 0.4) !important;
+    background: linear-gradient(145deg, #1c1810, #2a2014) !important;
+    color: #d4872a !important;
+    filter: none !important;
+    transition: all 0.15s !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+    &:not(:disabled):hover {
+      background: linear-gradient(145deg, #2a2014, #3a2c1a) !important;
+      border-color: rgba(212, 135, 42, 0.7) !important;
+      transform: none !important;
+    }
+
+    &:not(:disabled):active {
+      background: rgba(212, 135, 42, 0.2) !important;
+      transform: none !important;
+    }
+
+    &:disabled {
+      color: #5a4d3a !important;
+      border-color: rgba(212, 135, 42, 0.15) !important;
+      opacity: 0.6;
+    }
+  }
 `
 
 const tableBorder = css`

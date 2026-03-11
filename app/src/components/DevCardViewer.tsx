@@ -94,9 +94,9 @@ const hasEffectType = (data: AgentCharacteristics, type: EffectType): boolean =>
   })
 }
 
-export const DevCardViewer: FC = () => {
+export const DevCardViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
   const { t } = useTranslation()
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(!!onClose)
   const [search, setSearch] = useState('')
   const [factionFilter, setFactionFilter] = useState<Faction | 0>(0)
   const [planetFilter, setPlanetFilter] = useState<Influence | 0>(0)
@@ -186,6 +186,11 @@ export const DevCardViewer: FC = () => {
 
   const validatedCount = validated.size
 
+  const handleClose = useCallback(() => {
+    if (onClose) onClose()
+    else setIsOpen(false)
+  }, [onClose])
+
   if (!isOpen) {
     return createPortal(
       <button css={fabCss} onClick={() => setIsOpen(true)}>
@@ -227,7 +232,7 @@ export const DevCardViewer: FC = () => {
                   css={rangeInputCss}
                 />
               </label>
-              <button css={closeXCss} onClick={() => setIsOpen(false)}>&times;</button>
+              <button css={closeXCss} onClick={handleClose}>&times;</button>
             </div>
           </div>
 
