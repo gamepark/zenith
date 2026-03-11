@@ -14,7 +14,6 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { getColorForInfluence } from '../i18n/trans.components'
 import { AgentCardHelpContent } from '../material/AgentCardHelp'
-import { EffectText } from './EffectText'
 import { CursorTooltip } from './CursorTooltip'
 
 const STORAGE_KEY = 'zenith-validated-agents'
@@ -93,20 +92,6 @@ const hasEffectType = (data: AgentCharacteristics, type: EffectType): boolean =>
     }
     return false
   })
-}
-
-const CardEffects: FC<{ agent: Agent }> = ({ agent }) => {
-  const data = Agents[agent]
-  return (
-    <div css={effectsListCss}>
-      {data.effects.map((effect, i) => (
-        <div key={i} css={effectLineCss}>
-          <span css={effectBulletCss} />
-          <span><EffectText effect={effect} /></span>
-        </div>
-      ))}
-    </div>
-  )
 }
 
 export const DevCardViewer: FC = () => {
@@ -283,7 +268,7 @@ export const DevCardViewer: FC = () => {
             <button css={resetCss} onClick={resetFilters}>Reset</button>
           </div>
 
-          <div css={hintBarCss}>Right-click to toggle validation</div>
+          <div css={hintBarCss}>Click card to open help popup. Hover for quick preview.</div>
         </div>
 
         {/* Card grid */}
@@ -317,6 +302,7 @@ export const DevCardViewer: FC = () => {
 
                   <div css={infoPanelCss}>
                     <div css={agentNameCss} onClick={() => handleClick(agent)}>
+                      <span css={agentIdCss}>#{agent}</span>
                       {t(`agent.${agent}`)}
                     </div>
                     <div css={tagRowCss}>
@@ -327,8 +313,14 @@ export const DevCardViewer: FC = () => {
                         {planetLabels[data.influence]}
                       </span>
                       <span css={costTagCss}>{data.cost} cr.</span>
+                      <span css={effectCountTagCss}>{data.effects.length} {data.effects.length > 1 ? 'effects' : 'effect'}</span>
                     </div>
-                    <CardEffects agent={agent} />
+                    <button
+                      css={[validateBtnCss, isOk && validateBtnOkCss]}
+                      onClick={e => { e.stopPropagation(); toggleValidation(agent) }}
+                    >
+                      {isOk ? '\u2713 Validated' : 'Mark as OK'}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -583,7 +575,7 @@ const hintBarCss = css`
 
 const gridCss = css`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 14px;
   padding-top: 20px;
 `
@@ -699,7 +691,17 @@ const agentNameCss = css`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
   &:hover { color: #d4872a; }
+`
+
+const agentIdCss = css`
+  font-size: 10px;
+  font-weight: 600;
+  color: #a0927e;
+  flex-shrink: 0;
 `
 
 const tagRowCss = css`
@@ -728,31 +730,48 @@ const costTagCss = css`
   background: rgba(212, 135, 42, 0.08);
 `
 
-// ── Effects list ──
-
-const effectsListCss = css`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-top: 3px;
+const effectCountTagCss = css`
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: #6b5d4a;
+  border: 1px solid rgba(107, 93, 74, 0.2);
+  background: rgba(107, 93, 74, 0.05);
 `
 
-const effectLineCss = css`
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-  font-size: 13px;
-  color: #3e3020;
-  line-height: 1.55;
+// ── Validate button ──
+
+const validateBtnCss = css`
+  margin-top: auto;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 5px;
+  border: 1px solid rgba(180, 160, 130, 0.4);
+  background: rgba(255, 255, 255, 0.5);
+  color: #6b5d4a;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  align-self: flex-start;
+  &:hover {
+    background: rgba(5, 150, 105, 0.1);
+    border-color: rgba(5, 150, 105, 0.3);
+    color: #059669;
+  }
 `
 
-const effectBulletCss = css`
-  flex-shrink: 0;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #d4872a;
-  margin-top: 0.5em;
+const validateBtnOkCss = css`
+  background: rgba(5, 150, 105, 0.1);
+  border-color: rgba(5, 150, 105, 0.3);
+  color: #059669;
+  &:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #dc2626;
+  }
 `
 
 // ── Tooltip ──
