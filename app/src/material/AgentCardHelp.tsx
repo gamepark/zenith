@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { MaterialHelpProps, Picture, PlayMoveButton, useGame, useLegalMoves, usePlayerId } from '@gamepark/react-game'
+import { MaterialHelpProps, Picture, PlayMoveButton, useGame, useLegalMoves, usePlayerId, useRules } from '@gamepark/react-game'
 import { CustomMove, isCustomMoveType, isMoveItemType, MaterialGame, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { TFunction } from 'i18next'
 import { Agent } from '@gamepark/zenith/material/Agent'
@@ -12,6 +12,7 @@ import { Influence } from '@gamepark/zenith/material/Influence'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
+import { RuleId } from '@gamepark/zenith/rules/RuleId'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { InfluenceHelper } from '@gamepark/zenith/rules/helper/InfluenceHelper'
 import { getTeamColor } from '@gamepark/zenith/TeamColor'
@@ -373,12 +374,17 @@ const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }
 export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item, itemIndex, closeDialog }) => {
   const { t } = useTranslation()
   const agentId = item.id as Agent | undefined
+  const rules = useRules()
+  const isMulligan = rules?.game.rule?.id === RuleId.Muligan
   const moves = useLegalMoves<MoveItem>((move: MaterialMove) =>
     isMoveItemType(MaterialType.AgentCard)(move) && move.itemIndex === itemIndex && move.location.type !== LocationType.AgentDiscard
   )
+  const mulliganDiscard = useLegalMoves<MoveItem>((move: MaterialMove) =>
+    isMulligan && isMoveItemType(MaterialType.AgentCard)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.AgentDiscard
+  )
   const discardForTech = useLegalMoves<CustomMove>((move: MaterialMove) => isCustomMoveType(CustomMoveType.DiscardForTech)(move) && move.data === itemIndex)
   const discardForDiplomacy = useLegalMoves<CustomMove>((move: MaterialMove) => isCustomMoveType(CustomMoveType.DiscardForDiplomacy)(move) && move.data === itemIndex)
-  const hasActions = moves.length > 0 || discardForTech.length > 0 || discardForDiplomacy.length > 0
+  const hasActions = moves.length > 0 || mulliganDiscard.length > 0 || discardForTech.length > 0 || discardForDiplomacy.length > 0
 
   // Handle hidden/unknown cards
   if (agentId === undefined || !Agents[agentId]) {
@@ -397,6 +403,11 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
           {getActionLabel(t, item, move)}
         </PlayMoveButton>
       ))}
+      {mulliganDiscard.length > 0 && (
+        <PlayMoveButton move={mulliganDiscard[0]} onPlay={closeDialog} css={actionButtonCss}>
+          {t('help.action.discard', 'Discard')}
+        </PlayMoveButton>
+      )}
       {discardForTech.length > 0 && (
         <PlayMoveButton move={discardForTech[0]} onPlay={closeDialog} css={actionButtonCss}>
           {t('help.action.develop')}

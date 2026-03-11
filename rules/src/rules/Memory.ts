@@ -17,7 +17,8 @@ export enum Memory {
   WonBonus,
   CurrentTeam,
   TeamFirst,
-  ShareCardRemaining
+  ShareCardRemaining,
+  DiscardChoice
 }
 
 export type PatternType = {

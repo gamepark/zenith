@@ -25,5 +25,6 @@ export enum RuleId {
   SpendZenithium,
   TakeTechnologyBonusToken,
   PickOrder,
-  ShareCard
+  ShareCard,
+  TechnologyAction
 }

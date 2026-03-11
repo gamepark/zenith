@@ -38,6 +38,7 @@ import { StealCreditRule } from './rules/effect/StealCreditRule'
 import { TakeTechnologyBonusTokenRule } from './rules/effect/TakeTechnologyBonusTokenRule'
 import { EndGameHelper } from './rules/helper/EndGameHelper'
 import { MulliganRule } from './rules/MulliganRule'
+import { TechnologyBoardRule } from './rules/discard-action/TechnologyBoardRule'
 import { PickOrderRule } from './rules/PickOrderRule'
 import { PlayCardRule } from './rules/PlayCardRule'
 import { RefillRule } from './rules/RefillRule'
@@ -81,7 +82,8 @@ export class ZenithRules
     [RuleId.SpendZenithium]: SpendZenithiumRule,
     [RuleId.TakeTechnologyBonusToken]: TakeTechnologyBonusTokenRule,
     [RuleId.PickOrder]: PickOrderRule,
-    [RuleId.ShareCard]: ShareCardRule
+    [RuleId.ShareCard]: ShareCardRule,
+    [RuleId.TechnologyAction]: TechnologyBoardRule
   }
 
   locationsStrategies = {
@@ -92,8 +94,7 @@ export class ZenithRules
       [LocationType.Influence]: new PositiveSequenceStrategy()
     },
     [MaterialType.InfluenceDisc]: {
-      [LocationType.TeamPlanets]: new PositiveSequenceStrategy(),
-      [LocationType.InfluenceDiscStock]: new PositiveSequenceStrategy()
+      [LocationType.TeamPlanets]: new PositiveSequenceStrategy()
     },
     [MaterialType.BonusToken]: {
       [LocationType.BonusDiscard]: new PositiveSequenceStrategy(),

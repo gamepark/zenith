@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { pointerWithin } from '@dnd-kit/core'
 import { css } from '@emotion/react'
-import { GameTable, GameTableNavigation } from '@gamepark/react-game'
-import { FC } from 'react'
+import { DevToolEntry, DevToolsHub, GameTable, GameTableNavigation } from '@gamepark/react-game'
+import { FC, useState } from 'react'
 import { AgentCardHoverPreview } from './components/AgentCardHoverPreview'
-import { DevToolsHub } from './components/DevToolsHub'
+import { DevCardViewer } from './components/DevCardViewer'
 import { PlayerPanels } from './panels/PlayerPanels'
 import { VictoryProgressPanel } from './panels/VictoryProgressPanel'
 
@@ -21,25 +21,35 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
         verticalCenter
         collisionAlgorithm={pointerWithin}
         xMin={-53}
-        xMax={53}
-        yMin={-28}
-        yMax={28}
+        xMax={47}
+        yMin={-22}
+        yMax={22}
         margin={margin}
         css={process.env.NODE_ENV === 'development' && tableBorder}
       >
         <GameTableNavigation css={navigationCss} />
         <PlayerPanels />
         <VictoryProgressPanel />
-        {process.env.NODE_ENV === 'development' && <DevToolsHub />}
+        {process.env.NODE_ENV === 'development' && <ZenithDevTools />}
       </GameTable>
       <AgentCardHoverPreview />
     </>
   )
 }
 
+const ZenithDevTools: FC = () => {
+  const [showCards, setShowCards] = useState(false)
+  if (showCards) return <DevCardViewer onClose={() => setShowCards(false)} />
+  return (
+    <DevToolsHub fabBottom="calc(1em + 6em * 1.7)">
+      <DevToolEntry icon={'\u2726'} label="Card Viewer" desc="Browse & validate agents" onClick={() => setShowCards(true)} />
+    </DevToolsHub>
+  )
+}
+
 const navigationCss = css`
   top: auto;
-  bottom: 16px;
+  bottom: calc(1em + 6em * 1.7);
   left: ${process.env.NODE_ENV === 'development' ? '64px' : '16px'};
   gap: 6px;
   z-index: 100;

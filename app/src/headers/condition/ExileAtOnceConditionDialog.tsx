@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { Picture, useLegalMove, useLegalMoves, usePlay, useRules } from '@gamepark/react-game'
+import { Picture, useLegalMove, useLegalMoves, usePlay, useRules, useUndo } from '@gamepark/react-game'
 import { isCustomMoveType, isMoveItemTypeAtOnce, MaterialMove, MoveItemsAtOnce } from '@gamepark/rules-api'
 import { Agent } from '@gamepark/zenith/material/Agent'
 import { ExileEffect } from '@gamepark/zenith/material/effect/Effect'
@@ -49,6 +49,10 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
     .id(influence)
   const discPosition = disc.getItem()?.location.x ?? 0
   const maxGain = team === TeamColor.Black ? 4 + discPosition : 4 - discPosition
+
+  // Undo
+  const [undo, canUndo] = useUndo()
+  const canUndoMove = canUndo()
 
   // Legal moves
   const pass = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Pass)(move))
@@ -142,10 +146,17 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
           })}
         </div>
 
-        {/* Pass button */}
-        <button css={passButtonCss} onClick={() => { if (pass) { play(pass); onMinimize() } }}>
-          {t('exile-dialog.pass')}
-        </button>
+        {/* Pass / Undo buttons */}
+        <div css={footerButtonsCss}>
+          {canUndoMove && (
+            <button css={undoButtonCss} onClick={() => undo()}>
+              {t('undo', 'Undo')}
+            </button>
+          )}
+          <button css={passButtonCss} onClick={() => { if (pass) { play(pass); onMinimize() } }}>
+            {t('exile-dialog.pass')}
+          </button>
+        </div>
       </div>
     </ZenithDialog>
   )
@@ -345,11 +356,35 @@ const disabledLabelCss = css`
   font-style: italic;
 `
 
-// ============ PASS BUTTON ============
+// ============ FOOTER BUTTONS ============
+
+const footerButtonsCss = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  margin-top: 1em;
+`
+
+const undoButtonCss = css`
+  padding: 0.6em 1.5em;
+  border: 0.15em solid #9ca3af;
+  border-radius: 0.5em;
+  background: transparent;
+  color: #6b7280;
+  font-size: 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #f3f4f6;
+    border-color: #6b7280;
+    color: #374151;
+  }
+`
 
 const passButtonCss = css`
-  align-self: center;
-  margin-top: 1em;
   padding: 0.6em 1.5em;
   border: 0.15em solid #e57373;
   border-radius: 0.5em;

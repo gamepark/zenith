@@ -24,7 +24,6 @@ export const DiscardActionHeader: FC = () => {
   const [chosen, setChosen] = useState(false)
   const hasActionMoves = useLegalMoves(move => isMoveItemType(MaterialType.TechMarker)(move) || isCustomMoveType(CustomMoveType.Diplomacy)(move)).length > 0
   const effectiveChosen = chosen && !hasActionMoves
-
   const components = {
     ...HeaderTransComponents,
     faction: getFactionForHeader(faction)

@@ -72,16 +72,17 @@ export class PlayCardRule extends PlayerTurnRule {
   }
 
   onCustomMove(move: CustomMove) {
-    if (isCustomMoveType(CustomMoveType.DiscardForTech)(move) || isCustomMoveType(CustomMoveType.DiscardForDiplomacy)(move)) {
+    if (isCustomMoveType(CustomMoveType.DiscardForTech)(move)) {
       const card = this.material(MaterialType.AgentCard).index(move.data)
-      const item = card.getItem<Agent>()!
-      const agent = Agents[item.id]
-      this.memorize(Memory.DiscardFaction, agent.faction)
       this.forget(Memory.TeamFirst)
-      return [
-        card.moveItem({ type: LocationType.AgentDiscard }),
-        this.startRule(RuleId.DiscardAction)
-      ]
+      this.memorize(Memory.DiscardChoice, CustomMoveType.DiscardForTech)
+      return [card.moveItem({ type: LocationType.AgentDiscard })]
+    }
+    if (isCustomMoveType(CustomMoveType.DiscardForDiplomacy)(move)) {
+      const card = this.material(MaterialType.AgentCard).index(move.data)
+      this.forget(Memory.TeamFirst)
+      this.memorize(Memory.DiscardChoice, CustomMoveType.DiscardForDiplomacy)
+      return [card.moveItem({ type: LocationType.AgentDiscard })]
     }
     return []
   }
@@ -96,6 +97,11 @@ export class PlayCardRule extends PlayerTurnRule {
       const item = this.material(MaterialType.AgentCard).getItem<Agent>(move.itemIndex)
       const agent = Agents[item.id]
       this.memorize(Memory.DiscardFaction, agent.faction)
+      const choice = this.remind(Memory.DiscardChoice)
+      this.forget(Memory.DiscardChoice)
+      if (choice === CustomMoveType.DiscardForTech) {
+        return [this.startRule(RuleId.TechnologyAction)]
+      }
       return [this.startRule(RuleId.DiscardAction)]
     }
 

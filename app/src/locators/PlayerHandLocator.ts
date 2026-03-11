@@ -27,7 +27,7 @@ export class PlayerHandLocator extends HandLocator {
   }
 
   getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
-    return ['translateZ(15em)', `translateY(-45%)`, `rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
+    return ['translateZ(15em)', `translateY(-80%)`, `rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']
   }
 
   isMyTeam(player: PlayerId, context: MaterialContext) {

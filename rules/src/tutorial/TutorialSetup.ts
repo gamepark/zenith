@@ -36,7 +36,6 @@ export class TutorialSetup extends ZenithSetup {
     this.setupLeaderBadge()
     this.setupTechnologyBoard()
     this.setupTeams()
-    this.setupInfluenceDisc()
     this.setupBonuses()
   }
 

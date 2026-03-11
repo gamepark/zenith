@@ -1,5 +1,5 @@
 import { isMoveItemTypeAtOnce, isShuffleItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { Influence, influences } from '../material/Influence'
+import { influences } from '../material/Influence'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
@@ -17,10 +17,13 @@ export class RefillRule extends PlayerTurnRule {
       const planet = this.material(MaterialType.InfluenceDisc).location(LocationType.PlanetBoardInfluenceDiscSpace).locationId(influence)
       if (planet.length) continue
       moves.push(
-        this.getNewInfluenceDisc(influence).moveItem({
-          type: LocationType.PlanetBoardInfluenceDiscSpace,
+        this.material(MaterialType.InfluenceDisc).createItem({
           id: influence,
-          x: 0
+          location: {
+            type: LocationType.PlanetBoardInfluenceDiscSpace,
+            id: influence,
+            x: 0
+          }
         })
       )
     }
@@ -34,13 +37,6 @@ export class RefillRule extends PlayerTurnRule {
     moves.push(...this.endRuleMoves)
 
     return moves
-  }
-
-  getNewInfluenceDisc(influence: Influence) {
-    return this.material(MaterialType.InfluenceDisc)
-      .location(LocationType.InfluenceDiscStock)
-      .locationId(influence)
-      .maxBy((item) => item.location.x!)
   }
 
   get endRuleMoves(): MaterialMove[] {

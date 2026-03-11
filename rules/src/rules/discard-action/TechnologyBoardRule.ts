@@ -9,6 +9,10 @@ import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
 
 export class TechnologyBoardRule extends PlayerTurnRule {
+  onRuleStart() {
+    return this.marker.moveItems((item) => ({ ...item.location, x: item.location.x! + 1 }))
+  }
+
   getPlayerMoves() {
     if (!new PlayerHelper(this.game, this.player).canDevelopTechnology(this.faction)) return []
     return this.marker.moveItems((item) => ({ ...item.location, x: item.location.x! + 1 }))
