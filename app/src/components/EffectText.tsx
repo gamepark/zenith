@@ -64,7 +64,7 @@ export const EffectText: FC<{ effect: Effect }> = ({ effect }) => {
       return <Trans i18nKey="help.share-card" values={{ count: effect.maxQuantity }} components={components} />
     case EffectType.Exile:
       if (effect.opponent) {
-        return <Trans i18nKey="help.exile.opponent" values={{ count: effect.quantity ?? 1 }} components={components} />
+        return <Trans i18nKey="help.exile.from-opponent" defaults="Exile {count, plural, one{# card} other{# cards}} from the opposing team" values={{ count: effect.quantity ?? 1 }} components={components} />
       }
       return <Trans i18nKey="help.exile" values={{ count: effect.quantity ?? 1 }} components={components} />
     case EffectType.Conditional: {

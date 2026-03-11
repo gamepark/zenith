@@ -191,7 +191,7 @@ const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }
         )
       }
       if (effect.opponent) {
-        return <Trans i18nKey="help.exile.opponent" values={{ count }} components={components} />
+        return <Trans i18nKey="help.exile.from-opponent" defaults="Exile {count, plural, one{# card} other{# cards}} from the opposing team" values={{ count }} components={components} />
       }
       if (effect.except !== undefined) {
         return <Trans i18nKey="help.exile.except" values={{ count }} components={{ ...components, planet: getPlanetIcon(effect.except) }} />
@@ -313,6 +313,26 @@ const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }
         conditionEffect?.type === EffectType.Exile
           ? conditionEffect.factors
           : undefined
+
+      // Special case: DoEffect(Exile { opponent }) → WinCredit without quantity
+      // = "Exile a card from opponent, gain credits equal to its cost"
+      const isExileForCost =
+        conditionEffect?.type === EffectType.Exile &&
+        conditionEffect.opponent &&
+        effect.effect.type === EffectType.WinCredit &&
+        !effect.effect.quantity
+
+      if (isExileForCost) {
+        return (
+          <Trans
+            i18nKey="help.exile.from-opponent.for-cost"
+            defaults="Exile {count, plural, one{# card} other{# cards}} from the opposing team and gain <credit/> equal to its cost"
+            values={{ count: conditionEffect.quantity ?? 1 }}
+            components={components}
+          />
+        )
+      }
+
       return (
         <div css={conditionalContainerCss}>
           <div css={conditionBlockCss}>
