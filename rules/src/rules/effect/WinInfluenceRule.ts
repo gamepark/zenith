@@ -54,22 +54,28 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
 
     const possiblePatterns: PatternType[][] = this.computePossiblePatterns().filter((patternType) => {
       if (!movedPlanets.length) return true
-      return movedPlanets.every((m) => patternType.some((p) => p.influence === m.influence && p.count === m.count))
+      return movedPlanets.every((m) => patternType.some((p) => p.influence === m.influence && p.count >= m.count))
     })
 
     for (const planetIndex of planets.getIndexes()) {
       const material = planets.index(planetIndex)
       const item = planets.getItem<Influence>(planetIndex)
-      if (movedPlanets.some((patternType) => patternType.influence === item.id)) continue
+      const alreadyMoved = movedPlanets.find((p) => p.influence === item.id)
       const planetPossiblePatterns = possiblePatterns
         .filter((patternType) => patternType.some((p) => p.influence === item.id))
         .map((patternType) => patternType.find((p) => p.influence === item.id)!)
 
+      const remainingCounts = new Set(
+        planetPossiblePatterns
+          .map((p) => p.count - (alreadyMoved?.count ?? 0))
+          .filter((remaining) => remaining > 0)
+      )
+
       moves.push(
-        ...planetPossiblePatterns.map((type) =>
+        ...[...remainingCounts].map((remaining) =>
           material.moveItem({
             ...item.location,
-            x: this.getPositionForQuantity(item, type.count)
+            x: this.getPositionForQuantity(item, remaining)
           })
         )
       )
@@ -186,13 +192,18 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
       effect.times -= consumed
       if (effect.times > 0) return moves
     } else if (effect.pattern) {
-      this.memorize(Memory.Pattern, (patternTypes: PatternType[] = []) =>
-        patternTypes.concat({ influence: item.id, count: Math.abs(move.location.x! - item.location.x!) })
-      )
+      this.memorize(Memory.Pattern, (patternTypes: PatternType[] = []) => {
+        const moveCount = Math.abs(move.location.x! - item.location.x!)
+        const existing = patternTypes.find((p) => p.influence === item.id)
+        if (existing) {
+          return patternTypes.map((p) => p.influence === item.id ? { ...p, count: p.count + moveCount } : p)
+        }
+        return patternTypes.concat({ influence: item.id, count: moveCount })
+      })
 
       const patternMoves = this.patternPlanet()
-      if (patternMoves.length > 0 && patternMoves.length <= effect.pattern.length - 1) {
-        moves.push(this.patternPlanet()[0])
+      if (patternMoves.length === 1) {
+        moves.push(patternMoves[0])
         return moves
       }
       if (patternMoves.length > 0) return moves
