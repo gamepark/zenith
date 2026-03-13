@@ -241,10 +241,6 @@ export class AgentCardDescription extends CardDescription {
     )
     if (!moves.length) return
 
-    const baseAngle = 90
-    const spread = 50
-    const startAngle = baseAngle - ((moves.length - 1) * spread) / 2
-
     return (
       <>
         {moves.map((move, i) => {
@@ -253,7 +249,7 @@ export class AgentCardDescription extends CardDescription {
           const icon = isExile ? faBan : isTransfer ? faArrowDown : faTrashCan
           const labelKey = isExile ? 'help.action.exile' : isTransfer ? 'help.action.transfer' : 'help.action.discard'
           return (
-            <ItemMenuButton key={i} move={move} angle={startAngle + i * spread} radius={5}
+            <ItemMenuButton key={i} move={move} angle={i * 50} radius={2}
               label={<Trans i18nKey={labelKey} />}>
               <FontAwesomeIcon icon={icon} />
             </ItemMenuButton>

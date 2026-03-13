@@ -11,6 +11,7 @@ import App from './App.tsx'
 import { Locators } from './locators/Locators'
 import { ZenithLogDescription } from './logs/ZenithLogDescription'
 import { Material } from './material/Material'
+import { ZenithScoringDescription } from './scoring/ZenithScoringDescription'
 import { zenithTheme } from './theme'
 
 createRoot(document.getElementById('root')!).render(
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')!).render(
       logs={new ZenithLogDescription()}
       locators={Locators}
       animations={gameAnimations}
+      scoring={new ZenithScoringDescription()}
       theme={zenithTheme}
       tutorial={new ZenithTutorial()}
       ai={ai}
