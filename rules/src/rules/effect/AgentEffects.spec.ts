@@ -619,3 +619,240 @@ class GilgameshTestSetup extends TestSetup {
     }
   }
 }
+
+describe('Refill with low/empty deck', () => {
+  function createRefillSetup(deckCount: number) {
+    const setup = new RefillTestSetup(deckCount)
+    const game = setup.setup({ players: 2 })
+    return new ZenithRules(game)
+  }
+
+  function discardAndRefill(rules: ZenithRules) {
+    // Discard a card to trigger refill
+    const hand = rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1)
+    const discardMove = hand.moveItems({ type: LocationType.AgentDiscard })[0]
+    playConsequences(rules, discardMove)
+    resolveAutoMoves(rules)
+
+    // Resolve until we reach PlayCard for player2
+    let iterations = 0
+    while (iterations < 30) {
+      const ruleId = rules.game.rule?.id
+      if (ruleId === RuleId.PlayCard && rules.getActivePlayer() === player2) break
+      if (ruleId === undefined) break
+      const moves = rules.getLegalMoves(rules.getActivePlayer()!)
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+        if (rules.game.rule?.id === RuleId.PlayCard && rules.getActivePlayer() === player2) break
+        continue
+      }
+      playConsequences(rules, moves[0])
+      resolveAutoMoves(rules)
+      iterations++
+    }
+  }
+
+  it('deck=0: should reshuffle discard and refill hand to 4', () => {
+    const rules = createRefillSetup(0)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(0)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDiscard).length).toBeGreaterThan(0)
+
+    discardAndRefill(rules)
+
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).length).toBe(4)
+    expect(rules.game.rule?.id).toBe(RuleId.PlayCard)
+    expect(rules.getActivePlayer()).toBe(player2)
+  })
+
+  it('deck=1: should deal 1 from deck then reshuffle discard for remaining', () => {
+    const rules = createRefillSetup(1)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(1)
+
+    discardAndRefill(rules)
+
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).length).toBe(4)
+    expect(rules.game.rule?.id).toBe(RuleId.PlayCard)
+    expect(rules.getActivePlayer()).toBe(player2)
+  })
+
+  it('deck=2: should deal 2 from deck then reshuffle discard for remaining', () => {
+    const rules = createRefillSetup(2)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(2)
+
+    discardAndRefill(rules)
+
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).length).toBe(4)
+    expect(rules.game.rule?.id).toBe(RuleId.PlayCard)
+    expect(rules.getActivePlayer()).toBe(player2)
+  })
+
+  it('deck has exactly the needed amount: should refill without reshuffle', () => {
+    // After discard, hand=3, need 1. Deck=1 → deal 1, remaining=0, no reshuffle.
+    const rules = createRefillSetup(1)
+
+    discardAndRefill(rules)
+
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).length).toBe(4)
+    expect(rules.game.rule?.id).toBe(RuleId.PlayCard)
+  })
+
+  it('deck=0 after playing to influence (not discard): should still refill', () => {
+    // Simulate: player plays card to influence (not discard), then refill needs 1 card
+    const rules = createRefillSetup(0)
+
+    // Play a card to INFLUENCE (not discard)
+    const hand = rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1)
+    const cardIndex = hand.getIndex()
+    const card = hand.getItem<Agent>(cardIndex)
+    const agentData = Agents[card.id]
+    const influenceMove = rules.material(MaterialType.AgentCard).index(cardIndex).moveItem({
+      type: LocationType.Influence,
+      id: agentData.influence,
+      player: TeamColor.White
+    })
+    playConsequences(rules, influenceMove)
+    resolveAutoMoves(rules)
+
+    // Resolve all effects until Refill/PlayCard
+    let iterations = 0
+    while (iterations < 30) {
+      const ruleId = rules.game.rule?.id
+      if (ruleId === RuleId.PlayCard && rules.getActivePlayer() === player2) break
+      if (ruleId === undefined) break
+      const moves = rules.getLegalMoves(rules.getActivePlayer()!)
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+        if (rules.game.rule?.id === RuleId.PlayCard && rules.getActivePlayer() === player2) break
+        continue
+      }
+      playConsequences(rules, moves[0])
+      resolveAutoMoves(rules)
+      iterations++
+    }
+
+    // Hand should be refilled to 4
+    const p1HandAfter = rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).length
+    expect(p1HandAfter).toBe(4)
+    expect(rules.game.rule?.id).toBe(RuleId.PlayCard)
+    expect(rules.getActivePlayer()).toBe(player2)
+  })
+
+  it('deck has more than needed: normal refill', () => {
+    const rules = createRefillSetup(10)
+
+    discardAndRefill(rules)
+
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).length).toBe(4)
+    // Deck should have 9 left (10 - 1 dealt)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(9)
+    expect(rules.game.rule?.id).toBe(RuleId.PlayCard)
+  })
+})
+
+describe('Mobilize with low/empty deck', () => {
+  function createMobilizeSetup(deckCount: number) {
+    const setup = new MobilizeTestSetup(deckCount)
+    const game = setup.setup({ players: 2 })
+    return new ZenithRules(game)
+  }
+
+  it('mobilize 2 with deck=1: should reshuffle discard and mobilize second card', () => {
+    const rules = createMobilizeSetup(1)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(1)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDiscard).length).toBeGreaterThan(0)
+
+    playAgentAndResolveEffects(rules, Agent.H4milt0n)
+
+    // H4milt0n mobilizes 2 cards + H4milt0n itself on Influence = 3 total
+    const mobilized = rules.material(MaterialType.AgentCard).location(LocationType.Influence).player(TeamColor.White)
+    expect(mobilized.length).toBe(3)
+  })
+
+  it('mobilize 2 with deck=0: should reshuffle discard and mobilize both', () => {
+    const rules = createMobilizeSetup(0)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(0)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDiscard).length).toBeGreaterThan(0)
+
+    playAgentAndResolveEffects(rules, Agent.H4milt0n)
+
+    // H4milt0n mobilizes 2 cards + itself = 3
+    const mobilized = rules.material(MaterialType.AgentCard).location(LocationType.Influence).player(TeamColor.White)
+    expect(mobilized.length).toBe(3)
+  })
+
+  it('mobilize 2 with deck=2: normal mobilize without reshuffle', () => {
+    const rules = createMobilizeSetup(2)
+
+    playAgentAndResolveEffects(rules, Agent.H4milt0n)
+
+    // H4milt0n mobilizes 2 cards + itself = 3
+    const mobilized = rules.material(MaterialType.AgentCard).location(LocationType.Influence).player(TeamColor.White)
+    expect(mobilized.length).toBe(3)
+  })
+})
+
+/** Setup with configurable deck size for mobilize testing */
+class MobilizeTestSetup extends TestSetup {
+  constructor(private deckCount: number) {
+    super(Agent.H4milt0n)
+  }
+
+  setupRemainingDeck() {
+    const usedAgents = new Set([
+      Agent.H4milt0n,
+      ...agents.filter(a => a !== Agent.H4milt0n).slice(0, 7)
+    ])
+    const remaining = agents.filter(a => !usedAgents.has(a))
+    let idx = 0
+    for (let i = 0; i < this.deckCount && idx < remaining.length; i++, idx++) {
+      this.material(MaterialType.AgentCard).createItem({
+        id: remaining[idx],
+        location: { type: LocationType.AgentDeck }
+      })
+    }
+    for (; idx < remaining.length; idx++) {
+      this.material(MaterialType.AgentCard).createItem({
+        id: remaining[idx],
+        location: { type: LocationType.AgentDiscard }
+      })
+    }
+  }
+}
+
+/** Setup with configurable deck size for refill testing */
+class RefillTestSetup extends TestSetup {
+  constructor(private deckCount: number) {
+    super(agents[0])
+  }
+
+  setupTestHands() {
+    for (let i = 0; i < 4; i++) {
+      this.material(MaterialType.AgentCard).createItem({
+        id: agents[i],
+        location: { type: LocationType.PlayerHand, player: player1 }
+      })
+    }
+    for (let i = 4; i < 8; i++) {
+      this.material(MaterialType.AgentCard).createItem({
+        id: agents[i],
+        location: { type: LocationType.PlayerHand, player: player2 }
+      })
+    }
+  }
+
+  setupRemainingDeck() {
+    let idx = 8
+    for (let i = 0; i < this.deckCount && idx < agents.length; i++, idx++) {
+      this.material(MaterialType.AgentCard).createItem({
+        id: agents[idx],
+        location: { type: LocationType.AgentDeck }
+      })
+    }
+    for (; idx < agents.length; idx++) {
+      this.material(MaterialType.AgentCard).createItem({
+        id: agents[idx],
+        location: { type: LocationType.AgentDiscard }
+      })
+    }
+  }
+}

@@ -1,9 +1,10 @@
-import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, isMoveItemTypeAtOnce, isShuffleItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { MobilizeEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { DeckHelper } from '../helper/DeckHelper'
 import { EffectRule } from './index'
 
 export class MobilizeRule extends EffectRule<MobilizeEffect> {
@@ -14,22 +15,18 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
   }
 
   getAutomaticEffectMoves(): MaterialMove[] {
-    const moves: MaterialMove[] = []
-    const agent = this.material(MaterialType.AgentCard)
-      .location(LocationType.AgentDeck)
-      .deck()
-      .limit(this.effect.quantity ?? 1)
+    const deckHelper = new DeckHelper(this.game)
+    const agent = deckHelper.deck.limit(this.effect.quantity ?? 1)
 
-    if (!agent.length || !agent.getItem()?.id) return []
-    moves.push(
-      ...agent.moveItems((item) => ({
-        type: LocationType.Influence,
-        id: Agents[item.id as Agent].influence,
-        player: this.playerHelper.team
-      }))
-    )
+    if (!agent.length || !agent.getItem()?.id) {
+      return deckHelper.reshuffleDiscardIfDeckEmpty()
+    }
 
-    return moves
+    return agent.moveItems((item) => ({
+      type: LocationType.Influence,
+      id: Agents[item.id as Agent].influence,
+      player: this.playerHelper.team
+    }))
   }
 
   decrement(move: ItemMove): boolean {
@@ -44,6 +41,16 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
   }
 
   afterItemMove(move: ItemMove) {
+    const deckHelper = new DeckHelper(this.game)
+
+    if (isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDeck) {
+      return [deckHelper.shuffleDeck()]
+    }
+
+    if (isShuffleItemType(MaterialType.AgentCard)(move)) {
+      return this.getAutomaticEffectMoves()
+    }
+
     if (!isMoveItemType(MaterialType.AgentCard)(move) || move.location.type !== LocationType.Influence) return []
 
     if (this.effect.quantity) {
@@ -55,7 +62,8 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
       return this.afterEffectPlayed()
     }
 
-    return []
+    // Still more to mobilize — check if deck needs reshuffle
+    return deckHelper.reshuffleDiscardIfDeckEmpty()
   }
 
   getExtraDataFromMove(move: ItemMove) {
@@ -68,10 +76,7 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
   }
 
   isPossible() {
-    return this.deck.length > 0
-  }
-
-  get deck() {
-    return this.material(MaterialType.AgentCard).location(LocationType.AgentDeck).deck()
+    const deckHelper = new DeckHelper(this.game)
+    return deckHelper.deck.length > 0 || deckHelper.discard.length > 0
   }
 }

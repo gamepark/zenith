@@ -4,6 +4,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
 import { getTeamColor, TeamColor } from '../TeamColor'
+import { DeckHelper } from './helper/DeckHelper'
 import { PlayerHelper } from './helper/PlayerHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -92,8 +93,12 @@ export class RefillRule extends PlayerTurnRule {
     }
   }
 
+  get deckHelper() {
+    return new DeckHelper(this.game)
+  }
+
   refillHand(maxCount: number) {
-    const deck = this.deck
+    const { deck, discard } = this.deckHelper
     const quantity = Math.max(0, maxCount - this.hand.length)
     if (!quantity) return []
     const moves: MaterialMove[] = deck.deal(
@@ -106,13 +111,9 @@ export class RefillRule extends PlayerTurnRule {
 
     const remaining = quantity - moves.length
     if (!remaining) return moves
-    if (!this.discard.length) return moves
-    moves.push(this.discard.moveItemsAtOnce({ type: LocationType.AgentDeck }))
+    if (!discard.length) return moves
+    moves.push(discard.moveItemsAtOnce({ type: LocationType.AgentDeck }))
     return moves
-  }
-
-  get discard() {
-    return this.material(MaterialType.AgentCard).location(LocationType.AgentDiscard)
   }
 
   afterItemMove(move: ItemMove) {
@@ -121,7 +122,7 @@ export class RefillRule extends PlayerTurnRule {
     }
 
     if (isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDeck) {
-      return [this.deck.shuffle()]
+      return [this.deckHelper.shuffleDeck()]
     }
 
     return []
@@ -129,10 +130,6 @@ export class RefillRule extends PlayerTurnRule {
 
   get hand() {
     return this.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(this.player)
-  }
-
-  get deck() {
-    return this.material(MaterialType.AgentCard).location(LocationType.AgentDeck).deck()
   }
 
   get leaderBadge() {
