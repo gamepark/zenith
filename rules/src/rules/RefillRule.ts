@@ -106,6 +106,7 @@ export class RefillRule extends PlayerTurnRule {
 
     const remaining = quantity - moves.length
     if (!remaining) return moves
+    if (!this.discard.length) return moves
     moves.push(this.discard.moveItemsAtOnce({ type: LocationType.AgentDeck }))
     return moves
   }
