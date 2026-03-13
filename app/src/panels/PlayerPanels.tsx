@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
-import { Avatar, MaterialContext, PlayerTimer, SpeechBubbleDirection, useMaterialContext, usePlayer, usePlayerName, usePlayerTime, usePlayers, useRules } from '@gamepark/react-game'
+import { Avatar, MaterialContext, PlayerTimer, SpeechBubbleDirection, useMaterialContext, usePlayerName, usePlayerTime, usePlayers, useRules } from '@gamepark/react-game'
 import { Credit } from '@gamepark/zenith/material/Credit'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
@@ -23,8 +23,6 @@ export const PlayerPanels = () => {
   const root = document.getElementById('root')
   const rules = useRules<ZenithRules>()!
   const context = useMaterialContext()
-  const gameOver = rules.isOver()
-
   // Speech bubble state - only show for 5 seconds after choice is made
   const chosenFirst = rules.remind<PlayerId>(Memory.TeamFirst)
   const [showSpeech, setShowSpeech] = useState(false)
@@ -75,7 +73,6 @@ export const PlayerPanels = () => {
             hasLeaderBadge={hasLeaderBadge}
             isGoldBadge={isGoldBadge}
             isTurnToPlay={isTurnToPlay}
-            gameOver={gameOver}
             speak={speak}
             position={getPanelPosition(player.id, context)}
           />
@@ -96,7 +93,6 @@ type PlayerPanelProps = {
   hasLeaderBadge: boolean
   isGoldBadge: boolean
   isTurnToPlay: boolean
-  gameOver: boolean
   speak?: string
   position: ReturnType<typeof css>
 }
@@ -109,16 +105,13 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
   hasLeaderBadge,
   isGoldBadge,
   isTurnToPlay,
-  gameOver,
   speak,
   position
 }) => {
   const playerName = usePlayerName(playerId)
-  const player = usePlayer(playerId)
   const playerTime = usePlayerTime(playerId)
   const isWhite = team === TeamColor.White
   const panelRef = useRef<HTMLDivElement>(null)
-  const gpDelta = player?.gamePointsDelta
 
   return (
     <div ref={panelRef} css={[panelCss, isWhite ? panelWhiteCss : panelBlackCss, position]}>
@@ -136,6 +129,7 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
             css={avatarCss}
             speechBubbleProps={speak ? {
               direction: getSpeechDirection(panelRef.current),
+              css: speechBubbleCss,
               children: <>{speak}</>
             } : undefined}
           />
@@ -156,19 +150,14 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
         </div>
       </div>
 
-      {/* Right: Timer/GP + Leader */}
+      {/* Right: Timer + Leader */}
       <div css={rightSideCss}>
-        {gameOver && gpDelta !== undefined && gpDelta !== null ? (
-          <div css={gpBadgeCss}>
-            <span css={gpIconCss}>🏆</span>
-            <span>{gpDelta > 0 ? `+${gpDelta}` : gpDelta}</span>
-          </div>
-        ) : playerTime !== undefined ? (
+        {playerTime !== undefined && (
           <div css={[timerBadgeCss, !isWhite && timerBlackCss]}>
             <span>⏱</span>
             <PlayerTimer playerId={playerId} css={timerCss} />
           </div>
-        ) : null}
+        )}
         {hasLeaderBadge && (
           <img
             src={isGoldBadge ? LeaderGoldIcon : LeaderSilverIcon}
@@ -372,21 +361,10 @@ const timerCss = css`
   color: inherit;
 `
 
-const gpBadgeCss = css`
-  display: flex;
-  align-items: center;
-  gap: 0.3em;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border: 1px solid #f59e0b;
-  border-radius: 0.4em;
-  padding: 0.45em 0.8em;
-  font-size: 1.05em;
-  font-weight: 700;
-  color: #92400e;
-`
-
-const gpIconCss = css`
-  font-size: 1em;
+const speechBubbleCss = css`
+  font-size: 0.55em;
+  color: #2d2d32;
+  font-weight: 600;
 `
 
 const leaderCss = css`
