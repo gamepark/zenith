@@ -26,5 +26,6 @@ export enum RuleId {
   TakeTechnologyBonusToken,
   PickOrder,
   ShareCard,
-  TechnologyAction
+  TechnologyAction,
+  DiplomacyAction
 }

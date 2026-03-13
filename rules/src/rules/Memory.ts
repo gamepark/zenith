@@ -18,12 +18,18 @@ export enum Memory {
   CurrentTeam,
   TeamFirst,
   ShareCardRemaining,
-  DiscardChoice
+  DiscardChoice,
+  LastPlanetMove
 }
 
 export type PatternType = {
   influence: Influence
   count: number
+}
+
+export type LastPlanetMoveType = {
+  influence: Influence
+  previousX: number
 }
 
 export type EffectSourceType = {

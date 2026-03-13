@@ -16,6 +16,7 @@ export class PlayCardRule extends PlayerTurnRule {
   onRuleStart() {
     this.forget(Memory.DiscardFaction)
     this.forget(Memory.LastPlanetsMoved)
+    this.forget(Memory.LastPlanetMove)
     return []
   }
 
@@ -101,6 +102,9 @@ export class PlayCardRule extends PlayerTurnRule {
       this.forget(Memory.DiscardChoice)
       if (choice === CustomMoveType.DiscardForTech) {
         return [this.startRule(RuleId.TechnologyAction)]
+      }
+      if (choice === CustomMoveType.DiscardForDiplomacy) {
+        return [this.startRule(RuleId.DiplomacyAction)]
       }
       return [this.startRule(RuleId.DiscardAction)]
     }

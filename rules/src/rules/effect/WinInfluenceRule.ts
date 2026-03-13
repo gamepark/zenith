@@ -6,7 +6,7 @@ import { MaterialType } from '../../material/MaterialType'
 import { TeamColor } from '../../TeamColor'
 import { BonusHelper } from '../helper/BonusHelper'
 import { EndGameHelper } from '../helper/EndGameHelper'
-import { Memory, PatternType } from '../Memory'
+import { LastPlanetMoveType, Memory, PatternType } from '../Memory'
 import { EffectRule } from './index'
 
 export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
@@ -101,10 +101,23 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   }
 
   private opponentSidePlanets(planets: Material) {
-    const opponentSidePlanets = planets.filter((planet) => (this.playerHelper.team === TeamColor.White ? planet.location.x! < 0 : planet.location.x! > 0))
-    if (!opponentSidePlanets.length) return opponentSidePlanets
-    if (this.effect.influence) return opponentSidePlanets.id(this.effect.influence)
-    return opponentSidePlanets
+    const opponentSidePlanets = planets.filter((planet) => this.isOnOpponentSide(planet.location.x!))
+    if (opponentSidePlanets.length) {
+      if (this.effect.influence) return opponentSidePlanets.id(this.effect.influence)
+      return opponentSidePlanets
+    }
+
+    // No planet on opponent side: a previous effect may have pulled the last one across.
+    // If so, allow pulling any *other* planet instead.
+    const lastMove = this.remind<LastPlanetMoveType | undefined>(Memory.LastPlanetMove)
+    if (!lastMove) return opponentSidePlanets
+    if (!this.isOnOpponentSide(lastMove.previousX)) return opponentSidePlanets
+
+    return planets.filter((planet) => planet.id !== lastMove.influence)
+  }
+
+  private isOnOpponentSide(x: number) {
+    return this.playerHelper.team === TeamColor.White ? x < 0 : x > 0
   }
 
   private fromCenterPlanets(planets: Material) {
@@ -115,12 +128,14 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   }
 
   getPositionAfterPull(item: MaterialItem, effect: WinInfluenceEffect): number[] {
+    const team = this.playerHelper.team
     if (effect.times) {
       const positions: number[] = []
+      const step = team === TeamColor.White ? 1 : -1
       for (let i = 1; i <= effect.times; i++) {
-        const newPosition = item.location.x! + i
-        if (this.player === TeamColor.Black && newPosition > 4) break
-        if (this.player === TeamColor.White && newPosition < -4) break
+        const newPosition = item.location.x! + step * i
+        if (team === TeamColor.White && newPosition > 4) break
+        if (team === TeamColor.Black && newPosition < -4) break
         positions.push(newPosition)
       }
 
@@ -131,7 +146,7 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   }
 
   private getPositionForQuantity(item: MaterialItem, quantity: number) {
-    if (this.player === TeamColor.Black) {
+    if (this.playerHelper.team === TeamColor.White) {
       return Math.min(4, item.location.x! + quantity)
     }
 
@@ -167,6 +182,7 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     const planet = this.material(MaterialType.InfluenceDisc).index(move.itemIndex)
     const item = planet.getItem<Influence>()!
     this.memorize(Memory.LastPlanetsMoved, (planets: Influence[] = []) => planets.concat(item.id))
+    this.memorize<LastPlanetMoveType>(Memory.LastPlanetMove, { influence: item.id, previousX: item.location.x! })
     const moves: MaterialMove[] = []
     const effect = this.effect
 
@@ -188,7 +204,7 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     }
 
     if (effect.times) {
-      const consumed = move.location.x! - item.location.x!
+      const consumed = Math.abs(move.location.x! - item.location.x!)
       effect.times -= consumed
       if (effect.times > 0) return moves
     } else if (effect.pattern) {

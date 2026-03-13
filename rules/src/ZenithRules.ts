@@ -38,6 +38,7 @@ import { StealCreditRule } from './rules/effect/StealCreditRule'
 import { TakeTechnologyBonusTokenRule } from './rules/effect/TakeTechnologyBonusTokenRule'
 import { EndGameHelper } from './rules/helper/EndGameHelper'
 import { MulliganRule } from './rules/MulliganRule'
+import { DiplomacyBoardRule } from './rules/discard-action/DiplomacyBoardRule'
 import { TechnologyBoardRule } from './rules/discard-action/TechnologyBoardRule'
 import { PickOrderRule } from './rules/PickOrderRule'
 import { PlayCardRule } from './rules/PlayCardRule'
@@ -83,7 +84,8 @@ export class ZenithRules
     [RuleId.TakeTechnologyBonusToken]: TakeTechnologyBonusTokenRule,
     [RuleId.PickOrder]: PickOrderRule,
     [RuleId.ShareCard]: ShareCardRule,
-    [RuleId.TechnologyAction]: TechnologyBoardRule
+    [RuleId.TechnologyAction]: TechnologyBoardRule,
+    [RuleId.DiplomacyAction]: DiplomacyBoardRule
   }
 
   locationsStrategies = {

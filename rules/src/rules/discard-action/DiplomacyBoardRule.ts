@@ -8,6 +8,14 @@ import { RuleId } from '../RuleId'
 import { getDiplomacyActions } from './DiplomacyActions'
 
 export class DiplomacyBoardRule extends PlayerTurnRule {
+  onRuleStart() {
+    const effectMoves = this.applyDiplomacy()
+    if (effectMoves.some((move) => isStartRule(move) || isStartPlayerTurn(move))) {
+      return effectMoves
+    }
+    return [this.startRule(RuleId.Refill)]
+  }
+
   getPlayerMoves() {
     return [this.customMove(CustomMoveType.Diplomacy)]
   }

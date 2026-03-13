@@ -5,7 +5,7 @@ import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
 import { TeamColor } from '../../TeamColor'
-import { Memory } from '../Memory'
+import { LastPlanetMoveType, Memory } from '../Memory'
 import { PlayerHelper } from './PlayerHelper'
 
 export class PlanetHelper extends MaterialRulesPart {
@@ -34,11 +34,16 @@ export class PlanetHelper extends MaterialRulesPart {
       if (!centeredPlanets.length) return centeredPlanets
       if (effect.influence) return centeredPlanets.id(effect.influence)
     } else if (effect.opponentSide) {
-      const opponentSidePlanets = filteredPlanets.filter((planet) =>
-        this.playerHelper.team === TeamColor.White ? planet.location.x! < 0 : planet.location.x! > 0
-      )
-      if (!opponentSidePlanets.length) return opponentSidePlanets
-      if (effect.influence) return opponentSidePlanets.id(effect.influence)
+      const opponentSidePlanets = filteredPlanets.filter((planet) => this.isOnOpponentSide(planet.location.x!))
+      if (opponentSidePlanets.length) {
+        if (effect.influence) return opponentSidePlanets.id(effect.influence)
+        return opponentSidePlanets
+      }
+      const lastMove = this.remind<LastPlanetMoveType | undefined>(Memory.LastPlanetMove)
+      if (lastMove && this.isOnOpponentSide(lastMove.previousX)) {
+        return filteredPlanets.filter((planet) => planet.id !== lastMove.influence)
+      }
+      return opponentSidePlanets
     } else {
       if (effect.influence) {
         return planets.id(effect.influence)
@@ -70,6 +75,10 @@ export class PlanetHelper extends MaterialRulesPart {
 
   isPossibleToReset(_effect: ResetInfluenceEffect) {
     return this.getResetablePlanets().length > 0
+  }
+
+  private isOnOpponentSide(x: number) {
+    return this.playerHelper.team === TeamColor.White ? x < 0 : x > 0
   }
 
   get planets() {

@@ -104,7 +104,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   }
 
   getPlanetStartPosition(planet: Influence) {
-    const direction = this.secondTeam === TeamColor.White ? -1 : 1
+    const direction = this.secondTeam === TeamColor.White ? 1 : -1
     if (this.game.players.length === 4) {
       if (planet === Influence.Mars || planet === Influence.Venus) return direction
     } else {
