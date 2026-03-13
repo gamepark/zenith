@@ -181,7 +181,10 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     if (!isMoveItemType(MaterialType.InfluenceDisc)(move) || move.location.type !== LocationType.PlanetBoardInfluenceDiscSpace) return []
     const planet = this.material(MaterialType.InfluenceDisc).index(move.itemIndex)
     const item = planet.getItem<Influence>()!
-    this.memorize(Memory.LastPlanetsMoved, (planets: Influence[] = []) => planets.concat(item.id))
+    // Only track for "differentPlanet" when the effect is NOT from a bonus token
+    if (this.effect.effectSource?.type !== MaterialType.BonusToken) {
+      this.memorize(Memory.LastPlanetsMoved, (planets: Influence[] = []) => planets.concat(item.id))
+    }
     this.memorize<LastPlanetMoveType>(Memory.LastPlanetMove, { influence: item.id, previousX: item.location.x! })
     const moves: MaterialMove[] = []
     const effect = this.effect
@@ -231,7 +234,9 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   }
 
   isAlreadyPlayed(influence: Influence) {
-    return this.lastPlanetsMoved?.includes(influence)
+    const moved = this.lastPlanetsMoved
+    if (!moved?.length) return false
+    return moved[moved.length - 1] === influence
   }
 
   isPossible() {
