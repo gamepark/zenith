@@ -22,8 +22,8 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
         collisionAlgorithm={pointerWithin}
         xMin={-53}
         xMax={47}
-        yMin={-22}
-        yMax={22}
+        yMin={-24}
+        yMax={27}
         margin={margin}
         css={process.env.NODE_ENV === 'development' && tableBorder}
       >

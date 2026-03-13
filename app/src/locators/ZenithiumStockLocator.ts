@@ -5,6 +5,7 @@ import { imWhiteTeam } from './position.utils'
 
 export class ZenithiumStockLocator extends PileLocator {
   radius = 2
+
   getCoordinates(_location: Location, context: MaterialContext) {
     if (imWhiteTeam(context)) {
       return { x: 36.5, y: 0 }

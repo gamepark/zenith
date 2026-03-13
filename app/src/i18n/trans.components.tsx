@@ -196,9 +196,12 @@ const lossCss = css`
   }
 `
 
+const helpComponents = TransComponents(helpCss)
+
 export const HelpTransComponents: Record<string, ReactElement> = {
-  ...TransComponents(helpCss),
+  ...helpComponents,
   human: <Picture src={Humanoid} css={helpCss(true)} />,
+  badge: <>{helpComponents.leaderSilver} / {helpComponents.leaderGold}</>,
   gain: <span css={gainCss} />,
   loss: <span css={lossCss} />
 }

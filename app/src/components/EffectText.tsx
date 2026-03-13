@@ -12,7 +12,7 @@ import { HelpTransComponents } from '../i18n/trans.components'
  */
 export const EffectText: FC<{ effect: Effect }> = ({ effect }) => {
   const { t } = useTranslation()
-  const components = { ...HelpTransComponents, badge: HelpTransComponents.leaderSilver }
+  const components = HelpTransComponents
 
   switch (effect.type) {
     case EffectType.WinCredit:

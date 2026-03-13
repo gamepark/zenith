@@ -24,6 +24,7 @@ import { WinInfluenceHeader } from './WinInfluenceHeader'
 import { WinZenithiumHeader } from './WinZenithiumHeader'
 
 const TechnologyActionHeader = () => <AutoEffectHeader i18nKey="header.technology-action" defaultsMe="You develop technology" defaults="Team {team} develops technology" />
+const DiplomacyActionHeader = () => <AutoEffectHeader i18nKey="header.diplomacy-action" defaultsMe="You use diplomacy" defaults="Team {team} uses diplomacy" />
 const MobilizeHeader = () => <AutoEffectHeader i18nKey="header.mobilize" defaultsMe="<source /> : You mobilize agents" defaults="<source /> : Team {team} mobilizes agents" />
 const StealCreditHeader = () => <AutoEffectHeader i18nKey="header.steal-credit" defaultsMe="<source /> : You steal credits from your opponents" defaults="<source /> : Team {team} steals credits" />
 const GiveCreditHeader = () => <AutoEffectHeader i18nKey="header.give-credit" defaultsMe="<source /> : You give credits to your opponents" defaults="<source /> : Team {team} gives credits" />
@@ -60,5 +61,6 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.Refill]: RefillHeader,
   [RuleId.PickOrder]: PickOrderHeader,
   [RuleId.ShareCard]: ShareCardHeader,
-  [RuleId.TechnologyAction]: TechnologyActionHeader
+  [RuleId.TechnologyAction]: TechnologyActionHeader,
+  [RuleId.DiplomacyAction]: DiplomacyActionHeader
 }

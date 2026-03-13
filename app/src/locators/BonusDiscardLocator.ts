@@ -11,7 +11,7 @@ export class BonusDiscardLocator extends ListLocator {
       return { x: 32, y: -9.5 }
     }
 
-    return { x: -31.5, y: -9.5 }
+    return { x: -33, y: -9.5 }
   }
 
   getLocationIndex(location: Location, context: MaterialContext) {

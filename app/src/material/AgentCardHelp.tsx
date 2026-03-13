@@ -55,10 +55,7 @@ const getFactionIcon = (faction: Faction) => {
 const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: number[] }> = ({ effect, sameColor, factors }) => {
   const { t } = useTranslation()
 
-  const components = {
-    ...HelpTransComponents,
-    badge: HelpTransComponents.leaderSilver
-  }
+  const components = HelpTransComponents
 
   // Si factors est fourni, on affiche "1/2/3" au lieu de count
   const countValue = (defaultCount: number) => (factors ? factors.join('/') : defaultCount)

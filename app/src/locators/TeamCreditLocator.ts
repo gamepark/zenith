@@ -1,25 +1,20 @@
-import { ItemContext, PileLocator } from '@gamepark/react-game'
+import { PileLocator } from '@gamepark/react-game'
 import { MaterialContext } from '@gamepark/react-game/dist/locators'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
-import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { getMyTeamColor } from './position.utils'
 
 export class TeamCreditLocator extends PileLocator {
-  radius = 0
+  radius = 1
 
   getCoordinates(location: Location, context: MaterialContext) {
     const activePlayer = this.getActivePlayerForTeam(location.player as TeamColor, context)
     if (activePlayer !== undefined) {
       return this.getPlayerPanelCoordinates(activePlayer, context)
     }
-    if (this.isMyTeam(location, context)) return { x: -50, y: 20, z: 0 }
-    return { x: -50, y: -20, z: 0 }
-  }
-
-  placeItem(item: MaterialItem, context: ItemContext) {
-    return [...super.placeItem(item, context), 'scale(0.001)']
+    if (this.isMyTeam(location, context)) return { x: -50.5, y: 18, z: 0 }
+    return { x: -50.5, y: -19, z: 0 }
   }
 
   isMyTeam(location: Location, context: MaterialContext) {
@@ -31,7 +26,7 @@ export class TeamCreditLocator extends PileLocator {
   }
 
   private getActivePlayerForTeam(team: TeamColor, context: MaterialContext): PlayerId | undefined {
-    const rule = (context.rules as any).game?.rule
+    const rule = context.rules.game?.rule
     if (!rule?.player) return undefined
     const activePlayer = rule.player as PlayerId
     if (getTeamColor(activePlayer) === team) return activePlayer
@@ -44,14 +39,14 @@ export class TeamCreditLocator extends PileLocator {
     const itsMyTeam = getMyTeamColor(context) === getTeamColor(player)
 
     if (is2Players) {
-      return itsMe ? { x: -50, y: 20, z: 0 } : { x: -50, y: -20, z: 0 }
+      return itsMe ? { x: -50.5, y: 18, z: 0 } : { x: -50.5, y: -19, z: 0 }
     }
 
     if (itsMyTeam) {
-      return itsMe ? { x: -50, y: 20, z: 0 } : { x: 44, y: 20, z: 0 }
+      return itsMe ? { x: -50.5, y: 18, z: 0 } : { x: 44, y: 18, z: 0 }
     } else {
       const opponents = context.rules.players.filter((p: PlayerId) => getMyTeamColor(context) !== getTeamColor(p))
-      return opponents[0] === player ? { x: -50, y: -20, z: 0 } : { x: 44, y: -20, z: 0 }
+      return opponents[0] === player ? { x: -50.5, y: -19, z: 0 } : { x: 44, y: -19, z: 0 }
     }
   }
 }

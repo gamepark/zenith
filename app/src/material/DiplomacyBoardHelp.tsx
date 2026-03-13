@@ -10,7 +10,7 @@ import LeaderSilver from '../images/icons/leader-silver.png'
 
 export const DiplomacyBoardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = () => {
   const { t } = useTranslation()
-  const components = { ...HelpTransComponents, badge: HelpTransComponents.leaderSilver }
+  const components = HelpTransComponents
 
   return (
     <div css={containerCss}>

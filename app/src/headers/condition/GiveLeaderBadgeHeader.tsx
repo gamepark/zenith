@@ -20,7 +20,7 @@ export const GiveLeaderBadgeHeader = () => {
   const components = {
     ...HeaderTransComponents,
     source,
-    leaderBadge: HeaderTransComponents.leaderSilver
+    leaderBadge: <>{HeaderTransComponents.leaderSilver} / {HeaderTransComponents.leaderGold}</>
   }
 
   // Legal Moves
