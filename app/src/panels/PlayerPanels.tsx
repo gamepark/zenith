@@ -362,7 +362,7 @@ const timerCss = css`
 `
 
 const speechBubbleCss = css`
-  font-size: 0.55em;
+  font-size: 1.2em;
   color: #2d2d32;
   font-weight: 600;
 `
