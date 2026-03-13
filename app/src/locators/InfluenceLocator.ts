@@ -1,43 +1,71 @@
-import { DropAreaDescription, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
+import { isItemContext, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { Influence, influences } from '@gamepark/zenith/material/Influence'
+import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
-import { isWhite } from '@gamepark/zenith/TeamColor'
+import { isWhite, teamColors } from '@gamepark/zenith/TeamColor'
+import { imWhiteTeam } from './position.utils'
 import { planetBoardDescription } from '../material/PlanetBoardDescription'
+import { InfluenceColumnDescription } from './InfluenceColumnDescription'
 import { getMyTeamColor } from './position.utils'
 
 export class InfluenceLocator extends ListLocator {
   parentItemType = MaterialType.PlanetBoard
-  locationDescription = new DropAreaDescription({ width: 5.8, height: 16.1, borderRadius: 0.5 })
+  locationDescription = new InfluenceColumnDescription()
   maxCount = 5
+
+  getLocations(_context: MaterialContext) {
+    return teamColors.flatMap((team) =>
+      influences.map((planet: Influence) => ({
+        type: LocationType.Influence,
+        player: team,
+        id: planet
+      }))
+    )
+  }
   getGap(location: Location): Partial<Coordinates> {
     if (isWhite(location.player!)) return { y: 1.8 }
     return { y: -1.8 }
   }
 
   getMaxGap(location: Location, context: MaterialContext): Partial<Coordinates> {
+    //if (!isItemContext(context)) return super.getMaxGap(location, context)
     if (this.isMyTeam(location, context)) return { y: 7.5 }
-    return { y: 5 }
+    return { y: -4.5 }
   }
 
   getParentItem() {
     return planetBoardDescription.staticItem
   }
 
-  getPositionOnParent(location: Location, _context: MaterialContext): Coordinates {
-    const baseCoordinates = { x: 0, y: 0, z: 0.05 }
-    if (isWhite(location.player!)) {
-      baseCoordinates.x += 12.6 + (location.id - 1) * 18.55
-      baseCoordinates.y += 122
-    } else {
-      baseCoordinates.x += 12.6 + (location.id - 1) * 18.55
-      baseCoordinates.y -= 22.3
+  getPositionOnParent(location: Location, context: MaterialContext): Coordinates {
+    const x = 12.6 + (location.id - 1) * 18.55
+    const isLocationItem = isItemContext(context)
+    const white = isWhite(location.player!)
+    const myTeam = this.isMyTeam(location, context)
+    const boardRotated = !imWhiteTeam(context)
+
+    let y = white ? 122 : -22.3
+
+    if (!isLocationItem) {
+      if (boardRotated) {
+        y = myTeam ? -58.8 : 122
+      } else {
+        y = myTeam ? 122 : -22.3
+      }
     }
 
-    return baseCoordinates
+    return { x, y, z: 0.05 }
   }
 
-  getRotateZ(location: Location, _context: MaterialContext): number {
-    if (isWhite(location.player!)) return 0
+  getRotateZ(location: Location, context: MaterialContext): number {
+    if (this.isMyTeam(location, context) && isWhite(location.player!)) return 0
+    if (!this.isMyTeam(location, context) && !isWhite(location.player!)) return 0
+    return 180
+  }
+
+  getItemRotateZ(item: MaterialItem, _context: ItemContext): number {
+    if (isWhite(item.location.player!)) return 0
     return 180
   }
 

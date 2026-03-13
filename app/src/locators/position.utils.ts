@@ -1,7 +1,7 @@
 import { MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
-import { getTeamColor, isWhite } from '@gamepark/zenith/TeamColor'
+import { getPlayerSide, getTeamColor, isWhite, PlayerSide } from '@gamepark/zenith/TeamColor'
 
 export const imWhiteTeam = (context: MaterialContext) => {
   return isWhite(getMyTeamColor(context))
@@ -14,4 +14,8 @@ export const getMyTeamColor = (context: MaterialContext) => {
 
 export const isWhitePlayer = (location: Location) => {
   return isWhite(getTeamColor(location.player!))
+}
+
+export const isLeftSidePlayer = (player: PlayerId) => {
+  return getPlayerSide(player) === PlayerSide.Technology
 }
