@@ -1,4 +1,4 @@
-import { isMoveItemType, isCustomMoveType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, isCustomMoveType, MaterialGame, MaterialMove, RandomBot } from '@gamepark/rules-api'
 import { Agent } from './material/Agent'
 import { Agents } from './material/Agents'
 import { LocationType } from './material/LocationType'
@@ -13,18 +13,14 @@ import { RuleId } from './rules/RuleId'
 type Game = MaterialGame<PlayerId, MaterialType, LocationType>
 type Move = MaterialMove<PlayerId, MaterialType, LocationType>
 
-export class ZenithBot {
-  player: PlayerId
-
+export class ZenithBot extends RandomBot<Game, Move, PlayerId> {
   constructor(playerId: PlayerId) {
-    this.player = playerId
+    super(ZenithRulesImport, playerId)
   }
 
   run(game: Game): Move[] {
-    const rules = new ZenithRulesImport(game)
-    const legalMoves = rules.getLegalMoves(this.player)
-    if (legalMoves.length === 0) return []
-    if (legalMoves.length === 1) return [legalMoves[0]]
+    const legalMoves = this.getLegalMoves(game)
+    if (legalMoves.length <= 1) return super.run(game)
 
     const ruleId = game.rule?.id as RuleId | undefined
     if (ruleId === RuleId.PlayCard) {
@@ -36,7 +32,7 @@ export class ZenithBot {
       if (passMove) return [passMove]
     }
 
-    return [legalMoves[Math.floor(Math.random() * legalMoves.length)]]
+    return super.run(game)
   }
 
   pickPlayCardMove(game: Game, moves: Move[]): Move {
@@ -137,6 +133,10 @@ export class ZenithBot {
 
     return bestMove
   }
+}
+
+export const ai = (game: Game, playerId: PlayerId): Promise<Move[]> => {
+  return Promise.resolve(new ZenithBot(playerId).run(game))
 }
 
 // Lazy import to avoid circular dependency

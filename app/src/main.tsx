@@ -1,6 +1,6 @@
 import { GameProvider } from '@gamepark/react-game'
 import { ZenithTutorial } from './tutorial/ZenithTutorial'
-import { ZenithBot } from '@gamepark/zenith/ZenithBot'
+import { ai } from '@gamepark/zenith/ZenithBot'
 import { ZenithOptionsSpec } from '@gamepark/zenith/ZenithOptions'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { ZenithSetup } from '@gamepark/zenith/ZenithSetup'
@@ -26,7 +26,7 @@ createRoot(document.getElementById('root')!).render(
       animations={gameAnimations}
       theme={zenithTheme}
       tutorial={new ZenithTutorial()}
-      ai={ZenithBot}
+      ai={ai}
     >
       <App />
     </GameProvider>
