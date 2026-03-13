@@ -52,12 +52,11 @@ export const InfluenceColumnContent = ({ location }: { location: Location }) => 
   const me: PlayerId | undefined = context.player as PlayerId | undefined
   const planet = location.id as Influence
   if (!planet) return null
-  const is4Players = context.rules && context.rules.players.length === 4
-  if (!is4Players) return null
   const color = PLANET_COLORS[planet]
   const name = PLANET_NAMES[planet]
+  const is4Players = context.rules && context.rules.players.length === 4
 
-  if (!me) {
+  if (!me || !is4Players) {
     return (
       <div css={containerCss}>
         <span css={nameCss} style={{ color }}>{name}</span>

@@ -41,9 +41,6 @@ export class InfluenceColumnDescription extends DropAreaDescription {
     if (!me) return
     const planet = location.id as Influence
     if (!planet) return
-    const is4Players = context.rules && context.rules.players.length === 4
-    if (!is4Players) return
-
     const bg = PLANET_BG[planet]
     const border = PLANET_BORDER[planet]
 

@@ -4,13 +4,16 @@ import { MaterialRules } from '@gamepark/rules-api'
 import { ConditionalEffect, ExpandedEffect, isDoEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { Memory } from '@gamepark/zenith/rules/Memory'
+import { DiscardConditionHeader } from './condition/DiscardConditionHeader'
 import { ExileAtOnceConditionHeader } from './condition/ExileAtOnceConditionHeader'
 import { ExileOneConditionHeader } from './condition/ExileOneConditionHeader'
 import { GiveCreditHeader } from './condition/GiveCreditHeader'
 import { GiveLeaderBadgeHeader } from './condition/GiveLeaderBadgeHeader'
 import { GiveZenithiumHeader } from './condition/GiveZenithiumHeader'
+import { MobilizeConditionHeader } from './condition/MobilizeConditionHeader'
 import { SpendCreditHeader } from './condition/SpendCreditHeader'
 import { SpendZenithiumHeader } from './condition/SpendZenithiumHeader'
+import { TransferConditionHeader } from './condition/TransferConditionHeader'
 import { ExileHeader } from './ExileHeader'
 
 export const ConditionalHeader = () => {
@@ -46,7 +49,19 @@ export const ConditionalHeader = () => {
     if (condition.effect.type === EffectType.Exile && effect.mandatory) {
       return <ExileHeader effect={{ ...condition.effect, effectSource: effect.effectSource }} />
     }
+
+    if (condition.effect.type === EffectType.Discard) {
+      return <DiscardConditionHeader />
+    }
+
+    if (condition.effect.type === EffectType.Mobilize) {
+      return <MobilizeConditionHeader />
+    }
+
+    if (condition.effect.type === EffectType.Transfer) {
+      return <TransferConditionHeader />
+    }
   }
 
-  return <>'...'</>
+  return null
 }
