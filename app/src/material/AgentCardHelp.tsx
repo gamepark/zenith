@@ -478,6 +478,7 @@ export const AgentCardHelpContent: FC<AgentCardHelpContentProps> = ({ agentId, c
   // Calculate real cost only if card is in player's hand
   const isInHand = item?.location?.type === LocationType.PlayerHand && item?.location?.player === playerId
   const realCost =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     isInHand && game && playerId ? new InfluenceHelper(game, getTeamColor(playerId)).getCost({ id: agentId } as any) : null
 
   // Mode compact : juste les effets

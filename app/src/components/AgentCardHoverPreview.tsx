@@ -72,6 +72,7 @@ export const AgentCardHoverPreview: FC = () => {
   // Position tooltip relative to card rect
   useEffect(() => {
     if (!cardRect || !tooltipRef.current) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPosition(null)
       return
     }

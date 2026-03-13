@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /** @jsxImportSource @emotion/react */
 import { RuleId } from '@gamepark/zenith/rules/RuleId'
 import { ComponentType } from 'react'

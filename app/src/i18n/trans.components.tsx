@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /** @jsxImportSource @emotion/react */
 import { css, Interpolation, Theme } from '@emotion/react'
 import { Picture } from '@gamepark/react-game'

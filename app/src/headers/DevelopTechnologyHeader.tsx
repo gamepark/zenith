@@ -8,7 +8,7 @@ import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { DevelopTechnologyRule } from '@gamepark/zenith/rules/effect'
 import { getTeamColor } from '@gamepark/zenith/TeamColor'
-import { useRef } from 'react'
+import { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getFactionForHeader, HeaderTransComponents } from '../i18n/trans.components'
 import { EffectSource } from './EffectSource'
@@ -26,11 +26,11 @@ export const DevelopTechnologyHeader = () => {
   const name = usePlayerName(activePlayer)
 
   // Cache the last valid effect so the header stays stable during animation
-  const cachedEffect = useRef<DevelopTechnologyEffect | undefined>(undefined)
-  if (effect) cachedEffect.current = effect
-  const displayEffect = effect ?? cachedEffect.current
+  const [cachedEffect, setCachedEffect] = useState<DevelopTechnologyEffect | undefined>(undefined)
+  if (effect && effect !== cachedEffect) setCachedEffect(effect)
+  const displayEffect = effect ?? cachedEffect
 
-  const animating = !effect && !!cachedEffect.current
+  const animating = !effect && !!displayEffect
 
   const source = displayEffect ? <EffectSource effectSource={displayEffect.effectSource} /> : <span />
   const components = {

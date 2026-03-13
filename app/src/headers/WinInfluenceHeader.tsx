@@ -8,7 +8,7 @@ import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { WinInfluenceRule } from '@gamepark/zenith/rules/effect'
 import { getTeamColor } from '@gamepark/zenith/TeamColor'
-import { useRef } from 'react'
+import { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getPlanetForHeader, HeaderTransComponents } from '../i18n/trans.components'
 import { EffectSource } from './EffectSource'
@@ -27,9 +27,9 @@ export const WinInfluenceHeader = () => {
   )
 
   // Cache the last valid effect so the header stays stable during animation
-  const cachedEffect = useRef<WinInfluenceEffect | undefined>(undefined)
-  if (effect) cachedEffect.current = effect
-  const displayEffect = effect ?? cachedEffect.current
+  const [cachedEffect, setCachedEffect] = useState<WinInfluenceEffect | undefined>(undefined)
+  if (effect && effect !== cachedEffect) setCachedEffect(effect)
+  const displayEffect = effect ?? cachedEffect
 
   const team = getTeamColor(activePlayer)
   const source = displayEffect ? <EffectSource effectSource={displayEffect.effectSource} /> : <span />

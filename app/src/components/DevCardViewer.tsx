@@ -181,15 +181,15 @@ export const DevCardViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
     setCostFilter(-1); setEffectFilter(-1); setValidationFilter('all')
   }, [])
 
-  const root = document.getElementById('root')
-  if (!root) return null
-
-  const validatedCount = validated.size
-
   const handleClose = useCallback(() => {
     if (onClose) onClose()
     else setIsOpen(false)
   }, [onClose])
+
+  const root = document.getElementById('root')
+  if (!root) return null
+
+  const validatedCount = validated.size
 
   if (!isOpen) {
     return createPortal(

@@ -3,7 +3,7 @@ import { MaterialContext } from '@gamepark/react-game/dist/locators'
 import { Location } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
-import { getMyTeamColor } from './position.utils'
+import { getMyTeamColor, isLeftSidePlayer } from './position.utils'
 
 export class OnPlayerPanelLocator extends Locator {
   getCoordinates(location: Location, context: MaterialContext) {
@@ -17,6 +17,7 @@ export class OnPlayerPanelLocator extends Locator {
   }
 
   private getActivePlayerForTeam(team: TeamColor, context: MaterialContext): PlayerId | undefined {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rule = (context.rules as any).game?.rule
     if (!rule?.player) return undefined
     const activePlayer = rule.player as PlayerId
@@ -26,19 +27,16 @@ export class OnPlayerPanelLocator extends Locator {
 
   private getPanelCoordinates(player: PlayerId, context: MaterialContext) {
     const is2Players = context.rules.players.length === 2
-    const itsMe = (context.player ?? context.rules.players[0]) === player
     const itsMyTeam = getMyTeamColor(context) === getTeamColor(player)
 
     if (is2Players) {
+      const itsMe = (context.player ?? context.rules.players[0]) === player
       return itsMe ? { x: -50, y: 20, z: 10 } : { x: -50, y: -20, z: 10 }
     }
 
-    if (itsMyTeam) {
-      return itsMe ? { x: -50, y: 20, z: 10 } : { x: 44, y: 20, z: 10 }
-    } else {
-      const opponents = context.rules.players.filter((p: PlayerId) => getMyTeamColor(context) !== getTeamColor(p))
-      return opponents[0] === player ? { x: -50, y: -20, z: 10 } : { x: 44, y: -20, z: 10 }
-    }
+    const isLeft = isLeftSidePlayer(player)
+    const y = itsMyTeam ? 20 : -20
+    return { x: isLeft ? -50 : 44, y, z: 10 }
   }
 }
 
