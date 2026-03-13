@@ -234,9 +234,7 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
   }
 
   isAlreadyPlayed(influence: Influence) {
-    const moved = this.lastPlanetsMoved
-    if (!moved?.length) return false
-    return moved[moved.length - 1] === influence
+    return this.lastPlanetsMoved?.includes(influence)
   }
 
   isPossible() {
