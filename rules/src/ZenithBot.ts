@@ -1,4 +1,4 @@
-import { Bot, isMoveItemType, isCustomMoveType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, isCustomMoveType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { Agent } from './material/Agent'
 import { Agents } from './material/Agents'
 import { LocationType } from './material/LocationType'
@@ -13,9 +13,11 @@ import { RuleId } from './rules/RuleId'
 type Game = MaterialGame<PlayerId, MaterialType, LocationType>
 type Move = MaterialMove<PlayerId, MaterialType, LocationType>
 
-export class ZenithBot extends Bot<Game, Move, PlayerId> {
+export class ZenithBot {
+  player: PlayerId
+
   constructor(playerId: PlayerId) {
-    super(playerId)
+    this.player = playerId
   }
 
   run(game: Game): Move[] {
