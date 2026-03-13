@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { Avatar, PlayMoveButton, useLegalMoves, usePlayerName, useRules } from '@gamepark/react-game'
+import { Avatar, PlayMoveButton, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { CustomMove, isCustomMoveType } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
@@ -18,6 +18,7 @@ export const PickOrderHeader = () => {
 
   const legalMoves = useLegalMoves<CustomMove>((move) => isCustomMoveType(CustomMoveType.PickFirst)(move))
 
+  const me = usePlayerId<PlayerId>()
   const player1 = legalMoves[0]?.data as PlayerId | undefined
   const player2 = legalMoves[1]?.data as PlayerId | undefined
   const player1Name = usePlayerName(player1)
@@ -40,12 +41,14 @@ export const PickOrderHeader = () => {
                   <Avatar playerId={player1} css={avatarCss} />
                 </div>
                 <span css={buttonTextCss}>{player1Name}</span>
+                {player1 === me && <span css={itsMeCss}>{t('header.pick-order.its-me')}</span>}
               </PlayMoveButton>
               <PlayMoveButton move={legalMoves[1]} css={dialogButtonCss}>
                 <div css={avatarWrapperCss}>
                   <Avatar playerId={player2} css={avatarCss} />
                 </div>
                 <span css={buttonTextCss}>{player2Name}</span>
+                {player2 === me && <span css={itsMeCss}>{t('header.pick-order.its-me')}</span>}
               </PlayMoveButton>
             </div>
           </div>
@@ -80,6 +83,7 @@ const blackDialogCss = css`
 
 const dialogContentCss = css`
   text-align: center;
+  font-size: 1.6em;
 `
 
 const titleCss = css`
@@ -138,4 +142,20 @@ const avatarCss = css`
 const buttonTextCss = css`
   font-size: 1.3em;
   font-weight: 600;
+`
+
+const itsMeCss = css`
+  font-size: 1em;
+  font-weight: 700;
+  color: #fff;
+  background: #d4872a;
+  padding: 0.2em 0.8em;
+  border-radius: 1em;
+  margin-top: 0.2em;
+  animation: itsMe 1.5s ease-in-out infinite;
+
+  @keyframes itsMe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
 `

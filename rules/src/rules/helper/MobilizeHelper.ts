@@ -2,7 +2,6 @@ import { MaterialGame, MaterialMove, MaterialRulesPart } from '@gamepark/rules-a
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { LocationType } from '../../material/LocationType'
-import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
 import { DeckHelper } from './DeckHelper'
 import { PlayerHelper } from './PlayerHelper'

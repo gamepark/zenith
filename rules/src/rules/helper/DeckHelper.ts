@@ -1,4 +1,4 @@
-import { Material, MaterialGame, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialGame, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
@@ -7,11 +7,11 @@ export class DeckHelper extends MaterialRulesPart {
     super(game)
   }
 
-  get deck(): Material {
+  get deck() {
     return this.material(MaterialType.AgentCard).location(LocationType.AgentDeck).deck()
   }
 
-  get discard(): Material {
+  get discard() {
     return this.material(MaterialType.AgentCard).location(LocationType.AgentDiscard)
   }
 
