@@ -813,9 +813,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@portal:/C:/Users/pbeau/Documents/GamePark/react-game::locator=root-workspace-0b6124%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@gamepark/react-game@portal:/C:/Users/pbeau/Documents/GamePark/react-game::locator=root-workspace-0b6124%40workspace%3A."
+"@gamepark/react-game@npm:^7.5.8":
+  version: 7.5.8
+  resolution: "@gamepark/react-game@npm:7.5.8"
   dependencies:
     "@datadog/browser-logs": "npm:^6.28.1"
     "@dnd-kit/modifiers": "npm:^9.0.0"
@@ -849,8 +849,9 @@ __metadata:
     react-dom: 19.x
     react-i18next: 16.x
     react-redux: 9.x
+  checksum: 10c0/8630bef5a846b3acbee33b8474ffbca49a25f9bd1b82b8b9607f507d3cef6775553d8c6290c71092c1e17a83de5946f9ffd0e513245d0e2de88f7507e8a2a0b3
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@gamepark/rules-api@npm:^7.5.0":
   version: 7.5.0
@@ -872,7 +873,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.1.0"
     "@fortawesome/free-solid-svg-icons": "npm:^7.1.0"
     "@fortawesome/react-fontawesome": "npm:^3.1.1"
-    "@gamepark/react-game": "npm:^7.5.7"
+    "@gamepark/react-game": "npm:^7.5.8"
     "@gamepark/rules-api": "npm:^7.5.0"
     "@types/node": "npm:^25.0.2"
     "@types/react": "npm:^19.2.7"
