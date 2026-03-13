@@ -1,6 +1,6 @@
 import { css, Interpolation, Theme } from '@emotion/react'
-import { DropAreaDescription, LocationContext, MaterialContext } from '@gamepark/react-game'
-import { ComponentSize, Location } from '@gamepark/rules-api'
+import { DropAreaDescription, LocationContext, MaterialContext, ComponentSize } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'

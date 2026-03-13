@@ -11,7 +11,7 @@ import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import { getMyTeamColor } from '../locators/position.utils'
+import { getMyTeamColor, imWhiteTeam, isLeftSidePlayer } from '../locators/position.utils'
 import { creditTokenDescription } from '../material/CreditTokenDescription'
 import { zenithiumTokenDescription } from '../material/ZenithiumTokenDescription'
 import LeaderGoldIcon from '../images/icons/leader-gold.png'
@@ -37,6 +37,7 @@ export const PlayerPanels = () => {
     }
 
     if (chosenFirst !== undefined && prevChosenFirst.current === undefined) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowSpeech(true)
       const timer = setTimeout(() => setShowSpeech(false), 5000)
       return () => clearTimeout(timer)
@@ -128,6 +129,7 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
             playerId={playerId}
             css={avatarCss}
             speechBubbleProps={speak ? {
+              // eslint-disable-next-line react-hooks/refs
               direction: getSpeechDirection(panelRef.current),
               css: speechBubbleCss,
               children: <>{speak}</>
@@ -194,12 +196,13 @@ const getPanelPosition = (player: PlayerId, context: MaterialContext) => {
     return itsMe ? bottomLeftCss : topLeftCss
   }
 
+  const boardRotated = !imWhiteTeam(context)
+  const leftSide = isLeftSidePlayer(player)
+  const isLeft = leftSide !== boardRotated
   if (itsMyTeam) {
-    const itsMe = (context.player ?? context.rules.players[0]) === player
-    return itsMe ? bottomLeftCss : bottomRightCss
+    return isLeft ? bottomLeftCss : bottomRightCss
   } else {
-    const opponents = context.rules.players.filter((p) => getMyTeamColor(context) !== getTeamColor(p))
-    return opponents[0] === player ? topLeftCss : topRightCss
+    return isLeft ? topLeftCss : topRightCss
   }
 }
 

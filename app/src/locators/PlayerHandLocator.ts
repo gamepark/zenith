@@ -2,22 +2,21 @@ import { HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { getTeamColor } from '@gamepark/zenith/TeamColor'
-import { getMyTeamColor } from './position.utils'
+import { getMyTeamColor, imWhiteTeam, isLeftSidePlayer } from './position.utils'
 
 export class PlayerHandLocator extends HandLocator {
   getCoordinates(location: Location, context: MaterialContext): Partial<Coordinates> {
     const is2Players = context.rules.players.length === 2
     const itsMyTeam = this.isMyTeam(location.player!, context)
-    if (itsMyTeam) {
+    if (is2Players) {
       const itsMe = (context.player ?? context.rules.players[0]) === location.player
-      if (is2Players) return { x: itsMe ? -30 : -30, y: 16.5, z: 0.05 }
-      return { x: itsMe ? -30 : 30, y: 16.5, z: 0.05 }
-    } else {
-      if (is2Players) return { x: -30, y: -16.5, z: 0.05 }
-      const opponents = context.rules.players.filter((p) => !this.isMyTeam(p, context))
-      const left = opponents[0] !== location.player
-      return { x: left ? -30 : 30, y: -16.5, z: 0.05 }
+      return { x: -30, y: itsMe ? 16.5 : -16.5, z: 0.05 }
     }
+    const y = itsMyTeam ? 16.5 : -16.5
+    const boardRotated = !imWhiteTeam(context)
+    const leftSide = isLeftSidePlayer(location.player!)
+    const x = (leftSide !== boardRotated) ? -30 : 30
+    return { x, y, z: 0.05 }
   }
 
   getBaseAngle(location: Location, context: MaterialContext): number {
