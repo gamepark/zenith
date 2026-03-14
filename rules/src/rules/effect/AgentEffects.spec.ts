@@ -1,5 +1,5 @@
-import { isMoveItemType, isStartPlayerTurn, isStartRule, MaterialGame, MaterialMove } from '@gamepark/rules-api'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { isMoveItemType, MaterialMove } from '@gamepark/rules-api'
+import { describe, expect, it } from 'vitest'
 import { Agent, agents } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { Credit } from '../../material/Credit'
@@ -329,9 +329,6 @@ describe('Gilgamesh opponentSide fallback', () => {
     // But the code says x < 0... this is confusing.
 
     // Let's just check what happens and fix the test accordingly.
-    const ruleAfterPlay = rules.game.rule?.id
-    const legalMoves = rules.getLegalMoves(player1)
-
     // Just verify effect chain completes
     let iterations = 0
     while (iterations < 20) {

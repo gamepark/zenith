@@ -1,4 +1,4 @@
-import { isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { MaterialMove } from '@gamepark/rules-api'
 import { describe, expect, it } from 'vitest'
 import { Agent, agents } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
@@ -13,7 +13,6 @@ import { PlayerId } from '../../PlayerId'
 import { TeamColor } from '../../TeamColor'
 import { ZenithRules } from '../../ZenithRules'
 import { ZenithSetup } from '../../ZenithSetup'
-import { CustomMoveType } from '../CustomMoveType'
 import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
 
@@ -296,10 +295,6 @@ describe('WinInfluence edge cases', () => {
     const rules = createRulesWithEffects({}, [
       { type: EffectType.WinInfluence, quantity: 1, differentPlanet: true, resetDifferentPlanet: true }
     ])
-
-    // Start effect
-    const startMove = rules.material(MaterialType.AgentCard)
-      .location(LocationType.PlayerHand).player(player1).getIndex()
 
     // Just verify the effect chain resolves
     const result = resolveAllEffects(rules, player1)
@@ -848,7 +843,7 @@ describe('Mobilize edge cases', () => {
 describe('WinCredit edge cases', () => {
   it('perLevel1Technology with no techs should give 0 credits (not block)', () => {
     const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinCredit, perLevel1Technology: [Faction.Humanoid] }
+      { type: EffectType.WinCredit, perLevel1Technology: [Faction.Human] }
     ])
 
     const result = resolveAllEffects(rules, player1)
@@ -880,7 +875,7 @@ describe('WinCredit edge cases', () => {
 describe('WinZenithium edge cases', () => {
   it('perLevel1Technology with no techs should give 0 zenithium', () => {
     const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinZenithium, perLevel1Technology: [Faction.Humanoid] }
+      { type: EffectType.WinZenithium, perLevel1Technology: [Faction.Human] }
     ])
 
     const result = resolveAllEffects(rules, player1)
