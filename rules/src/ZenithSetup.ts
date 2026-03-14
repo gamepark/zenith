@@ -24,9 +24,9 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     this.setupTurnOrder()
     this.setupDeck()
     this.setupPlayers()
-    this.setupDebugHand() // TODO: REMOVE — debug only
+    //this.setupDebugHand() // TODO: REMOVE — debug only
     this.setupInfluences()
-    this.setupDebugInfluences() // TODO: REMOVE — debug only
+    //this.setupDebugInfluences() // TODO: REMOVE — debug only
     this.setupLeaderBadge()
     this.setupTechnologyBoard()
     this.setupTeams()
