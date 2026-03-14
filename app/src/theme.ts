@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import { buttonCss, GameTheme } from '@gamepark/react-game'
+import background from './images/background.jpg'
 
 type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P]
@@ -9,7 +10,7 @@ export const zenithTheme: DeepPartial<GameTheme> = {
   root: {
     fontFamily: 'Quicksand',
     background: {
-      image: '/cover-1920.jpg',
+      image: background,
       overlay: 'rgba(0, 0, 0, 0.7)'
     }
   },
