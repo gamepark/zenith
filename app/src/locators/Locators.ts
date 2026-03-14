@@ -2,6 +2,7 @@ import { Locator } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
+import { agentCardCostLocator } from './AgentCardCostLocator'
 import { agentCardFactionLocator } from './AgentCardFactionLocator'
 import { agentDeckLocator } from './AgentDeckLocator'
 import { agentDiscardLocator } from './AgentDiscardLocator'
@@ -49,5 +50,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.BonusTokenStock]: bonusStockLocator,
   [LocationType.BonusDiscard]: bonusDiscardLocator,
   [LocationType.AgentCardFaction]: agentCardFactionLocator,
+  [LocationType.AgentCardCost]: agentCardCostLocator,
   [LocationType.DiplomacyBoardAction]: diplomacyBoardActionLocator
 }

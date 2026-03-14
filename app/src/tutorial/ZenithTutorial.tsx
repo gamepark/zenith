@@ -13,6 +13,7 @@ import { getTeamColor } from '@gamepark/zenith/TeamColor'
 import { me, opponent, TutorialSetup } from '@gamepark/zenith/tutorial/TutorialSetup'
 import { Trans } from 'react-i18next'
 import { HelpTransComponents } from '../i18n/trans.components'
+import { zenithiumTokenDescription } from '../material/ZenithiumTokenDescription'
 
 /** Steps where the diplomacy board should be displayed horizontally (no rotation) */
 export const DIPLOMACY_BOARD_HORIZONTAL_STEPS = [29, 31]
@@ -140,8 +141,21 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         position: { y: -15 }
       },
       focus: (game) => ({
-        materials: [this.material(game, MaterialType.CreditToken).location(LocationType.TeamCredit).player(getTeamColor(me))],
-        margin: { top: 10 }
+        materials: [
+          this.material(game, MaterialType.AgentCard).location(LocationType.Influence).id(Agent.Mc4ffr3y),
+          this.material(game, MaterialType.AgentCard).location(LocationType.PlayerHand).player(me),
+          this.material(game, MaterialType.CreditToken).location(LocationType.TeamCredit).player(getTeamColor(me))
+        ],
+        locations: [
+          this.location(LocationType.AgentCardCost).parent(this.material(game, MaterialType.AgentCard).id(Agent.Mc4ffr3y).getIndex()).location,
+          ...this.material(game, MaterialType.AgentCard)
+            .location(LocationType.PlayerHand)
+            .player(me)
+            .getIndexes()
+            .map((index) => this.location(LocationType.AgentCardCost).parent(index).location)
+        ],
+        margin: { top: 10, left: 5, right: 2 },
+        highlight: true
       }),
       move: {
         interrupt: (move: MaterialMove) => isMoveItemType(MaterialType.InfluenceDisc)(move)
@@ -186,6 +200,11 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         ),
         position: { y: -15 }
       },
+      focus: (game) => ({
+        materials: [this.material(game, MaterialType.ZenithiumToken).location(LocationType.TeamZenithium).player(getTeamColor(me))],
+        staticItems: [{ type: MaterialType.ZenithiumToken, item: zenithiumTokenDescription.staticItem }],
+        margin: { top: 10, left: 5, right: 5 }
+      }),
       move: {
         interrupt: (move: MaterialMove) => isStartRule(move) && move.id === RuleId.Refill
       }
@@ -467,7 +486,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
       },
       focus: (game) => ({
         materials: [this.material(game, MaterialType.AgentCard).location(LocationType.PlayerHand).player(me).id(Agent.Titus)],
-        locations: [this.location(LocationType.AgentDiscard).location],
+        //locations: [this.location(LocationType.AgentDiscard).location],
         margin: { top: 10 }
       }),
       move: {
@@ -509,10 +528,11 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
             components={tc}
           />
         ),
-        position: { y: -15 }
+        position: { y: -18 }
       },
       focus: (game) => ({
-        materials: [this.material(game, MaterialType.LeaderBadgeToken)]
+        materials: [this.material(game, MaterialType.LeaderBadgeToken)],
+        margin: { top: 3 }
       }),
       move: {
         interrupt: (move: MaterialMove) => isStartRule(move) && move.id === RuleId.Mobilize
@@ -540,7 +560,9 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         text: () => (
           <Trans
             i18nKey="tuto.mobilize"
-            defaults="When you use an Animod to take Leadership, you also benefit from the Mobilize 2 effect.<br/>With this effect, you draw 2 Agent cards and place them directly in play."
+            defaults={
+              'When you use an Animod to take Leadership, you also benefit from the "<bold>Mobilize 2</bold>" effect.<br/>With this effect, you draw 2 Agent cards and place them directly in play.'
+            }
             components={tc}
           />
         ),
@@ -593,25 +615,18 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         position: { y: -15 }
       }
     },
-    // Step 39: Opponent recruits LordCreep
+    // Step 39: Opponent recruits LordCreep — interrupt before Terra capture
     {
       move: {
         player: opponent,
         filter: (move: MaterialMove, game: MaterialGame) =>
           isMoveItemType(MaterialType.AgentCard)(move) &&
           move.location.type === LocationType.Influence &&
-          this.material(game, MaterialType.AgentCard).getItem(move.itemIndex).id === Agent.LordCreep
+          this.material(game, MaterialType.AgentCard).getItem(move.itemIndex).id === Agent.LordCreep,
+        interrupt: (move: MaterialMove) => isMoveItemType(MaterialType.BonusToken)(move)
       }
     },
-    // Step 40: Opponent chooses Mars for opponentSide WinInfluence (Terra is automatic)
-    {
-      move: {
-        player: opponent,
-        filter: (move: MaterialMove, game: MaterialGame) =>
-          isMoveItemType(MaterialType.InfluenceDisc)(move) && this.material(game, MaterialType.InfluenceDisc).getItem(move.itemIndex).id === Influence.Mars
-      }
-    },
-    // Step 41
+    // Step 41 — explain Terra capture (bonus token still on board)
     {
       popup: {
         text: () => (
@@ -641,8 +656,16 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         position: { y: -20 }
       },
       focus: (game) => ({
-        materials: [this.material(game, MaterialType.BonusToken).location(LocationType.PlanetBoardBonusSpace)]
-      })
+        materials: [this.material(game, MaterialType.BonusToken).location(LocationType.PlanetBoardBonusSpace).locationId(Influence.Terra)]
+      }),
+      move: {}
+    },
+    {
+      move: {
+        player: opponent,
+        filter: (move: MaterialMove, game: MaterialGame) =>
+          isMoveItemType(MaterialType.InfluenceDisc)(move) && this.material(game, MaterialType.InfluenceDisc).getItem(move.itemIndex).id === Influence.Mars
+      }
     },
     // Step 43
     {

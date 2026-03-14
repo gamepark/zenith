@@ -17,6 +17,9 @@ export class PlayCardRule extends PlayerTurnRule {
     this.forget(Memory.DiscardFaction)
     this.forget(Memory.LastPlanetsMoved)
     this.forget(Memory.LastPlanetMove)
+    if (!this.hand.length) {
+      return [this.startRule(RuleId.Refill)]
+    }
     return []
   }
 

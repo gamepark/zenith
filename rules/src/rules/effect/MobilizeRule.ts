@@ -2,6 +2,7 @@ import { isMoveItemType, isMoveItemTypeAtOnce, isShuffleItemType, ItemMove, Mate
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { MobilizeEffect } from '../../material/effect/Effect'
+import { EffectType } from '../../material/effect/EffectType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { DeckHelper } from '../helper/DeckHelper'
@@ -18,13 +19,17 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
     const deckHelper = new DeckHelper(this.game)
     const agent = deckHelper.deck.limit(this.effect.quantity ?? 1)
 
-    if (!agent.length || !agent.getItem()?.id) {
-      return deckHelper.reshuffleDiscardIfDeckEmpty()
+    if (!agent.length) {
+      const reshuffle = deckHelper.reshuffleDiscardIfDeckEmpty()
+      if (reshuffle.length) return reshuffle
+      // No cards left anywhere — skip remaining mobilizations
+      this.removeFirstEffect()
+      return this.afterEffectPlayed()
     }
 
     return agent.moveItems((item) => ({
       type: LocationType.Influence,
-      id: Agents[item.id as Agent].influence,
+      id: item.id !== undefined ? Agents[item.id as Agent].influence : undefined,
       player: this.playerHelper.team
     }))
   }
@@ -48,10 +53,14 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
     }
 
     if (isShuffleItemType(MaterialType.AgentCard)(move)) {
+      // After reshuffle, try to mobilize again
       return this.getAutomaticEffectMoves()
     }
 
     if (!isMoveItemType(MaterialType.AgentCard)(move) || move.location.type !== LocationType.Influence) return []
+
+    // Effect may have already been removed by a previous move in the same batch
+    if (!this.firstEffect || this.firstEffect.type !== EffectType.Mobilize) return []
 
     if (this.effect.quantity) {
       this.effect.quantity--
@@ -62,8 +71,14 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
       return this.afterEffectPlayed()
     }
 
-    // Still more to mobilize — check if deck needs reshuffle
-    return deckHelper.reshuffleDiscardIfDeckEmpty()
+    // Still more to mobilize — check if deck needs reshuffle or is empty
+    const reshuffle = deckHelper.reshuffleDiscardIfDeckEmpty()
+    if (!reshuffle.length && !deckHelper.deck.length) {
+      // No cards left anywhere — skip remaining mobilizations
+      this.removeFirstEffect()
+      return this.afterEffectPlayed()
+    }
+    return reshuffle
   }
 
   getExtraDataFromMove(move: ItemMove) {

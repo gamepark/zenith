@@ -412,7 +412,7 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
       )}
       {discardForDiplomacy.length > 0 && (
         <PlayMoveButton move={discardForDiplomacy[0]} onPlay={closeDialog} css={actionButtonCss}>
-          {t('help.action.diplomacy', 'Diplomacy')}
+          {t('help.action.diplomacy', 'Take Leadership')}
         </PlayMoveButton>
       )}
     </div>

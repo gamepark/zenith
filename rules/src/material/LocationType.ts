@@ -21,5 +21,6 @@ export enum LocationType {
   CreditStock,
   BonusDiscard,
   AgentCardFaction,
-  DiplomacyBoardAction
+  DiplomacyBoardAction,
+  AgentCardCost
 }

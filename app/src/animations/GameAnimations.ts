@@ -9,50 +9,50 @@ export const gameAnimations = new MaterialGameAnimations()
 gameAnimations
   .when()
   .move((move) => isMoveItemType(MaterialType.InfluenceDisc)(move))
-  .duration(0.8)
+  .duration(1.2)
 
 // Card plays
 gameAnimations
   .when()
   .rule(RuleId.PlayCard)
   .move((move) => isMoveItemType(MaterialType.AgentCard)(move))
-  .duration(0.4)
+  .duration(0.8)
 
 // Mulligan - faster card distribution
 gameAnimations
   .when()
   .rule(RuleId.Muligan)
   .move((move) => isMoveItemType(MaterialType.AgentCard)(move))
-  .duration(0.3)
+  .duration(0.5)
 
 // Discard actions
 gameAnimations
   .when()
   .rule(RuleId.Discard)
   .move((move) => isMoveItemType(MaterialType.AgentCard)(move))
-  .duration(0.35)
+  .duration(0.6)
 
 // Credit/Zenithium token movements
 gameAnimations
   .when()
   .move((move) => isMoveItemType(MaterialType.CreditToken)(move) || isMoveItemType(MaterialType.ZenithiumToken)(move))
-  .duration(0.4)
+  .duration(0.7)
 
 // Leader badge transfer
 gameAnimations
   .when()
   .move((move) => isMoveItemType(MaterialType.LeaderBadgeToken)(move))
-  .duration(0.6)
+  .duration(1.0)
 
 // Technology markers
 gameAnimations
   .when()
   .move((move) => isMoveItemType(MaterialType.TechMarker)(move))
-  .duration(0.5)
+  .duration(0.8)
 
 // Refill deck
 gameAnimations
   .when()
   .rule(RuleId.Refill)
   .move((move) => isMoveItemType(MaterialType.AgentCard)(move))
-  .duration(0.25)
+  .duration(0.4)
