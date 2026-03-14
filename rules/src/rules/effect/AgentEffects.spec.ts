@@ -382,7 +382,7 @@ describe('Planet capture', () => {
       if (rules.game.rule === undefined) break
       const moves = rules.getLegalMoves(player1)
       if (moves.length === 0) {
-        resolveAutoWithLog(rules)
+        resolveAutoMoves(rules)
         continue
       }
       playConsequences(rules, moves[0])
@@ -780,6 +780,38 @@ describe('Mobilize with low/empty deck', () => {
     expect(mobilized.length).toBe(3)
   })
 
+  it('mobilize 2 with deck=0 and discard=0: should skip mobilization without blocking', () => {
+    const setup = new MobilizeEmptySetup()
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(0)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDiscard).length).toBe(0)
+
+    const result = playAgentAndResolveEffects(rules, Agent.H4milt0n)
+
+    expect(result.error).toBeUndefined()
+    expect(result.finalRule).toBeDefined()
+    // H4milt0n itself goes to influence, but mobilize effect is skipped
+    const mobilized = rules.material(MaterialType.AgentCard).location(LocationType.Influence).player(TeamColor.White)
+    expect(mobilized.length).toBe(1) // Only H4milt0n itself
+  })
+
+  it('mobilize 2 with deck=1 and discard=0: should mobilize 1 then skip remaining', () => {
+    const setup = new MobilizePartialSetup(1)
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(1)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDiscard).length).toBe(0)
+
+    const result = playAgentAndResolveEffects(rules, Agent.H4milt0n)
+
+    expect(result.error).toBeUndefined()
+    expect(result.finalRule).toBeDefined()
+    // H4milt0n itself + 1 mobilized card
+    const mobilized = rules.material(MaterialType.AgentCard).location(LocationType.Influence).player(TeamColor.White)
+    expect(mobilized.length).toBe(2)
+  })
+
   it('mobilize 2 with deck=2: normal mobilize without reshuffle', () => {
     const rules = createMobilizeSetup(2)
 
@@ -816,6 +848,39 @@ class MobilizeTestSetup extends TestSetup {
         location: { type: LocationType.AgentDiscard }
       })
     }
+  }
+}
+
+/** Setup with deck=0 and discard=0 for mobilize empty test */
+class MobilizeEmptySetup extends TestSetup {
+  constructor() {
+    super(Agent.H4milt0n)
+  }
+
+  setupRemainingDeck() {
+    // No cards in deck or discard — only hand cards exist
+  }
+}
+
+/** Setup with N cards in deck, 0 in discard for mobilize partial test */
+class MobilizePartialSetup extends TestSetup {
+  constructor(private deckCount: number) {
+    super(Agent.H4milt0n)
+  }
+
+  setupRemainingDeck() {
+    const usedAgents = new Set([
+      Agent.H4milt0n,
+      ...agents.filter(a => a !== Agent.H4milt0n).slice(0, 7)
+    ])
+    const remaining = agents.filter(a => !usedAgents.has(a))
+    for (let i = 0; i < this.deckCount && i < remaining.length; i++) {
+      this.material(MaterialType.AgentCard).createItem({
+        id: remaining[i],
+        location: { type: LocationType.AgentDeck }
+      })
+    }
+    // Nothing in discard
   }
 }
 
