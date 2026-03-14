@@ -4,7 +4,7 @@ import { EffectType } from './effect/EffectType'
 import { Faction } from './Faction'
 import { Influence } from './Influence'
 
-type AgentCharacteristics = {
+export type AgentCharacteristics = {
   influence: Influence
   cost: number
   faction: Faction

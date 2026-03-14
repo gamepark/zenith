@@ -9,7 +9,7 @@ import { EffectSource } from '../EffectSource'
 import { useDoConditionHeaderContext } from './condition.utils'
 
 export const DiscardConditionHeader = () => {
-  const { itsMe, name, conditionEffect } = useDoConditionHeaderContext<DiscardEffect>()
+  const { itsMe, name } = useDoConditionHeaderContext<DiscardEffect>()
   const rules = useRules<MaterialRules>()!
   const effect = rules.remind<ExpandedEffect[]>(Memory.Effects)[0] as ExpandedEffect<ConditionalEffect>
 

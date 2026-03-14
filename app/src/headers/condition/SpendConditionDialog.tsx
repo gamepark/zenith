@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Picture, useLegalMove, useLegalMoves, usePlay, useRules } from '@gamepark/react-game'
-import { CustomMove, isCustomMoveType, MaterialMove, MaterialRules } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
 import { ConditionalEffect, ConditionType, ExpandedEffect, SpendCreditEffect, SpendZenithiumEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { Influence } from '@gamepark/zenith/material/Influence'
