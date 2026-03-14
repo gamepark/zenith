@@ -4,9 +4,10 @@ import { MaterialRules } from '@gamepark/rules-api'
 import { EndGameHelper } from '@gamepark/zenith'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { getTeamColor } from '@gamepark/zenith/TeamColor'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 export const ZenithResultHeader = () => {
+  const { t } = useTranslation()
   const rules = useRules<MaterialRules>()
   const player = usePlayerId<PlayerId>()
   if (!rules) return null
@@ -24,16 +25,12 @@ export const ZenithResultHeader = () => {
     victoryType = 'popular'
   }
 
+  const victory = t(`victory.${victoryType}`)
   const isWinner = player !== undefined && getTeamColor(player) === winningTeam
-  const key = isWinner ? `result.victory.${victoryType}` : `result.defeat.${victoryType}`
-  const defaults: Record<string, string> = {
-    'result.victory.absolute': 'Congratulations, you win an absolute victory!',
-    'result.victory.democratic': 'Congratulations, you win a democratic victory!',
-    'result.victory.popular': 'Congratulations, you win a popular victory!',
-    'result.defeat.absolute': 'You lose... The opposing team wins an absolute victory.',
-    'result.defeat.democratic': 'You lose... The opposing team wins a democratic victory.',
-    'result.defeat.popular': 'You lose... The opposing team wins a popular victory.'
+  if (isWinner) {
+    return <Trans defaults="You win a {victory} victory!" i18nKey="result.victory" values={{ victory }} />
   }
 
-  return <Trans defaults={defaults[key]} i18nKey={key} />
+  const team = t(`team.${winningTeam}`)
+  return <Trans defaults="The {team} team wins a {victory} victory!" i18nKey="result.defeat" values={{ team, victory }} />
 }

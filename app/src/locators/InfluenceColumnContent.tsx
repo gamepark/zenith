@@ -5,6 +5,7 @@ import { Location } from '@gamepark/rules-api'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { getAllowedPlanets, getPlayerSide, getTeamColor, PlayerSide, TeamColor } from '@gamepark/zenith/TeamColor'
+import { useTranslation } from 'react-i18next'
 
 const PLANET_COLORS: Record<Influence, string> = {
   [Influence.Mercury]: '#8b7bb5',
@@ -12,14 +13,6 @@ const PLANET_COLORS: Record<Influence, string> = {
   [Influence.Terra]: '#4fb4d8',
   [Influence.Mars]: '#c8384a',
   [Influence.Jupiter]: '#5ba89e'
-}
-
-const PLANET_NAMES: Record<Influence, string> = {
-  [Influence.Mercury]: 'Mercury',
-  [Influence.Venus]: 'Venus',
-  [Influence.Terra]: 'Terra',
-  [Influence.Mars]: 'Mars',
-  [Influence.Jupiter]: 'Jupiter'
 }
 
 type ColumnStatus = 'yours' | 'shared' | 'teammate'
@@ -35,11 +28,6 @@ function getColumnStatus(planet: Influence, player: PlayerId): ColumnStatus {
   return 'yours'
 }
 
-const STATUS_LABELS: Record<ColumnStatus, string> = {
-  yours: 'Yours',
-  shared: 'Shared',
-  teammate: 'Teammate'
-}
 
 const STATUS_TAG: Record<ColumnStatus, { color: string; bg: string }> = {
   yours: { color: '#fff', bg: 'rgba(212,135,42,0.85)' },
@@ -48,12 +36,13 @@ const STATUS_TAG: Record<ColumnStatus, { color: string; bg: string }> = {
 }
 
 export const InfluenceColumnContent = ({ location }: { location: Location }) => {
+  const { t } = useTranslation()
   const context = useMaterialContext()
   const me: PlayerId | undefined = context.player as PlayerId | undefined
   const planet = location.id as Influence
   if (!planet) return null
   const color = PLANET_COLORS[planet]
-  const name = PLANET_NAMES[planet]
+  const name = t(`planet.${planet}`)
   const is4Players = context.rules && context.rules.players.length === 4
 
   if (!me || !is4Players) {
@@ -77,7 +66,7 @@ export const InfluenceColumnContent = ({ location }: { location: Location }) => 
   }
 
   const status = getColumnStatus(planet, me)
-  const statusLabel = STATUS_LABELS[status]
+  const statusLabel = t(`column.${status}`)
   const tag = STATUS_TAG[status]
 
   return (
