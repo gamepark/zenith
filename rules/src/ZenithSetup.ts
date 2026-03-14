@@ -1,6 +1,6 @@
 import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
 import { shuffle, sample } from 'es-toolkit/compat'
-import { agents } from './material/Agent'
+import { Agent, agents } from './material/Agent'
 import { allBonuses } from './material/Bonus'
 import { Credit } from './material/Credit'
 import { factions } from './material/Faction'
@@ -24,7 +24,9 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     this.setupTurnOrder()
     this.setupDeck()
     this.setupPlayers()
+    this.setupDebugHand() // TODO: REMOVE — debug only
     this.setupInfluences()
+    this.setupDebugInfluences() // TODO: REMOVE — debug only
     this.setupLeaderBadge()
     this.setupTechnologyBoard()
     this.setupTeams()
@@ -160,6 +162,29 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
       },
       4
     )
+  }
+
+  // TODO: REMOVE — debug only
+  setupDebugInfluences() {
+    const mercury = this.material(MaterialType.InfluenceDisc).id(Influence.Mercury)
+    if (mercury.length) {
+      const item = mercury.getItem()!
+      item.location.x = (item.location.x ?? 0) + 2
+    }
+  }
+
+  // TODO: REMOVE — debug only
+  setupDebugHand() {
+    const me: PlayerId = 1
+    const augustusIndex = this.material(MaterialType.AgentCard).id(Agent.Augustus).getIndex()
+    const handCards = this.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(me)
+    if (handCards.length > 0) {
+      const firstHandIndex = handCards.getIndex()
+      const items = this.game.items[MaterialType.AgentCard]!
+      const augustusLoc = { ...items[augustusIndex].location }
+      items[augustusIndex].location = { ...items[firstHandIndex].location }
+      items[firstHandIndex].location = augustusLoc
+    }
   }
 
   setupTeams() {

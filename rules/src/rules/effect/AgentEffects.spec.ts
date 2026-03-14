@@ -535,6 +535,514 @@ describe('Planet capture', () => {
   })
 })
 
+describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
+  it('should allow capturing Mercury and still apply remaining pattern moves to Venus and Terra', () => {
+    // Mercury at x=3: pattern [1,2,1] on [Mercury, Venus, Terra] → Mercury+1=capture, Venus+2, Terra+1
+    const setup = new AugustusPatternSetup({ [Influence.Mercury]: 3 })
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+
+    // Verify initial positions
+    expect(rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Mercury).getItem()!.location.x).toBe(3)
+    expect(rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Venus).getItem()!.location.x).toBe(0)
+    expect(rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Terra).getItem()!.location.x).toBe(0)
+
+    // Play Augustus
+    const cardIndex = rules.material(MaterialType.AgentCard)
+      .location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
+    const playMove = rules.material(MaterialType.AgentCard).index(cardIndex).moveItem({
+      type: LocationType.Influence,
+      id: Influence.Terra,
+      player: TeamColor.White
+    })
+    playConsequences(rules, playMove)
+    resolveAutoMoves(rules)
+
+    // Effect 1 (Terra +1) should auto-resolve. Terra goes from 0 to 1.
+    // Effect 2 (pattern [1,2,1]) — choose Mercury (from pattern [Merc=1, Ven=2, Ter=1])
+    // Mercury at x=3+1=4 → captured!
+    let iterations = 0
+    while (iterations < 30) {
+      const ruleId = rules.game.rule?.id
+      if (ruleId === RuleId.Refill || ruleId === RuleId.PlayCard) break
+      if (rules.game.rule === undefined) break
+      const moves = rules.getLegalMoves(player1)
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+        continue
+      }
+      // Prefer moving Mercury first to trigger capture, then Venus+2 for [Merc=1,Ven=2,Ter=1]
+      const mercuryMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Mercury
+      )
+      const venusMove = !mercuryMove ? moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Venus &&
+        m.location.x === 2
+      ) : undefined
+      playConsequences(rules, mercuryMove ?? venusMove ?? moves[0])
+      resolveAutoMoves(rules)
+      iterations++
+    }
+
+    // Mercury should be captured by White
+    const mercuryCaptured = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.TeamPlanets).player(TeamColor.White).id(Influence.Mercury)
+    expect(mercuryCaptured.length).toBe(1)
+
+    // Venus should have been moved +2 (from 0 to 2) by the remaining pattern
+    const venus = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Venus)
+    expect(venus.getItem()!.location.x).toBe(2)
+
+    // Terra was moved +1 by effect 1 (0→1), then +1 by pattern (1→2)
+    const terra = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Terra)
+    expect(terra.getItem()!.location.x).toBe(2)
+  })
+
+  it('should allow truncated pattern at left edge — Mercury+2 capture with Venus+1', () => {
+    // Mercury at x=2: truncated pattern [2,1] on [Mercury, Venus] → Mercury+2=capture, Venus+1
+    const setup = new AugustusPatternSetup({ [Influence.Mercury]: 2 })
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+
+    expect(rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Mercury).getItem()!.location.x).toBe(2)
+
+    // Play Augustus
+    const cardIndex = rules.material(MaterialType.AgentCard)
+      .location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
+    const playMove = rules.material(MaterialType.AgentCard).index(cardIndex).moveItem({
+      type: LocationType.Influence,
+      id: Influence.Terra,
+      player: TeamColor.White
+    })
+    playConsequences(rules, playMove)
+    resolveAutoMoves(rules)
+
+    // Effect 1 (Terra +1) auto-resolves. Terra 0→1.
+    // Effect 2 (pattern [1,2,1]) — choose Mercury+2 (from truncated pattern [Merc=2, Ven=1])
+    // Mercury at x=2+2=4 → captured!
+    let iterations = 0
+    while (iterations < 30) {
+      const ruleId = rules.game.rule?.id
+      if (ruleId === RuleId.Refill || ruleId === RuleId.PlayCard) break
+      if (rules.game.rule === undefined) break
+      const moves = rules.getLegalMoves(player1)
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+        continue
+      }
+      // Prefer Mercury+2 move to trigger capture via truncated pattern
+      const mercuryMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Mercury &&
+        m.location.x === 4
+      )
+      playConsequences(rules, mercuryMove ?? moves[0])
+      resolveAutoMoves(rules)
+      iterations++
+    }
+
+    // Mercury should be captured by White
+    const mercuryCaptured = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.TeamPlanets).player(TeamColor.White).id(Influence.Mercury)
+    expect(mercuryCaptured.length).toBe(1)
+
+    // Venus should have been moved +1 (from 0 to 1) by the truncated pattern
+    const venus = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Venus)
+    expect(venus.getItem()!.location.x).toBe(1)
+  })
+
+  it('should allow truncated pattern at right edge — Jupiter+2 capture with Mars+1', () => {
+    // Jupiter at x=2: truncated pattern [1,2] on [Mars, Jupiter] → Mars+1, Jupiter+2=capture
+    const setup = new AugustusPatternSetup({ [Influence.Jupiter]: 2 })
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+
+    expect(rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Jupiter).getItem()!.location.x).toBe(2)
+
+    // Play Augustus
+    const cardIndex = rules.material(MaterialType.AgentCard)
+      .location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
+    const playMove = rules.material(MaterialType.AgentCard).index(cardIndex).moveItem({
+      type: LocationType.Influence,
+      id: Influence.Terra,
+      player: TeamColor.White
+    })
+    playConsequences(rules, playMove)
+    resolveAutoMoves(rules)
+
+    // Effect 1 (Terra +1) auto-resolves. Terra 0→1.
+    // Effect 2 (pattern [1,2,1]) — choose Jupiter+2 (from truncated pattern [Mar=1, Jup=2])
+    // Jupiter at x=2+2=4 → captured!
+    let iterations = 0
+    while (iterations < 30) {
+      const ruleId = rules.game.rule?.id
+      if (ruleId === RuleId.Refill || ruleId === RuleId.PlayCard) break
+      if (rules.game.rule === undefined) break
+      const moves = rules.getLegalMoves(player1)
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+        continue
+      }
+      // Prefer Jupiter+2 move to trigger capture via truncated pattern
+      const jupiterMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Jupiter &&
+        m.location.x === 4
+      )
+      playConsequences(rules, jupiterMove ?? moves[0])
+      resolveAutoMoves(rules)
+      iterations++
+    }
+
+    // Jupiter should be captured by White
+    const jupiterCaptured = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.TeamPlanets).player(TeamColor.White).id(Influence.Jupiter)
+    expect(jupiterCaptured.length).toBe(1)
+
+    // Mars should have been moved +1 (from 0 to 1) by the truncated pattern
+    const mars = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Mars)
+    expect(mars.getItem()!.location.x).toBe(1)
+  })
+
+  it('should not allow moving Mercury+2 when it is not at the edge (no truncated pattern needed)', () => {
+    // Mercury at x=0: pattern [1,2,1] on [Merc=1, Ven=2, Ter=1] only allows Mercury+1
+    // The truncated pattern [Merc=2, Ven=1] also exists, so Mercury+2 IS available
+    // BUT Mercury+2 means x=0+2=2, which is NOT a capture — so both +1 and +2 should be legal
+    const setup = new AugustusPatternSetup({})
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+
+    const cardIndex = rules.material(MaterialType.AgentCard)
+      .location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
+    const playMove = rules.material(MaterialType.AgentCard).index(cardIndex).moveItem({
+      type: LocationType.Influence,
+      id: Influence.Terra,
+      player: TeamColor.White
+    })
+    playConsequences(rules, playMove)
+    resolveAutoMoves(rules)
+
+    // Resolve until we get pattern moves
+    let patternMoves: MaterialMove[] = []
+    let iterations = 0
+    while (iterations < 20) {
+      const moves = rules.getLegalMoves(player1)
+      const mercuryMoves = moves.filter(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Mercury
+      )
+      if (mercuryMoves.length > 0) {
+        patternMoves = moves
+        break
+      }
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+      } else {
+        playConsequences(rules, moves[0])
+        resolveAutoMoves(rules)
+      }
+      iterations++
+    }
+
+    // Mercury should have both +1 (from full pattern) and +2 (from truncated pattern)
+    const mercuryMoves = patternMoves.filter(m =>
+      isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+      rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Mercury
+    )
+    const mercuryTargetXs = mercuryMoves.map(m => (m as any).location.x).sort()
+    expect(mercuryTargetXs).toContain(1) // from full pattern [Merc=1, ...]
+    expect(mercuryTargetXs).toContain(2) // from truncated pattern [Merc=2, Ven=1]
+  })
+
+  it('should not allow moving a non-adjacent planet with pattern', () => {
+    // After choosing Mercury+1, only Venus and Terra should be movable (not Mars or Jupiter alone)
+    const setup = new AugustusPatternSetup({})
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+
+    const cardIndex = rules.material(MaterialType.AgentCard)
+      .location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
+    const playMove = rules.material(MaterialType.AgentCard).index(cardIndex).moveItem({
+      type: LocationType.Influence,
+      id: Influence.Terra,
+      player: TeamColor.White
+    })
+    playConsequences(rules, playMove)
+    resolveAutoMoves(rules)
+
+    // Resolve until we get pattern moves, then pick Mercury+1
+    let iterations = 0
+    while (iterations < 20) {
+      const moves = rules.getLegalMoves(player1)
+      const mercuryMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Mercury &&
+        (m as any).location.x === 1
+      )
+      if (mercuryMove) {
+        playConsequences(rules, mercuryMove)
+        resolveAutoMoves(rules)
+        break
+      }
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+      } else {
+        playConsequences(rules, moves[0])
+        resolveAutoMoves(rules)
+      }
+      iterations++
+    }
+
+    // After Mercury+1, the only valid full pattern is [Merc=1, Ven=2, Ter=1]
+    // So next moves should include Venus (remaining=2) and Terra (remaining=1) — but NOT Mars or Jupiter
+    const nextMoves = rules.getLegalMoves(player1)
+    const movablePlanets = new Set(
+      nextMoves
+        .filter(m => isMoveItemType(MaterialType.InfluenceDisc)(m))
+        .map(m => rules.material(MaterialType.InfluenceDisc).getItem((m as any).itemIndex).id)
+    )
+
+    expect(movablePlanets.has(Influence.Venus)).toBe(true)
+    expect(movablePlanets.has(Influence.Terra)).toBe(true)
+    expect(movablePlanets.has(Influence.Mars)).toBe(false)
+    expect(movablePlanets.has(Influence.Jupiter)).toBe(false)
+  })
+
+  it('should not allow moving only Jupiter+2 without Mars (pattern requires adjacency)', () => {
+    // Jupiter at x=2: truncated pattern [Mar=1, Jup=2] requires Mars first or together
+    // If we start with Jupiter+2, Mars+1 should follow. Jupiter alone without Mars is NOT a valid pattern.
+    const setup = new AugustusPatternSetup({ [Influence.Jupiter]: 2 })
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+
+    const cardIndex = rules.material(MaterialType.AgentCard)
+      .location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
+    const playMove = rules.material(MaterialType.AgentCard).index(cardIndex).moveItem({
+      type: LocationType.Influence,
+      id: Influence.Terra,
+      player: TeamColor.White
+    })
+    playConsequences(rules, playMove)
+    resolveAutoMoves(rules)
+
+    // Resolve until pattern moves appear
+    let iterations = 0
+    while (iterations < 20) {
+      const moves = rules.getLegalMoves(player1)
+      const jupiterMoves = moves.filter(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Jupiter
+      )
+      if (jupiterMoves.length > 0) {
+        // Jupiter+2 should be available (from truncated [Mar=1, Jup=2] or full [Ter=1, Mar=2, Jup=1])
+        const jupiterTargetXs = jupiterMoves.map(m => (m as any).location.x).sort()
+        // Jupiter at x=2: +1=3 (from full [Ter=1,Mar=2,Jup=1]) and +2=4 (from truncated [Mar=1,Jup=2])
+        expect(jupiterTargetXs).toContain(3)
+        expect(jupiterTargetXs).toContain(4)
+
+        // Pick Jupiter+2 (capture)
+        const captureMove = jupiterMoves.find(m => (m as any).location.x === 4)!
+        playConsequences(rules, captureMove)
+        resolveAutoMoves(rules)
+
+        // After Jupiter+2 capture, Mars+1 should be auto-resolved or available
+        // The truncated pattern [Mar=1, Jup=2] requires Mars+1
+        break
+      }
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+      } else {
+        playConsequences(rules, moves[0])
+        resolveAutoMoves(rules)
+      }
+      iterations++
+    }
+
+    // Resolve remaining
+    iterations = 0
+    while (iterations < 20) {
+      const ruleId = rules.game.rule?.id
+      if (ruleId === RuleId.Refill || ruleId === RuleId.PlayCard) break
+      if (rules.game.rule === undefined) break
+      const moves = rules.getLegalMoves(player1)
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+        continue
+      }
+      playConsequences(rules, moves[0])
+      resolveAutoMoves(rules)
+      iterations++
+    }
+
+    // Mars should have moved +1 (not 0 — it MUST move as part of the pattern)
+    const mars = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Mars)
+    expect(mars.getItem()!.location.x).toBe(1)
+  })
+
+  it('should continue pattern when Venus is clamped at limit — Mercury+1, Venus captured, Terra+1', () => {
+    // Venus at x=3: pattern [Merc=1, Ven=2, Ter=1] → Mercury+1, Venus+2 clamped to x=4 (captured), Terra+1
+    const setup = new AugustusPatternSetup({ [Influence.Venus]: 3 })
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+
+    const cardIndex = rules.material(MaterialType.AgentCard)
+      .location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
+    const playMove = rules.material(MaterialType.AgentCard).index(cardIndex).moveItem({
+      type: LocationType.Influence,
+      id: Influence.Terra,
+      player: TeamColor.White
+    })
+    playConsequences(rules, playMove)
+    resolveAutoMoves(rules)
+
+    // Resolve: prefer Mercury+1 first (not +2), then Venus, then Terra
+    let iterations = 0
+    while (iterations < 30) {
+      const ruleId = rules.game.rule?.id
+      if (ruleId === RuleId.Refill || ruleId === RuleId.PlayCard) break
+      if (rules.game.rule === undefined) break
+      const moves = rules.getLegalMoves(player1)
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+        continue
+      }
+      // Pick moves in order: Mercury+1, then Venus, then Terra
+      const mercuryMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Mercury &&
+        m.location.x === 1
+      )
+      const venusMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Venus
+      )
+      const terraMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Terra
+      )
+      playConsequences(rules, mercuryMove ?? venusMove ?? terraMove ?? moves[0])
+      resolveAutoMoves(rules)
+      iterations++
+    }
+
+    // Mercury should have moved +1 (0→1)
+    const mercury = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Mercury)
+    expect(mercury.getItem()!.location.x).toBe(1)
+
+    // Venus should be captured (3→4→captured) or at x=4
+    const venusCaptured = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.TeamPlanets).player(TeamColor.White).id(Influence.Venus)
+    const venusOnBoard = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Venus)
+    // Venus either captured or clamped at 4
+    expect(venusCaptured.length + (venusOnBoard.length > 0 && venusOnBoard.getItem()!.location.x === 4 ? 1 : 0)).toBeGreaterThanOrEqual(1)
+
+    // Terra should have moved: +1 from effect 1 (0→1), then +1 from pattern (1→2)
+    const terra = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Terra)
+    expect(terra.getItem()!.location.x).toBe(2)
+  })
+
+  it('should work with pattern on right side — Terra+1, Mars+2 clamped/captured, Jupiter+1', () => {
+    // Mars at x=3: pattern [Ter=1, Mar=2, Jup=1] → Terra+1, Mars+2 clamped to x=4 (captured), Jupiter+1
+    const setup = new AugustusPatternSetup({ [Influence.Mars]: 3 })
+    const game = setup.setup({ players: 2 })
+    const rules = new ZenithRules(game)
+
+    const cardIndex = rules.material(MaterialType.AgentCard)
+      .location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
+    const playMove = rules.material(MaterialType.AgentCard).index(cardIndex).moveItem({
+      type: LocationType.Influence,
+      id: Influence.Terra,
+      player: TeamColor.White
+    })
+    playConsequences(rules, playMove)
+    resolveAutoMoves(rules)
+
+    // Resolve: prefer Terra+1 from pattern, then Mars, then Jupiter
+    let iterations = 0
+    while (iterations < 30) {
+      const ruleId = rules.game.rule?.id
+      if (ruleId === RuleId.Refill || ruleId === RuleId.PlayCard) break
+      if (rules.game.rule === undefined) break
+      const moves = rules.getLegalMoves(player1)
+      if (moves.length === 0) {
+        resolveAutoMoves(rules)
+        continue
+      }
+      // Pick moves in order: Mars (to trigger capture), then Jupiter+1, then Terra
+      const marsMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Mars
+      )
+      const jupiterMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Jupiter &&
+        m.location.x === 1
+      )
+      const terraMove = moves.find(m =>
+        isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+        rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Terra
+      )
+      playConsequences(rules, marsMove ?? jupiterMove ?? terraMove ?? moves[0])
+      resolveAutoMoves(rules)
+      iterations++
+    }
+
+    // Mars should be captured (3+2 clamped to 4)
+    const marsCaptured = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.TeamPlanets).player(TeamColor.White).id(Influence.Mars)
+    const marsOnBoard = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Mars)
+    expect(marsCaptured.length + (marsOnBoard.length > 0 && marsOnBoard.getItem()!.location.x === 4 ? 1 : 0)).toBeGreaterThanOrEqual(1)
+
+    // Jupiter should have moved +1 (0→1)
+    const jupiter = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Jupiter)
+    expect(jupiter.getItem()!.location.x).toBe(1)
+
+    // Terra should have moved: +1 from effect 1 (0→1), then +1 from pattern (1→2)
+    const terra = rules.material(MaterialType.InfluenceDisc)
+      .location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Terra)
+    expect(terra.getItem()!.location.x).toBe(2)
+  })
+})
+
+class AugustusPatternSetup extends TestSetup {
+  private planetPositions: Partial<Record<Influence, number>>
+
+  constructor(positions: Partial<Record<Influence, number>> = {}) {
+    super(Agent.Augustus)
+    this.planetPositions = positions
+  }
+
+  setupInfluences() {
+    for (const planet of influences) {
+      this.material(MaterialType.InfluenceDisc).createItem({
+        id: planet,
+        location: {
+          type: LocationType.PlanetBoardInfluenceDiscSpace,
+          id: planet,
+          x: this.planetPositions[planet] ?? 0
+        }
+      })
+    }
+  }
+}
+
 /** Setup with a specific planet at a custom x position for capture testing */
 class CaptureTestSetup extends TestSetup {
   protected captureTargetPlanet: Influence

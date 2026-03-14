@@ -88,9 +88,29 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
     const pattern = this.effect.pattern
     if (!pattern) return []
     const patterns: PatternType[][] = []
+
+    // Full patterns (all planets within bounds)
     for (let i = 1; i <= influences.length - (pattern.length - 1); i++) {
       const patternInfluences = influences.slice(i - 1, i + pattern.length - 1)
       patterns.push(patternInfluences.map((i, index) => ({ influence: i, count: pattern[index] })))
+    }
+
+    // Truncated patterns overflowing left (start before Mercury)
+    for (let overflow = 1; overflow < pattern.length - 1; overflow++) {
+      const truncatedPattern = pattern.slice(overflow)
+      const patternInfluences = influences.slice(0, truncatedPattern.length)
+      if (patternInfluences.length === truncatedPattern.length) {
+        patterns.push(patternInfluences.map((inf, index) => ({ influence: inf, count: truncatedPattern[index] })))
+      }
+    }
+
+    // Truncated patterns overflowing right (end after Jupiter)
+    for (let overflow = 1; overflow < pattern.length - 1; overflow++) {
+      const truncatedPattern = pattern.slice(0, pattern.length - overflow)
+      const patternInfluences = influences.slice(influences.length - truncatedPattern.length)
+      if (patternInfluences.length === truncatedPattern.length) {
+        patterns.push(patternInfluences.map((inf, index) => ({ influence: inf, count: truncatedPattern[index] })))
+      }
     }
 
     return patterns
