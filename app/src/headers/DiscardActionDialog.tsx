@@ -433,12 +433,6 @@ const unavailableCss = css`
   font-style: italic;
 `
 
-const actionLabelCss = (color: string) => css`
-  font-size: 1.2em;
-  font-weight: 600;
-  color: ${color};
-  text-transform: uppercase;
-`
 
 const cancelButtonCss = css`
   margin-top: 1em;

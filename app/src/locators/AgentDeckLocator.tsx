@@ -13,7 +13,7 @@ export class AgentDeckLocator extends DeckLocator {
   locationDescription = new AgentDeckDescription()
 }
 
-const DeckCounter = ({ location }: { location: Location }) => {
+const DeckCounter = ({ location: _location }: { location: Location }) => {
   const rules = useRules<MaterialRules>()!
   const count = rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length
   if (count === 0) return null
