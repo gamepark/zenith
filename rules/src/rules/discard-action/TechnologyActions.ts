@@ -193,7 +193,7 @@ const TechnologyDActions: Effect[][] = [
     },
     {
       type: EffectType.TakeTechnologyBonusToken,
-      faction: Faction.Robot,
+      faction: Faction.Animod,
       x: 2
     }
   ],
