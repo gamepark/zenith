@@ -1,5 +1,5 @@
 import { css, Interpolation, Theme } from '@emotion/react'
-import { BoardDescription, ItemContext } from '@gamepark/react-game'
+import { BoardDescription } from '@gamepark/react-game'
 import { MaterialContext } from '@gamepark/react-game/dist/locators'
 import { MaterialItem } from '@gamepark/rules-api'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
