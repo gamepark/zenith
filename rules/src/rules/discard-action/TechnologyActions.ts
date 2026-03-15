@@ -1,6 +1,7 @@
 import { ConditionType, Effect } from '../../material/effect/Effect'
 import { EffectType } from '../../material/effect/EffectType'
 import { Faction } from '../../material/Faction'
+import { Influence } from '../../material/Influence'
 
 export const getTechnologyAction = (id: string): Effect[][] => {
   switch (id) {
@@ -209,7 +210,28 @@ const TechnologyDActions: Effect[][] = [
   [
     {
       type: EffectType.WinInfluence,
-      pattern: [1, 1, 1, 1, 1]
+      influence: Influence.Mercury,
+      quantity: 1
+    },
+    {
+      type: EffectType.WinInfluence,
+      influence: Influence.Venus,
+      quantity: 1
+    },
+    {
+      type: EffectType.WinInfluence,
+      influence: Influence.Terra,
+      quantity: 1
+    },
+    {
+      type: EffectType.WinInfluence,
+      influence: Influence.Mars,
+      quantity: 1
+    },
+    {
+      type: EffectType.WinInfluence,
+      influence: Influence.Jupiter,
+      quantity: 1
     }
   ],
   [

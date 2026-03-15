@@ -15,7 +15,7 @@ import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EffectText } from '../components/EffectText'
-import { CornerFoldButton, ZenithDialog } from '../components/ZenithDialog'
+import { ZenithDialog } from '../components/ZenithDialog'
 import AnimodIcon from '../images/icons/animod.jpg'
 import HumanoidIcon from '../images/icons/humanoid.jpg'
 import RobotIcon from '../images/icons/robot.jpg'
@@ -83,8 +83,6 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize, onChosen }) => {
   return (
     <ZenithDialog open={true} onBackdropClick={onMinimize}>
       <div css={dialogContentCss}>
-      {/* Minimize button */}
-      {onMinimize && <CornerFoldButton onClick={onMinimize} />}
       {/* Header */}
       <div css={headerCss}>
         <Picture src={icon} css={factionIconCss} />

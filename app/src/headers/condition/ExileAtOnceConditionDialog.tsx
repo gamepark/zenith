@@ -13,16 +13,17 @@ import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CornerFoldButton, ZenithDialog } from '../../components/ZenithDialog'
+import { ZenithDialog } from '../../components/ZenithDialog'
 import { getColorForInfluence } from '../../i18n/trans.components'
 import { agentCardDescription } from '../../material/AgentCardDescription'
 import { useDoConditionHeaderContext } from './condition.utils'
 
 type Props = {
   onMinimize: () => void
+  onChosen?: () => void
 }
 
-export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
+export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize, onChosen }) => {
   const { t } = useTranslation()
   const { conditionEffect, resultingEffect } = useDoConditionHeaderContext<ExileEffect>()
   const rules = useRules<ZenithRules>()!
@@ -82,9 +83,6 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
   return (
     <ZenithDialog open={true} onBackdropClick={onMinimize}>
       <div css={dialogContentCss}>
-        {/* Minimize button */}
-        <CornerFoldButton onClick={onMinimize} />
-
         {/* Header */}
         <div css={headerCss}>
           <div css={headerTextCss}>
@@ -102,7 +100,7 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
               <div
                 key={quantity}
                 css={[optionCardCss(color), useful ? clickableCardCss(color) : disabledCardCss]}
-                onClick={() => { if (useful) { play(move!); onMinimize() } }}
+                onClick={() => { if (useful) { play(move!); onChosen ? onChosen() : onMinimize() } }}
               >
                 {/* Reward header */}
                 <div css={optionHeaderCss(color)}>
@@ -152,7 +150,7 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
               {t('undo', 'Undo')}
             </button>
           )}
-          <button css={passButtonCss} onClick={() => { if (pass) { play(pass); onMinimize() } }}>
+          <button css={passButtonCss} onClick={() => { if (pass) { play(pass); onChosen ? onChosen() : onMinimize() } }}>
             {t('exile-dialog.pass')}
           </button>
         </div>

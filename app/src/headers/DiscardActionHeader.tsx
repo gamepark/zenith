@@ -1,8 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType } from '@gamepark/rules-api'
-import { MaterialType } from '@gamepark/zenith/material/MaterialType'
-import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
+import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { Memory } from '@gamepark/zenith/rules/Memory'
@@ -22,8 +19,6 @@ export const DiscardActionHeader: FC = () => {
   const name = usePlayerName(activePlayer)
   const [minimized, setMinimized] = useState(false)
   const [chosen, setChosen] = useState(false)
-  const hasActionMoves = useLegalMoves(move => isMoveItemType(MaterialType.TechMarker)(move) || isCustomMoveType(CustomMoveType.Diplomacy)(move)).length > 0
-  const effectiveChosen = chosen && !hasActionMoves
   const components = {
     ...HeaderTransComponents,
     faction: getFactionForHeader(faction)
@@ -33,7 +28,7 @@ export const DiscardActionHeader: FC = () => {
     return (
       <>
         <Trans i18nKey="header.discard-action.choose" components={components} />
-        {effectiveChosen ? null : minimized ? (
+        {chosen ? null : minimized ? (
           <MinimizedToast title={t('discard-action.minimized')} onClick={() => setMinimized(false)} />
         ) : (
           <DiscardActionDialog onMinimize={() => setMinimized(true)} onChosen={() => setChosen(true)} />

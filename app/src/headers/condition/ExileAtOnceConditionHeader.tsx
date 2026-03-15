@@ -17,6 +17,7 @@ export const ExileAtOnceConditionHeader = () => {
   const rules = useRules<ZenithRules>()!
   const effect = rules.remind<ExpandedEffect[]>(Memory.Effects)[0] as ExpandedEffect<ConditionalEffect>
   const [minimized, setMinimized] = useState(false)
+  const [chosen, setChosen] = useState(false)
 
   const source = <EffectSource effectSource={effect.effectSource} />
 
@@ -30,10 +31,10 @@ export const ExileAtOnceConditionHeader = () => {
             source
           }}
         />
-        {minimized ? (
+        {chosen ? null : minimized ? (
           <MinimizedToast title={t('exile-dialog.minimized')} onClick={() => setMinimized(false)} />
         ) : (
-          <ExileAtOnceConditionDialog onMinimize={() => setMinimized(true)} />
+          <ExileAtOnceConditionDialog onMinimize={() => setMinimized(true)} onChosen={() => setChosen(true)} />
         )}
       </>
     )

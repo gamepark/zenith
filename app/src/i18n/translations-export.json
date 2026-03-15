@@ -506,6 +506,7 @@
       "victory.you": "You",
       "help.exile.from-opponent": "Exile {count, plural, one{# card} other{# cards}} from the opposing team",
       "help.exile.from-opponent.for-cost": "Exile {count, plural, one{# card} other{# cards}} from the opposing team and gain <credit/> equal to its cost",
+      "help.transfer.for-cost": "Transfer {count, plural, one{# card} other{# cards}} and gain <credit/> equal to its cost",
       "navigation.previous": "Previous",
       "navigation.next": "Next"
     }
@@ -1018,6 +1019,7 @@
       "victory.you": "Vous",
       "help.exile.from-opponent": "Exilez {count, plural, one{# carte} other{# cartes}} de l'équipe adverse",
       "help.exile.from-opponent.for-cost": "Exilez {count, plural, one{# carte} other{# cartes}} de l'équipe adverse et gagnez des <credit/> égaux à son coût",
+      "help.transfer.for-cost": "Transférez {count, plural, one{# carte} other{# cartes}} et gagnez des <credit/> égaux à son coût",
       "navigation.previous": "Précédent",
       "navigation.next": "Suivant"
     }

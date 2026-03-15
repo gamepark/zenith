@@ -12,10 +12,12 @@ type ZenithDialogProps = {
 }
 
 export const ZenithDialog: FC<ZenithDialogProps> = ({ open, close, onBackdropClick, children, css: customCss }) => {
+  const closeHandler = close ?? onBackdropClick
   return (
     <RulesDialog open={open} close={close} onBackdropClick={onBackdropClick} css={[dialogCss, customCss]}>
       <ThemeProvider theme={theme => ({ ...theme, buttons: buttonCss('#d4872a', 'rgba(212,135,42,0.12)', 'rgba(212,135,42,0.2)') })}>
         <div css={contentCss}>
+          {closeHandler && <CornerFoldButton onClick={closeHandler} />}
           {children}
         </div>
       </ThemeProvider>

@@ -12,7 +12,7 @@ import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CornerFoldButton, ZenithDialog } from '../../components/ZenithDialog'
+import { ZenithDialog } from '../../components/ZenithDialog'
 import Credit from '../../images/credit/Credit1.png'
 import Zenithium from '../../images/zenithium/Zenithium.png'
 import { useDoConditionHeaderContext } from './condition.utils'
@@ -20,9 +20,10 @@ import { useDoConditionHeaderContext } from './condition.utils'
 type Props = {
   type: 'credit' | 'zenithium'
   onMinimize: () => void
+  onChosen?: () => void
 }
 
-export const SpendConditionDialog: FC<Props> = ({ type, onMinimize }) => {
+export const SpendConditionDialog: FC<Props> = ({ type, onMinimize, onChosen }) => {
   const { t } = useTranslation()
   const isCredit = type === 'credit'
   const { conditionEffect, resultingEffect } = useDoConditionHeaderContext<SpendCreditEffect | SpendZenithiumEffect>()
@@ -89,8 +90,6 @@ export const SpendConditionDialog: FC<Props> = ({ type, onMinimize }) => {
   return (
     <ZenithDialog open={true} onBackdropClick={onMinimize}>
       <div css={dialogContentCss}>
-        <CornerFoldButton onClick={onMinimize} />
-
         {/* Header */}
         <div css={headerBlockCss}>
           <div css={headerTextCss}>
@@ -107,7 +106,7 @@ export const SpendConditionDialog: FC<Props> = ({ type, onMinimize }) => {
             <div
               key={quantity}
               css={[optionCardCss(color), useful ? clickableCardCss(color) : disabledCardCss]}
-              onClick={() => { if (useful && move) { play(move); onMinimize() } }}
+              onClick={() => { if (useful && move) { play(move); onChosen ? onChosen() : onMinimize() } }}
             >
               <div css={optionHeaderCss(color)}>
                 <span css={optionTitleCss}>{getRewardLabel(effectiveGain)}</span>
@@ -139,7 +138,7 @@ export const SpendConditionDialog: FC<Props> = ({ type, onMinimize }) => {
 
         {/* Pass button */}
         <div css={footerButtonsCss}>
-          <button css={passButtonCss} onClick={() => { if (pass) { play(pass); onMinimize() } }}>
+          <button css={passButtonCss} onClick={() => { if (pass) { play(pass); onChosen ? onChosen() : onMinimize() } }}>
             {t('spend-dialog.pass')}
           </button>
         </div>

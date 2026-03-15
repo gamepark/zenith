@@ -10,7 +10,7 @@ import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CornerFoldButton, MinimizedToast, ZenithDialog } from '../components/ZenithDialog'
+import { MinimizedToast, ZenithDialog } from '../components/ZenithDialog'
 
 export const PickOrderHeader = () => {
   const { t } = useTranslation()
@@ -38,7 +38,6 @@ export const PickOrderHeader = () => {
           <MinimizedToast title={t('header.pick-order.title')} onClick={() => setMinimized(false)} />
         ) : (
         <ZenithDialog open={true} onBackdropClick={() => setMinimized(true)} css={isWhiteTeam ? whiteDialogCss : blackDialogCss}>
-          <CornerFoldButton onClick={() => setMinimized(true)} />
           <div css={dialogContentCss}>
             <h2 css={titleCss}>{t('header.pick-order.title')}</h2>
             <p css={subtitleCss}>{t('header.pick-order.subtitle')}</p>

@@ -232,13 +232,12 @@ export class AgentCardDescription extends CardDescription {
   }
 
   getItemMenu(item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
-    // Only show menu for cards NOT in hand (exile, transfer, discard from influence)
-    if (item.location?.type === LocationType.PlayerHand) return
-
     const moves = legalMoves.filter(
       (m): m is MoveItem => isMoveItemType(MaterialType.AgentCard)(m) && m.itemIndex === context.index
     )
     if (!moves.length) return
+
+    if (item.location?.type === LocationType.PlayerHand) return
 
     return (
       <>

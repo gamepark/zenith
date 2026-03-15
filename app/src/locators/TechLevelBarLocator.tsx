@@ -69,6 +69,7 @@ const TechLevelBarContent = ({ location }: { location: Location }) => {
       bottom: 0;
       ${isWhite ? 'left: 50%' : 'right: 50%'};
       height: ${heightEm}em;
+      transition: height 0.2s ease-in-out;
       pointer-events: none;
     `}>
       {/* Vertical stem */}

@@ -17,6 +17,7 @@ export const SpendZenithiumHeader = () => {
   const rules = useRules<MaterialRules>()!
   const effect = rules.remind<ExpandedEffect[]>(Memory.Effects)[0] as ExpandedEffect<ConditionalEffect>
   const [minimized, setMinimized] = useState(false)
+  const [chosen, setChosen] = useState(false)
 
   const source = <EffectSource effectSource={effect.effectSource} />
 
@@ -27,10 +28,10 @@ export const SpendZenithiumHeader = () => {
           i18nKey="header.condition.spend-zenithium.dialog"
           components={{ ...HeaderTransComponents, source }}
         />
-        {minimized ? (
+        {chosen ? null : minimized ? (
           <MinimizedToast title={t('spend-dialog.minimized.zenithium')} onClick={() => setMinimized(false)} />
         ) : (
-          <SpendConditionDialog type="zenithium" onMinimize={() => setMinimized(true)} />
+          <SpendConditionDialog type="zenithium" onMinimize={() => setMinimized(true)} onChosen={() => setChosen(true)} />
         )}
       </>
     )
