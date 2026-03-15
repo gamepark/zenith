@@ -16,7 +16,7 @@ import { RuleId } from '@gamepark/zenith/rules/RuleId'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { InfluenceHelper } from '@gamepark/zenith/rules/helper/InfluenceHelper'
 import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
-import { FC } from 'react'
+import { FC, useRef } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getColorForInfluence, helpCss, HelpTransComponents } from '../i18n/trans.components'
 import { actionButtonCss, actionSectionCss, CollapsibleDetails } from './HelpActionButton'
@@ -382,6 +382,8 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
   const discardForTech = useLegalMoves<CustomMove>((move: MaterialMove) => isCustomMoveType(CustomMoveType.DiscardForTech)(move) && move.data === itemIndex)
   const discardForDiplomacy = useLegalMoves<CustomMove>((move: MaterialMove) => isCustomMoveType(CustomMoveType.DiscardForDiplomacy)(move) && move.data === itemIndex)
   const hasActions = moves.length > 0 || mulliganDiscard.length > 0 || discardForTech.length > 0 || discardForDiplomacy.length > 0
+  const hadActionsRef = useRef(hasActions)
+  if (hasActions) hadActionsRef.current = true
 
   // Handle hidden/unknown cards
   if (agentId === undefined || !Agents[agentId]) {
@@ -421,7 +423,7 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
 
   const content = <AgentCardHelpContent agentId={agentId} item={item} />
 
-  if (hasActions) {
+  if (hadActionsRef.current) {
     return (
       <CollapsibleDetails actions={actions}>
         {content}

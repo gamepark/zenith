@@ -37,8 +37,8 @@ export class BonusTokenDescription extends TokenDescription {
   backImage = BonusBack
 
   getItemMenu(_item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
-    const move = legalMoves.find(m => isMoveItemType(MaterialType.BonusToken)(m) && m.itemIndex === context.index)
-    if (!move) return
+    const move = legalMoves.find(m => isMoveItemType(MaterialType.BonusToken)(m))
+    if (!move || !isMoveItemType(MaterialType.BonusToken)(move) || move.itemIndex !== context.index) return
     return (
       <ItemMenuButton move={move} y={-2} x={0} label={<Trans i18nKey="help.action.take-bonus" />}>
         <FontAwesomeIcon icon={faHandBackFist} />
