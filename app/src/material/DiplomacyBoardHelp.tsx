@@ -1,16 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { MaterialHelpProps, Picture } from '@gamepark/react-game'
+import { MaterialHelpProps, Picture, useRules } from '@gamepark/react-game'
+import { MaterialRules } from '@gamepark/rules-api'
+import { Faction } from '@gamepark/zenith/material/Faction'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
+import { getDiplomacyActions } from '@gamepark/zenith/rules/discard-action/DiplomacyActions'
 import { FC } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
-import { HelpTransComponents } from '../i18n/trans.components'
+import { useTranslation } from 'react-i18next'
+import { EffectText, getFactionIcon } from '../components/EffectText'
 import LeaderSilver from '../images/icons/leader-silver.png'
+
+const factions = [Faction.Robot, Faction.Human, Faction.Animod]
 
 export const DiplomacyBoardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = () => {
   const { t } = useTranslation()
-  const components = HelpTransComponents
+  const rules = useRules<MaterialRules>()!
+  const playerCount = rules.players.length
+  const actions = getDiplomacyActions(playerCount)
 
   return (
     <div css={containerCss}>
@@ -21,19 +28,23 @@ export const DiplomacyBoardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> =
 
       <div css={descCss}>{t('help.diplomacy-board.desc')}</div>
 
-      <div css={effectsSectionCss}>
-        <div css={effectTitleCss}>{t('help.diplomacy-board.effects')}</div>
-        <div css={effectsCss}>
-          <div css={effectCss}>
-            <Trans i18nKey="help.diplomacy-board.effect1" components={components} />
+      <div css={factionsCss}>
+        {factions.map(faction => (
+          <div key={faction} css={factionSectionCss}>
+            <div css={factionHeaderCss}>
+              {getFactionIcon(faction)}
+              <span>{t(`faction.${faction}`)}</span>
+            </div>
+            <div css={effectsCss}>
+              {actions[faction].map((effect, i) => (
+                <div key={i} css={effectCss}>
+                  <span css={bulletCss}>•</span>
+                  <EffectText effect={effect} />
+                </div>
+              ))}
+            </div>
           </div>
-          <div css={effectCss}>
-            <Trans i18nKey="help.diplomacy-board.effect2" components={components} />
-          </div>
-          <div css={effectCss}>
-            <Trans i18nKey="help.diplomacy-board.effect3" components={components} />
-          </div>
-        </div>
+        ))}
       </div>
 
       <div css={noteCss}>{t('help.diplomacy-board.note')}</div>
@@ -72,31 +83,45 @@ const descCss = css`
   line-height: 1.4;
 `
 
-const effectsSectionCss = css`
+const factionsCss = css`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+`
+
+const factionSectionCss = css`
   padding: 0.6em;
   background: rgba(212, 135, 42, 0.05);
   border-radius: 0.5em;
 `
 
-const effectTitleCss = css`
-  font-size: 0.85em;
+const factionHeaderCss = css`
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.9em;
   font-weight: 600;
-  color: rgba(62, 48, 32, 0.5);
-  text-transform: uppercase;
+  color: #3e3020;
   margin-bottom: 0.4em;
 `
 
 const effectsCss = css`
   display: flex;
   flex-direction: column;
-  gap: 0.3em;
+  gap: 0.2em;
 `
 
 const effectCss = css`
-  font-size: 0.95em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+  font-size: 0.9em;
   color: #3e3020;
-  padding-left: 0.5em;
-  border-left: 2px solid #d1d5db;
+  padding-left: 0.3em;
+`
+
+const bulletCss = css`
+  color: #d4872a;
 `
 
 const noteCss = css`
