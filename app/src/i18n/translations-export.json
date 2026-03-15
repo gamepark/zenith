@@ -261,8 +261,11 @@
       "help.action.recruit": "Recruit",
       "help.action.reset": "Reset",
       "help.action.share": "Give",
+      "help.action.pass": "Decline",
       "help.action.take-bonus": "Take this token",
       "help.action.transfer": "Transfer",
+      "help.agent.deck": "Draw Pile",
+      "help.agent.deck.desc": "The agent cards that can be drawn during the game.",
       "help.agent.hidden": "Agent Card",
       "help.agent.hidden.desc": "This card belongs to an opponent and its content is hidden.",
       "help.bonus.credits3": "Gain 3 <credit/>",
@@ -494,7 +497,9 @@
       "victory.opponent": "Opponent",
       "victory.you": "You",
       "help.exile.from-opponent": "Exile {count, plural, one{# card} other{# cards}} from the opposing team",
-      "help.exile.from-opponent.for-cost": "Exile {count, plural, one{# card} other{# cards}} from the opposing team and gain <credit/> equal to its cost"
+      "help.exile.from-opponent.for-cost": "Exile {count, plural, one{# card} other{# cards}} from the opposing team and gain <credit/> equal to its cost",
+      "navigation.previous": "Previous",
+      "navigation.next": "Next"
     }
   },
   "fr": {
@@ -759,8 +764,11 @@
       "help.action.recruit": "Recruter",
       "help.action.reset": "Réinitialiser",
       "help.action.share": "Donner",
+      "help.action.pass": "Renoncer",
       "help.action.take-bonus": "Prendre ce jeton",
       "help.action.transfer": "Transférer",
+      "help.agent.deck": "Pioche",
+      "help.agent.deck.desc": "Les cartes agent qui peuvent être piochées au cours de la partie.",
       "help.agent.hidden": "Carte Agent",
       "help.agent.hidden.desc": "Cette carte appartient à un adversaire et son contenu est caché.",
       "help.bonus.credits3": "Gagnez 3 <credit/>",
@@ -993,7 +1001,9 @@
       "victory.opponent": "Adversaire",
       "victory.you": "Vous",
       "help.exile.from-opponent": "Exilez {count, plural, one{# carte} other{# cartes}} de l'équipe adverse",
-      "help.exile.from-opponent.for-cost": "Exilez {count, plural, one{# carte} other{# cartes}} de l'équipe adverse et gagnez des <credit/> égaux à son coût"
+      "help.exile.from-opponent.for-cost": "Exilez {count, plural, one{# carte} other{# cartes}} de l'équipe adverse et gagnez des <credit/> égaux à son coût",
+      "navigation.previous": "Précédent",
+      "navigation.next": "Suivant"
     }
   }
 }

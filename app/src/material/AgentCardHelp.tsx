@@ -385,10 +385,11 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
 
   // Handle hidden/unknown cards
   if (agentId === undefined || !Agents[agentId]) {
+    const isDeck = item.location?.type === LocationType.AgentDeck
     return (
       <div css={hiddenCardCss}>
-        <div css={hiddenTitleCss}>{t('help.agent.hidden')}</div>
-        <div css={hiddenDescCss}>{t('help.agent.hidden.desc')}</div>
+        <div css={hiddenTitleCss}>{t(isDeck ? 'help.agent.deck' : 'help.agent.hidden')}</div>
+        <div css={hiddenDescCss}>{t(isDeck ? 'help.agent.deck.desc' : 'help.agent.hidden.desc')}</div>
       </div>
     )
   }
@@ -576,7 +577,7 @@ export const AgentCardHelpContent: FC<AgentCardHelpContentProps> = ({ agentId, c
 
 const containerCss = css`
   width: 100%;
-  margin-right: 0.5em;
+  min-width: 32em;
   display: flex;
   flex-direction: column;
   gap: 0.4em;
@@ -585,8 +586,8 @@ const containerCss = css`
 const sectionCss = css`
   border-radius: 0.3em;
   overflow: hidden;
-  filter: drop-shadow(0 0.04em 0.2em rgba(0, 0, 0, 0.08));
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0.04em 0.2em rgba(0, 0, 0, 0.08);
+  border: 0.06em solid rgba(0, 0, 0, 0.08);
 `
 
 const sectionHeaderCss = css`
@@ -632,7 +633,7 @@ const identityItemCss = css`
   padding: 0.4em;
   background: rgba(212, 135, 42, 0.05);
   border-radius: 0.3em;
-  border: 1px solid rgba(212, 135, 42, 0.12);
+  border: 0.06em solid rgba(212, 135, 42, 0.12);
 `
 
 const identityLabelCss = css`
@@ -661,7 +662,7 @@ const costSectionCss = css`
   padding: 0.4em 0.5em;
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
   border-radius: 0.3em;
-  border: 1px solid #f59e0b;
+  border: 0.06em solid #f59e0b;
 `
 
 const costDiscountCss = css`
@@ -692,10 +693,10 @@ const costNumberStrikeCss = css`
   &::after {
     content: '';
     position: absolute;
-    left: -2px;
-    right: -2px;
+    left: -0.12em;
+    right: -0.12em;
     top: 50%;
-    height: 2px;
+    height: 0.12em;
     background: #dc2626;
     transform: rotate(-15deg);
   }
@@ -712,7 +713,7 @@ const effectRowCss = css`
   align-items: baseline;
   gap: 0.3em;
   padding: 0.3em 0;
-  border-bottom: 1px solid rgba(212, 135, 42, 0.08);
+  border-bottom: 0.06em solid rgba(212, 135, 42, 0.08);
 
   &:last-child {
     border-bottom: none;
@@ -769,7 +770,7 @@ const conditionalContainerCss = css`
 const conditionBlockCss = css`
   border-radius: 0.3em;
   overflow: hidden;
-  border: 1px solid #c4b5fd;
+  border: 0.06em solid #c4b5fd;
 `
 
 const conditionHeaderCss = css`
@@ -798,7 +799,7 @@ const conditionalArrowCss = css`
 const resultBlockCss = css`
   border-radius: 0.3em;
   overflow: hidden;
-  border: 1px solid #86efac;
+  border: 0.06em solid #86efac;
 `
 
 const resultHeaderCss = css`
@@ -838,7 +839,7 @@ const choiceOrCss = css`
 const compactContainerCss = css`
   width: 24em;
   background: #faf6ef;
-  font-size: 14px;
+  font-size: 0.875em;
 `
 
 const compactHeaderCss = css`
@@ -858,6 +859,6 @@ const compactEffectRowCss = css`
   gap: 0.3em;
   padding: 0.2em 0;
   &:not(:last-child) {
-    border-bottom: 1px solid rgba(212, 135, 42, 0.08);
+    border-bottom: 0.06em solid rgba(212, 135, 42, 0.08);
   }
 `
