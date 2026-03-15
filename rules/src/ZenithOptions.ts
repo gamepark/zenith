@@ -13,11 +13,13 @@ export type ZenithOptions = {
 export const ZenithOptionsSpec: OptionsSpec<ZenithOptions> = {
   beginner: {
     label: t => t('beginner'),
+    help: t => t('beginner.help'),
     competitiveDisabled: true
   },
   players: {
     team: {
       label: t => t('team'),
+      help: t => t('team.help'),
       values: teamColors,
       valueSpec: color => ({ label: t => t(`team.${color}`) }),
       competitiveDisabled: true
