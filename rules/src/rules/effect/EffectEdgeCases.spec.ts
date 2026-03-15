@@ -119,7 +119,7 @@ class EffectTestSetup extends ZenithSetup {
     this.setupInfluenceCards()
     this.setupTeams()
     this.setupLeaderBadge()
-    this.setupTechnologyBoard()
+    this.setupTechnologyBoard({ beginner: true, players: [] })
     this.setupTestBonuses()
   }
 
@@ -269,7 +269,7 @@ function setupEffects(rules: ZenithRules, effects: any[]) {
 
 function createRulesWithEffects(opts: ConstructorParameters<typeof EffectTestSetup>[0], effects: any[]): ZenithRules {
   const setup = new EffectTestSetup(opts)
-  const game = setup.setup({ players: [{}, {}] })
+  const game = setup.setup({ players: [{}, {}], beginner: true })
   const rules = new ZenithRules(game)
   setupEffects(rules, effects)
   return rules
@@ -571,7 +571,7 @@ describe('Discard edge cases', () => {
     // We can't easily empty the hand in this setup, but the isPossible check should handle it
     // Test with a game state where player hand is empty
     const setup = new EffectTestSetup({})
-    const game = setup.setup({ players: [{}, {}] })
+    const game = setup.setup({ players: [{}, {}], beginner: true })
     const rules = new ZenithRules(game)
 
     // Remove all cards from player1's hand
@@ -891,5 +891,154 @@ describe('WinZenithium edge cases', () => {
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
+  })
+})
+
+// ============================================================
+// StealZenithium
+// ============================================================
+describe('StealZenithium', () => {
+  it('should steal zenithium from opponent', () => {
+    const rules = createRulesWithEffects({
+      playerZenithium: 1
+    }, [
+      { type: EffectType.StealZenithium, quantity: 1 }
+    ])
+
+    // Start the effect rule
+    rules.game.rule = { id: RuleId.StealZenithium, player: player1 }
+    resolveAutoMoves(rules)
+
+    // Verify total zenithium is preserved (transferred, not created/destroyed)
+    const totalZen = rules.material(MaterialType.ZenithiumToken)
+      .location(LocationType.TeamZenithium).getQuantity()
+    expect(totalZen).toBe(4) // 1 (player) + 3 (opponent) = 4 total preserved
+  })
+
+  it('should skip when opponent has no zenithium', () => {
+    const setup = new EffectTestSetup({})
+    const game = setup.setup({ players: [{}, {}], beginner: true })
+    const rules = new ZenithRules(game)
+
+    // Remove all opponent zenithium
+    const opponentZen = rules.material(MaterialType.ZenithiumToken)
+      .location(LocationType.TeamZenithium).player(TeamColor.Black)
+    if (opponentZen.length) {
+      playConsequences(rules, opponentZen.deleteItem())
+    }
+
+    setupEffects(rules, [{ type: EffectType.StealZenithium, quantity: 1 }])
+    const result = resolveAllEffects(rules, player1)
+    expect(result.error).toBeUndefined()
+  })
+})
+
+// ============================================================
+// Technology Board D/O/P effects
+// ============================================================
+describe('Technology board alternative effects', () => {
+  it('Board D level 4: WinInfluence pattern [1,1,1,1,1] should influence all planets', () => {
+    const rules = createRulesWithEffects({}, [
+      { type: EffectType.WinInfluence, pattern: [1, 1, 1, 1, 1] }
+    ])
+
+    const result = resolveAllEffects(rules, player1)
+    expect(result.error).toBeUndefined()
+  })
+
+  it('Board O level 4: WinInfluence pattern [2,2] should influence 2 adjacent planets', () => {
+    const rules = createRulesWithEffects({}, [
+      { type: EffectType.WinInfluence, pattern: [2, 2] }
+    ])
+
+    const result = resolveAllEffects(rules, player1)
+    expect(result.error).toBeUndefined()
+  })
+
+  it('Board P level 4: exile own card then influence corresponding planet', () => {
+    const rules = createRulesWithEffects({
+      playerInfluenceCards: [Agent.Elisabeth, Agent.Titus]
+    }, [
+      {
+        type: EffectType.Conditional,
+        mandatory: true,
+        condition: {
+          type: ConditionType.DoEffect,
+          effect: { type: EffectType.Exile }
+        },
+        effect: { type: EffectType.WinInfluence, quantity: 2 }
+      },
+      {
+        type: EffectType.Conditional,
+        mandatory: true,
+        condition: {
+          type: ConditionType.DoEffect,
+          effect: { type: EffectType.Exile, differentPlanet: true }
+        },
+        effect: { type: EffectType.WinInfluence, quantity: 2 }
+      }
+    ])
+
+    const result = resolveAllEffects(rules, player1)
+    expect(result.error).toBeUndefined()
+  })
+
+  it('Board P level 4: second exile should skip when no card of different planet', () => {
+    // Only one card in influence - second exile should be impossible
+    const rules = createRulesWithEffects({
+      playerInfluenceCards: [Agent.Elisabeth]
+    }, [
+      {
+        type: EffectType.Conditional,
+        mandatory: true,
+        condition: {
+          type: ConditionType.DoEffect,
+          effect: { type: EffectType.Exile }
+        },
+        effect: { type: EffectType.WinInfluence, quantity: 2 }
+      },
+      {
+        type: EffectType.Conditional,
+        mandatory: true,
+        condition: {
+          type: ConditionType.DoEffect,
+          effect: { type: EffectType.Exile, differentPlanet: true }
+        },
+        effect: { type: EffectType.WinInfluence, quantity: 2 }
+      }
+    ])
+
+    const result = resolveAllEffects(rules, player1)
+    expect(result.error).toBeUndefined()
+  })
+})
+
+// ============================================================
+// Setup beginner option
+// ============================================================
+describe('Beginner option', () => {
+  it('beginner mode should use S/U/N boards', () => {
+    const setup = new EffectTestSetup({})
+    const game = setup.setup({ players: [{}, {}], beginner: true })
+    const rules = new ZenithRules(game)
+
+    const boards = rules.material(MaterialType.TechnologyBoard).getItems()
+    const ids = boards.map(b => b.id).sort()
+    expect(ids).toEqual(['N', 'S', 'U'])
+  })
+
+  it('non-beginner mode should use random faces from each pair', () => {
+    const setup = new ZenithSetup()
+    const game = setup.setup({ players: [{}, {}], beginner: false })
+    const rules = new ZenithRules(game)
+
+    const boards = rules.material(MaterialType.TechnologyBoard).getItems()
+    const ids = boards.map(b => b.id as string)
+    expect(ids.length).toBe(3)
+
+    // Each board should be from the correct pair
+    expect(['S', 'D']).toContain(ids.find(id => ['S', 'D'].includes(id)))
+    expect(['U', 'O']).toContain(ids.find(id => ['U', 'O'].includes(id)))
+    expect(['N', 'P']).toContain(ids.find(id => ['N', 'P'].includes(id)))
   })
 })

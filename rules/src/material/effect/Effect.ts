@@ -95,6 +95,7 @@ export type ExileEffect = {
   quantities?: number[]
   opponent?: boolean
   influence?: Influence
+  differentPlanet?: boolean
 }
 
 export type WinInfluenceEffect = {
@@ -166,6 +167,11 @@ export type ShareCardEffect = {
   maxQuantity: number
 }
 
+export type StealZenithiumEffect = {
+  type: EffectType.StealZenithium
+  quantity: number
+}
+
 export type Effect =
   | ConditionalEffect
   | WinCreditEffect
@@ -189,6 +195,7 @@ export type Effect =
   | TakeBonusEffect
   | TakeTechnologyBonusToken
   | ShareCardEffect
+  | StealZenithiumEffect
 
 export type ExpandedEffect<T extends Effect = Effect> = T & {
   effectSource: {

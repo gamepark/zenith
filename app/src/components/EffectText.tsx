@@ -60,6 +60,8 @@ export const EffectText: FC<{ effect: Effect }> = ({ effect }) => {
       return <Trans i18nKey="help.take-tech-token" components={components} />
     case EffectType.StealCredit:
       return <Trans i18nKey="help.steal-credit" values={{ count: effect.quantity }} components={components} />
+    case EffectType.StealZenithium:
+      return <Trans i18nKey="help.steal-zenithium" values={{ count: effect.quantity }} components={components} />
     case EffectType.ShareCard:
       return <Trans i18nKey="help.share-card" values={{ count: effect.maxQuantity }} components={components} />
     case EffectType.Exile:

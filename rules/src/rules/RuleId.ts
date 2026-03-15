@@ -27,5 +27,6 @@ export enum RuleId {
   PickOrder,
   ShareCard,
   TechnologyAction,
-  DiplomacyAction
+  DiplomacyAction,
+  StealZenithium
 }

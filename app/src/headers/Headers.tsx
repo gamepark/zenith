@@ -33,6 +33,7 @@ const SpendCreditHeader = () => <AutoEffectHeader i18nKey="header.spend-credit" 
 const GiveZenithiumHeader = () => <AutoEffectHeader i18nKey="header.give-zenithium" defaultsMe="<source /> : You give zenithium to your opponents" defaults="<source /> : Team {team} gives zenithium" />
 const SpendZenithiumHeader = () => <AutoEffectHeader i18nKey="header.spend-zenithium" defaultsMe="<source /> : You spend zenithium" defaults="<source /> : Team {team} spends zenithium" />
 const GiveLeaderBadgeHeader = () => <AutoEffectHeader i18nKey="header.give-leader-badge" defaultsMe="<source /> : You give the Leader Badge to your opponents" defaults="<source /> : Team {team} gives the Leader Badge" />
+const StealZenithiumHeader = () => <AutoEffectHeader i18nKey="header.steal-zenithium" defaultsMe="<source /> : You steal zenithium from your opponents" defaults="<source /> : Team {team} steals zenithium" />
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.Muligan]: MuliganHeader,
@@ -63,5 +64,6 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.PickOrder]: PickOrderHeader,
   [RuleId.ShareCard]: ShareCardHeader,
   [RuleId.TechnologyAction]: TechnologyActionHeader,
-  [RuleId.DiplomacyAction]: DiplomacyActionHeader
+  [RuleId.DiplomacyAction]: DiplomacyActionHeader,
+  [RuleId.StealZenithium]: StealZenithiumHeader
 }

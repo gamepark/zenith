@@ -3,9 +3,10 @@ import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { ExileEffect } from '../../material/effect/Effect'
 import { EffectType } from '../../material/effect/EffectType'
-import { influences } from '../../material/Influence'
+import { Influence, influences } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { Memory } from '../Memory'
 import { EffectRule } from './index'
 
 export class ExileRule extends EffectRule<ExileEffect> {
@@ -104,12 +105,16 @@ export class ExileRule extends EffectRule<ExileEffect> {
 
   get cards() {
     const team = this.effect.opponent ? this.opponentTeam : this.playerHelper.team
+    const lastPlanetsMoved = this.effect.differentPlanet
+      ? this.remind<Influence[] | undefined>(Memory.LastPlanetsMoved) ?? []
+      : []
 
     return this.material(MaterialType.AgentCard)
       .location(LocationType.Influence)
       .filter((item) => {
         if (this.effect.except && this.effect.except === item.location.id) return false
         if (this.effect.influence && this.effect.influence !== item.location.id) return false
+        if (this.effect.differentPlanet && lastPlanetsMoved.includes(item.location.id as Influence)) return false
         return true
       })
       .player(team)

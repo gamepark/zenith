@@ -29,6 +29,7 @@ import { RecruitLog } from './items/RecruitLog'
 import { ResetInfluenceLog } from './items/ResetInfluenceLog'
 import { ShareCardLog } from './items/ShareCardLog'
 import { StealCreditLog } from './items/StealCreditLog'
+import { StealZenithiumLog } from './items/StealZenithiumLog'
 import { TakeLeaderBadgeLog } from './items/TakeLeaderBadgeLog'
 import { TransfertLog } from './items/TransfertLog'
 import { WinBonusLog } from './items/WinBonusLog'
@@ -212,6 +213,15 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: StealCreditLog,
+        css: colorCss(player, context.game)
+      }
+    }
+
+    if (isCustomMoveType(CustomMoveType.StealZenithiumLog)(move)) {
+      const player = context.game.rule!.player!
+      return {
+        depth: 1,
+        Component: StealZenithiumLog,
         css: colorCss(player, context.game)
       }
     }

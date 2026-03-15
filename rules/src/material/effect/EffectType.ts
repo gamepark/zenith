@@ -20,5 +20,6 @@ export enum EffectType {
   StealCredit,
   SpendZenithium,
   TakeTechnologyBonusToken,
-  ShareCard
+  ShareCard,
+  StealZenithium
 }

@@ -23,5 +23,6 @@ export const EffectRuleIds: Record<EffectType, RuleId> = {
   [EffectType.StealCredit]: RuleId.StealCredit,
   [EffectType.SpendZenithium]: RuleId.SpendZenithium,
   [EffectType.TakeTechnologyBonusToken]: RuleId.TakeTechnologyBonusToken,
-  [EffectType.ShareCard]: RuleId.ShareCard
+  [EffectType.ShareCard]: RuleId.ShareCard,
+  [EffectType.StealZenithium]: RuleId.StealZenithium
 }

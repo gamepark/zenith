@@ -26,6 +26,7 @@ import {
   ResetInfluenceRule,
   ShareCardRule,
   SpendCreditRule,
+  StealZenithiumRule,
   TakeBonusRule,
   TakeLeaderBadgeRule,
   TransferRule,
@@ -85,7 +86,8 @@ export class ZenithRules
     [RuleId.PickOrder]: PickOrderRule,
     [RuleId.ShareCard]: ShareCardRule,
     [RuleId.TechnologyAction]: TechnologyBoardRule,
-    [RuleId.DiplomacyAction]: DiplomacyBoardRule
+    [RuleId.DiplomacyAction]: DiplomacyBoardRule,
+    [RuleId.StealZenithium]: StealZenithiumRule
   }
 
   locationsStrategies = {

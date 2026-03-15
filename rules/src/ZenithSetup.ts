@@ -28,7 +28,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     this.setupPlayers()
     this.setupInfluences()
     this.setupLeaderBadge()
-    this.setupTechnologyBoard()
+    this.setupTechnologyBoard(options)
     this.setupTeams()
     this.setupBonuses()
   }
@@ -158,8 +158,14 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     }
   }
 
-  setupTechnologyBoard() {
-    const boards = ['S', 'U', 'N']
+  setupTechnologyBoard(options?: ZenithOptions) {
+    const boards = options?.beginner
+      ? ['S', 'U', 'N']
+      : [
+        sample(['S', 'D'])!,
+        sample(['U', 'O'])!,
+        sample(['N', 'P'])!
+      ]
     for (let i = 0; i < boards.length; i++) {
       const current = boards[i]
       this.material(MaterialType.TechnologyBoard).createItem({ id: current, location: { type: LocationType.TechnologyBoardPlace, id: factions[i] } })

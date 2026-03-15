@@ -10,5 +10,6 @@ export enum CustomMoveType {
   StealCreditLog,
   GiveZenithiumLog,
   DiscardForTech,
-  DiscardForDiplomacy
+  DiscardForDiplomacy,
+  StealZenithiumLog
 }
