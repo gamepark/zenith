@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { Bonus } from '@gamepark/zenith/material/Bonus'
+import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { Trans } from 'react-i18next'
 import { BonusTokenHelp } from './BonusTokenHelp'
@@ -36,8 +37,11 @@ export class BonusTokenDescription extends TokenDescription {
 
   backImage = BonusBack
 
-  getItemMenu(_item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
-    const move = legalMoves.find(m => isMoveItemType(MaterialType.BonusToken)(m))
+  getItemMenu(item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
+    const isStock = item.location.type === LocationType.BonusTokenStock
+    const move = isStock
+      ? legalMoves.find(m => isMoveItemType(MaterialType.BonusToken)(m))
+      : legalMoves.find(m => isMoveItemType(MaterialType.BonusToken)(m) && m.itemIndex === context.index)
     if (!move || !isMoveItemType(MaterialType.BonusToken)(move) || move.itemIndex !== context.index) return
     return (
       <ItemMenuButton move={move} y={-2} x={0} label={<Trans i18nKey="help.action.take-bonus" />}>
