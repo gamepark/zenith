@@ -28,11 +28,11 @@ export class DiplomacyBoardDescription extends BoardDescription {
     ]
   }
 
-  getItemExtraCss(_item: MaterialItem<number, number>, _context: ItemContext<number, number, number>): Interpolation<Theme> {
+  getFrontExtraCss(): Interpolation<Theme> {
     return dropShadowCss
   }
 
-  getHelpDisplayExtraCss(item: Partial<MaterialItem<number, number>>, context: ItemContext<number, number, number>): Interpolation<Theme> {
+  getBackExtraCss(): Interpolation<Theme> {
     return dropShadowCss
   }
 
@@ -42,7 +42,7 @@ export class DiplomacyBoardDescription extends BoardDescription {
 }
 
 const dropShadowCss = css`
-  filter: drop-shadow(0 0 0.1em black) drop-shadow(0 0 0.1em black);
+  filter: drop-shadow(0 0 0.05em rgba(0, 0, 0, 0.5)) drop-shadow(0 0 0.05em rgba(0, 0, 0, 0.3));
 `
 
 export const diplomacyBoardDescription = new DiplomacyBoardDescription()
