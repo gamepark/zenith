@@ -1,5 +1,5 @@
 import { css, Interpolation, Theme } from '@emotion/react'
-import { DropAreaDescription, LocationContext, MaterialContext, ComponentSize } from '@gamepark/react-game'
+import { ComponentSize, DropAreaDescription, LocationContext, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
@@ -28,6 +28,10 @@ export class InfluenceColumnDescription extends DropAreaDescription {
 
   constructor() {
     super({ width: 5.8, height: 16.1, borderRadius: 0.5 })
+  }
+
+  canLongClick(): boolean {
+    return false
   }
 
   getLocationSize(location: Location, context: MaterialContext): ComponentSize {
