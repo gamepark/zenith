@@ -96,7 +96,7 @@ export const CollapsibleDetails: FC<CollapsibleDetailsProps> = ({ actions, child
 
 const collapsibleContainerCss = css`
   width: 100%;
-  min-width: 24em;
+  min-width: 32em;
 `
 
 const actionsLabelCss = css`

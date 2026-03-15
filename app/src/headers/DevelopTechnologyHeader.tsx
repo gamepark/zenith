@@ -7,7 +7,7 @@ import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { DevelopTechnologyRule } from '@gamepark/zenith/rules/effect'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getFactionForHeader, HeaderTransComponents } from '../i18n/trans.components'
@@ -61,7 +61,7 @@ export const DevelopTechnologyHeader = () => {
     return <Trans i18nKey="header.develop" components={{ ...components, develop: <PlayMoveButton move={doIt} />, pass: <PlayMoveButton move={animating ? undefined : pass} /> }} />
   }
 
-  return <Trans i18nKey="header.develop.player" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
+  return <Trans i18nKey="header.develop.player" values={{ player: name, team: t(`team.${new PlayerHelper(game, activePlayer!).team}`) }} components={components} />
 }
 
 const findMoveFor = (rules: DevelopTechnologyRule, moves: MoveItem[], faction: Faction) => {

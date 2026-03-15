@@ -6,7 +6,7 @@ import { influences } from '@gamepark/zenith/material/Influence'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { getMyTeamColor, imWhiteTeam, isLeftSidePlayer } from './position.utils'
 
 export class PlayerHandLocator extends HandLocator {
@@ -19,7 +19,7 @@ export class PlayerHandLocator extends HandLocator {
     }
     const y = itsMyTeam ? 16.5 : -16.5
     const boardRotated = !imWhiteTeam(context)
-    const leftSide = isLeftSidePlayer(location.player!)
+    const leftSide = isLeftSidePlayer(context.rules.game, location.player!)
     const x = (leftSide !== boardRotated) ? -30 : 30
     return { x, y, z: 0.05 }
   }
@@ -39,7 +39,7 @@ export class PlayerHandLocator extends HandLocator {
     const handItems = context.rules.material(MaterialType.AgentCard)
       .location(LocationType.PlayerHand).player(item.location.player!)
       .getItems<Agent>()
-    const reversed = getTeamColor(item.location.player!) !== getMyTeamColor(context)
+    const reversed = new PlayerHelper(context.rules.game, item.location.player!).team !== getMyTeamColor(context)
     const sorted = [...handItems]
       .filter(i => i.id !== undefined)
       .sort((a, b) => {
@@ -59,7 +59,7 @@ export class PlayerHandLocator extends HandLocator {
   }
 
   isMyTeam(player: PlayerId, context: MaterialContext) {
-    return getMyTeamColor(context) === getTeamColor(player)
+    return getMyTeamColor(context) === new PlayerHelper(context.rules.game, player).team
   }
 }
 

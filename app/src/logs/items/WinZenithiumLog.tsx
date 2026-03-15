@@ -4,7 +4,7 @@ import { CreateItem, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { ExpandedEffect, WinZenithiumEffect } from '@gamepark/zenith/material/effect/Effect'
 import { WinZenithiumRule } from '@gamepark/zenith/rules/effect'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { LogTransComponents } from '../../i18n/trans.components'
@@ -19,7 +19,7 @@ export const WinZenithiumLog: FC<MoveComponentProps<MaterialMove>> = (props) => 
   const playerName = usePlayerName(activePlayer)
   const effect = rules.remind<ExpandedEffect<WinZenithiumEffect>>(Memory.CurrentEffect as number)
 
-  const activeTeam = getTeamColor(activePlayer)
+  const activeTeam = new PlayerHelper(context.game as MaterialGame, activePlayer).team
   const targetTeam = effect.opponent ? rules.opponentTeam : activeTeam
 
   return (

@@ -1,20 +1,44 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import { credits } from '../../material/Credit'
 import { Faction } from '../../material/Faction'
+import { Influence } from '../../material/Influence'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
-import { getTeamColor, TeamColor } from '../../TeamColor'
+import { PlayerSide, TeamColor } from '../../TeamColor'
+import { Memory } from '../Memory'
+
+const TechnologySidePlanets = [Influence.Mercury, Influence.Venus, Influence.Terra]
+const DiplomacySidePlanets = [Influence.Terra, Influence.Mars, Influence.Jupiter]
 
 export class PlayerHelper extends MaterialRulesPart {
-  team: TeamColor
-
   constructor(
     game: MaterialGame,
     readonly playerId: PlayerId
   ) {
     super(game)
-    this.team = getTeamColor(playerId)
+  }
+
+  get team(): TeamColor {
+    return this.remind<TeamColor>(Memory.Team, this.playerId)
+      ?? (this.playerId === 1 || this.playerId === 4 ? TeamColor.White : TeamColor.Black)
+  }
+
+  get teammate(): PlayerId | undefined {
+    return this.game.players.find((p) => p !== this.playerId && new PlayerHelper(this.game, p).team === this.team)
+  }
+
+  get teamPlayers(): PlayerId[] {
+    return this.game.players.filter((p) => new PlayerHelper(this.game, p).team === this.team)
+  }
+
+  get side(): PlayerSide {
+    const seatIndex = this.game.players.indexOf(this.playerId)
+    return seatIndex <= 1 ? PlayerSide.Technology : PlayerSide.Diplomacy
+  }
+
+  get allowedPlanets(): Influence[] {
+    return this.side === PlayerSide.Technology ? TechnologySidePlanets : DiplomacySidePlanets
   }
 
   get credits() {

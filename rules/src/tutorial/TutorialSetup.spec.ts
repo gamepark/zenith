@@ -59,7 +59,7 @@ describe('TutorialSetup', () => {
 
   beforeEach(() => {
     const setup = new TutorialSetup()
-    const game = setup.setup({ players: 2 })
+    const game = setup.setup({ players: [{}, {}] })
     rules = new ZenithRules(game)
   })
 

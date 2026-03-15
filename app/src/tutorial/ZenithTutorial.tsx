@@ -9,7 +9,7 @@ import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { RuleId } from '@gamepark/zenith/rules/RuleId'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { me, opponent, TutorialSetup } from '@gamepark/zenith/tutorial/TutorialSetup'
 import { Trans } from 'react-i18next'
 import { HelpTransComponents } from '../i18n/trans.components'
@@ -144,7 +144,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         materials: [
           this.material(game, MaterialType.AgentCard).location(LocationType.Influence).id(Agent.Mc4ffr3y),
           this.material(game, MaterialType.AgentCard).location(LocationType.PlayerHand).player(me),
-          this.material(game, MaterialType.CreditToken).location(LocationType.TeamCredit).player(getTeamColor(me))
+          this.material(game, MaterialType.CreditToken).location(LocationType.TeamCredit).player(new PlayerHelper(game, me).team)
         ],
         locations: [
           this.location(LocationType.AgentCardCost).parent(this.material(game, MaterialType.AgentCard).id(Agent.Mc4ffr3y).getIndex()).location,
@@ -201,7 +201,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         position: { y: -15 }
       },
       focus: (game) => ({
-        materials: [this.material(game, MaterialType.ZenithiumToken).location(LocationType.TeamZenithium).player(getTeamColor(me))],
+        materials: [this.material(game, MaterialType.ZenithiumToken).location(LocationType.TeamZenithium).player(new PlayerHelper(game, me).team)],
         staticItems: [{ type: MaterialType.ZenithiumToken, item: zenithiumTokenDescription.staticItem }],
         margin: { top: 10, left: 5, right: 5 }
       }),
@@ -352,9 +352,9 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
       focus: (game) => ({
         materials: [
           this.material(game, MaterialType.TechnologyBoard).location(LocationType.TechnologyBoardPlace).locationId(Faction.Animod),
-          this.material(game, MaterialType.TechMarker).player(getTeamColor(me)),
-          this.material(game, MaterialType.CreditToken).location(LocationType.TeamCredit).player(getTeamColor(me)),
-          this.material(game, MaterialType.ZenithiumToken).location(LocationType.TeamZenithium).player(getTeamColor(me))
+          this.material(game, MaterialType.TechMarker).player(new PlayerHelper(game, me).team),
+          this.material(game, MaterialType.CreditToken).location(LocationType.TeamCredit).player(new PlayerHelper(game, me).team),
+          this.material(game, MaterialType.ZenithiumToken).location(LocationType.TeamZenithium).player(new PlayerHelper(game, me).team)
         ],
         margin: { top: 5, right: 25 }
       }),
@@ -437,7 +437,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
       focus: (game) => ({
         materials: [
           this.material(game, MaterialType.TechnologyBoard).location(LocationType.TechnologyBoardPlace).locationId(Faction.Human),
-          this.material(game, MaterialType.TechMarker).player(getTeamColor(opponent))
+          this.material(game, MaterialType.TechMarker).player(new PlayerHelper(game, opponent).team)
         ],
         margin: { top: 5, bottom: 3, right: 25 }
       })
@@ -574,7 +574,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
             .location(LocationType.AgentDeck)
             .maxBy((item) => item.location.x!)
         ],
-        locations: [this.location(LocationType.Influence).player(getTeamColor(me)).id(Influence.Venus).location],
+        locations: [this.location(LocationType.Influence).player(new PlayerHelper(game, me).team).id(Influence.Venus).location],
         margin: { top: 15, bottom: 5 }
       }),
       move: {
@@ -594,7 +594,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         position: { y: -25 }
       },
       focus: (game) => ({
-        materials: [this.material(game, MaterialType.AgentCard).location(LocationType.Influence).player(getTeamColor(me)).locationId(Influence.Venus)],
+        materials: [this.material(game, MaterialType.AgentCard).location(LocationType.Influence).player(new PlayerHelper(game, me).team).locationId(Influence.Venus)],
         margin: { top: 15, bottom: 5 }
       })
     },

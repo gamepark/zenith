@@ -2,7 +2,7 @@
 import { MoveComponentProps, usePlayerName } from '@gamepark/react-game'
 import { CustomMove, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { GiveCreditRule } from '@gamepark/zenith/rules/effect'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { LogTransComponents } from '../../i18n/trans.components'
@@ -22,7 +22,7 @@ export const GiveCreditLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
       values={{
         player: playerName,
         count: count,
-        team: t(`team.${getTeamColor(activePlayer)}`)
+        team: t(`team.${new PlayerHelper(context.game as MaterialGame, activePlayer).team}`)
       }}
       components={LogTransComponents}
     />

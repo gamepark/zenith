@@ -1,18 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Picture, useLegalMove, useLegalMoves, usePlay, useRules } from '@gamepark/react-game'
-import { CustomMove, isCustomMoveType, MaterialMove } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { ConditionalEffect, ConditionType, ExpandedEffect, SpendCreditEffect, SpendZenithiumEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ZenithDialog } from '../../components/ZenithDialog'
+import { CornerFoldButton, ZenithDialog } from '../../components/ZenithDialog'
 import Credit from '../../images/credit/Credit1.png'
 import Zenithium from '../../images/zenithium/Zenithium.png'
 import { useDoConditionHeaderContext } from './condition.utils'
@@ -34,7 +34,7 @@ export const SpendConditionDialog: FC<Props> = ({ type, onMinimize }) => {
   const factors = conditionEffect.factors
 
   // Current resource count
-  const team = getTeamColor(rules.getActivePlayer()!)
+  const team = new PlayerHelper(rules.game as MaterialGame, rules.getActivePlayer()!).team
   const available = isCredit
     ? rules.material(MaterialType.CreditToken).player(team).getItems().reduce((sum, item) => sum + (item.id as number), 0)
     : rules.material(MaterialType.ZenithiumToken).player(team).length
@@ -48,7 +48,7 @@ export const SpendConditionDialog: FC<Props> = ({ type, onMinimize }) => {
   if (isInfluenceReward && rewardInfluence) {
     const disc = rules.material(MaterialType.InfluenceDisc).id(rewardInfluence)
     const discPosition = disc.getItem()?.location.x ?? 0
-    const teamColor = getTeamColor(rules.getActivePlayer()!)
+    const teamColor = new PlayerHelper(rules.game as MaterialGame, rules.getActivePlayer()!).team
     maxGain = teamColor === 1 ? 4 + discPosition : 4 - discPosition
   }
 
@@ -87,9 +87,9 @@ export const SpendConditionDialog: FC<Props> = ({ type, onMinimize }) => {
   }
 
   return (
-    <ZenithDialog open={true}>
+    <ZenithDialog open={true} onBackdropClick={onMinimize}>
       <div css={dialogContentCss}>
-        <button css={minimizeButtonCss} onClick={onMinimize}>−</button>
+        <CornerFoldButton onClick={onMinimize} />
 
         {/* Header */}
         <div css={headerBlockCss}>
@@ -156,29 +156,6 @@ const dialogContentCss = css`
   align-items: stretch;
   text-align: left;
   font-size: 1.3em;
-`
-
-const minimizeButtonCss = css`
-  position: absolute;
-  top: 0.5em;
-  right: 0.5em;
-  width: 2em;
-  height: 2em;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.3em;
-  background: rgba(0, 0, 0, 0.05);
-  color: #666;
-  font-size: 1em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.1);
-    color: #333;
-  }
 `
 
 const headerBlockCss = css`

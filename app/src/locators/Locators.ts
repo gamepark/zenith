@@ -25,6 +25,7 @@ import { teamZenithiumLocator } from './TeamZenithiumLocator'
 import { technologyBoardBonusSpaceLocator } from './TechnologyBoardBonusSpaceLocator'
 import { technologyBoardPlaceLocator } from './TechnologyBoardPlaceLocator'
 import { technologyBoardTechMarkerSpaceLocator } from './TechnologyBoardTechMarkerSpaceLocator'
+import { techLevelBarLocator } from './TechLevelBarLocator'
 import { zenithiumStockLocator } from './ZenithiumStockLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialType, LocationType>>> = {
@@ -51,5 +52,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerId, MaterialTy
   [LocationType.BonusDiscard]: bonusDiscardLocator,
   [LocationType.AgentCardFaction]: agentCardFactionLocator,
   [LocationType.AgentCardCost]: agentCardCostLocator,
-  [LocationType.DiplomacyBoardAction]: diplomacyBoardActionLocator
+  [LocationType.DiplomacyBoardAction]: diplomacyBoardActionLocator,
+  [LocationType.TechLevelBar]: techLevelBarLocator
 }

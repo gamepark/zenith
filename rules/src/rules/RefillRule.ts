@@ -3,7 +3,7 @@ import { influences } from '../material/Influence'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
-import { getTeamColor, TeamColor } from '../TeamColor'
+import { TeamColor } from '../TeamColor'
 import { DeckHelper } from './helper/DeckHelper'
 import { PlayerHelper } from './helper/PlayerHelper'
 import { Memory } from './Memory'
@@ -44,7 +44,7 @@ export class RefillRule extends PlayerTurnRule {
     const alreadyPlayed = this.remind<PlayerId[]>(Memory.AlreadyPlayedPlayers) ?? []
     const currentTeam = this.currentTeam
     const teamPlayers = this.getTeamPlayers(currentTeam)
-    const teamPlayersPlayed = alreadyPlayed.filter(p => getTeamColor(p) === currentTeam).length
+    const teamPlayersPlayed = alreadyPlayed.filter(p => new PlayerHelper(this.game, p).team === currentTeam).length
 
     if (this.game.players.length === 4) {
       // 4 players mode: teams alternate, each team plays 2 turns
@@ -71,7 +71,7 @@ export class RefillRule extends PlayerTurnRule {
   }
 
   getTeamPlayers(team: TeamColor): PlayerId[] {
-    return this.game.players.filter(p => getTeamColor(p) === team)
+    return this.game.players.filter(p => new PlayerHelper(this.game, p).team === team)
   }
 
   get nextPlayer(): PlayerId {

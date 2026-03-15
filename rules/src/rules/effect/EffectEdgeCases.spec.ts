@@ -110,6 +110,8 @@ class EffectTestSetup extends ZenithSetup {
   }
 
   setupMaterial() {
+    this.memorize(Memory.Team, TeamColor.White, player1)
+    this.memorize(Memory.Team, TeamColor.Black, player2)
     this.setupTurnOrder()
     this.setupTestHands()
     this.setupDeckAndDiscard()
@@ -267,7 +269,7 @@ function setupEffects(rules: ZenithRules, effects: any[]) {
 
 function createRulesWithEffects(opts: ConstructorParameters<typeof EffectTestSetup>[0], effects: any[]): ZenithRules {
   const setup = new EffectTestSetup(opts)
-  const game = setup.setup({ players: 2 })
+  const game = setup.setup({ players: [{}, {}] })
   const rules = new ZenithRules(game)
   setupEffects(rules, effects)
   return rules
@@ -569,7 +571,7 @@ describe('Discard edge cases', () => {
     // We can't easily empty the hand in this setup, but the isPossible check should handle it
     // Test with a game state where player hand is empty
     const setup = new EffectTestSetup({})
-    const game = setup.setup({ players: 2 })
+    const game = setup.setup({ players: [{}, {}] })
     const rules = new ZenithRules(game)
 
     // Remove all cards from player1's hand

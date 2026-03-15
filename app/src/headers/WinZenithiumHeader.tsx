@@ -5,7 +5,7 @@ import { ExpandedEffect, WinZenithiumEffect } from '@gamepark/zenith/material/ef
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { WinZenithiumRule } from '@gamepark/zenith/rules/effect'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { Trans, useTranslation } from 'react-i18next'
 import { HeaderTransComponents } from '../i18n/trans.components'
 import { EffectSource } from './EffectSource'
@@ -25,7 +25,7 @@ export const WinZenithiumHeader = () => {
     return <Trans i18nKey="header.win-zenithium" values={{ count: count }} components={{ ...HeaderTransComponents, source }} />
   }
 
-  const activeTeam = getTeamColor(activePlayer)
+  const activeTeam = new PlayerHelper(game, activePlayer!).team
   const targetTeam = effect.opponent ? rules.opponentTeam : activeTeam
   return (
     <Trans i18nKey="header.win-zenithium.player" values={{ team: t(`team.${targetTeam}`), count: count }} components={{ ...HeaderTransComponents, source }} />

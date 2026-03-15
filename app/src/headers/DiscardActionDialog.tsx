@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Picture, useLegalMove, usePlay, useRules, useUndo } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemType } from '@gamepark/rules-api'
+import { isCustomMoveType, isMoveItemType, MaterialGame } from '@gamepark/rules-api'
 import { Effect } from '@gamepark/zenith/material/effect/Effect'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
@@ -10,12 +10,12 @@ import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { getDiplomacyActions } from '@gamepark/zenith/rules/discard-action/DiplomacyActions'
 import { getTechnologyAction } from '@gamepark/zenith/rules/discard-action/TechnologyActions'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EffectText } from '../components/EffectText'
-import { ZenithDialog } from '../components/ZenithDialog'
+import { CornerFoldButton, ZenithDialog } from '../components/ZenithDialog'
 import AnimodIcon from '../images/icons/animod.jpg'
 import HumanoidIcon from '../images/icons/humanoid.jpg'
 import RobotIcon from '../images/icons/robot.jpg'
@@ -50,7 +50,7 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize, onChosen }) => {
   }
 
   const activePlayer = rules.getActivePlayer()
-  const myTeam = activePlayer ? getTeamColor(activePlayer) : undefined
+  const myTeam = activePlayer ? new PlayerHelper(rules.game as MaterialGame, activePlayer).team : undefined
 
   // Tech position and cost
   const techBoard = rules.material(MaterialType.TechnologyBoard)
@@ -81,14 +81,10 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize, onChosen }) => {
   const { icon, color } = factionConfig[faction]
 
   return (
-    <ZenithDialog open={true}>
+    <ZenithDialog open={true} onBackdropClick={onMinimize}>
       <div css={dialogContentCss}>
       {/* Minimize button */}
-      {onMinimize && (
-        <button css={minimizeButtonCss} onClick={onMinimize} title={t('discard-action.minimize')}>
-          −
-        </button>
-      )}
+      {onMinimize && <CornerFoldButton onClick={onMinimize} />}
       {/* Header */}
       <div css={headerCss}>
         <Picture src={icon} css={factionIconCss} />
@@ -139,13 +135,11 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize, onChosen }) => {
             </div>
           </div>
 
-          <div css={optionFooterCss}>
-            {techMove ? (
-              <span css={actionLabelCss(color)}>{t('discard-action.technology.button')}</span>
-            ) : (
+          {!techMove && (
+            <div css={optionFooterCss}>
               <span css={unavailableCss}>{t('discard-action.technology.unavailable')}</span>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Separator */}
@@ -174,13 +168,11 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize, onChosen }) => {
             </div>
           </div>
 
-          <div css={optionFooterCss}>
-            {diplomacyMove ? (
-              <span css={actionLabelCss(color)}>{t('discard-action.diplomacy.button')}</span>
-            ) : (
+          {!diplomacyMove && (
+            <div css={optionFooterCss}>
               <span css={unavailableCss}>{t('discard-action.diplomacy.unavailable')}</span>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -212,29 +204,6 @@ const dialogContentCss = css`
   align-items: stretch;
   text-align: left;
   font-size: 1.3em;
-`
-
-const minimizeButtonCss = css`
-  position: absolute;
-  top: 0.5em;
-  right: 0.5em;
-  width: 2em;
-  height: 2em;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.3em;
-  background: rgba(0, 0, 0, 0.05);
-  color: #666;
-  font-size: 1em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.1);
-    color: #333;
-  }
 `
 
 const headerCss = css`

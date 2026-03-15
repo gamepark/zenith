@@ -3,7 +3,6 @@ import { Agent } from '../material/Agent'
 import { Agents } from '../material/Agents'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { getAllowedPlanets, getTeamColor } from '../TeamColor'
 import { CreditHelper } from './helper/CreditHelper'
 import { CustomMoveType } from './CustomMoveType'
 import { EffectHelper } from './helper/EffectHelper'
@@ -45,7 +44,7 @@ export class PlayCardRule extends PlayerTurnRule {
     const influenceHelper = this.influenceHelper
     const playerHelper = this.playerHelper
     const is4Players = this.game.players.length === 4
-    const allowedPlanets = getAllowedPlanets(this.player)
+    const allowedPlanets = playerHelper.allowedPlanets
 
     return cards
       .filter<Agent>((item) => {
@@ -61,7 +60,7 @@ export class PlayCardRule extends PlayerTurnRule {
       .moveItems((item) => ({
         type: LocationType.Influence,
         id: Agents[item.id as Agent].influence,
-        player: getTeamColor(this.player)
+        player: this.playerHelper.team
       }))
   }
 
@@ -137,7 +136,7 @@ export class PlayCardRule extends PlayerTurnRule {
   }
 
   get influenceHelper() {
-    return new InfluenceHelper(this.game, getTeamColor(this.player))
+    return new InfluenceHelper(this.game, this.playerHelper.team)
   }
 
   get playerHelper() {

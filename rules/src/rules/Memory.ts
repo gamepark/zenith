@@ -19,7 +19,8 @@ export enum Memory {
   TeamFirst,
   ShareCardRemaining,
   DiscardChoice,
-  LastPlanetMove
+  LastPlanetMove,
+  Team
 }
 
 export type PatternType = {

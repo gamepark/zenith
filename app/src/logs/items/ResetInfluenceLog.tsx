@@ -3,7 +3,7 @@ import { MoveComponentProps, usePlayerName } from '@gamepark/react-game'
 import { MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
@@ -23,7 +23,7 @@ export const ResetInfluenceLog: FC<MoveComponentProps<MaterialMove>> = (props) =
       i18nKey="log.reset.influence"
       values={{
         player: playerName,
-        team: t(`team.${getTeamColor(activePlayer)}`)
+        team: t(`team.${new PlayerHelper(context.game as MaterialGame, activePlayer).team}`)
       }}
       components={{
         influenceIcon: getPlanetForLog(item.id)

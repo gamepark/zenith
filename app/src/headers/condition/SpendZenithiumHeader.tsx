@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
 import { useRules } from '@gamepark/react-game'
 import { MaterialRules } from '@gamepark/rules-api'
 import { ConditionalEffect, ExpandedEffect, SpendZenithiumEffect } from '@gamepark/zenith/material/effect/Effect'
@@ -8,6 +7,7 @@ import { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { HeaderTransComponents } from '../../i18n/trans.components'
 import { EffectSource } from '../EffectSource'
+import { MinimizedToast } from '../../components/ZenithDialog'
 import { useDoConditionHeaderContext } from './condition.utils'
 import { SpendConditionDialog } from './SpendConditionDialog'
 
@@ -28,9 +28,7 @@ export const SpendZenithiumHeader = () => {
           components={{ ...HeaderTransComponents, source }}
         />
         {minimized ? (
-          <button css={minimizedButtonCss} onClick={() => setMinimized(false)}>
-            {t('spend-dialog.minimized.zenithium')}
-          </button>
+          <MinimizedToast title={t('spend-dialog.minimized.zenithium')} onClick={() => setMinimized(false)} />
         ) : (
           <SpendConditionDialog type="zenithium" onMinimize={() => setMinimized(true)} />
         )}
@@ -47,38 +45,3 @@ export const SpendZenithiumHeader = () => {
   )
 }
 
-const pulseKeyframes = css`
-  @keyframes spendZenithiumPulse {
-    0%, 100% {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 0 rgba(124, 58, 237, 0.4);
-    }
-    50% {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 4px rgba(124, 58, 237, 0.15);
-    }
-  }
-`
-
-const minimizedButtonCss = css`
-  ${pulseKeyframes}
-  position: fixed;
-  bottom: 1em;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.4em 1em;
-  background: linear-gradient(135deg, #faf8f5 0%, #f0ebe3 100%);
-  border: 1px solid #d4c8b8;
-  border-radius: 0.4em;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  color: #4a5568;
-  font-size: 0.85em;
-  font-weight: 500;
-  z-index: 100;
-  animation: spendZenithiumPulse 1.2s ease-in-out infinite;
-
-  &:hover {
-    animation: none;
-    background: linear-gradient(135deg, #fff 0%, #faf8f5 100%);
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
-  }
-`

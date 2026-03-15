@@ -4,7 +4,8 @@ import { useMaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
-import { getAllowedPlanets, getPlayerSide, getTeamColor, PlayerSide, TeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { useTranslation } from 'react-i18next'
 
 const PLANET_COLORS: Record<Influence, string> = {
@@ -17,13 +18,10 @@ const PLANET_COLORS: Record<Influence, string> = {
 
 type ColumnStatus = 'yours' | 'shared' | 'teammate'
 
-function getColumnStatus(planet: Influence, player: PlayerId): ColumnStatus {
-  const myPlanets = getAllowedPlanets(player)
+function getColumnStatus(planet: Influence, playerHelper: PlayerHelper, teammateHelper: PlayerHelper): ColumnStatus {
+  const myPlanets = playerHelper.allowedPlanets
   if (!myPlanets.includes(planet)) return 'teammate'
-  const side = getPlayerSide(player)
-  const teammatePlanets = side === PlayerSide.Technology
-    ? getAllowedPlanets(3 as PlayerId)
-    : getAllowedPlanets(1 as PlayerId)
+  const teammatePlanets = teammateHelper.allowedPlanets
   if (teammatePlanets.includes(planet)) return 'shared'
   return 'yours'
 }
@@ -54,8 +52,8 @@ export const InfluenceColumnContent = ({ location }: { location: Location }) => 
   }
 
   const team = location.player as TeamColor
-  const myTeam = getTeamColor(me)
-  const isMyTeam = team === myTeam
+  const myHelper = new PlayerHelper(context.rules.game, me)
+  const isMyTeam = team === myHelper.team
 
   if (!isMyTeam) {
     return (
@@ -65,7 +63,9 @@ export const InfluenceColumnContent = ({ location }: { location: Location }) => 
     )
   }
 
-  const status = getColumnStatus(planet, me)
+  const teammate = myHelper.teammate
+  const teammateHelper = teammate ? new PlayerHelper(context.rules.game, teammate) : myHelper
+  const status = getColumnStatus(planet, myHelper, teammateHelper)
   const statusLabel = t(`column.${status}`)
   const tag = STATUS_TAG[status]
 

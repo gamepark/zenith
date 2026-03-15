@@ -10,7 +10,8 @@ import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Memory } from '@gamepark/zenith/rules/Memory'
 import { RuleId } from '@gamepark/zenith/rules/RuleId'
-import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { DevelopTechnologyLog } from './items/DevelopTechnologyLog'
 import { DiplomacyLog } from './items/DiplomacyLog'
@@ -42,7 +43,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       const chosenPlayer = move.data as PlayerId
       return {
         Component: PickOrderLog,
-        css: colorCss(chosenPlayer)
+        css: colorCss(chosenPlayer, context.game)
       }
     }
 
@@ -52,7 +53,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           player: player,
           Component: RecruitLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
 
@@ -61,7 +62,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           player: player,
           Component: DiscardActionLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
     }
@@ -77,7 +78,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           depth: 1,
           Component: DiscardEffectLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
     }
@@ -93,7 +94,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           depth: 1,
           Component: ExileLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
     }
@@ -103,7 +104,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: WinBonusLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -113,7 +114,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           depth: 1,
           Component: DevelopTechnologyLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
 
@@ -121,7 +122,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           depth: 1,
           Component: DiplomacyLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
     }
@@ -131,7 +132,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: WinZenithiumLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -144,7 +145,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: InfluenceLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -153,7 +154,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: WinPlanetLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -164,7 +165,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           depth: 1,
           Component: TransfertLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
 
@@ -172,7 +173,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           depth: 1,
           Component: MobilizeLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
     }
@@ -182,7 +183,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: TakeLeaderBadgeLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -192,7 +193,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           depth: 1,
           Component: WinCreditLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
     }
@@ -202,7 +203,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: GiveCreditLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -211,7 +212,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: StealCreditLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -220,7 +221,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: GiveZenithiumLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -234,7 +235,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: ResetInfluenceLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -246,7 +247,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: GiveLeaderBadgeLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -259,7 +260,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
       return {
         depth: 1,
         Component: ShareCardLog,
-        css: colorCss(player)
+        css: colorCss(player, context.game)
       }
     }
 
@@ -275,13 +276,13 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
         return {
           player: player,
           Component: GiveInfluenceLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       } else {
         return {
           depth: 1,
           Component: GiveInfluenceLog,
-          css: colorCss(player)
+          css: colorCss(player, context.game)
         }
       }
     }
@@ -290,8 +291,8 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
   }
 }
 
-const getTeamCss = (player: PlayerId) => {
-  const team = getTeamColor(player)
+const getTeamCss = (player: PlayerId, game: MaterialGame) => {
+  const team = new PlayerHelper(game, player).team
   if (team === TeamColor.Black) {
     return
   }
@@ -315,8 +316,8 @@ const slideIn = keyframes`
   }
 `
 
-const colorCss = (player: PlayerId) => {
-  const teamCss = getTeamCss(player)
+const colorCss = (player: PlayerId, game: MaterialGame) => {
+  const teamCss = getTeamCss(player, game)
   return css`
     animation: ${slideIn} 0.3s ease-out;
 

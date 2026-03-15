@@ -44,7 +44,7 @@ import { PickOrderRule } from './rules/PickOrderRule'
 import { PlayCardRule } from './rules/PlayCardRule'
 import { RefillRule } from './rules/RefillRule'
 import { RuleId } from './rules/RuleId'
-import { getTeamColor } from './TeamColor'
+import { PlayerHelper } from './rules/helper/PlayerHelper'
 
 /**
  * This class implements the rules of the board game.
@@ -115,8 +115,8 @@ export class ZenithRules
   }
 
   rankPlayers(_playerA: PlayerId, _playerB: PlayerId): number {
-    const teamA = getTeamColor(_playerA)
-    const teamB = getTeamColor(_playerB)
+    const teamA = new PlayerHelper(this.game, _playerA).team
+    const teamB = new PlayerHelper(this.game, _playerB).team
     if (teamA === teamB) return 0
     const winners = new EndGameHelper(this.game).winningTeam
     if (teamA === winners) return -1

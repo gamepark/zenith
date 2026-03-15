@@ -7,7 +7,7 @@ import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { WinInfluenceRule } from '@gamepark/zenith/rules/effect'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getPlanetForHeader, HeaderTransComponents } from '../i18n/trans.components'
@@ -31,14 +31,14 @@ export const WinInfluenceHeader = () => {
   if (effect && effect !== cachedEffect) setCachedEffect(effect)
   const displayEffect = effect ?? cachedEffect
 
-  const team = getTeamColor(activePlayer)
+  const team = new PlayerHelper(game, activePlayer!).team
   const source = displayEffect ? <EffectSource effectSource={displayEffect.effectSource} /> : <span />
   const components = { ...HeaderTransComponents, source }
 
   // Planet capture animation (effect may already be consumed)
   if (winPlanet) {
     const item = rules.material(MaterialType.InfluenceDisc).getItem<Influence>(winPlanet.move.itemIndex)
-    if (itsMe && team === getTeamColor(me)) {
+    if (itsMe && team === new PlayerHelper(game, me!).team) {
       return (
         <Trans i18nKey="header.win-planet" values={{ team: t(`team.${team}`) }} components={{ ...components, influenceIcon: getPlanetForHeader(item.id) }} />
       )

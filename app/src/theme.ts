@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
-import { buttonCss, GameTheme } from '@gamepark/react-game'
+import { BottomBarNavigation, buttonCss, GameTheme } from '@gamepark/react-game'
+import { CornerFoldButton } from './components/ZenithDialog'
 import background from './images/background.jpg'
 
 type DeepPartial<T> = {
@@ -40,24 +41,8 @@ export const zenithTheme: DeepPartial<GameTheme> = {
         pointer-events: none;
       }
     `,
-    closeIcon: css`
-      background: linear-gradient(135deg, #d4872a, #c07824);
-      color: #fff;
-      border-radius: 50%;
-      border: 0.1em solid #f5efe4;
-      width: 1.3em;
-      height: 1.3em;
-      top: -0.15em;
-      right: -0.15em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 3px 10px rgba(212, 135, 42, 0.35);
-      &:hover {
-        transform: scale(1.12) rotate(90deg);
-        box-shadow: 0 4px 14px rgba(212, 135, 42, 0.4);
-      }
-    `,
+    closeButton: CornerFoldButton,
+    navigation: BottomBarNavigation,
     content: css`
       > h2 {
         color: #d4872a;

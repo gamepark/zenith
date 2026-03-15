@@ -9,7 +9,7 @@ export class TeamCreditLocator extends PileLocator {
 
   getCoordinates(location: Location, context: MaterialContext) {
     const itsMyTeam = getMyTeamColor(context) === (location.player as TeamColor)
-    return { x: -50.5, y: itsMyTeam ? 18 : -19, z: 0 }
+    return { x: -50.5, y: itsMyTeam ? 18 : -18, z: 0 }
   }
 
   getPileId(item: MaterialItem) {

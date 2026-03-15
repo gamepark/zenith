@@ -6,7 +6,7 @@ import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { TakeLeaderBadgeRule } from '@gamepark/zenith/rules/effect'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { Trans, useTranslation } from 'react-i18next'
 import { HeaderTransComponents } from '../i18n/trans.components'
 import { EffectSource } from './EffectSource'
@@ -22,7 +22,7 @@ export const TakeLeaderBadgeHeader = () => {
   const name = usePlayerName(activePlayer)
   const effect = rules.remind<ExpandedEffect<TakeLeaderBadgeEffect>>(Memory.CurrentEffect as number)
   const badge = rules.material(MaterialType.LeaderBadgeToken).getItem()!
-  const goldSide = badge.location.player === getTeamColor(activePlayer) || effect.gold
+  const goldSide = badge.location.player === new PlayerHelper(game, activePlayer!).team || effect.gold
 
   const source = <EffectSource effectSource={effect.effectSource} />
   const components = {
@@ -35,5 +35,5 @@ export const TakeLeaderBadgeHeader = () => {
     return <Trans i18nKey="header.take-badge" components={components} />
   }
 
-  return <Trans i18nKey="header.take-badge.player" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
+  return <Trans i18nKey="header.take-badge.player" values={{ player: name, team: t(`team.${new PlayerHelper(game, activePlayer!).team}`) }} components={components} />
 }

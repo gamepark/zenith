@@ -1,21 +1,22 @@
 import { MaterialContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { Location, MaterialGame } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
-import { getPlayerSide, getTeamColor, isWhite, PlayerSide } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { PlayerSide, TeamColor } from '@gamepark/zenith/TeamColor'
 
 export const imWhiteTeam = (context: MaterialContext) => {
-  return isWhite(getMyTeamColor(context))
+  return getMyTeamColor(context) === TeamColor.White
 }
 
 export const getMyTeamColor = (context: MaterialContext) => {
   const player: PlayerId = context.player ?? context.rules.players[0]
-  return getTeamColor(player)
+  return new PlayerHelper(context.rules.game as MaterialGame, player).team
 }
 
-export const isWhitePlayer = (location: Location) => {
-  return isWhite(getTeamColor(location.player!))
+export const isWhitePlayer = (location: Location, game: MaterialGame) => {
+  return new PlayerHelper(game, location.player!).team === TeamColor.White
 }
 
-export const isLeftSidePlayer = (player: PlayerId) => {
-  return getPlayerSide(player) === PlayerSide.Technology
+export const isLeftSidePlayer = (game: MaterialGame, player: PlayerId) => {
+  return new PlayerHelper(game, player).side === PlayerSide.Technology
 }

@@ -39,10 +39,10 @@ export class TechnologyBoardPlaceLocator extends Locator {
       case Faction.Robot:
         return base + 10.13
       case Faction.Human:
-        return base + 16.75
+        return base + 16.79
       case Faction.Animod:
       default:
-        return base + 23.37
+        return base + 23.41
     }
   }
 }

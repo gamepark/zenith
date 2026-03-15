@@ -8,7 +8,8 @@ import { isMoveItemType, MaterialItem, MaterialMove, MoveItem } from '@gamepark/
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
-import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { Trans } from 'react-i18next'
 import Mercury from '../images/planet/Mercury.png'
 import Venus from '../images/planet/Venus.png'
@@ -57,7 +58,7 @@ export class InfluenceDiscDescription extends TokenDescription {
     )
     if (!allMoves.length) return
 
-    const team = context.player !== undefined ? getTeamColor(context.player as PlayerId) : undefined
+    const team = context.player !== undefined ? new PlayerHelper(context.rules.game, context.player as PlayerId).team : undefined
 
     const isGaining = (move: MoveItem) => {
       if (team === undefined) return true

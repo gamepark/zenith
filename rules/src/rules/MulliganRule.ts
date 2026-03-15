@@ -2,7 +2,8 @@ import { CustomMove, isCustomMoveType, isMoveItemType, MaterialMove, MoveItem, S
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
-import { getTeamColor, TeamColor } from '../TeamColor'
+import { TeamColor } from '../TeamColor'
+import { PlayerHelper } from './helper/PlayerHelper'
 import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -69,7 +70,7 @@ export class MulliganRule extends SimultaneousRule {
 
     if (this.game.players.length === 4) {
       const currentTeam = this.remind<TeamColor>(Memory.CurrentTeam)
-      const teamPlayers = this.game.players.filter(p => getTeamColor(p) === currentTeam)
+      const teamPlayers = this.game.players.filter(p => new PlayerHelper(this.game, p).team === currentTeam)
       return [this.startSimultaneousRule(RuleId.PickOrder, teamPlayers)]
     }
 

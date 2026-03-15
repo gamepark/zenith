@@ -3,8 +3,7 @@ import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { Influence, influences } from '@gamepark/zenith/material/Influence'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
-import { isWhite, teamColors } from '@gamepark/zenith/TeamColor'
-import { imWhiteTeam } from './position.utils'
+import { TeamColor, teamColors } from '@gamepark/zenith/TeamColor'
 import { planetBoardDescription } from '../material/PlanetBoardDescription'
 import { InfluenceColumnDescription } from './InfluenceColumnDescription'
 import { getMyTeamColor } from './position.utils'
@@ -24,7 +23,7 @@ export class InfluenceLocator extends ListLocator {
     )
   }
   getGap(location: Location): Partial<Coordinates> {
-    if (isWhite(location.player!)) return { y: 1.8 }
+    if (location.player === TeamColor.White) return { y: 1.8 }
     return { y: -1.8 }
   }
 
@@ -40,32 +39,36 @@ export class InfluenceLocator extends ListLocator {
 
   getPositionOnParent(location: Location, context: MaterialContext): Coordinates {
     const x = 12.6 + (location.id - 1) * 18.55
-    const isLocationItem = isItemContext(context)
-    const white = isWhite(location.player!)
     const myTeam = this.isMyTeam(location, context)
-    const boardRotated = !imWhiteTeam(context)
 
-    let y = white ? 122 : -22.3
+    if (isItemContext(context)) {
+      const y = location.player === TeamColor.White ? 122 : -22.3
+      return { x, y, z: 0.05 }
+    }
 
-    if (!isLocationItem) {
-      if (boardRotated) {
-        y = myTeam ? -58.8 : 122
-      } else {
-        y = myTeam ? 122 : -22.3
-      }
+    const boardRotated = !this.isWhiteViewer(context)
+    let y: number
+    if (boardRotated) {
+      y = myTeam ? -58.8 : 144.5
+    } else {
+      y = myTeam ? 122 : -22.3
     }
 
     return { x, y, z: 0.05 }
   }
 
+  private isWhiteViewer(context: MaterialContext) {
+    return getMyTeamColor(context) === TeamColor.White
+  }
+
   getRotateZ(location: Location, context: MaterialContext): number {
-    if (this.isMyTeam(location, context) && isWhite(location.player!)) return 0
-    if (!this.isMyTeam(location, context) && !isWhite(location.player!)) return 0
+    if (this.isMyTeam(location, context) && location.player === TeamColor.White) return 0
+    if (!this.isMyTeam(location, context) && location.player !== TeamColor.White) return 0
     return 180
   }
 
   getItemRotateZ(item: MaterialItem, _context: ItemContext): number {
-    if (isWhite(item.location.player!)) return 0
+    if (item.location.player === TeamColor.White) return 0
     return 180
   }
 

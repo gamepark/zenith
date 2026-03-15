@@ -5,7 +5,7 @@ import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
-import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
@@ -22,7 +22,7 @@ export const ZenithiumTokenHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> =
   let teamZenithium: number | undefined
   let teamName: string | undefined
   if (locationTeam !== undefined && rules) {
-    const teamPlayer = rules.players.find((p) => getTeamColor(p) === locationTeam)
+    const teamPlayer = rules.players.find((p) => new PlayerHelper(rules.game, p).team === locationTeam)
     if (teamPlayer) {
       const helper = new PlayerHelper(rules.game, teamPlayer)
       teamZenithium = helper.zenithium

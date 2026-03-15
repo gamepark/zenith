@@ -10,7 +10,8 @@ import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
 import { Memory } from './rules/Memory'
 import { RuleId } from './rules/RuleId'
-import { getTeamColor, TeamColor, teamColors } from './TeamColor'
+import { PlayerHelper } from './rules/helper/PlayerHelper'
+import { TeamColor, teamColors } from './TeamColor'
 import { ZenithOptions } from './ZenithOptions'
 import { ZenithRules } from './ZenithRules'
 
@@ -20,17 +21,40 @@ import { ZenithRules } from './ZenithRules'
 export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, ZenithOptions> {
   Rules = ZenithRules
 
-  setupMaterial(_options: ZenithOptions) {
+  setupMaterial(options: ZenithOptions) {
+    this.assignTeams(options)
     this.setupTurnOrder()
     this.setupDeck()
     this.setupPlayers()
-    //this.setupDebugHand() // TODO: REMOVE — debug only
     this.setupInfluences()
-    //this.setupDebugInfluences() // TODO: REMOVE — debug only
     this.setupLeaderBadge()
     this.setupTechnologyBoard()
     this.setupTeams()
     this.setupBonuses()
+  }
+
+  assignTeams(options: ZenithOptions) {
+    const playerOptions = Array.isArray(options.players) ? options.players : []
+    const hasTeamChoices = playerOptions.some(p => p.team !== undefined)
+    const playersPerTeam = this.game.players.length / 2
+
+    if (hasTeamChoices) {
+      const whitePlayers = this.game.players.filter((_, i) => playerOptions[i]?.team === TeamColor.White)
+      const blackPlayers = this.game.players.filter((_, i) => playerOptions[i]?.team === TeamColor.Black)
+      const unassigned = shuffle(this.game.players.filter((_, i) => playerOptions[i]?.team === undefined))
+
+      while (whitePlayers.length < playersPerTeam && unassigned.length > 0) whitePlayers.push(unassigned.shift()!)
+      while (blackPlayers.length < playersPerTeam && unassigned.length > 0) blackPlayers.push(unassigned.shift()!)
+
+      for (const p of whitePlayers) this.memorize(Memory.Team, TeamColor.White, p)
+      for (const p of blackPlayers) this.memorize(Memory.Team, TeamColor.Black, p)
+    } else {
+      // No team choices — randomize team assignment
+      const shuffled = shuffle([...this.game.players])
+      for (let i = 0; i < shuffled.length; i++) {
+        this.memorize(Memory.Team, i < playersPerTeam ? TeamColor.White : TeamColor.Black, shuffled[i])
+      }
+    }
   }
 
   setupTurnOrder() {
@@ -102,7 +126,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
       return startingTeam === TeamColor.White ? TeamColor.Black : TeamColor.White
     }
     const turnOrder = this.game.memory[Memory.TurnOrder] as PlayerId[]
-    return getTeamColor(turnOrder[1])
+    return new PlayerHelper(this.game, turnOrder[1]).team
   }
 
   getPlanetStartPosition(planet: Influence) {

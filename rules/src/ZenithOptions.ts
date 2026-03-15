@@ -1,15 +1,29 @@
-import { OptionsSpec } from '@gamepark/rules-api'
+import { OptionsSpec, OptionsValidationError } from '@gamepark/rules-api'
+import { TeamColor, teamColors } from './TeamColor'
 
-/**
- * This is the type of object that the game receives when a new game is started.
- * The first generic parameter, "{}", can be changed to include game options like variants or expansions.
- */
-export type ZenithOptions = {
-  players: number
+type PlayerOptions = {
+  team?: TeamColor
 }
 
-/**
- * This object describes all the options a game can have, and will be used by GamePark website to create automatically forms for you game
- * (forms for friendly games, or forms for matchmaking preferences, for instance).
- */
-export const ZenithOptionsSpec: OptionsSpec<ZenithOptions> = {}
+export type ZenithOptions = {
+  players: PlayerOptions[]
+}
+
+export const ZenithOptionsSpec: OptionsSpec<ZenithOptions> = {
+  players: {
+    team: {
+      label: t => t('team'),
+      values: teamColors,
+      valueSpec: color => ({ label: t => t(`team.${color}`) })
+    }
+  },
+  validate: (options, t) => {
+    if (options.players && options.players.length === 4) {
+      const white = options.players.filter(p => p.team === TeamColor.White).length
+      const black = options.players.filter(p => p.team === TeamColor.Black).length
+      if (white > 2 || black > 2) {
+        throw new OptionsValidationError(t('invalid.teams'), ['players.team'])
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import { faFlask } from '@fortawesome/free-solid-svg-icons/faFlask'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
@@ -23,6 +24,11 @@ export class TechMarkerDescription extends TokenDescription {
 
   transparency = true
 
+  getItemExtraCss(item: MaterialItem) {
+    if (item.id === TeamColor.White) return whiteTokenCss
+    return blackTokenCss
+  }
+
   getItemMenu(_item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
     const move = legalMoves.find(m => isMoveItemType(MaterialType.TechMarker)(m) && m.itemIndex === context.index)
     if (!move) return
@@ -33,5 +39,17 @@ export class TechMarkerDescription extends TokenDescription {
     )
   }
 }
+
+const whiteTokenCss = css`
+  filter:
+    drop-shadow(0 0 3px rgba(160, 160, 170, 0.5))
+    drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+`
+
+const blackTokenCss = css`
+  filter:
+    drop-shadow(0 0 3px rgba(30, 30, 35, 0.5))
+    drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+`
 
 export const techMarkerDescription = new TechMarkerDescription()

@@ -5,7 +5,7 @@ import { ExpandedEffect, WinCreditEffect } from '@gamepark/zenith/material/effec
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { WinCreditRule } from '@gamepark/zenith/rules/effect'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { Trans, useTranslation } from 'react-i18next'
 import { HeaderTransComponents } from '../i18n/trans.components'
 import { EffectSource } from './EffectSource'
@@ -28,7 +28,7 @@ export const WinCreditHeader = () => {
   return (
     <Trans
       i18nKey="header.win-credit.player"
-      values={{ team: t(`team.${getTeamColor(activePlayer)}`), count: count }}
+      values={{ team: t(`team.${new PlayerHelper(game, activePlayer!).team}`), count: count }}
       components={{ ...HeaderTransComponents, source }}
     />
   )

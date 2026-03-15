@@ -6,7 +6,7 @@ import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -57,13 +57,12 @@ export const PlayerPanels = () => {
   return createPortal(
     <>
       {players.map((player) => {
-        const team = getTeamColor(player.id)
         const playerHelper = new PlayerHelper(rules.game, player.id)
+        const team = playerHelper.team
         const hasLeaderBadge = leaderTeam === team
         const isChosenFirst = showSpeech && chosenFirst === player.id
         const speak = isChosenFirst ? t('speech.starts-first') : undefined
         const isTurnToPlay = rules.isTurnToPlay(player.id)
-
         return (
           <PlayerPanel
             key={player.id}
@@ -188,7 +187,7 @@ const getSpeechDirection = (element: HTMLDivElement | null): SpeechBubbleDirecti
 }
 
 const getPanelPosition = (player: PlayerId, context: MaterialContext) => {
-  const itsMyTeam = getMyTeamColor(context) === getTeamColor(player)
+  const itsMyTeam = getMyTeamColor(context) === new PlayerHelper(context.rules.game, player).team
   const is2Players = context.rules.players.length === 2
 
   if (is2Players) {
@@ -197,7 +196,7 @@ const getPanelPosition = (player: PlayerId, context: MaterialContext) => {
   }
 
   const boardRotated = !imWhiteTeam(context)
-  const leftSide = isLeftSidePlayer(player)
+  const leftSide = isLeftSidePlayer(context.rules.game, player)
   const isLeft = leftSide !== boardRotated
   if (itsMyTeam) {
     return isLeft ? bottomLeftCss : bottomRightCss
@@ -210,17 +209,17 @@ const getPanelPosition = (player: PlayerId, context: MaterialContext) => {
 
 const topLeftCss = css`
   left: 1em;
-  top: 5.3em;
+  top: 4.3em;
   @media (max-width: 1200px) {
-    top: 4.5em;
+    top: 3.5em;
   }
 `
 
 const topRightCss = css`
   right: 1em;
-  top: 5.3em;
+  top: 4.3em;
   @media (max-width: 1200px) {
-    top: 4.5em;
+    top: 3.5em;
   }
 `
 

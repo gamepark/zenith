@@ -22,5 +22,6 @@ export enum LocationType {
   BonusDiscard,
   AgentCardFaction,
   DiplomacyBoardAction,
-  AgentCardCost
+  AgentCardCost,
+  TechLevelBar
 }

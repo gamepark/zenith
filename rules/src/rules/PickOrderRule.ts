@@ -1,6 +1,6 @@
 import { CustomMove, isCustomMoveType, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { PlayerId } from '../PlayerId'
-import { getTeamColor } from '../TeamColor'
+import { PlayerHelper } from './helper/PlayerHelper'
 import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -21,8 +21,7 @@ export class PickOrderRule extends SimultaneousRule {
   }
 
   getTeammate(player: PlayerId): PlayerId {
-    const team = getTeamColor(player)
-    return this.game.players.find((p) => p !== player && getTeamColor(p) === team)!
+    return new PlayerHelper(this.game, player).teammate!
   }
 
   onCustomMove(move: CustomMove): MaterialMove[] {

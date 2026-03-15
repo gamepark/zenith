@@ -1,18 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Picture, useLegalMove, useLegalMoves, usePlay, useRules, useUndo } from '@gamepark/react-game'
-import { isCustomMoveType, isMoveItemTypeAtOnce, MaterialMove, MoveItemsAtOnce } from '@gamepark/rules-api'
+import { isCustomMoveType, isMoveItemTypeAtOnce, MaterialGame, MaterialMove, MoveItemsAtOnce } from '@gamepark/rules-api'
 import { Agent } from '@gamepark/zenith/material/Agent'
 import { ExileEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
-import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ZenithDialog } from '../../components/ZenithDialog'
+import { CornerFoldButton, ZenithDialog } from '../../components/ZenithDialog'
 import { getColorForInfluence } from '../../i18n/trans.components'
 import { agentCardDescription } from '../../material/AgentCardDescription'
 import { useDoConditionHeaderContext } from './condition.utils'
@@ -33,7 +34,7 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
   const color = getColorForInfluence(influence) ?? '#70658e'
 
   // Cards in the influence column
-  const team = getTeamColor(rules.getActivePlayer()!)
+  const team = new PlayerHelper(rules.game as MaterialGame, rules.getActivePlayer()!).team
   const influenceCards = rules.material(MaterialType.AgentCard)
     .location(LocationType.Influence)
     .locationId(influence)
@@ -79,12 +80,10 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize }) => {
     influenceCards.limit(quantity).getItems().map(item => item.id as Agent)
 
   return (
-    <ZenithDialog open={true}>
+    <ZenithDialog open={true} onBackdropClick={onMinimize}>
       <div css={dialogContentCss}>
         {/* Minimize button */}
-        <button css={minimizeButtonCss} onClick={onMinimize} title="−">
-          −
-        </button>
+        <CornerFoldButton onClick={onMinimize} />
 
         {/* Header */}
         <div css={headerCss}>
@@ -172,29 +171,6 @@ const dialogContentCss = css`
   align-items: stretch;
   text-align: left;
   font-size: 1.3em;
-`
-
-const minimizeButtonCss = css`
-  position: absolute;
-  top: 0.5em;
-  right: 0.5em;
-  width: 2em;
-  height: 2em;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.3em;
-  background: rgba(0, 0, 0, 0.05);
-  color: #666;
-  font-size: 1em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.1);
-    color: #333;
-  }
 `
 
 const headerCss = css`

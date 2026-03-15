@@ -4,7 +4,6 @@ import { Agents } from './material/Agents'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
-import { getAllowedPlanets, getTeamColor } from './TeamColor'
 import { CustomMoveType } from './rules/CustomMoveType'
 import { InfluenceHelper } from './rules/helper/InfluenceHelper'
 import { PlayerHelper } from './rules/helper/PlayerHelper'
@@ -88,10 +87,9 @@ export class ZenithBot extends RandomBot<Game, Move, PlayerId> {
   }
 
   pickBestInfluenceMove(game: Game, moves: Move[]): Move {
-    const team = getTeamColor(this.player)
-    const influenceHelper = new InfluenceHelper(game, team)
     const playerHelper = new PlayerHelper(game, this.player)
-    const allowedPlanets = getAllowedPlanets(this.player)
+    const influenceHelper = new InfluenceHelper(game, playerHelper.team)
+    const allowedPlanets = playerHelper.allowedPlanets
     const credits = playerHelper.credits
 
     let bestMove = moves[0]

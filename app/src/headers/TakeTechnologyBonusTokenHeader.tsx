@@ -7,7 +7,7 @@ import { ExpandedEffect, TakeTechnologyBonusToken } from '@gamepark/zenith/mater
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { TakeTechnologyBonusTokenRule } from '@gamepark/zenith/rules/effect/TakeTechnologyBonusTokenRule'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { Trans, useTranslation } from 'react-i18next'
 import { headerCss, HeaderTransComponents } from '../i18n/trans.components'
 import { bonusTokenDescription } from '../material/BonusTokenDescription'
@@ -37,7 +37,7 @@ export const TakeTechnologyBonusTokenHeader = () => {
   }
 
   return (
-    <Trans i18nKey="header.develop-techno.take-bonus.player" values={{ player: name, team: t(`team.${getTeamColor(activePlayer)}`) }} components={components} />
+    <Trans i18nKey="header.develop-techno.take-bonus.player" values={{ player: name, team: t(`team.${new PlayerHelper(game, activePlayer!).team}`) }} components={components} />
   )
 }
 

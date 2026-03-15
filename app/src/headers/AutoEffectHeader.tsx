@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { MaterialRules } from '@gamepark/rules-api'
+import { MaterialGame, MaterialRules } from '@gamepark/rules-api'
 import { ExpandedEffect } from '@gamepark/zenith/material/effect/Effect'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { HeaderTransComponents } from '../i18n/trans.components'
@@ -36,7 +36,7 @@ export const AutoEffectHeader: FC<AutoEffectHeaderProps> = ({ i18nKey, defaults,
     <Trans
       i18nKey={i18nKey}
       defaults={defaults}
-      values={{ player: name, team: activePlayer ? t(`team.${getTeamColor(activePlayer)}`) : '' }}
+      values={{ player: name, team: activePlayer ? t(`team.${new PlayerHelper(rules.game as MaterialGame, activePlayer).team}`) : '' }}
       components={components}
     />
   )

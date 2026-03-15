@@ -3,7 +3,7 @@ import { usePlayerId, useRules } from '@gamepark/react-game'
 import { MaterialRules } from '@gamepark/rules-api'
 import { EndGameHelper } from '@gamepark/zenith'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { Trans, useTranslation } from 'react-i18next'
 
 export const ZenithResultHeader = () => {
@@ -26,7 +26,7 @@ export const ZenithResultHeader = () => {
   }
 
   const victory = t(`victory.${victoryType}`)
-  const isWinner = player !== undefined && getTeamColor(player) === winningTeam
+  const isWinner = player !== undefined && new PlayerHelper(rules.game, player).team === winningTeam
   if (isWinner) {
     return <Trans defaults="You win a {victory} victory!" i18nKey="result.victory" values={{ victory }} />
   }

@@ -2,7 +2,8 @@ import { Locator } from '@gamepark/react-game'
 import { MaterialContext } from '@gamepark/react-game/dist/locators'
 import { Location } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
-import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { getMyTeamColor, isLeftSidePlayer } from './position.utils'
 
 export class OnPlayerPanelLocator extends Locator {
@@ -21,20 +22,20 @@ export class OnPlayerPanelLocator extends Locator {
     const rule = (context.rules as any).game?.rule
     if (!rule?.player) return undefined
     const activePlayer = rule.player as PlayerId
-    if (getTeamColor(activePlayer) === team) return activePlayer
+    if (new PlayerHelper(context.rules.game, activePlayer).team === team) return activePlayer
     return undefined
   }
 
   private getPanelCoordinates(player: PlayerId, context: MaterialContext) {
     const is2Players = context.rules.players.length === 2
-    const itsMyTeam = getMyTeamColor(context) === getTeamColor(player)
+    const itsMyTeam = getMyTeamColor(context) === new PlayerHelper(context.rules.game, player).team
 
     if (is2Players) {
       const itsMe = (context.player ?? context.rules.players[0]) === player
       return itsMe ? { x: -50, y: 20, z: 10 } : { x: -50, y: -20, z: 10 }
     }
 
-    const isLeft = isLeftSidePlayer(player)
+    const isLeft = isLeftSidePlayer(context.rules.game, player)
     const y = itsMyTeam ? 20 : -20
     return { x: isLeft ? -50 : 44, y, z: 10 }
   }

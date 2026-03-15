@@ -3,7 +3,8 @@ import { DropAreaDescription, LocationContext, MaterialContext, ComponentSize } 
 import { Location } from '@gamepark/rules-api'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
-import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { InfluenceColumnContent } from './InfluenceColumnContent'
 
 const PLANET_BG: Record<Influence, string> = {
@@ -32,7 +33,7 @@ export class InfluenceColumnDescription extends DropAreaDescription {
   getLocationSize(location: Location, context: MaterialContext): ComponentSize {
     const me: PlayerId = (context.player ?? context.rules?.players[0]) as PlayerId
     const team = location.player as TeamColor
-    const isMyTeam = me ? getTeamColor(me) === team : false
+    const isMyTeam = me ? new PlayerHelper(context.rules.game, me).team === team : false
     return { width: 5.8, height: isMyTeam ? 16.1 : 13.2 }
   }
 

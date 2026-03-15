@@ -15,7 +15,7 @@ import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { RuleId } from '@gamepark/zenith/rules/RuleId'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { InfluenceHelper } from '@gamepark/zenith/rules/helper/InfluenceHelper'
-import { getTeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getColorForInfluence, helpCss, HelpTransComponents } from '../i18n/trans.components'
@@ -408,7 +408,7 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
       )}
       {discardForTech.length > 0 && (
         <PlayMoveButton move={discardForTech[0]} onPlay={closeDialog} css={actionButtonCss}>
-          {t('help.action.develop')}
+          <Trans i18nKey="help.action.develop.faction" components={{ faction: getFactionIcon(Agents[agentId].faction) }} />
         </PlayMoveButton>
       )}
       {discardForDiplomacy.length > 0 && (
@@ -480,7 +480,7 @@ export const AgentCardHelpContent: FC<AgentCardHelpContentProps> = ({ agentId, c
   const isInHand = item?.location?.type === LocationType.PlayerHand && item?.location?.player === playerId
   const realCost =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    isInHand && game && playerId ? new InfluenceHelper(game, getTeamColor(playerId)).getCost({ id: agentId } as any) : null
+    isInHand && game && playerId ? new InfluenceHelper(game, new PlayerHelper(game, playerId).team).getCost({ id: agentId } as any) : null
 
   // Mode compact : juste les effets
   if (compact) {

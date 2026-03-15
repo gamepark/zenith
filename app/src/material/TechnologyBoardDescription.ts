@@ -1,4 +1,7 @@
-import { BoardDescription, ComponentSize } from '@gamepark/react-game'
+import { BoardDescription, ComponentSize, ItemContext } from '@gamepark/react-game'
+import { Location, MaterialItem } from '@gamepark/rules-api'
+import { LocationType } from '@gamepark/zenith/material/LocationType'
+import { teamColors } from '@gamepark/zenith/TeamColor'
 import { TechnologyBoardHelp } from './TechnologyBoardHelp'
 import TechnologyD from '../images/technology-boards/TechnologyD.jpg'
 import TechnologyN from '../images/technology-boards/TechnologyN.jpg'
@@ -30,6 +33,15 @@ export class TechnologyBoardDescription extends BoardDescription {
       default:
         return newParam
     }
+  }
+
+  getLocations(_item: MaterialItem, context: ItemContext): Location[] {
+    return teamColors.map((team) => ({
+      type: LocationType.TechLevelBar,
+      parent: context.index,
+      player: team,
+      id: _item.location.id
+    }))
   }
 }
 

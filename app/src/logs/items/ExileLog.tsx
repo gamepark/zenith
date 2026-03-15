@@ -2,7 +2,8 @@ import { MoveComponentProps, usePlayerName } from '@gamepark/react-game'
 import { MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { ExileRule } from '@gamepark/zenith/rules/effect'
-import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { AgentCardLog } from './components/AgentCardLog'
@@ -16,7 +17,7 @@ export const ExileLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const itemId = item.id
   const activePlayer = rules.getActivePlayer()
   const playerName = usePlayerName(activePlayer)
-  const team = getTeamColor(activePlayer)
+  const team = new PlayerHelper(context.game as MaterialGame, activePlayer).team
   const opponentTeam = team === TeamColor.Black ? TeamColor.White : TeamColor.Black
   const effect = rules.effect
   return (

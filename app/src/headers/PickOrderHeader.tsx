@@ -1,14 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Avatar, PlayMoveButton, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { CustomMove, isCustomMoveType } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, MaterialGame } from '@gamepark/rules-api'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Memory } from '@gamepark/zenith/rules/Memory'
-import { getTeamColor, TeamColor } from '@gamepark/zenith/TeamColor'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { TeamColor } from '@gamepark/zenith/TeamColor'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ZenithDialog } from '../components/ZenithDialog'
+import { CornerFoldButton, MinimizedToast, ZenithDialog } from '../components/ZenithDialog'
 
 export const PickOrderHeader = () => {
   const { t } = useTranslation()
@@ -24,14 +26,19 @@ export const PickOrderHeader = () => {
   const player1Name = usePlayerName(player1)
   const player2Name = usePlayerName(player2)
 
-  const isWhiteTeam = player1 !== undefined ? getTeamColor(player1) === TeamColor.White : currentTeam === TeamColor.White
+  const isWhiteTeam = player1 !== undefined ? new PlayerHelper(rules.game as MaterialGame, player1).team === TeamColor.White : currentTeam === TeamColor.White
+  const [minimized, setMinimized] = useState(false)
 
   // Show dialog if we have legal moves to pick
   if (legalMoves.length > 0) {
     return (
       <>
         <span>{t('header.pick-order.choose')}</span>
-        <ZenithDialog open={true} css={isWhiteTeam ? whiteDialogCss : blackDialogCss}>
+        {minimized ? (
+          <MinimizedToast title={t('header.pick-order.title')} onClick={() => setMinimized(false)} />
+        ) : (
+        <ZenithDialog open={true} onBackdropClick={() => setMinimized(true)} css={isWhiteTeam ? whiteDialogCss : blackDialogCss}>
+          <CornerFoldButton onClick={() => setMinimized(true)} />
           <div css={dialogContentCss}>
             <h2 css={titleCss}>{t('header.pick-order.title')}</h2>
             <p css={subtitleCss}>{t('header.pick-order.subtitle')}</p>
@@ -53,6 +60,7 @@ export const PickOrderHeader = () => {
             </div>
           </div>
         </ZenithDialog>
+        )}
       </>
     )
   }
@@ -82,6 +90,7 @@ const blackDialogCss = css`
 `
 
 const dialogContentCss = css`
+  position: relative;
   text-align: center;
   font-size: 1.6em;
 `
@@ -152,10 +161,4 @@ const itsMeCss = css`
   padding: 0.2em 0.8em;
   border-radius: 1em;
   margin-top: 0.2em;
-  animation: itsMe 1.5s ease-in-out infinite;
-
-  @keyframes itsMe {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
 `

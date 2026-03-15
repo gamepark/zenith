@@ -29,6 +29,7 @@ const handsAgents = new Set([...player1Hand, ...player2Hand])
 export class TutorialSetup extends ZenithSetup {
 
   setupMaterial() {
+    this.setupTeamMemory()
     this.setupTurnOrder()
     this.setupPlayerHands()
     this.setupRemainingDeck()
@@ -162,6 +163,11 @@ export class TutorialSetup extends ZenithSetup {
     this.material(MaterialType.ZenithiumToken).createItem({
       location: { type: LocationType.TeamZenithium, player: team }
     })
+  }
+
+  setupTeamMemory() {
+    this.memorize(Memory.Team, TeamColor.White, me)
+    this.memorize(Memory.Team, TeamColor.Black, opponent)
   }
 
   start() {
