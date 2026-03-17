@@ -1,8 +1,11 @@
-import { DeckLocator, ItemContext } from '@gamepark/react-game'
+import { DeckLocator, DropAreaDescription, ItemContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
+import { agentCardDescription } from '../material/AgentCardDescription.tsx'
 
 export class AgentDiscardLocator extends DeckLocator {
   coordinates = { x: -48, y: 5 }
+
+  locationDescription = new DropAreaDescription(agentCardDescription)
 
   getHoverTransform(item: MaterialItem, context: ItemContext): string[] {
     return ['translateZ(10em)', `translateX(25%)`, `rotateZ(${-this.getItemRotateZ(item, context)}${this.rotationUnit})`, 'scale(2)']

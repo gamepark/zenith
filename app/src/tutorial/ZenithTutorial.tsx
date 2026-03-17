@@ -486,7 +486,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
       },
       focus: (game) => ({
         materials: [this.material(game, MaterialType.AgentCard).location(LocationType.PlayerHand).player(me).id(Agent.Titus)],
-        //locations: [this.location(LocationType.AgentDiscard).location],
+        locations: [this.location(LocationType.AgentDiscard).location],
         margin: { top: 10 }
       }),
       move: {
@@ -594,7 +594,9 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         position: { y: -25 }
       },
       focus: (game) => ({
-        materials: [this.material(game, MaterialType.AgentCard).location(LocationType.Influence).player(new PlayerHelper(game, me).team).locationId(Influence.Venus)],
+        materials: [
+          this.material(game, MaterialType.AgentCard).location(LocationType.Influence).player(new PlayerHelper(game, me).team).locationId(Influence.Venus)
+        ],
         margin: { top: 15, bottom: 5 }
       })
     },
