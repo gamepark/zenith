@@ -18,11 +18,11 @@ export const ZenithResultHeader = () => {
   const planets = helper.getTeamPlanet(winningTeam)
   let victoryType: string
   if (planets.length >= 5) {
-    victoryType = 'absolute'
+    victoryType = 'popular'
   } else if (helper.getCountDifferentInfluence(planets) >= 4) {
     victoryType = 'democratic'
   } else {
-    victoryType = 'popular'
+    victoryType = 'absolute'
   }
 
   const victory = t(`victory.${victoryType}`)
