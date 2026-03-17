@@ -4,8 +4,8 @@ import { Agents } from '../../material/Agents'
 import { ShareCardEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { PlayerId } from '../../PlayerId'
 import { CustomMoveType } from '../CustomMoveType'
+import { PlayerHelper } from '../helper/PlayerHelper'
 import { Memory } from '../Memory'
 import { EffectRule } from './index'
 
@@ -74,14 +74,7 @@ export class ShareCardRule extends EffectRule<ShareCardEffect> {
     return this.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(this.player)
   }
 
-  get teammate(): PlayerId {
-    // White team: 1 <-> 4, Black team: 2 <-> 3
-    switch (this.player) {
-      case 1: return 4
-      case 4: return 1
-      case 2: return 3
-      case 3: return 2
-      default: return this.player
-    }
+  get teammate() {
+    return new PlayerHelper(this.game, this.player).teammate!
   }
 }
