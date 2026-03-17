@@ -5,6 +5,7 @@ import { imWhiteTeam } from './position.utils'
 
 export class BonusStockLocator extends PileLocator {
   radius = 2
+  navigationSorts = []
   getCoordinates(_location: Location, context: MaterialContext) {
     if (imWhiteTeam(context)) {
       return { x: 36.5, y: -7 }
