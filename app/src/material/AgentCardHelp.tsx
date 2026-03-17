@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { MaterialHelpProps, Picture, PlayMoveButton, useGame, useLegalMoves, usePlayerId, useRules } from '@gamepark/react-game'
+import { MaterialHelpProps, Picture, PlayMoveButton, useGame, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { CustomMove, isCustomMoveType, isMoveItemType, MaterialGame, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { TFunction } from 'i18next'
 import { Agent } from '@gamepark/zenith/material/Agent'
