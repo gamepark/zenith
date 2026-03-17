@@ -159,13 +159,11 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   }
 
   setupTechnologyBoard(options?: ZenithOptions) {
-    const boards = options?.beginner
-      ? ['S', 'U', 'N']
-      : [
-        sample(['S', 'D'])!,
-        sample(['U', 'O'])!,
-        sample(['N', 'P'])!
-      ]
+    const boards = [
+      options?.animodBoard ?? sample(['S', 'D'])!,
+      options?.humanBoard ?? sample(['U', 'O'])!,
+      options?.robotBoard ?? sample(['N', 'P'])!
+    ]
     for (let i = 0; i < boards.length; i++) {
       const current = boards[i]
       this.material(MaterialType.TechnologyBoard).createItem({ id: current, location: { type: LocationType.TechnologyBoardPlace, id: factions[i] } })

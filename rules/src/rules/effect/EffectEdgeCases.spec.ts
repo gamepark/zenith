@@ -119,7 +119,7 @@ class EffectTestSetup extends ZenithSetup {
     this.setupInfluenceCards()
     this.setupTeams()
     this.setupLeaderBadge()
-    this.setupTechnologyBoard({ beginner: true, players: [] })
+    this.setupTechnologyBoard({ animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', players: [] })
     this.setupTestBonuses()
   }
 
@@ -269,7 +269,7 @@ function setupEffects(rules: ZenithRules, effects: any[]) {
 
 function createRulesWithEffects(opts: ConstructorParameters<typeof EffectTestSetup>[0], effects: any[]): ZenithRules {
   const setup = new EffectTestSetup(opts)
-  const game = setup.setup({ players: [{}, {}], beginner: true })
+  const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
   const rules = new ZenithRules(game)
   setupEffects(rules, effects)
   return rules
@@ -571,7 +571,7 @@ describe('Discard edge cases', () => {
     // We can't easily empty the hand in this setup, but the isPossible check should handle it
     // Test with a game state where player hand is empty
     const setup = new EffectTestSetup({})
-    const game = setup.setup({ players: [{}, {}], beginner: true })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
     const rules = new ZenithRules(game)
 
     // Remove all cards from player1's hand
@@ -917,7 +917,7 @@ describe('StealZenithium', () => {
 
   it('should skip when opponent has no zenithium', () => {
     const setup = new EffectTestSetup({})
-    const game = setup.setup({ players: [{}, {}], beginner: true })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
     const rules = new ZenithRules(game)
 
     // Remove all opponent zenithium
@@ -1014,12 +1014,12 @@ describe('Technology board alternative effects', () => {
 })
 
 // ============================================================
-// Setup beginner option
+// Board options
 // ============================================================
-describe('Beginner option', () => {
-  it('beginner mode should use S/U/N boards', () => {
+describe('Board options', () => {
+  it('should use specified board sides', () => {
     const setup = new EffectTestSetup({})
-    const game = setup.setup({ players: [{}, {}], beginner: true })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
     const rules = new ZenithRules(game)
 
     const boards = rules.material(MaterialType.TechnologyBoard).getItems()
@@ -1027,9 +1027,19 @@ describe('Beginner option', () => {
     expect(ids).toEqual(['N', 'S', 'U'])
   })
 
-  it('non-beginner mode should use random faces from each pair', () => {
+  it('should use D/O/P sides when specified', () => {
     const setup = new ZenithSetup()
-    const game = setup.setup({ players: [{}, {}], beginner: false })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'D', humanBoard: 'O', robotBoard: 'P' })
+    const rules = new ZenithRules(game)
+
+    const boards = rules.material(MaterialType.TechnologyBoard).getItems()
+    const ids = boards.map(b => b.id).sort()
+    expect(ids).toEqual(['D', 'O', 'P'])
+  })
+
+  it('should use random faces when no option specified', () => {
+    const setup = new ZenithSetup()
+    const game = setup.setup({ players: [{}, {}] } as any)
     const rules = new ZenithRules(game)
 
     const boards = rules.material(MaterialType.TechnologyBoard).getItems()

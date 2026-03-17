@@ -35,7 +35,7 @@ export class TutorialSetup extends ZenithSetup {
     this.setupRemainingDeck()
     this.setupInfluences()
     this.setupLeaderBadge()
-    this.setupTechnologyBoard({ beginner: true, players: [] })
+    this.setupTechnologyBoard({ animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', players: [] })
     this.setupTeams()
     this.setupBonuses()
   }

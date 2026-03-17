@@ -8,8 +8,9 @@ import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
-import { RuleId } from '@gamepark/zenith/rules/RuleId'
 import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
+import { RuleId } from '@gamepark/zenith/rules/RuleId'
+import { TeamColor } from '@gamepark/zenith/TeamColor.ts'
 import { me, opponent, TutorialSetup } from '@gamepark/zenith/tutorial/TutorialSetup'
 import { Trans } from 'react-i18next'
 import { HelpTransComponents } from '../i18n/trans.components'
@@ -114,10 +115,8 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
         position: { y: -25 }
       },
       focus: (game) => ({
-        materials: [
-          this.material(game, MaterialType.AgentCard).location(LocationType.PlayerHand).player(me).id(Agent.Mc4ffr3y),
-          this.material(game, MaterialType.InfluenceDisc).location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Mars)
-        ],
+        materials: [this.material(game, MaterialType.AgentCard).location(LocationType.PlayerHand).player(me).id(Agent.Mc4ffr3y)],
+        locations: [this.location(LocationType.Influence).id(Influence.Mars).player(TeamColor.White).location],
         margin: { top: 10 }
       }),
       move: {
@@ -312,7 +311,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
       focus: (game) => ({
         materials: [this.material(game, MaterialType.AgentCard).location(LocationType.PlayerHand).player(me).id(Agent.Elisabeth)],
         locations: [this.location(LocationType.AgentDiscard).location],
-        margin: { top: 10 }
+        margin: { top: 10, bottom: 2 }
       }),
       move: {
         filter: (move: MaterialMove, game: MaterialGame) =>
@@ -487,7 +486,7 @@ export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, Loc
       focus: (game) => ({
         materials: [this.material(game, MaterialType.AgentCard).location(LocationType.PlayerHand).player(me).id(Agent.Titus)],
         locations: [this.location(LocationType.AgentDiscard).location],
-        margin: { top: 10 }
+        margin: { top: 10, bottom: 2 }
       }),
       move: {
         filter: (move: MaterialMove, game: MaterialGame) =>
