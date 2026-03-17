@@ -34,8 +34,8 @@ export const zenithTheme: DeepPartial<GameTheme> = {
         position: absolute;
         top: 0;
         left: 0;
-        width: 3em;
-        height: 3em;
+        width: calc(5em * var(--gp-scale, 1));
+        height: calc(5em * var(--gp-scale, 1));
         background: linear-gradient(135deg, rgba(212, 135, 42, 0.06), transparent 60%);
         border-radius: 0.75em 0 0 0;
         pointer-events: none;
