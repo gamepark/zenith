@@ -38,6 +38,7 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
   const hasActions = moves.length > 0 || discardMoves.length > 0 || mulliganDiscard.length > 0 || discardForTech.length > 0 || discardForDiplomacy.length > 0
   const hadActionsRef = useRef(hasActions)
   if (hasActions) hadActionsRef.current = true
+  const ownerName = usePlayerName(item.location?.player)
 
   // Handle hidden/unknown cards
   if (agentId === undefined || !Agents[agentId]) {
@@ -45,7 +46,7 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
     return (
       <div css={hiddenCardCss}>
         <div css={hiddenTitleCss}>{t(isDeck ? 'help.agent.deck' : 'help.agent.hidden')}</div>
-        <div css={hiddenDescCss}>{t(isDeck ? 'help.agent.deck.desc' : 'help.agent.hidden.desc')}</div>
+        <div css={hiddenDescCss}>{t(isDeck ? 'help.agent.deck.desc' : 'help.agent.hidden.desc', { player: ownerName })}</div>
       </div>
     )
   }
