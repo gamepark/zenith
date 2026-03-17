@@ -39,4 +39,3 @@ export const DiscardActionHeader: FC = () => {
 
   return <Trans i18nKey="header.discard-action.player" values={{ player: name }} components={components} />
 }
-
