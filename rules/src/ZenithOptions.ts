@@ -48,10 +48,14 @@ export const ZenithOptionsSpec: OptionsSpec<ZenithOptions> = {
     }
   },
   validate: (options, t) => {
-    if (options.players && options.players.length === 4) {
+    if (options.players) {
+      const count = options.players.length
+      if (count !== 2 && count !== 4) {
+        throw new OptionsValidationError(t('invalid.player.count'), ['players'])
+      }
       const white = options.players.filter(p => p.team === TeamColor.White).length
       const black = options.players.filter(p => p.team === TeamColor.Black).length
-      if (white > 2 || black > 2) {
+      if (white !== black) {
         throw new OptionsValidationError(t('invalid.teams'), ['players.team'])
       }
     }
