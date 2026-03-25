@@ -299,6 +299,11 @@ const TechnologyPActions: Effect[][] = [
       type: EffectType.Exile,
       opponent: true,
       quantity: 1
+    },
+    {
+      type: EffectType.TakeTechnologyBonusToken,
+      faction: Faction.Robot,
+      x: 2
     }
   ],
   [
