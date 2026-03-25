@@ -5,7 +5,7 @@ import { faBan } from '@fortawesome/free-solid-svg-icons/faBan'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons/faTrashCan'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
-import { isMoveItemsAtOnce, isMoveItemType, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
+import { isMoveItemsAtOnce, isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder, MoveItem } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { Agent } from '@gamepark/zenith/material/Agent'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
@@ -205,6 +205,11 @@ export class AgentCardDescription extends CardDescription {
     [Agent.SecretKali]: SecretKali,
     [Agent.CaptainAndreev]: CaptainAndreev,
     [Agent.MiladyJones]: MiladyJones
+  }
+
+  displayHelp(item: MaterialItem, context: ItemContext) {
+    if (item.location.type === LocationType.AgentDiscard) return MaterialMoveBuilder.displayLocationHelp(item.location)
+    return super.displayHelp(item, context)
   }
 
   canDrag(move: MaterialMove, context: ItemContext) {
