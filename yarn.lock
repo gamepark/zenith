@@ -905,7 +905,7 @@ __metadata:
     es-toolkit: "npm:^1.43.0"
     vitest: "npm:^4.0.15"
   peerDependencies:
-    "@gamepark/rules-api": ">=7"
+    "@gamepark/rules-api": ">=7.6"
     es-toolkit: ^1.43.0
   languageName: unknown
   linkType: soft
