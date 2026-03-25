@@ -17,6 +17,7 @@ export type ZenithOptions = {
 }
 
 export const ZenithOptionsSpec: OptionsSpec<ZenithOptions> = {
+  competitivePlayers: { min: 2, max: 2 },
   animodBoard: {
     label: t => t('board.animod'),
     help: t => t('board.animod.help'),
