@@ -62,6 +62,7 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize, onChosen }) => {
     .parent(techBoard.getIndex())
   const currentPos = techMarker.getItem()?.location.x ?? 0
   const techCost = currentPos + 1
+  const techMaxed = currentPos >= 5
 
   // Get tech bonuses per level (reversed: highest level first)
   const techActions = boardItem ? getTechnologyAction(boardItem.id) : []
@@ -94,56 +95,60 @@ export const DiscardActionDialog: FC<Props> = ({ onMinimize, onChosen }) => {
 
       <div css={optionsCss}>
         {/* Technology Option */}
-        <div
-          css={[optionCardCss(color), techMove && clickableCardCss(color), !techMove && disabledCardCss]}
-          onClick={handleTechClick}
-        >
-          <div css={optionHeaderCss(color)}>
-            <span css={optionTitleCss}>{t('discard-action.technology')}</span>
-          </div>
-
-          <div css={optionContentCss}>
-            {/* Cost */}
-            <div css={costRowCss}>
-              <span css={costLabelCss}>{t('discard-action.cost')}</span>
-              <div css={costValueCss}>
-                <Picture src={Zenithium} css={resourceIconCss} />
-                <span css={costNumberCss}>×{techCost}</span>
+        {!techMaxed && (
+          <>
+            <div
+              css={[optionCardCss(color), techMove && clickableCardCss(color), !techMove && disabledCardCss]}
+              onClick={handleTechClick}
+            >
+              <div css={optionHeaderCss(color)}>
+                <span css={optionTitleCss}>{t('discard-action.technology')}</span>
               </div>
-            </div>
 
-            {/* Gains */}
-            <div css={gainsContainerCss}>
-              <span css={gainsLabelCss}>{t('discard-action.gains')}</span>
-              <div css={effectsListCss}>
-                {techLevels.length > 0 ? (
-                  techLevels.map(({ level, effects }, i) => (
-                    <div key={level} css={levelBlockCss}>
-                      {i > 0 && <div css={levelSeparatorCss} />}
-                      <div css={levelHeaderCss}>{t('discard-action.level', { level })}</div>
-                      {effects.map((effect, j) => (
-                        <EffectDisplay key={j} effect={effect} />
-                      ))}
-                    </div>
-                  ))
-                ) : (
-                  <span css={noBonusCss}>—</span>
-                )}
+              <div css={optionContentCss}>
+                {/* Cost */}
+                <div css={costRowCss}>
+                  <span css={costLabelCss}>{t('discard-action.cost')}</span>
+                  <div css={costValueCss}>
+                    <Picture src={Zenithium} css={resourceIconCss} />
+                    <span css={costNumberCss}>×{techCost}</span>
+                  </div>
+                </div>
+
+                {/* Gains */}
+                <div css={gainsContainerCss}>
+                  <span css={gainsLabelCss}>{t('discard-action.gains')}</span>
+                  <div css={effectsListCss}>
+                    {techLevels.length > 0 ? (
+                      techLevels.map(({ level, effects }, i) => (
+                        <div key={level} css={levelBlockCss}>
+                          {i > 0 && <div css={levelSeparatorCss} />}
+                          <div css={levelHeaderCss}>{t('discard-action.level', { level })}</div>
+                          {effects.map((effect, j) => (
+                            <EffectDisplay key={j} effect={effect} />
+                          ))}
+                        </div>
+                      ))
+                    ) : (
+                      <span css={noBonusCss}>—</span>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          {!techMove && (
-            <div css={optionFooterCss}>
-              <span css={unavailableCss}>{t('discard-action.technology.unavailable')}</span>
+              {!techMove && (
+                <div css={optionFooterCss}>
+                  <span css={unavailableCss}>{t('discard-action.technology.unavailable')}</span>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {/* Separator */}
-        <div css={separatorCss}>
-          <span css={separatorTextCss}>{t('or')}</span>
-        </div>
+            {/* Separator */}
+            <div css={separatorCss}>
+              <span css={separatorTextCss}>{t('or')}</span>
+            </div>
+          </>
+        )}
 
         {/* Diplomacy Option */}
         <div
@@ -208,8 +213,8 @@ const headerCss = css`
   display: flex;
   align-items: center;
   gap: 1.2em;
-  margin-bottom: 1.5em;
-  padding-bottom: 1em;
+  margin-bottom: 0.8em;
+  padding-bottom: 0.8em;
   border-bottom: 0.15em solid rgba(0,0,0,0.1);
 `
 
@@ -396,7 +401,7 @@ const levelBlockCss = css`
 const levelSeparatorCss = css`
   height: 1px;
   background: linear-gradient(90deg, transparent, #86efac, transparent);
-  margin: 0.8em 0;
+  margin: 0.4em 0;
 `
 
 const levelHeaderCss = css`
@@ -443,6 +448,7 @@ const cancelButtonCss = css`
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
+  width: 100%;
 
   &:hover {
     background: #ffebee;

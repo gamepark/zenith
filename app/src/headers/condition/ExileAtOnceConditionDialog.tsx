@@ -163,7 +163,7 @@ export const ExileAtOnceConditionDialog: FC<Props> = ({ onMinimize, onChosen }) 
 
 const dialogContentCss = css`
   position: relative;
-  min-width: 70em;
+  min-width: 85em;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -301,11 +301,16 @@ const previewGridCss = css`
 `
 
 const thumbnailCss = css`
-  width: 3em;
-  height: 4.6em;
+  width: 9em;
+  height: 13.8em;
   border-radius: 0.3em;
-  object-fit: cover;
   box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.2);
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.3em;
+  }
 `
 
 // ============ FOOTER ============

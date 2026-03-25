@@ -80,7 +80,21 @@ export const zenithTheme: DeepPartial<GameTheme> = {
   menu: {
     mainButton: css`
       background: #d4872a !important;
-      box-shadow: 0 2px 8px rgba(212, 135, 42, 0.35);
+      box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+    `,
+    popButton: css`
+      color: #d4872a;
+      background: white;
+
+      &:focus, &:hover {
+        background: #d4872a;
+        color: white;
+      }
+
+      &:active {
+        background: #b87020;
+        color: white;
+      }
     `,
     panel: css`
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5);

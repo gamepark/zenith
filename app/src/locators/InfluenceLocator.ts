@@ -22,15 +22,16 @@ export class InfluenceLocator extends ListLocator {
       }))
     )
   }
-  getGap(location: Location): Partial<Coordinates> {
+  getGap(location: Location, context: MaterialContext): Partial<Coordinates> {
+    if (!isItemContext(context)) return {}
     if (location.player === TeamColor.White) return { y: 1.8 }
     return { y: -1.8 }
   }
 
   getMaxGap(location: Location, context: MaterialContext): Partial<Coordinates> {
-    //if (!isItemContext(context)) return super.getMaxGap(location, context)
-    if (this.isMyTeam(location, context)) return { y: 7.5 }
-    return { y: -4.5 }
+    if (!isItemContext(context)) return {}
+    const value = this.isMyTeam(location, context) ? 7.1 : 4.2
+    return { y: location.player === TeamColor.White ? value : -value }
   }
 
   getParentItem() {
@@ -42,16 +43,16 @@ export class InfluenceLocator extends ListLocator {
     const myTeam = this.isMyTeam(location, context)
 
     if (isItemContext(context)) {
-      const y = location.player === TeamColor.White ? 122 : -22.3
+      const y = location.player === TeamColor.White ? 123 : -23
       return { x, y, z: 0.05 }
     }
 
     const boardRotated = !this.isWhiteViewer(context)
     let y: number
     if (boardRotated) {
-      y = myTeam ? -58.8 : 144.5
+      y = myTeam ? -41 : 134
     } else {
-      y = myTeam ? 122 : -22.3
+      y = myTeam ? 141 : -34
     }
 
     return { x, y, z: 0.05 }

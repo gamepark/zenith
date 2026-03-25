@@ -138,12 +138,12 @@ const foldButtonCss = css`
   position: absolute;
   top: 0;
   right: 0;
-  width: calc(5em * var(--gp-scale, 1));
-  height: calc(5em * var(--gp-scale, 1));
+  width: 5.5dvh;
+  height: 5.5dvh;
   cursor: pointer;
   z-index: 100;
   background: #d4872a;
-  border-radius: 0 0.75em 0 calc(2.5em * var(--gp-scale, 1));
+  border-radius: 0 0.75em 0 2.75dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,9 +157,7 @@ const foldButtonCss = css`
 
 const foldIconCss = css`
   color: #fff;
-  font-size: calc(2em * var(--gp-scale, 1));
+  font-size: 2.2dvh;
   font-weight: 700;
   line-height: 1;
-  margin-top: -0.1em;
-  margin-right: -0.05em;
 `

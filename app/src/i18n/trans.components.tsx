@@ -143,16 +143,16 @@ const TransComponents = (customCss: customCssFunc) => ({
 
 export const helpCss = (jpg?: boolean) => css`
   display: inline-block;
-  height: 1.2em;
-  width: ${jpg ? '1.2em' : 'auto'};
+  height: 1.6em;
+  width: ${jpg ? '1.6em' : 'auto'};
   border-radius: ${jpg ? '50%' : '0'};
   margin: 0 0.15em;
   vertical-align: middle;
   filter: drop-shadow(0 0.05em 0.1em rgba(0, 0, 0, 0.2));
 
   img {
-    height: 1.2em;
-    width: ${jpg ? '1.2em' : 'auto'};
+    height: 1.6em;
+    width: ${jpg ? '1.6em' : 'auto'};
     border-radius: ${jpg ? '50%' : '0'};
     object-fit: cover;
     vertical-align: middle;
