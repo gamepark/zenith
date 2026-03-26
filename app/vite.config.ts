@@ -19,7 +19,8 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.PLATFORM_URI': JSON.stringify(env.VITE_PLATFORM_URI),
-      'process.env.PUSHER_KEY': JSON.stringify(env.VITE_PUSHER_KEY)
+      'process.env.PUSHER_KEY': JSON.stringify(env.VITE_PUSHER_KEY),
+      'process.env.VERSION': JSON.stringify(version)
     },
     plugins: [react({ jsxImportSource: '@emotion/react' }), imagetools({ defaultDirectives: () => new URLSearchParams({ format: 'webp' }) })]
   }
