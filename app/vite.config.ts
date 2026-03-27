@@ -8,6 +8,9 @@ import { version } from './package.json'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   return {
+    build: {
+      sourcemap: 'hidden'
+    },
     server: {
       port: 3000
     },
