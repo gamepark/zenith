@@ -786,9 +786,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gamepark/react-client@npm:^7.6.1":
-  version: 7.6.1
-  resolution: "@gamepark/react-client@npm:7.6.1"
+"@gamepark/react-client@npm:^7.6.2":
+  version: 7.6.2
+  resolution: "@gamepark/react-client@npm:7.6.2"
   dependencies:
     "@reduxjs/toolkit": "npm:^2.11.2"
     "@tanstack/react-query": "npm:^5.90.21"
@@ -809,19 +809,19 @@ __metadata:
     react-dom: ^19.2.4
     react-redux: ^9.2.0
     rxjs: ^7.8.2
-  checksum: 10c0/138b0385d9174dbd9cad50c6959740320d8f6f733d445fd821c4899623c63bb0706af3ec87de766b3326883595a12b941242a04e32df65bfc27273f18083fe64
+  checksum: 10c0/dc867d54b7c6d6077cae2b26020178b1b454d9dc05a10d6e94dcc4bcecae1615cfc45aea3cdaaed2d5cb9f78a8634f0ba4490078801dd502fbaf0e10e9b0456a
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@npm:^7.6.1":
-  version: 7.6.1
-  resolution: "@gamepark/react-game@npm:7.6.1"
+"@gamepark/react-game@npm:^7.6.2":
+  version: 7.6.2
+  resolution: "@gamepark/react-game@npm:7.6.2"
   dependencies:
     "@datadog/browser-logs": "npm:^6.28.1"
     "@dnd-kit/modifiers": "npm:^9.0.0"
     "@gamepark/api-types": "npm:^1.0.0"
     "@gamepark/avataaars": "npm:^3.0.0"
-    "@gamepark/react-client": "npm:^7.6.1"
+    "@gamepark/react-client": "npm:^7.6.2"
     dayjs: "npm:^1.11.19"
     fscreen: "npm:^1.2.0"
     i18next-http-backend: "npm:^3.0.2"
@@ -849,7 +849,7 @@ __metadata:
     react-dom: 19.x
     react-i18next: 16.x
     react-redux: 9.x
-  checksum: 10c0/62e15dc96bcf1eec994e1d8974d31d7ea0b4572cb73a51864cd1f12cfdf500743c5c060243616e0b70749dd40e00b5859d05795bcd624424e2555b935c7804ca
+  checksum: 10c0/23c7d9e44864ccdff2529629a94887456a734f372366d2baf3416abdd179f594994c46e01ae07879bd837940a1ff43730d513099b2be78292635daf65014640b
   languageName: node
   linkType: hard
 
@@ -873,7 +873,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.1.0"
     "@fortawesome/free-solid-svg-icons": "npm:^7.1.0"
     "@fortawesome/react-fontawesome": "npm:^3.1.1"
-    "@gamepark/react-game": "npm:^7.6.1"
+    "@gamepark/react-game": "npm:^7.6.2"
     "@gamepark/rules-api": "npm:^7.6.0"
     "@types/node": "npm:^25.0.2"
     "@types/react": "npm:^19.2.7"

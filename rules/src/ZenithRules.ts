@@ -1,7 +1,9 @@
 import {
+  Action,
   CompetitiveRank,
   hideItemId,
   hideItemIdToOthers,
+  isCustomMoveType,
   MaterialGame,
   MaterialMove,
   PositiveSequenceStrategy,
@@ -11,6 +13,9 @@ import {
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
+import { CustomMoveType } from './rules/CustomMoveType'
+import { DiplomacyBoardRule } from './rules/discard-action/DiplomacyBoardRule'
+import { TechnologyBoardRule } from './rules/discard-action/TechnologyBoardRule'
 import { DiscardActionRule } from './rules/DiscardActionRule'
 import {
   ChoiceRule,
@@ -26,26 +31,24 @@ import {
   ResetInfluenceRule,
   ShareCardRule,
   SpendCreditRule,
+  SpendZenithiumRule,
+  StealCreditRule,
   StealZenithiumRule,
   TakeBonusRule,
   TakeLeaderBadgeRule,
+  TakeTechnologyBonusTokenRule,
   TransferRule,
   WinCreditRule,
   WinInfluenceRule,
   WinZenithiumRule
 } from './rules/effect'
-import { SpendZenithiumRule } from './rules/effect/SpendZenithiumRule'
-import { StealCreditRule } from './rules/effect/StealCreditRule'
-import { TakeTechnologyBonusTokenRule } from './rules/effect/TakeTechnologyBonusTokenRule'
 import { EndGameHelper } from './rules/helper/EndGameHelper'
+import { PlayerHelper } from './rules/helper/PlayerHelper'
 import { MulliganRule } from './rules/MulliganRule'
-import { DiplomacyBoardRule } from './rules/discard-action/DiplomacyBoardRule'
-import { TechnologyBoardRule } from './rules/discard-action/TechnologyBoardRule'
 import { PickOrderRule } from './rules/PickOrderRule'
 import { PlayCardRule } from './rules/PlayCardRule'
 import { RefillRule } from './rules/RefillRule'
 import { RuleId } from './rules/RuleId'
-import { PlayerHelper } from './rules/helper/PlayerHelper'
 
 /**
  * This class implements the rules of the board game.
@@ -53,10 +56,8 @@ import { PlayerHelper } from './rules/helper/PlayerHelper'
  */
 export class ZenithRules
   extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
-  implements
-    CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
-    TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>>
-{
+  implements CompetitiveRank<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
+    TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>> {
   rules = {
     [RuleId.Muligan]: MulliganRule,
     [RuleId.PlayCard]: PlayCardRule,
@@ -114,6 +115,11 @@ export class ZenithRules
     [MaterialType.BonusToken]: {
       [LocationType.BonusTokenStock]: hideItemId
     }
+  }
+
+  canUndo(action: Action, consecutiveActions: Action[]): boolean {
+    if (isCustomMoveType(CustomMoveType.PickFirst)(action.move)) return true
+    return super.canUndo(action, consecutiveActions)
   }
 
   rankPlayers(_playerA: PlayerId, _playerB: PlayerId): number {
