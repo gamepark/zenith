@@ -4,6 +4,7 @@ import { Picture, useLegalMove, useLegalMoves, usePlay, useRules } from '@gamepa
 import { CustomMove, isCustomMoveType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { ConditionalEffect, ConditionType, ExpandedEffect, SpendCreditEffect, SpendZenithiumEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
+import { credits } from '@gamepark/zenith/material/Credit'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
@@ -37,8 +38,8 @@ export const SpendConditionDialog: FC<Props> = ({ type, onMinimize, onChosen }) 
   // Current resource count
   const team = new PlayerHelper(rules.game as MaterialGame, rules.getActivePlayer()!).team
   const available = isCredit
-    ? rules.material(MaterialType.CreditToken).player(team).getItems().reduce((sum, item) => sum + (item.id as number), 0)
-    : rules.material(MaterialType.ZenithiumToken).player(team).length
+    ? rules.material(MaterialType.CreditToken).money(credits).player(team).count
+    : rules.material(MaterialType.ZenithiumToken).player(team).getQuantity()
 
   // Reward type
   const isInfluenceReward = resultingEffect.type === EffectType.WinInfluence
