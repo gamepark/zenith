@@ -98,11 +98,14 @@ export class InfluenceDiscDescription extends TokenDescription {
     return (
       <>
         {allSorted.map(({ move, gaining }, i) => {
+          const distance = Math.abs(move.location.x! - item.location.x!)
           const deltaY = getYDeltaEm(item.location.x!, move.location.x!, isWhite)
           return (
-            <ItemMenuButton key={i} move={move} x={0} y={deltaY}
-              label={<Trans i18nKey="help.action.influence" />}>
+            <ItemMenuButton key={i} move={move} x={0} y={deltaY}>
               <FontAwesomeIcon icon={gaining ? faArrowDown : faArrowUp} />
+              <span css={bottomLabelCss}>
+                <Trans i18nKey="help.action.influence" defaults="Influence x{count}" values={{ count: distance }}/>
+              </span>
             </ItemMenuButton>
           )
         })}
@@ -110,5 +113,18 @@ export class InfluenceDiscDescription extends TokenDescription {
     )
   }
 }
+
+const bottomLabelCss = css`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 0.3em;
+  padding: 0.1em 0.3em;
+  margin-top: 0.2em;
+`
 
 export const influenceDiscDescription = new InfluenceDiscDescription()

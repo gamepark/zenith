@@ -17,7 +17,8 @@ export const InfluenceDiscHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = 
   const getLabel = (move: MoveItem) => {
     // Only show "reset" if disc moves to center AND was far from center (actual reset effect)
     if (move.location.x === 0 && Math.abs(item.location?.x ?? 0) > 1) return t('help.action.reset')
-    return t('help.action.influence')
+    const distance = Math.abs(move.location.x! - (item.location?.x ?? 0))
+    return t('help.action.influence', { count: distance })
   }
 
   const content = (

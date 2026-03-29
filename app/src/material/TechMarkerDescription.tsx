@@ -32,8 +32,10 @@ export class TechMarkerDescription extends TokenDescription {
   getItemMenu(_item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
     const move = legalMoves.find(m => isMoveItemType(MaterialType.TechMarker)(m) && m.itemIndex === context.index)
     if (!move) return
+    const firstIndex = legalMoves.find(m => isMoveItemType(MaterialType.TechMarker)(m))
+    const isFirst = isMoveItemType(MaterialType.TechMarker)(firstIndex!) && firstIndex.itemIndex === context.index
     return (
-      <ItemMenuButton move={move} y={-2} x={0} label={<Trans i18nKey="help.action.develop" />}>
+      <ItemMenuButton move={move} y={-2} x={0} label={isFirst ? <Trans i18nKey="help.action.develop" /> : undefined} labelPosition="left">
         <FontAwesomeIcon icon={faFlask} />
       </ItemMenuButton>
     )
