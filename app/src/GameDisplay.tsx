@@ -50,21 +50,21 @@ const ZenithDevTools: FC = () => {
 const navigationCss = css`
   top: auto;
   bottom: calc(1em + 6em * 1.7);
-  left: ${process.env.NODE_ENV === 'development' ? '64px' : '16px'};
-  gap: 6px;
+  left: ${process.env.NODE_ENV === 'development' ? '5em' : '1em'};
+  gap: 0.4em;
   z-index: 100;
 
   button {
-    font-size: 14px !important;
-    width: 34px !important;
-    height: 34px !important;
-    border-radius: 8px !important;
-    border: 1px solid rgba(212, 135, 42, 0.4) !important;
+    font-size: calc(2.3em * var(--gp-scale, 1)) !important;
+    width: 2em !important;
+    height: 2em !important;
+    border-radius: 0.5em !important;
+    border: 0.06em solid rgba(212, 135, 42, 0.4) !important;
     background: linear-gradient(145deg, #1c1810, #2a2014) !important;
     color: #d4872a !important;
     filter: none !important;
     transition: all 0.15s !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0.12em 0.5em rgba(0, 0, 0, 0.3);
 
     &:not(:disabled):hover {
       background: linear-gradient(145deg, #2a2014, #3a2c1a) !important;

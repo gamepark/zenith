@@ -207,20 +207,16 @@ const getPanelPosition = (player: PlayerId, context: MaterialContext) => {
 
 // ============ Position CSS ============
 
+const isMobile = window.screen.width <= 768
+
 const topLeftCss = css`
   left: 1em;
-  top: 4.3em;
-  @media (max-width: 1200px) {
-    top: 3.5em;
-  }
+  top: ${isMobile ? '3.5em' : '4.3em'};
 `
 
 const topRightCss = css`
   right: 1em;
-  top: 4.3em;
-  @media (max-width: 1200px) {
-    top: 3.5em;
-  }
+  top: ${isMobile ? '3.5em' : '4.3em'};
 `
 
 const bottomLeftCss = css`
@@ -246,23 +242,21 @@ const panelCss = css`
   align-items: center;
   justify-content: space-between;
 
-  @media (max-width: 1200px) {
-    font-size: 2em;
-  }
+  ${isMobile ? 'font-size: 2em;' : ''}
 `
 
 const panelWhiteCss = css`
   background: linear-gradient(145deg, #fff 0%, #f5f5fa 100%);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-left: 4px solid #d4872a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 0.06em solid rgba(0, 0, 0, 0.05);
+  border-left: 0.25em solid #d4872a;
+  box-shadow: 0 0.12em 0.5em rgba(0, 0, 0, 0.05);
 `
 
 const panelBlackCss = css`
   background: linear-gradient(145deg, #38383d 0%, #28282d 100%);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-left: 4px solid #d4872a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  border: 0.06em solid rgba(255, 255, 255, 0.04);
+  border-left: 0.25em solid #d4872a;
+  box-shadow: 0 0.12em 0.5em rgba(0, 0, 0, 0.18);
 `
 
 const leftSideCss = css`

@@ -276,13 +276,13 @@ const opponentTeamCss = css`
 
 const whiteTeamCss = css`
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.9) 100%);
-  border: 2px solid rgba(200, 200, 200, 0.8);
+  border: 0.12em solid rgba(200, 200, 200, 0.8);
   color: #333;
 `
 
 const blackTeamCss = css`
   background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-  border: 2px solid #555;
+  border: 0.12em solid #555;
   color: #e0e0e0;
 `
 
@@ -332,7 +332,7 @@ const planetsRowCss = css`
   justify-content: space-between;
   margin-top: 0.6em;
   padding-top: 0.6em;
-  border-top: 1px solid rgba(128, 128, 128, 0.3);
+  border-top: 0.06em solid rgba(128, 128, 128, 0.3);
 `
 
 const planetCountCss = css`

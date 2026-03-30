@@ -2,6 +2,7 @@
 import { css } from '@emotion/react'
 import { LocationDescription, Locator } from '@gamepark/react-game'
 import { Location, XYCoordinates } from '@gamepark/rules-api'
+import { useEffect, useRef, useState } from 'react'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
@@ -58,6 +59,17 @@ const TechLevelBarContent = ({ location }: { location: Location }) => {
     .filter((item) => item.location.parent === location.parent)
   const level = markers.length === 0 ? 0 : (markers.getItem()!.location.x ?? 0)
   const heightEm = barHeight[level] ?? 0
+  const prevLevel = useRef(level)
+  const [animate, setAnimate] = useState(false)
+
+  useEffect(() => {
+    if (prevLevel.current === level) return
+    prevLevel.current = level
+    setAnimate(true)
+    const timeout = setTimeout(() => setAnimate(false), 300)
+    return () => clearTimeout(timeout)
+  }, [level])
+
   if (heightEm <= 0) return null
 
   const isWhite = location.player === TeamColor.White
@@ -69,7 +81,7 @@ const TechLevelBarContent = ({ location }: { location: Location }) => {
       bottom: 0;
       ${isWhite ? 'left: 50%' : 'right: 50%'};
       height: ${heightEm}em;
-      transition: height 0.2s ease-in-out;
+      ${animate ? 'transition: height 0.2s ease-in-out;' : ''}
       pointer-events: none;
     `}>
       {/* Vertical stem */}
