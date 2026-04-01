@@ -534,5 +534,6 @@
   "help.develop.lowest": "Développez la technologie la moins avancée (en payant son coût)",
   "option.secret-agent": "Extension Agent Secret",
   "option.secret-agent.help": "Ajoute 10 nouvelles cartes Agent Secret au jeu",
-  "help.extension.secret-agent": "Agent Secret"
+  "help.extension.secret-agent": "Agent Secret",
+  "help.then-inline": "puis"
 }

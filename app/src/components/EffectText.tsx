@@ -112,9 +112,9 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
     case EffectType.WinCredit: {
       if (effect.upTo !== undefined) {
         if (effect.opponent) {
-          return <Trans i18nKey="help.win-credit.up-to.opponent" defaults="Opponent gains <credit/> up to {count}" values={{ count: effect.upTo }} components={components} />
+          return <Trans i18nKey="help.win-credit.up-to.opponent" values={{ count: effect.upTo }} components={components} />
         }
-        return <Trans i18nKey="help.win-credit.up-to" defaults="<gain>Gain <credit/> up to {count}</gain>" values={{ count: effect.upTo }} components={components} />
+        return <Trans i18nKey="help.win-credit.up-to" values={{ count: effect.upTo }} components={components} />
       }
       const count = effect.quantity ?? 1
       if (effect.opponent) {
@@ -142,9 +142,9 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
     case EffectType.WinZenithium: {
       if (effect.upTo !== undefined) {
         if (effect.opponent) {
-          return <Trans i18nKey="help.win-zenithium.up-to.opponent" defaults="Opponent gains <zenithium/> up to {count}" values={{ count: effect.upTo }} components={components} />
+          return <Trans i18nKey="help.win-zenithium.up-to.opponent" values={{ count: effect.upTo }} components={components} />
         }
-        return <Trans i18nKey="help.win-zenithium.up-to" defaults="<gain>Gain <zenithium/> up to {count}</gain>" values={{ count: effect.upTo }} components={components} />
+        return <Trans i18nKey="help.win-zenithium.up-to" values={{ count: effect.upTo }} components={components} />
       }
       const count = effect.quantity ?? 1
       if (effect.opponent) {
@@ -210,7 +210,7 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
     }
 
     case EffectType.Mobilize:
-      return <Trans i18nKey="help.mobilize" values={{ count: effect.quantity ?? 1 }} components={components} />
+      return <Trans i18nKey="help.mobilize.short" values={{ count: effect.quantity ?? 1 }} components={components} />
 
     case EffectType.TakeLeaderBadge:
       if (effect.gold) {
@@ -230,7 +230,7 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
         )
       }
       if (effect.lowest) {
-        return <Trans i18nKey="help.develop.lowest" defaults="Develop the least advanced technology (pay its cost)" components={components} />
+        return <Trans i18nKey="help.develop.lowest" components={components} />
       }
       if (effect.faction && effect.discount) {
         return (
@@ -369,6 +369,16 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
         )
       }
 
+      if (doEffectCondition && effect.mandatory) {
+        return (
+          <span>
+            <EffectText effect={conditionEffect!} />
+            {' '}<span css={thenCss}>{t('help.then-inline', 'then')}</span>{' '}
+            <EffectText effect={effect.effect} sameColor factors={conditionFactors} />
+          </span>
+        )
+      }
+
       return (
         <div css={conditionalContainerCss}>
           <div css={conditionBlockCss}>
@@ -379,13 +389,13 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
                 <Trans i18nKey="help.if-credits.short" values={{ min: condition.min }} components={components} />
               )}
               {condition.type === ConditionType.OpponentHasZenithium && (
-                <Trans i18nKey="help.if-opponent-zenithium.short" defaults="Opponent has at least {min} <zenithium/>" values={{ min: condition.min }} components={components} />
+                <Trans i18nKey="help.if-opponent-zenithium.short" values={{ min: condition.min }} components={components} />
               )}
               {condition.type === ConditionType.OpponentHasCredits && (
-                <Trans i18nKey="help.if-opponent-credits.short" defaults="Opponent has at least {min} <credit/>" values={{ min: condition.min }} components={components} />
+                <Trans i18nKey="help.if-opponent-credits.short" values={{ min: condition.min }} components={components} />
               )}
               {condition.type === ConditionType.OpponentIsLeader && (
-                <Trans i18nKey="help.if-opponent-leader.short" defaults="Opponent has the Leader badge <badge/>" components={components} />
+                <Trans i18nKey="help.if-opponent-leader.short" components={components} />
               )}
               {conditionEffect && <EffectText effect={conditionEffect} />}
             </div>
@@ -425,6 +435,13 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
       return null
   }
 }
+
+const thenCss = css`
+  font-weight: 700;
+  color: #7c3aed;
+  font-size: 0.85em;
+  text-transform: lowercase;
+`
 
 const noteCss = css`
   color: rgba(62, 48, 32, 0.5);

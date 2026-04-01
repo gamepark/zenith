@@ -533,5 +533,6 @@
   "help.develop.lowest": "Develop the least advanced technology (pay its cost)",
   "option.secret-agent": "Secret Agent expansion",
   "option.secret-agent.help": "Add 10 new Secret Agent cards to the game",
-  "help.extension.secret-agent": "Secret Agent"
+  "help.extension.secret-agent": "Secret Agent",
+  "help.then-inline": "then"
 }
