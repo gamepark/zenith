@@ -1,6 +1,6 @@
 import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
 import { shuffle, sample } from 'es-toolkit/compat'
-import { Agent, agents } from './material/Agent'
+import { Agent, baseAgents, secretAgents } from './material/Agent'
 import { allBonuses } from './material/Bonus'
 import { Credit } from './material/Credit'
 import { factions } from './material/Faction'
@@ -24,7 +24,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   setupMaterial(options: ZenithOptions) {
     this.assignTeams(options)
     this.setupTurnOrder()
-    this.setupDeck()
+    this.setupDeck(options)
     this.setupPlayers()
     this.setupInfluences()
     this.setupLeaderBadge()
@@ -35,7 +35,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
 
   assignTeams(options: ZenithOptions) {
     const playerOptions = Array.isArray(options.players) ? options.players : []
-    const hasTeamChoices = playerOptions.some(p => p.team !== undefined)
+    const hasTeamChoices = playerOptions.some((p) => p.team !== undefined)
     const playersPerTeam = this.game.players.length / 2
 
     if (hasTeamChoices) {
@@ -139,8 +139,9 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     return 0
   }
 
-  setupDeck() {
-    const shuffledAgents = shuffle(agents)
+  setupDeck(options?: ZenithOptions) {
+    const availableAgents = options?.secretAgent ? [...baseAgents, ...secretAgents] : baseAgents
+    const shuffledAgents = shuffle(availableAgents)
     this.material(MaterialType.AgentCard).createItems(
       shuffledAgents.map((agent) => ({
         id: agent,
@@ -159,11 +160,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   }
 
   setupTechnologyBoard(options?: ZenithOptions) {
-    const boards = [
-      options?.animodBoard ?? sample(['S', 'D'])!,
-      options?.humanBoard ?? sample(['U', 'O'])!,
-      options?.robotBoard ?? sample(['N', 'P'])!
-    ]
+    const boards = [options?.animodBoard ?? sample(['S', 'D'])!, options?.humanBoard ?? sample(['U', 'O'])!, options?.robotBoard ?? sample(['N', 'P'])!]
     for (let i = 0; i < boards.length; i++) {
       const current = boards[i]
       this.material(MaterialType.TechnologyBoard).createItem({ id: current, location: { type: LocationType.TechnologyBoardPlace, id: factions[i] } })

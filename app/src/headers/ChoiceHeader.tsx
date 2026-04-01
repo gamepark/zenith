@@ -1,14 +1,15 @@
 import { PlayMoveButton, useGame, useLegalMove, usePlayerId } from '@gamepark/react-game'
 import { isCustomMoveType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
-import { ChoiceEffect, ExpandedEffect } from '@gamepark/zenith/material/effect/Effect'
+import { ChoiceEffect, ExpandedEffect, WinInfluenceEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
+import { Influence } from '@gamepark/zenith/material/Influence'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Choice, ChoiceRule } from '@gamepark/zenith/rules/effect'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { TooltipButton } from '../components/TooltipButton'
-import { HeaderTransComponents } from '../i18n/trans.components'
+import { getPlanetForHeader, HeaderTransComponents } from '../i18n/trans.components'
 import { EffectSource } from './EffectSource'
 
 export const ChoiceHeader: FC = () => {
@@ -45,8 +46,29 @@ type ChoiceEffectType = {
 }
 const ChoiceEffectButton: FC<ChoiceEffectType> = ({ choice, choiceEffect }) => {
   const { t } = useTranslation()
-  const effect = choice === Choice.RIGHT ? choiceEffect.right : choiceEffect.left
+  const chosen = choice === Choice.RIGHT ? choiceEffect.right : choiceEffect.left
+  const effects = Array.isArray(chosen) ? chosen : [chosen]
   const move = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Choice)(move) && move.data === choice)
+
+  // Multi-effect branch (e.g. influence multiple planets)
+  if (effects.length > 1 && effects.every((e) => e.type === EffectType.WinInfluence)) {
+    const planets = effects.map((e) => (e as WinInfluenceEffect).influence).filter(Boolean) as Influence[]
+    const components: Record<string, React.ReactElement> = { ...HeaderTransComponents }
+    planets.forEach((planet, i) => {
+      components[`planet${i}`] = getPlanetForHeader(planet)
+    })
+    return (
+      <PlayMoveButton move={move}>
+        <Trans
+          i18nKey={`header.choice.win-influence.${planets.length}`}
+          defaults={planets.map((_, i) => `<planet${i}/>`).join(' + ')}
+          components={components}
+        />
+      </PlayMoveButton>
+    )
+  }
+
+  const effect = effects[0]
 
   if (effect.type === EffectType.WinCredit) {
     return (

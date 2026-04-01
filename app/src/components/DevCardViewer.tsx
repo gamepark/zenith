@@ -3,7 +3,7 @@ import { css, keyframes } from '@emotion/react'
 import { MaterialComponent, usePlay } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import displayMaterialHelp = MaterialMoveBuilder.displayMaterialHelp
-import { Agent } from '@gamepark/zenith/material/Agent'
+import { Agent, isSecretAgent } from '@gamepark/zenith/material/Agent'
 import { AgentCharacteristics, Agents } from '@gamepark/zenith/material/Agents'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { Faction } from '@gamepark/zenith/material/Faction'
@@ -78,6 +78,7 @@ const effectLabels: Partial<Record<EffectType, string>> = {
 
 type SortOption = 'id' | 'cost' | 'faction' | 'planet' | 'name'
 type ValidationFilter = 'all' | 'validated' | 'unvalidated'
+type ExtensionFilter = 'all' | 'base' | 'secret-agent'
 
 const hasEffectType = (data: AgentCharacteristics, type: EffectType): boolean => {
   return data.effects.some(e => {
@@ -88,7 +89,9 @@ const hasEffectType = (data: AgentCharacteristics, type: EffectType): boolean =>
       if ('effect' in cond && cond.effect.type === type) return true
     }
     if (e.type === EffectType.Choice) {
-      if (e.left.type === type || e.right.type === type) return true
+      const lefts = Array.isArray(e.left) ? e.left : [e.left]
+      const rights = Array.isArray(e.right) ? e.right : [e.right]
+      if (lefts.some(l => l.type === type) || rights.some(r => r.type === type)) return true
     }
     return false
   })
@@ -103,6 +106,7 @@ export const DevCardViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
   const [costFilter, setCostFilter] = useState<number | -1>(-1)
   const [effectFilter, setEffectFilter] = useState<EffectType | -1>(-1)
   const [validationFilter, setValidationFilter] = useState<ValidationFilter>('all')
+  const [extensionFilter, setExtensionFilter] = useState<ExtensionFilter>('all')
   const [sortBy, setSortBy] = useState<SortOption>('id')
   const [cardScale, setCardScale] = useState(1)
   const [hoveredAgent, setHoveredAgent] = useState<Agent | null>(null)
@@ -122,6 +126,8 @@ export const DevCardViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
         if (planetFilter && data.influence !== planetFilter) return false
         if (costFilter !== -1 && data.cost !== costFilter) return false
         if (effectFilter !== -1 && !hasEffectType(data, effectFilter)) return false
+        if (extensionFilter === 'base' && isSecretAgent(agent)) return false
+        if (extensionFilter === 'secret-agent' && !isSecretAgent(agent)) return false
         if (validationFilter === 'validated' && !validated.has(agent)) return false
         if (validationFilter === 'unvalidated' && validated.has(agent)) return false
         if (search) {
@@ -140,7 +146,7 @@ export const DevCardViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
           default: return a - b
         }
       })
-  }, [allAgents, factionFilter, planetFilter, costFilter, effectFilter, validationFilter, validated, search, sortBy, t])
+  }, [allAgents, factionFilter, planetFilter, costFilter, effectFilter, extensionFilter, validationFilter, validated, search, sortBy, t])
 
   const toggleValidation = useCallback((agent: Agent) => {
     setValidated(prev => {
@@ -178,7 +184,7 @@ export const DevCardViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
 
   const resetFilters = useCallback(() => {
     setSearch(''); setFactionFilter(0); setPlanetFilter(0)
-    setCostFilter(-1); setEffectFilter(-1); setValidationFilter('all')
+    setCostFilter(-1); setEffectFilter(-1); setExtensionFilter('all'); setValidationFilter('all')
   }, [])
 
   const handleClose = useCallback(() => {
@@ -264,6 +270,11 @@ export const DevCardViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
               <option value="cost">Sort: Cost</option>
               <option value="faction">Sort: Faction</option>
               <option value="planet">Sort: Planet</option>
+            </select>
+            <select value={extensionFilter} onChange={e => setExtensionFilter(e.target.value as ExtensionFilter)} css={selectCss}>
+              <option value="all">All sets</option>
+              <option value="base">Base game</option>
+              <option value="secret-agent">Secret Agent</option>
             </select>
             <select value={validationFilter} onChange={e => setValidationFilter(e.target.value as ValidationFilter)} css={selectCss}>
               <option value="all">All</option>

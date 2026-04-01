@@ -6,7 +6,10 @@ import { EffectType } from './EffectType'
 export enum ConditionType {
   DoEffect,
   Leader,
-  HaveCredits
+  HaveCredits,
+  OpponentHasZenithium,
+  OpponentHasCredits,
+  OpponentIsLeader
 }
 
 export type LeaderCondition = {
@@ -22,7 +25,21 @@ export type DoEffectCondition = {
   effect: Effect
 }
 
-export type Condition = DoEffectCondition | LeaderCondition | HaveCreditsCondition
+export type OpponentHasZenithiumCondition = {
+  type: ConditionType.OpponentHasZenithium
+  min: number
+}
+
+export type OpponentHasCreditsCondition = {
+  type: ConditionType.OpponentHasCredits
+  min: number
+}
+
+export type OpponentIsLeaderCondition = {
+  type: ConditionType.OpponentIsLeader
+}
+
+export type Condition = DoEffectCondition | LeaderCondition | HaveCreditsCondition | OpponentHasZenithiumCondition | OpponentHasCreditsCondition | OpponentIsLeaderCondition
 
 export type ConditionalEffect = {
   type: EffectType.Conditional
@@ -52,6 +69,7 @@ export type WinCreditEffect = {
   factorPerDifferentInfluence?: number
   perLevel1Technology?: number[]
   opponent?: boolean
+  upTo?: number
 }
 
 export type GiveCreditEffect = {
@@ -75,6 +93,7 @@ export type WinZenithiumEffect = {
   quantity?: number
   opponent?: boolean
   perLevel1Technology?: number[]
+  upTo?: number
 }
 
 export type TakeBonusEffect = {
@@ -116,6 +135,7 @@ export type WinInfluenceEffect = {
 export type GiveInfluenceEffect = {
   type: EffectType.GiveInfluence
   except?: Influence
+  quantity?: number
 }
 
 export type ResetInfluenceEffect = {
@@ -152,8 +172,8 @@ export type MobilizeEffect = {
 
 export type ChoiceEffect = {
   type: EffectType.Choice
-  left: Effect
-  right: Effect
+  left: Effect | Effect[]
+  right: Effect | Effect[]
 }
 
 export type TakeTechnologyBonusToken = {

@@ -33,11 +33,12 @@ export class GiveInfluenceRule extends EffectRule<GiveInfluenceEffect> {
   }
 
   getPositionAfterPush(item: MaterialItem) {
+    const qty = this.effect.quantity ?? 1
     if (this.playerHelper.team === TeamColor.White) {
-      return Math.max(-4, item.location.x! - 1)
+      return Math.max(-4, item.location.x! - qty)
     }
 
-    return Math.min(4, item.location.x! + 1)
+    return Math.min(4, item.location.x! + qty)
   }
 
   afterItemMove(move: MaterialMove) {

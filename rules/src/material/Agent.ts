@@ -90,7 +90,25 @@ export enum Agent {
   SneakyJules,
   SecretKali,
   CaptainAndreev,
-  MiladyJones
+  MiladyJones,
+
+  // Secret Agent extension
+  AdmiralJack = 100,
+  Mungo,
+  S1mmons,
+  W1ll1s,
+  PrincessUxmal,
+  CelestinPetit,
+  Ragnar,
+  DandyMuller,
+  Boull3,
+  Demetrios
 }
 
 export const agents = getEnumValues(Agent)
+
+export const baseAgents = agents.filter((a) => a < Agent.AdmiralJack)
+
+export const secretAgents = agents.filter((a) => a >= Agent.AdmiralJack)
+
+export const isSecretAgent = (agent: Agent) => agent >= Agent.AdmiralJack

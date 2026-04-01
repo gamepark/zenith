@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { MaterialHelpProps, Picture, PlayMoveButton, useGame, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { CustomMove, isCustomMoveType, isMoveItemType, MaterialGame, MaterialItem, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { TFunction } from 'i18next'
-import { Agent } from '@gamepark/zenith/material/Agent'
+import { Agent, isSecretAgent } from '@gamepark/zenith/material/Agent'
 import { Agents } from '@gamepark/zenith/material/Agents'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
@@ -16,7 +16,7 @@ import { FC, useRef } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { getColorForInfluence, helpCss } from '../i18n/trans.components'
 import { EffectText, getFactionIcon, getPlanetIcon } from '../components/EffectText'
-import { actionButtonCss, actionSectionCss, CollapsibleDetails } from './HelpActionButton'
+import { actionButtonCss, actionsLabelCss, actionSectionCss, CollapsibleDetails } from './HelpActionButton'
 import Credit from '../images/credit/Credit1.png'
 
 export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ item, itemIndex, closeDialog }) => {
@@ -82,16 +82,27 @@ export const AgentCardHelp: FC<MaterialHelpProps<PlayerId, MaterialType>> = ({ i
   )
 
   const content = <AgentCardHelpContent agentId={agentId} item={item} />
+  const identity = <AgentIdentitySection agentId={agentId} />
 
   if (hadActionsRef.current) {
     return (
-      <CollapsibleDetails actions={actions}>
-        {content}
-      </CollapsibleDetails>
+      <div css={containerCss}>
+        <div css={actionsLabelCss}>Actions</div>
+        {actions}
+        {identity}
+        <CollapsibleDetails>
+          {content}
+        </CollapsibleDetails>
+      </div>
     )
   }
 
-  return content
+  return (
+    <div css={containerCss}>
+      {identity}
+      {content}
+    </div>
+  )
 }
 
 const getActionLabel = (t: TFunction, item: Partial<MaterialItem>, move: MoveItem): string => {
@@ -105,6 +116,18 @@ const getActionLabel = (t: TFunction, item: Partial<MaterialItem>, move: MoveIte
   if (move.location.type === LocationType.Influence) return t('help.action.transfer')
   return t('help.action.discard')
 }
+
+const extensionBadgeCss = css`
+  font-size: 0.65em;
+  font-weight: 600;
+  padding: 0.15em 0.5em;
+  margin-left: auto;
+  border-radius: 0.3em;
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+`
 
 const hiddenCardCss = css`
   min-width: 16em;
@@ -125,6 +148,38 @@ const hiddenDescCss = css`
   color: rgba(62, 48, 32, 0.5);
   font-style: italic;
 `
+
+const AgentIdentitySection: FC<{ agentId: Agent }> = ({ agentId }) => {
+  const { t } = useTranslation()
+  const agentData = Agents[agentId]
+  return (
+    <div css={sectionCss}>
+      <div css={[sectionHeaderCss, blueHeaderCss]}>
+        <span css={sectionIconCss}>👤</span>
+        {t(`agent.${agentId}`)}
+        {isSecretAgent(agentId) && <span css={extensionBadgeCss}>{t('help.extension.secret-agent', 'Secret Agent')}</span>}
+      </div>
+      <div css={sectionContentCss}>
+        <div css={identityGridCss}>
+          <div css={identityItemCss}>
+            <span css={identityLabelCss}>{t('help.faction')}</span>
+            <div css={identityValueCss}>
+              {getFactionIcon(agentData.faction)}
+              <span>{t(`faction.${agentData.faction}`)}</span>
+            </div>
+          </div>
+          <div css={identityItemCss}>
+            <span css={identityLabelCss}>{t('help.planet')}</span>
+            <div css={identityValueCss}>
+              {getPlanetIcon(agentData.influence)}
+              <span>{t(`planet.${agentData.influence}`)}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 type AgentCardHelpContentProps = {
   agentId: Agent
@@ -170,32 +225,6 @@ export const AgentCardHelpContent: FC<AgentCardHelpContentProps> = ({ agentId, c
 
   return (
     <div css={containerCss}>
-      {/* Section IDENTITÉ avec nom */}
-      <div css={sectionCss}>
-        <div css={[sectionHeaderCss, blueHeaderCss]}>
-          <span css={sectionIconCss}>👤</span>
-          {t(`agent.${agentId}`)}
-        </div>
-        <div css={sectionContentCss}>
-          <div css={identityGridCss}>
-            <div css={identityItemCss}>
-              <span css={identityLabelCss}>{t('help.faction')}</span>
-              <div css={identityValueCss}>
-                {getFactionIcon(agentData.faction)}
-                <span>{t(`faction.${agentData.faction}`)}</span>
-              </div>
-            </div>
-            <div css={identityItemCss}>
-              <span css={identityLabelCss}>{t('help.planet')}</span>
-              <div css={identityValueCss}>
-                {getPlanetIcon(agentData.influence)}
-                <span>{t(`planet.${agentData.influence}`)}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Section COÛT */}
       <div css={costSectionCss}>
         <span css={costLabelCss}>{t('help.cost')}</span>

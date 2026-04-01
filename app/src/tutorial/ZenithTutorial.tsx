@@ -23,7 +23,7 @@ const tc = HelpTransComponents
 
 export class ZenithTutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
   version = 3
-  options = { players: [{ id: me }, { id: opponent }] }
+  options = { players: [{ id: me }, { id: opponent }], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' }
   setup = new TutorialSetup()
   players = [{ id: me }, { id: opponent, name: 'Rival' }]
 

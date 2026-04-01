@@ -2,6 +2,7 @@ import { MaterialMove } from '@gamepark/rules-api'
 import { uniq } from 'es-toolkit/compat'
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
+import { credits } from '../../material/Credit'
 import { WinCreditEffect } from '../../material/effect/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -25,6 +26,11 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
   }
 
   get wonCredit() {
+    if (this.effect.upTo !== undefined) {
+      const team = this.effect.opponent ? this.opponentTeam : this.playerHelper.team
+      const currentCredits = this.material(MaterialType.CreditToken).money(credits).player(team).count
+      return Math.max(0, this.effect.upTo - currentCredits)
+    }
     if (this.effect.quantity) return this.effect.quantity
     if (this.effect.perLevel1Technology) return this.effect.perLevel1Technology[this.level1Technology - 1] ?? 0
     if (this.effect.factorPerDifferentInfluence) return this.distinctInfluence * this.effect.factorPerDifferentInfluence

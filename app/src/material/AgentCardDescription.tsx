@@ -102,6 +102,16 @@ import SneakyJules from '../images/agents/SneakyJules.jpg'
 import SecretKali from '../images/agents/SecretKali.jpg'
 import CaptainAndreev from '../images/agents/CaptainAndreev.jpg'
 import MiladyJones from '../images/agents/MiladyJones.jpg'
+import AdmiralJack from '../images/agents/secret-agent/AdmiralJack.jpg'
+import Mungo from '../images/agents/secret-agent/Mungo.jpg'
+import S1mmons from '../images/agents/secret-agent/S1mmons.jpg'
+import W1ll1s from '../images/agents/secret-agent/W1ll1s.jpg'
+import PrincessUxmal from '../images/agents/secret-agent/PrincessUxmal.jpg'
+import CelestinPetit from '../images/agents/secret-agent/CelestinPetit.jpg'
+import Ragnar from '../images/agents/secret-agent/Ragnar.jpg'
+import DandyMuller from '../images/agents/secret-agent/DandyMuller.jpg'
+import Boull3 from '../images/agents/secret-agent/Boull3.jpg'
+import Demetrios from '../images/agents/secret-agent/Demetrios.jpg'
 import Back from '../images/agents/Back.jpg'
 import Animod from '../images/icons/animod.jpg'
 import Humanoid from '../images/icons/humanoid.jpg'
@@ -204,7 +214,17 @@ export class AgentCardDescription extends CardDescription {
     [Agent.SneakyJules]: SneakyJules,
     [Agent.SecretKali]: SecretKali,
     [Agent.CaptainAndreev]: CaptainAndreev,
-    [Agent.MiladyJones]: MiladyJones
+    [Agent.MiladyJones]: MiladyJones,
+    [Agent.AdmiralJack]: AdmiralJack,
+    [Agent.Mungo]: Mungo,
+    [Agent.S1mmons]: S1mmons,
+    [Agent.W1ll1s]: W1ll1s,
+    [Agent.PrincessUxmal]: PrincessUxmal,
+    [Agent.CelestinPetit]: CelestinPetit,
+    [Agent.Ragnar]: Ragnar,
+    [Agent.DandyMuller]: DandyMuller,
+    [Agent.Boull3]: Boull3,
+    [Agent.Demetrios]: Demetrios
   }
 
   displayHelp(item: MaterialItem, context: ItemContext) {

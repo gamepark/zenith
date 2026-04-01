@@ -2307,6 +2307,136 @@ export const MiladyJones: AgentCharacteristics = {
   ]
 }
 
+// Secret Agent expansion
+
+export const AdmiralJack: AgentCharacteristics = {
+  influence: Influence.Jupiter,
+  cost: 5,
+  faction: Faction.Human,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Jupiter, quantity: 1 },
+    { type: EffectType.WinInfluence, quantity: 1 },
+    {
+      type: EffectType.Conditional,
+      condition: { type: ConditionType.OpponentHasZenithium, min: 3 },
+      effect: { type: EffectType.WinInfluence, quantity: 1, differentPlanet: true }
+    }
+  ]
+}
+
+export const Mungo: AgentCharacteristics = {
+  influence: Influence.Terra,
+  cost: 5,
+  faction: Faction.Animod,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Terra, quantity: 1 },
+    {
+      type: EffectType.Choice,
+      left: [
+        { type: EffectType.WinInfluence, influence: Influence.Mercury, quantity: 1 },
+        { type: EffectType.WinInfluence, influence: Influence.Venus, quantity: 1 }
+      ],
+      right: [
+        { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 },
+        { type: EffectType.WinInfluence, influence: Influence.Jupiter, quantity: 1 }
+      ]
+    }
+  ]
+}
+
+export const S1mmons: AgentCharacteristics = {
+  influence: Influence.Mercury,
+  cost: 0,
+  faction: Faction.Robot,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Mercury, quantity: 1 },
+    { type: EffectType.WinCredit, upTo: 8 },
+    { type: EffectType.WinCredit, upTo: 8, opponent: true }
+  ]
+}
+
+export const W1ll1s: AgentCharacteristics = {
+  influence: Influence.Mars,
+  cost: 5,
+  faction: Faction.Robot,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 },
+    { type: EffectType.GiveInfluence, except: Influence.Mars },
+    { type: EffectType.WinInfluence, quantity: 2, differentPlanet: true },
+    { type: EffectType.TakeLeaderBadge }
+  ]
+}
+
+export const PrincessUxmal: AgentCharacteristics = {
+  influence: Influence.Mercury,
+  cost: 5,
+  faction: Faction.Human,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Mercury, quantity: 1 },
+    {
+      type: EffectType.Conditional,
+      condition: { type: ConditionType.OpponentIsLeader },
+      effect: { type: EffectType.WinInfluence, pattern: [1, 1] }
+    }
+  ]
+}
+
+export const CelestinPetit: AgentCharacteristics = {
+  influence: Influence.Terra,
+  cost: 0,
+  faction: Faction.Human,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Terra, quantity: 1 },
+    { type: EffectType.DevelopTechnology, lowest: true }
+  ]
+}
+
+export const Ragnar: AgentCharacteristics = {
+  influence: Influence.Mars,
+  cost: 0,
+  faction: Faction.Animod,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 },
+    { type: EffectType.WinZenithium, upTo: 2 },
+    { type: EffectType.WinZenithium, upTo: 2, opponent: true }
+  ]
+}
+
+export const DandyMuller: AgentCharacteristics = {
+  influence: Influence.Venus,
+  cost: 0,
+  faction: Faction.Human,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Venus, quantity: 1 },
+    { type: EffectType.WinInfluence, opponentSide: true, quantity: 1 }
+  ]
+}
+
+export const Boull3: AgentCharacteristics = {
+  influence: Influence.Venus,
+  cost: 5,
+  faction: Faction.Robot,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Venus, quantity: 1 },
+    { type: EffectType.WinInfluence, quantity: 1 },
+    {
+      type: EffectType.Conditional,
+      condition: { type: ConditionType.OpponentHasCredits, min: 15 },
+      effect: { type: EffectType.WinInfluence, quantity: 1 }
+    }
+  ]
+}
+
+export const Demetrios: AgentCharacteristics = {
+  influence: Influence.Terra,
+  cost: 0,
+  faction: Faction.Animod,
+  effects: [
+    { type: EffectType.WinInfluence, influence: Influence.Terra, quantity: 1 },
+    { type: EffectType.Mobilize, quantity: 5 }
+  ]
+}
+
 export const Agents: Record<Agent, AgentCharacteristics> = {
   [Agent.Elisabeth]: Elisabeth,
   [Agent.Pkd1ck]: Pkd1ck,
@@ -2397,5 +2527,15 @@ export const Agents: Record<Agent, AgentCharacteristics> = {
   [Agent.SneakyJules]: SneakyJules,
   [Agent.SecretKali]: SecretKali,
   [Agent.CaptainAndreev]: CaptainAndreev,
-  [Agent.MiladyJones]: MiladyJones
+  [Agent.MiladyJones]: MiladyJones,
+  [Agent.AdmiralJack]: AdmiralJack,
+  [Agent.Mungo]: Mungo,
+  [Agent.S1mmons]: S1mmons,
+  [Agent.W1ll1s]: W1ll1s,
+  [Agent.PrincessUxmal]: PrincessUxmal,
+  [Agent.CelestinPetit]: CelestinPetit,
+  [Agent.Ragnar]: Ragnar,
+  [Agent.DandyMuller]: DandyMuller,
+  [Agent.Boull3]: Boull3,
+  [Agent.Demetrios]: Demetrios
 }

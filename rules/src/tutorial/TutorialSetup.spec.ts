@@ -59,7 +59,7 @@ describe('TutorialSetup', () => {
 
   beforeEach(() => {
     const setup = new TutorialSetup()
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     rules = new ZenithRules(game)
   })
 

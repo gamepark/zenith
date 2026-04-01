@@ -8,6 +8,7 @@ import { PlayerId } from '../PlayerId'
 import { Memory } from '../rules/Memory'
 import { RuleId } from '../rules/RuleId'
 import { TeamColor } from '../TeamColor'
+import { ZenithOptions } from '../ZenithOptions'
 import { ZenithSetup } from '../ZenithSetup'
 
 export const me: PlayerId = 1
@@ -27,15 +28,14 @@ const handsAgents = new Set([...player1Hand, ...player2Hand])
  * set Terra at x=-1, and skip mulligan.
  */
 export class TutorialSetup extends ZenithSetup {
-
-  setupMaterial() {
+  setupMaterial(options: ZenithOptions) {
     this.setupTeamMemory()
     this.setupTurnOrder()
     this.setupPlayerHands()
     this.setupRemainingDeck()
     this.setupInfluences()
     this.setupLeaderBadge()
-    this.setupTechnologyBoard({ animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', players: [] })
+    this.setupTechnologyBoard(options)
     this.setupTeams()
     this.setupBonuses()
   }
@@ -60,7 +60,7 @@ export class TutorialSetup extends ZenithSetup {
   }
 
   setupRemainingDeck() {
-    const remaining = agents.filter(a => !handsAgents.has(a))
+    const remaining = agents.filter((a) => !handsAgents.has(a))
     for (const agent of remaining) {
       this.material(MaterialType.AgentCard).createItem({
         id: agent,
@@ -86,13 +86,7 @@ export class TutorialSetup extends ZenithSetup {
   }
 
   setupBonuses() {
-    const planetBonuses = [
-      Bonus.WinInfluence,
-      Bonus.Win3Credits,
-      Bonus.Win4Credits,
-      Bonus.Win1Zenithium,
-      Bonus.Mobilize2
-    ]
+    const planetBonuses = [Bonus.WinInfluence, Bonus.Win3Credits, Bonus.Win4Credits, Bonus.Win1Zenithium, Bonus.Mobilize2]
     for (let i = 0; i < influences.length; i++) {
       this.material(MaterialType.BonusToken).createItem({
         id: planetBonuses[i],
@@ -119,14 +113,22 @@ export class TutorialSetup extends ZenithSetup {
     // Remaining bonuses in stock
     const usedBonuses = [...planetBonuses, ...techBonuses]
     const allBonusList = [
-      Bonus.WinInfluence, Bonus.WinInfluence, Bonus.WinInfluence, Bonus.WinInfluence,
-      Bonus.Win3Credits, Bonus.Win3Credits,
-      Bonus.Win4Credits, Bonus.Win4Credits,
-      Bonus.Win1Zenithium, Bonus.Win1Zenithium, Bonus.Win1Zenithium,
+      Bonus.WinInfluence,
+      Bonus.WinInfluence,
+      Bonus.WinInfluence,
+      Bonus.WinInfluence,
+      Bonus.Win3Credits,
+      Bonus.Win3Credits,
+      Bonus.Win4Credits,
+      Bonus.Win4Credits,
+      Bonus.Win1Zenithium,
+      Bonus.Win1Zenithium,
+      Bonus.Win1Zenithium,
       Bonus.Exile2OpponentCards,
       Bonus.Mobilize2,
       Bonus.Transfer,
-      Bonus.TakeLeaderBadge, Bonus.TakeLeaderBadge
+      Bonus.TakeLeaderBadge,
+      Bonus.TakeLeaderBadge
     ]
     // Remove used bonuses from the full list
     for (const used of usedBonuses) {

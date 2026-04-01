@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { FC, PropsWithChildren, ReactNode, useState } from 'react'
+import { FC, PropsWithChildren, useState } from 'react'
 import { Trans } from 'react-i18next'
 
 export const actionSectionCss = css`
@@ -72,16 +72,12 @@ export const actionButtonCss = css`
   }
 `
 
-type CollapsibleDetailsProps = PropsWithChildren<{
-  actions: ReactNode
-}>
+type CollapsibleDetailsProps = PropsWithChildren<{}>
 
-export const CollapsibleDetails: FC<CollapsibleDetailsProps> = ({ actions, children }) => {
+export const CollapsibleDetails: FC<CollapsibleDetailsProps> = ({ children }) => {
   const [open, setOpen] = useState(false)
   return (
-    <div css={collapsibleContainerCss}>
-      <div css={actionsLabelCss}>Actions</div>
-      {actions}
+    <div>
       <div css={detailsToggleCss} onClick={() => setOpen(!open)}>
         <div css={detailsIconCss}>i</div>
         <span css={detailsTextCss}>
@@ -94,12 +90,7 @@ export const CollapsibleDetails: FC<CollapsibleDetailsProps> = ({ actions, child
   )
 }
 
-const collapsibleContainerCss = css`
-  width: 100%;
-  min-width: 32em;
-`
-
-const actionsLabelCss = css`
+export const actionsLabelCss = css`
   display: flex;
   align-items: center;
   gap: 0.5em;

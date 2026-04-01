@@ -23,12 +23,13 @@ export class ChoiceRule extends EffectRule<ChoiceEffect> {
     this.memorize(Memory.Effects, (effects: ExpandedEffect[]) => {
       const firstEffect = effects[0] as ExpandedEffect<ChoiceEffect>
       const { left, right } = firstEffect
+      const chosen = choice === Choice.LEFT ? left : right
+      const chosenEffects = Array.isArray(chosen) ? chosen : [chosen]
 
-      if (choice === Choice.LEFT) {
-        return [{ ...left, effectSource: firstEffect.effectSource }, ...effects.slice(1)]
-      }
-
-      return [{ ...right, effectSource: firstEffect.effectSource }, ...effects.slice(1)]
+      return [
+        ...chosenEffects.map((e) => ({ ...e, effectSource: firstEffect.effectSource })),
+        ...effects.slice(1)
+      ]
     })
   }
 }

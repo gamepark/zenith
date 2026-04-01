@@ -40,6 +40,11 @@ export class WinZenithiumRule extends EffectRule<WinZenithiumEffect> {
   }
 
   get wonZenithium() {
+    if (this.effect.upTo !== undefined) {
+      const team = this.effect.opponent ? this.opponentTeam : this.playerHelper.team
+      const currentZenithium = this.material(MaterialType.ZenithiumToken).player(team).getQuantity()
+      return Math.max(0, this.effect.upTo - currentZenithium)
+    }
     if (this.effect.quantity) return this.effect.quantity
     if (this.effect.perLevel1Technology) return this.effect.perLevel1Technology[this.level1Technology - 1] ?? 0
     return 1

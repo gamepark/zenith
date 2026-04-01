@@ -110,6 +110,12 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
     }
 
     case EffectType.WinCredit: {
+      if (effect.upTo !== undefined) {
+        if (effect.opponent) {
+          return <Trans i18nKey="help.win-credit.up-to.opponent" defaults="Opponent gains <credit/> up to {count}" values={{ count: effect.upTo }} components={components} />
+        }
+        return <Trans i18nKey="help.win-credit.up-to" defaults="<gain>Gain <credit/> up to {count}</gain>" values={{ count: effect.upTo }} components={components} />
+      }
       const count = effect.quantity ?? 1
       if (effect.opponent) {
         return <Trans i18nKey="help.win-credit.for-opponent" values={{ count }} components={components} />
@@ -134,6 +140,12 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
     }
 
     case EffectType.WinZenithium: {
+      if (effect.upTo !== undefined) {
+        if (effect.opponent) {
+          return <Trans i18nKey="help.win-zenithium.up-to.opponent" defaults="Opponent gains <zenithium/> up to {count}" values={{ count: effect.upTo }} components={components} />
+        }
+        return <Trans i18nKey="help.win-zenithium.up-to" defaults="<gain>Gain <zenithium/> up to {count}</gain>" values={{ count: effect.upTo }} components={components} />
+      }
       const count = effect.quantity ?? 1
       if (effect.opponent) {
         return <Trans i18nKey="help.win-zenithium.for-opponent" values={{ count }} components={components} />
@@ -217,6 +229,9 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
           </>
         )
       }
+      if (effect.lowest) {
+        return <Trans i18nKey="help.develop.lowest" defaults="Develop the least advanced technology (pay its cost)" components={components} />
+      }
       if (effect.faction && effect.discount) {
         return (
           <>
@@ -249,15 +264,17 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
     case EffectType.GiveZenithium:
       return <Trans i18nKey="help.give-zenithium" values={{ count: effect.quantity ?? 1 }} components={components} />
 
-    case EffectType.GiveInfluence:
+    case EffectType.GiveInfluence: {
+      const giveCount = effect.quantity ?? 1
       if (effect.except !== undefined) {
-        return <Trans i18nKey="help.give-influence.except" values={{ count: 1 }} components={{ ...components, planet: getPlanetIcon(effect.except) }} />
+        return <Trans i18nKey="help.give-influence.except" values={{ count: giveCount }} components={{ ...components, planet: getPlanetIcon(effect.except) }} />
       }
       return (
         <>
-          <Trans i18nKey="help.give-influence" values={{ count: 1 }} components={components} /> <span css={noteCss}>({t('help.choice')})</span>
+          <Trans i18nKey="help.give-influence" values={{ count: giveCount }} components={components} /> <span css={noteCss}>({t('help.choice')})</span>
         </>
       )
+    }
 
     case EffectType.ResetInfluence:
       return <>{t('help.reset-influence')}</>
@@ -361,6 +378,15 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
               {condition.type === ConditionType.HaveCredits && (
                 <Trans i18nKey="help.if-credits.short" values={{ min: condition.min }} components={components} />
               )}
+              {condition.type === ConditionType.OpponentHasZenithium && (
+                <Trans i18nKey="help.if-opponent-zenithium.short" defaults="Opponent has at least {min} <zenithium/>" values={{ min: condition.min }} components={components} />
+              )}
+              {condition.type === ConditionType.OpponentHasCredits && (
+                <Trans i18nKey="help.if-opponent-credits.short" defaults="Opponent has at least {min} <credit/>" values={{ min: condition.min }} components={components} />
+              )}
+              {condition.type === ConditionType.OpponentIsLeader && (
+                <Trans i18nKey="help.if-opponent-leader.short" defaults="Opponent has the Leader badge <badge/>" components={components} />
+              )}
               {conditionEffect && <EffectText effect={conditionEffect} />}
             </div>
           </div>
@@ -375,14 +401,25 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
       )
     }
 
-    case EffectType.Choice:
+    case EffectType.Choice: {
+      const leftEffects = Array.isArray(effect.left) ? effect.left : [effect.left]
+      const rightEffects = Array.isArray(effect.right) ? effect.right : [effect.right]
       return (
         <span css={choiceContainerCss}>
-          <EffectText effect={effect.left} />
+          <span css={choiceGroupCss}>
+            {leftEffects.map((e, i) => (
+              <span key={i}>{i > 0 && ' + '}<EffectText effect={e} /></span>
+            ))}
+          </span>
           <span css={choiceOrCss}>{t('help.or')}</span>
-          <EffectText effect={effect.right} />
+          <span css={choiceGroupCss}>
+            {rightEffects.map((e, i) => (
+              <span key={i}>{i > 0 && ' + '}<EffectText effect={e} /></span>
+            ))}
+          </span>
         </span>
       )
+    }
 
     default:
       return null
@@ -473,6 +510,12 @@ const choiceContainerCss = css`
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5em;
+`
+
+const choiceGroupCss = css`
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
 `
 
 const choiceOrCss = css`

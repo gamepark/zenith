@@ -6,11 +6,15 @@ import {
   DoEffectCondition,
   ExpandedEffect,
   HaveCreditsCondition,
-  LeaderCondition
+  LeaderCondition,
+  OpponentHasCreditsCondition,
+  OpponentHasZenithiumCondition,
+  OpponentIsLeaderCondition
 } from '../../material/effect/Effect'
 import { EffectType } from '../../material/effect/EffectType'
 import { CustomMoveType } from '../CustomMoveType'
 import { getEffectRule } from '../helper/EffectHelper'
+import { PlayerHelper } from '../helper/PlayerHelper'
 import { Memory } from '../Memory'
 import { EffectRule } from './index'
 
@@ -25,7 +29,9 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
       return moves
     }
 
-    if (this.isLeaderCondition(condition) || this.isHaveCreditCondition(condition)) {
+    if (this.isLeaderCondition(condition) || this.isHaveCreditCondition(condition)
+      || this.isOpponentHasZenithiumCondition(condition) || this.isOpponentHasCreditsCondition(condition)
+      || this.isOpponentIsLeaderCondition(condition)) {
       this.removeCondition()
       return this.afterEffectPlayed()
     }
@@ -121,6 +127,23 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
     return condition.type === ConditionType.HaveCredits
   }
 
+  isOpponentHasZenithiumCondition(condition: Condition): condition is OpponentHasZenithiumCondition {
+    return condition.type === ConditionType.OpponentHasZenithium
+  }
+
+  isOpponentHasCreditsCondition(condition: Condition): condition is OpponentHasCreditsCondition {
+    return condition.type === ConditionType.OpponentHasCredits
+  }
+
+  isOpponentIsLeaderCondition(condition: Condition): condition is OpponentIsLeaderCondition {
+    return condition.type === ConditionType.OpponentIsLeader
+  }
+
+  get opponentHelper() {
+    const opponent = this.game.players.find((p) => p !== this.player)!
+    return new PlayerHelper(this.game, opponent)
+  }
+
   isPossible() {
     const condition = this.effect.condition
     if (this.isDoCondition(condition)) {
@@ -135,6 +158,18 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
 
     if (this.isHaveCreditCondition(condition)) {
       return this.playerHelper.credits >= condition.min
+    }
+
+    if (this.isOpponentHasZenithiumCondition(condition)) {
+      return this.opponentHelper.zenithium >= condition.min
+    }
+
+    if (this.isOpponentHasCreditsCondition(condition)) {
+      return this.opponentHelper.credits >= condition.min
+    }
+
+    if (this.isOpponentIsLeaderCondition(condition)) {
+      return this.opponentHelper.isLeader
     }
 
     return false
