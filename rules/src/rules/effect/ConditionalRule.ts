@@ -140,7 +140,7 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
   }
 
   get opponentHelper() {
-    const opponent = this.game.players.find((p) => p !== this.player)!
+    const opponent = this.game.players.find((p) => new PlayerHelper(this.game, p).team === this.opponentTeam)!
     return new PlayerHelper(this.game, opponent)
   }
 

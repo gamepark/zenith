@@ -2428,11 +2428,11 @@ export const Boull3: AgentCharacteristics = {
 }
 
 export const Demetrios: AgentCharacteristics = {
-  influence: Influence.Venus,
+  influence: Influence.Jupiter,
   cost: 0,
   faction: Faction.Animod,
   effects: [
-    { type: EffectType.WinInfluence, influence: Influence.Terra, quantity: 1 },
+    { type: EffectType.WinInfluence, influence: Influence.Jupiter, quantity: 1 },
     { type: EffectType.Discard, full: true },
     { type: EffectType.WinCredit, quantity: 5 }
   ]
