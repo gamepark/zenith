@@ -20,8 +20,8 @@ export class TakeTechnologyBonusTokenRule extends EffectRule<TakeTechnologyBonus
         effects.unshift({
           ...bonusEffect.effect,
           effectSource: {
-            type: MaterialType.TechnologyBoard,
-            value: this.board.getItem()!.location.id
+            type: MaterialType.BonusToken,
+            value: bonusEffect.bonusId
           }
         })
         return effects
