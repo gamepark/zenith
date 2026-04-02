@@ -21,15 +21,10 @@ export class PlayerHelper extends MaterialRulesPart {
 
   get team(): TeamColor {
     return this.remind<TeamColor>(Memory.Team, this.playerId)
-      ?? (this.playerId === 1 || this.playerId === 4 ? TeamColor.White : TeamColor.Black)
   }
 
   get teammate(): PlayerId | undefined {
     return this.game.players.find((p) => p !== this.playerId && new PlayerHelper(this.game, p).team === this.team)
-  }
-
-  get teamPlayers(): PlayerId[] {
-    return this.game.players.filter((p) => new PlayerHelper(this.game, p).team === this.team)
   }
 
   get side(): PlayerSide {

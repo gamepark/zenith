@@ -136,6 +136,7 @@ export type GiveInfluenceEffect = {
   type: EffectType.GiveInfluence
   except?: Influence
   quantity?: number
+  resetDifferentPlanet?: boolean
 }
 
 export type ResetInfluenceEffect = {

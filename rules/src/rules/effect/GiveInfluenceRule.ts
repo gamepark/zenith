@@ -6,9 +6,19 @@ import { MaterialType } from '../../material/MaterialType'
 import { TeamColor } from '../../TeamColor'
 import { BonusHelper } from '../helper/BonusHelper'
 import { EndGameHelper } from '../helper/EndGameHelper'
+import { Memory } from '../Memory'
 import { EffectRule } from './index'
 
 export class GiveInfluenceRule extends EffectRule<GiveInfluenceEffect> {
+  onRuleStart() {
+    const moves: MaterialMove[] = super.onRuleStart()
+    if (moves.length > 0) return moves
+    if (this.effect.resetDifferentPlanet) {
+      this.forget(Memory.LastPlanetsMoved)
+    }
+    return []
+  }
+
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const planets = this.planets
