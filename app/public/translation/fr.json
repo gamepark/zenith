@@ -535,5 +535,11 @@
   "option.secret-agent": "Extension Agent Secret",
   "option.secret-agent.help": "Ajoute 10 nouvelles cartes Agent Secret au jeu",
   "help.extension.secret-agent": "Agent Secret",
-  "help.then-inline": "puis"
+  "help.then-inline": "puis",
+  "extension.title": "Agent Secret",
+  "extension.intro": "Cette partie inclut l'extension Agent Secret !",
+  "extension.setup.title": "Mise en place",
+  "extension.setup.desc": "Les 10 nouvelles cartes Agent Secret sont mélangées à la pioche des cartes Agents.",
+  "extension.new.title": "Nouveautés",
+  "extension.new.desc": "5 agents ont un coût nul en crédits. Les 5 autres coûtent 5 crédits et leurs effets prennent en compte les éléments en possession de l'adversaire (badge leader, crédits, zénithium)."
 }

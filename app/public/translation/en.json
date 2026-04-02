@@ -534,5 +534,11 @@
   "option.secret-agent": "Secret Agent expansion",
   "option.secret-agent.help": "Add 10 new Secret Agent cards to the game",
   "help.extension.secret-agent": "Secret Agent",
-  "help.then-inline": "then"
+  "help.then-inline": "then",
+  "extension.title": "Secret Agent",
+  "extension.intro": "This game includes the Secret Agent expansion!",
+  "extension.setup.title": "Setup",
+  "extension.setup.desc": "The 10 new Secret Agent cards are shuffled into the Agent deck.",
+  "extension.new.title": "New agents",
+  "extension.new.desc": "5 agents have a cost of 0 credits. The other 5 cost 5 credits and their effects take into account the opponent's resources (leader badge, credits, zenithium)."
 }

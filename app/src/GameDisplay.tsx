@@ -4,7 +4,9 @@ import { css } from '@emotion/react'
 import { DevToolEntry, DevToolsHub, GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { FC, useState } from 'react'
 import { AgentCardHoverPreview } from './components/AgentCardHoverPreview'
+import { SecretAgentInfoDialog } from './components/SecretAgentInfoDialog'
 import { DevCardViewer } from './components/DevCardViewer'
+import { ExtensionDialogContext, useExtensionDialog } from './ExtensionContext'
 import { PlayerPanels } from './panels/PlayerPanels'
 import { VictoryProgressPanel } from './panels/VictoryProgressPanel'
 
@@ -14,9 +16,10 @@ type GameDisplayProps = {
 
 export const GameDisplay: FC<GameDisplayProps> = () => {
   const margin = { top: 7, left: 0, right: 0, bottom: 0 }
+  const { show, dismiss, reopen } = useExtensionDialog()
 
   return (
-    <>
+    <ExtensionDialogContext.Provider value={reopen}>
       <GameTable
         verticalCenter
         collisionAlgorithm={pointerWithin}
@@ -33,7 +36,8 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
         {process.env.NODE_ENV === 'development' && <ZenithDevTools />}
       </GameTable>
       <AgentCardHoverPreview />
-    </>
+      {show && <SecretAgentInfoDialog onClose={dismiss} />}
+    </ExtensionDialogContext.Provider>
   )
 }
 
