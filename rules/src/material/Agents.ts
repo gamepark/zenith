@@ -2361,7 +2361,7 @@ export const W1ll1s: AgentCharacteristics = {
   faction: Faction.Robot,
   effects: [
     { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 },
-    { type: EffectType.GiveInfluence, except: Influence.Mars, resetDifferentPlanet: true },
+    { type: EffectType.GiveInfluence, quantity: 2, except: Influence.Mars, resetDifferentPlanet: true },
     { type: EffectType.WinInfluence, quantity: 2, differentPlanet: true },
     { type: EffectType.TakeLeaderBadge }
   ]
