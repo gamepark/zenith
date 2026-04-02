@@ -872,7 +872,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.1.0"
     "@fortawesome/free-solid-svg-icons": "npm:^7.1.0"
     "@fortawesome/react-fontawesome": "npm:^3.1.1"
-    "@gamepark/react-game": "npm:^7.7.2"
+    "@gamepark/react-game": "npm:^7.7.4"
     "@gamepark/rules-api": "npm:^7.6.0"
     "@types/node": "npm:^25.0.2"
     "@types/react": "npm:^19.2.7"
