@@ -2,9 +2,14 @@
 import { css } from '@emotion/react'
 import { Picture } from '@gamepark/react-game'
 import { Agent, secretAgents } from '@gamepark/zenith/material/Agent'
+import { Agents } from '@gamepark/zenith/material/Agents'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { agentCardDescription } from '../material/AgentCardDescription'
+
+const sortedSecretAgents = [...secretAgents].sort((a, b) => Agents[a].cost - Agents[b].cost || Agents[a].influence - Agents[b].influence)
+const freeAgents = sortedSecretAgents.filter(a => Agents[a].cost === 0)
+const costAgents = sortedSecretAgents.filter(a => Agents[a].cost > 0)
 
 type Props = {
   onClose: () => void
@@ -40,12 +45,11 @@ export const SecretAgentInfoDialog: FC<Props> = ({ onClose }) => {
 
         <div css={cardsContainerCss}>
           <div css={cardsGridCss}>
-            {secretAgents.map((agent: Agent) => (
-              <Picture
-                key={agent}
-                src={agentCardDescription.images[agent]}
-                css={cardCss}
-              />
+            {freeAgents.map((agent: Agent) => (
+              <Picture key={agent} src={agentCardDescription.images[agent]} css={cardCss} />
+            ))}
+            {costAgents.map((agent: Agent) => (
+              <Picture key={agent} src={agentCardDescription.images[agent]} css={cardCss} />
             ))}
           </div>
         </div>
