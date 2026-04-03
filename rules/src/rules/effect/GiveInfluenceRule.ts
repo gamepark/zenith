@@ -51,6 +51,14 @@ export class GiveInfluenceRule extends EffectRule<GiveInfluenceEffect> {
     return Math.min(4, item.location.x! + qty)
   }
 
+  beforeItemMove(move: MaterialMove) {
+    if (!isMoveItemType(MaterialType.InfluenceDisc)(move)) return []
+    const planet = this.material(MaterialType.InfluenceDisc).index(move.itemIndex)
+    const item = planet.getItem<Influence>()!
+    this.memorize(Memory.LastPlanetsMoved, (planets: Influence[] = []) => planets.concat(item.id))
+    return []
+  }
+
   afterItemMove(move: MaterialMove) {
     if (!isMoveItemType(MaterialType.InfluenceDisc)(move)) return []
 

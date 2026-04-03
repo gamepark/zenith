@@ -143,10 +143,9 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     if (options?.secretAgent) {
       this.memorize(Memory.SecretAgent, true)
     }
-    const availableAgents = options?.secretAgent ? [...baseAgents, ...secretAgents] : baseAgents
-    const shuffledAgents = shuffle(availableAgents)
+    const availableAgents = options?.secretAgent ? [...shuffle(baseAgents), ...shuffle(secretAgents)] : shuffle(baseAgents)
     this.material(MaterialType.AgentCard).createItems(
-      shuffledAgents.map((agent) => ({
+      availableAgents.map((agent) => ({
         id: agent,
         location: {
           type: LocationType.AgentDeck
