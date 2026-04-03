@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Animation, useAnimation, useGame, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { isMoveItemType, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
-import { WinInfluenceEffect } from '@gamepark/zenith/material/effect/Effect'
+import { ExpandedEffect, WinInfluenceEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { Influence } from '@gamepark/zenith/material/Influence'
 import { LocationType } from '@gamepark/zenith/material/LocationType'
@@ -28,7 +28,7 @@ export const WinInfluenceHeader = () => {
   )
 
   // Cache the last valid effect so the header stays stable during animation
-  const [cachedEffect, setCachedEffect] = useState<WinInfluenceEffect | undefined>(undefined)
+  const [cachedEffect, setCachedEffect] = useState<ExpandedEffect<WinInfluenceEffect> | undefined>(undefined)
   const isValidEffect = effect && (effect as any).type === EffectType.WinInfluence
   if (isValidEffect && effect !== cachedEffect) setCachedEffect(effect)
   const displayEffect = isValidEffect ? effect : cachedEffect

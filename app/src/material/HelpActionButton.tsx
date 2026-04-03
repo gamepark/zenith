@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { FC, PropsWithChildren, useState } from 'react'
+import { FC, PropsWithChildren, ReactNode, useState } from 'react'
 import { Trans } from 'react-i18next'
 
 export const actionSectionCss = css`
@@ -72,12 +72,15 @@ export const actionButtonCss = css`
   }
 `
 
-type CollapsibleDetailsProps = PropsWithChildren<{}>
+type CollapsibleDetailsProps = PropsWithChildren<{
+  actions?: ReactNode
+}>
 
-export const CollapsibleDetails: FC<CollapsibleDetailsProps> = ({ children }) => {
+export const CollapsibleDetails: FC<CollapsibleDetailsProps> = ({ children, actions }) => {
   const [open, setOpen] = useState(false)
   return (
     <div>
+      {actions}
       <div css={detailsToggleCss} onClick={() => setOpen(!open)}>
         <div css={detailsIconCss}>i</div>
         <span css={detailsTextCss}>

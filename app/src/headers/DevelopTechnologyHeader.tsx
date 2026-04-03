@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { PlayMoveButton, useGame, useLegalMove, useLegalMoves, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { isCustomMoveType, isMoveItemType, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
-import { DevelopTechnologyEffect } from '@gamepark/zenith/material/effect/Effect'
+import { DevelopTechnologyEffect, ExpandedEffect } from '@gamepark/zenith/material/effect/Effect'
 import { EffectType } from '@gamepark/zenith/material/effect/EffectType'
 import { Faction } from '@gamepark/zenith/material/Faction'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
@@ -27,7 +27,7 @@ export const DevelopTechnologyHeader = () => {
   const name = usePlayerName(activePlayer)
 
   // Cache the last valid effect so the header stays stable during animation
-  const [cachedEffect, setCachedEffect] = useState<DevelopTechnologyEffect | undefined>(undefined)
+  const [cachedEffect, setCachedEffect] = useState<ExpandedEffect<DevelopTechnologyEffect> | undefined>(undefined)
   const isValidEffect = effect && (effect as any).type === EffectType.DevelopTechnology
   if (isValidEffect && effect !== cachedEffect) setCachedEffect(effect)
   const displayEffect = isValidEffect ? effect : cachedEffect
