@@ -813,9 +813,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@npm:^7.7.4":
-  version: 7.7.4
-  resolution: "@gamepark/react-game@npm:7.7.4"
+"@gamepark/react-game@npm:^7.7.5":
+  version: 7.7.5
+  resolution: "@gamepark/react-game@npm:7.7.5"
   dependencies:
     "@datadog/browser-logs": "npm:^6.28.1"
     "@dnd-kit/modifiers": "npm:^9.0.0"
@@ -849,16 +849,16 @@ __metadata:
     react-dom: 19.x
     react-i18next: 16.x
     react-redux: 9.x
-  checksum: 10c0/21b9ff92de66bf8536efed80f84ec05ede850720632f242487a5441737c3b5b515afba26aadeb3a36febe31fdba1ec3b62d2a01a891b5387096550ba74055e05
+  checksum: 10c0/8bd57d54bed13a8eda7d7f1968edf75ac0ee20adfa79860861b348287c3893f447bf0db672de1726b67abb63c3f30a857853c400041aecc625bfa95c48ea90bb
   languageName: node
   linkType: hard
 
-"@gamepark/rules-api@npm:^7.6.0":
-  version: 7.6.0
-  resolution: "@gamepark/rules-api@npm:7.6.0"
+"@gamepark/rules-api@npm:^7.6.1":
+  version: 7.6.1
+  resolution: "@gamepark/rules-api@npm:7.6.1"
   peerDependencies:
     es-toolkit: ^1.39.10
-  checksum: 10c0/532d28136933aa1512d34bd92d32ec2bbad1aceb1d54798daac53870c55e7a62ef40b6b384801254f063d90e8d99ec953aee2a8c05c7389e150f221ea4c42a70
+  checksum: 10c0/72c4034c6aac593ee4987ed04cbad449224307d404ea2d3e9b1e74c2f59edc7d76fc09ece3f354ac45d2361300a420418451de559d018456f86b2b48dae7c16b
   languageName: node
   linkType: hard
 
@@ -873,8 +873,8 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.1.0"
     "@fortawesome/free-solid-svg-icons": "npm:^7.1.0"
     "@fortawesome/react-fontawesome": "npm:^3.1.1"
-    "@gamepark/react-game": "npm:^7.7.4"
-    "@gamepark/rules-api": "npm:^7.6.0"
+    "@gamepark/react-game": "npm:^7.7.5"
+    "@gamepark/rules-api": "npm:^7.6.1"
     "@types/node": "npm:^25.0.2"
     "@types/react": "npm:^19.2.7"
     "@types/react-dom": "npm:^19.2.3"
@@ -901,7 +901,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@gamepark/zenith@workspace:rules"
   dependencies:
-    "@gamepark/rules-api": "npm:^7.6.0"
+    "@gamepark/rules-api": "npm:^7.6.1"
     es-toolkit: "npm:^1.43.0"
     vitest: "npm:^4.0.15"
   peerDependencies:

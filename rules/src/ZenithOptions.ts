@@ -14,16 +14,16 @@ export type ZenithOptions = {
   animodBoard: AnimodBoard
   humanBoard: HumanBoard
   robotBoard: RobotBoard
-  secretAgent: boolean
+  secretAgent?: boolean
 }
 
 export const ZenithOptionsSpec: OptionsSpec<ZenithOptions> = {
   competitivePlayers: { min: 2, max: 2 },
-  secretAgent: {
-    label: (t) => t('option.secret-agent', 'Secret Agent expansion'),
-    help: (t) => t('option.secret-agent.help', 'Add 10 new Secret Agent cards to the game'),
-    subscriberRequired: true
-  },
+  // secretAgent: {
+  //   label: (t) => t('option.secret-agent', 'Secret Agent expansion'),
+  //   help: (t) => t('option.secret-agent.help', 'Add 10 new Secret Agent cards to the game'),
+  //   subscriberRequired: true
+  // },
   animodBoard: {
     label: (t) => t('board.animod', 'Animod board'),
     help: (t) => t('board.animod.help', 'Choose the side for the Animod technology board.'),
