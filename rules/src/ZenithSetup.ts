@@ -35,13 +35,13 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
 
   assignTeams(options: ZenithOptions) {
     const playerOptions = Array.isArray(options.players) ? options.players : []
-    const hasTeamChoices = playerOptions.some((p) => p.team !== undefined)
+    const hasTeamChoices = playerOptions.some((p) => p.team != null)
     const playersPerTeam = this.game.players.length / 2
 
     if (hasTeamChoices) {
       const whitePlayers = this.game.players.filter((_, i) => playerOptions[i]?.team === TeamColor.White)
       const blackPlayers = this.game.players.filter((_, i) => playerOptions[i]?.team === TeamColor.Black)
-      const unassigned = shuffle(this.game.players.filter((_, i) => playerOptions[i]?.team === undefined))
+      const unassigned = shuffle(this.game.players.filter((_, i) => playerOptions[i]?.team == null))
 
       while (whitePlayers.length < playersPerTeam && unassigned.length > 0) whitePlayers.push(unassigned.shift()!)
       while (blackPlayers.length < playersPerTeam && unassigned.length > 0) blackPlayers.push(unassigned.shift()!)
