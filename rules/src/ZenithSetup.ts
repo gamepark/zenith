@@ -1,6 +1,6 @@
 import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
-import { shuffle, sample } from 'es-toolkit/compat'
-import { Agent, baseAgents, secretAgents } from './material/Agent'
+import { sample, shuffle } from 'es-toolkit/compat'
+import { Agent, baseAgents } from './material/Agent'
 import { allBonuses } from './material/Bonus'
 import { Credit } from './material/Credit'
 import { factions } from './material/Faction'
@@ -8,9 +8,9 @@ import { Influence, influences } from './material/Influence'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
+import { PlayerHelper } from './rules/helper/PlayerHelper'
 import { Memory } from './rules/Memory'
 import { RuleId } from './rules/RuleId'
-import { PlayerHelper } from './rules/helper/PlayerHelper'
 import { TeamColor, teamColors } from './TeamColor'
 import { ZenithOptions } from './ZenithOptions'
 import { ZenithRules } from './ZenithRules'
@@ -24,7 +24,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   setupMaterial(options: ZenithOptions) {
     this.assignTeams(options)
     this.setupTurnOrder()
-    this.setupDeck(options)
+    this.setupDeck()
     this.setupPlayers()
     this.setupInfluences()
     this.setupLeaderBadge()
@@ -139,11 +139,11 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     return 0
   }
 
-  setupDeck(options?: ZenithOptions) {
-    if (options?.secretAgent) {
+  setupDeck() {
+    /*if (options?.secretAgent) {
       this.memorize(Memory.SecretAgent, true)
-    }
-    const availableAgents = options?.secretAgent ? [...shuffle(baseAgents), ...shuffle(secretAgents)] : shuffle(baseAgents)
+    }*/
+    const availableAgents = shuffle(baseAgents) //options?.secretAgent ? [...baseAgents, ...secretAgents] : baseAgents)
     this.material(MaterialType.AgentCard).createItems(
       availableAgents.map((agent) => ({
         id: agent,
