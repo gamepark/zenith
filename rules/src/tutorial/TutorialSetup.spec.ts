@@ -12,7 +12,7 @@ import { ZenithRules } from '../ZenithRules'
 import { me, opponent, TutorialSetup } from './TutorialSetup'
 
 function playConsequences(rules: ZenithRules, move: MaterialMove) {
-  let consequences = rules.play(move)
+  const consequences = rules.play(move)
   while (consequences.length > 0) {
     const next = consequences.shift()!
     consequences.push(...rules.play(next))
@@ -24,7 +24,7 @@ function resolveAutoMoves(rules: ZenithRules) {
   while (autoMoves.length > 0) {
     for (const auto of autoMoves) {
       const c = rules.play(auto)
-      let consequences = [...c]
+      const consequences = [...c]
       while (consequences.length > 0) {
         const next = consequences.shift()!
         consequences.push(...rules.play(next))
@@ -47,10 +47,7 @@ function getItems(rules: ZenithRules, type: MaterialType, locationType?: Locatio
 }
 
 function getDiscPosition(rules: ZenithRules, planet: Influence): number | undefined {
-  const disc = rules.material(MaterialType.InfluenceDisc)
-    .location(LocationType.PlanetBoardInfluenceDiscSpace)
-    .id(planet)
-    .getItem()
+  const disc = rules.material(MaterialType.InfluenceDisc).location(LocationType.PlanetBoardInfluenceDiscSpace).id(planet).getItem()
   return disc?.location.x
 }
 
@@ -59,7 +56,7 @@ describe('TutorialSetup', () => {
 
   beforeEach(() => {
     const setup = new TutorialSetup()
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
     rules = new ZenithRules(game)
   })
 
@@ -75,7 +72,7 @@ describe('TutorialSetup', () => {
 
     it('should have correct hand for player 1', () => {
       const hand = getItems(rules, MaterialType.AgentCard, LocationType.PlayerHand, me)
-      const ids = hand.map(i => i.id)
+      const ids = hand.map((i) => i.id)
       expect(ids).toContain(Agent.Mc4ffr3y)
       expect(ids).toContain(Agent.Elisabeth)
       expect(ids).toContain(Agent.Titus)
@@ -85,7 +82,7 @@ describe('TutorialSetup', () => {
 
     it('should have correct hand for player 2', () => {
       const hand = getItems(rules, MaterialType.AgentCard, LocationType.PlayerHand, opponent)
-      const ids = hand.map(i => i.id)
+      const ids = hand.map((i) => i.id)
       expect(ids).toContain(Agent.Bruss0l0)
       expect(ids).toContain(Agent.Pkd1ck)
       expect(ids).toContain(Agent.LordCreep)
@@ -121,7 +118,7 @@ describe('TutorialSetup', () => {
       for (const team of [TeamColor.White, TeamColor.Black]) {
         const markers = getItems(rules, MaterialType.TechMarker, LocationType.TechnologyBoardTokenSpace, team)
         expect(markers).toHaveLength(3)
-        markers.forEach(m => expect(m.location.x).toBe(0))
+        markers.forEach((m) => expect(m.location.x).toBe(0))
       }
     })
 
@@ -140,21 +137,25 @@ describe('TutorialSetup', () => {
   describe('Tutorial flow', () => {
     it('should allow player 1 to recruit Mc4ffr3y', () => {
       const moves = rules.getLegalMoves(me)
-      const recruitMc4ffr3y = moves.find(m =>
-        isMoveItemType(MaterialType.AgentCard)(m)
-        && m.location.type === LocationType.Influence
-        && rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Mc4ffr3y
+      const recruitMc4ffr3y = moves.find(
+        (m) =>
+          isMoveItemType(MaterialType.AgentCard)(m) &&
+          m.location.type === LocationType.Influence &&
+          rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Mc4ffr3y
       )
       expect(recruitMc4ffr3y).toBeDefined()
     })
 
     it('should complete the full tutorial flow with Terra captured', () => {
       // === TURN 1: Player 1 recruits Mc4ffr3y ===
-      const recruitMc4ffr3y = rules.getLegalMoves(me).find(m =>
-        isMoveItemType(MaterialType.AgentCard)(m)
-        && m.location.type === LocationType.Influence
-        && rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Mc4ffr3y
-      )!
+      const recruitMc4ffr3y = rules
+        .getLegalMoves(me)
+        .find(
+          (m) =>
+            isMoveItemType(MaterialType.AgentCard)(m) &&
+            m.location.type === LocationType.Influence &&
+            rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Mc4ffr3y
+        )!
       playAndResolve(rules, recruitMc4ffr3y)
 
       // Mars should have moved toward White zone (+4 direction)
@@ -163,11 +164,14 @@ describe('TutorialSetup', () => {
       expect(rules.getActivePlayer()).toBe(opponent)
 
       // === TURN 1: Player 2 recruits Bruss0l0 ===
-      const recruitBruss0l0 = rules.getLegalMoves(opponent).find(m =>
-        isMoveItemType(MaterialType.AgentCard)(m)
-        && m.location.type === LocationType.Influence
-        && rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Bruss0l0
-      )!
+      const recruitBruss0l0 = rules
+        .getLegalMoves(opponent)
+        .find(
+          (m) =>
+            isMoveItemType(MaterialType.AgentCard)(m) &&
+            m.location.type === LocationType.Influence &&
+            rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Bruss0l0
+        )!
       playAndResolve(rules, recruitBruss0l0)
 
       // Terra: -1 - 1 (Black pushes toward -4) = -2
@@ -175,64 +179,66 @@ describe('TutorialSetup', () => {
       expect(rules.getActivePlayer()).toBe(me)
 
       // === TURN 2: Player 1 discards Elisabeth for Animod tech ===
-      const discardElisabeth = rules.getLegalMoves(me).find(m =>
-        isMoveItemType(MaterialType.AgentCard)(m)
-        && m.location.type === LocationType.AgentDiscard
-        && rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Elisabeth
-      )!
+      const discardElisabeth = rules
+        .getLegalMoves(me)
+        .find(
+          (m) =>
+            isMoveItemType(MaterialType.AgentCard)(m) &&
+            m.location.type === LocationType.AgentDiscard &&
+            rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Elisabeth
+        )!
       playAndResolve(rules, discardElisabeth)
 
       // Should be in DiscardAction rule now
       expect(rules.game.rule?.id).toBe(RuleId.DiscardAction)
 
       // Develop Animod tech (move TechMarker)
-      const developAnimod = rules.getLegalMoves(me).find(m =>
-        isMoveItemType(MaterialType.TechMarker)(m)
-      )!
+      const developAnimod = rules.getLegalMoves(me).find((m) => isMoveItemType(MaterialType.TechMarker)(m))!
       playAndResolve(rules, developAnimod)
 
       // After tech + refill, it's player 2's turn
       expect(rules.getActivePlayer()).toBe(opponent)
 
       // === TURN 2: Player 2 discards DonaldSmooth for Human tech ===
-      const discardDonaldSmooth = rules.getLegalMoves(opponent).find(m =>
-        isMoveItemType(MaterialType.AgentCard)(m)
-        && m.location.type === LocationType.AgentDiscard
-        && rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.DonaldSmooth
-      )!
+      const discardDonaldSmooth = rules
+        .getLegalMoves(opponent)
+        .find(
+          (m) =>
+            isMoveItemType(MaterialType.AgentCard)(m) &&
+            m.location.type === LocationType.AgentDiscard &&
+            rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.DonaldSmooth
+        )!
       playAndResolve(rules, discardDonaldSmooth)
 
       expect(rules.game.rule?.id).toBe(RuleId.DiscardAction)
 
       // Develop Human tech (consequences only — WinInfluence needs player choice)
-      const developHuman = rules.getLegalMoves(opponent).find(m =>
-        isMoveItemType(MaterialType.TechMarker)(m)
-      )!
+      const developHuman = rules.getLegalMoves(opponent).find((m) => isMoveItemType(MaterialType.TechMarker)(m))!
       playConsequences(rules, developHuman)
 
       // Human tech level 1 gives WinInfluence(1) — player 2 must choose a planet
-      const chooseTerra = rules.getLegalMoves(opponent).find(m =>
-        isMoveItemType(MaterialType.InfluenceDisc)(m)
-        && rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Terra
-      )!
+      const chooseTerra = rules
+        .getLegalMoves(opponent)
+        .find((m) => isMoveItemType(MaterialType.InfluenceDisc)(m) && rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Terra)!
       expect(chooseTerra).toBeDefined()
       playAndResolve(rules, chooseTerra)
       expect(rules.getActivePlayer()).toBe(me)
 
       // === TURN 3: Player 1 takes Animod leadership ===
-      const discardTitus = rules.getLegalMoves(me).find(m =>
-        isMoveItemType(MaterialType.AgentCard)(m)
-        && m.location.type === LocationType.AgentDiscard
-        && rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Titus
-      )!
+      const discardTitus = rules
+        .getLegalMoves(me)
+        .find(
+          (m) =>
+            isMoveItemType(MaterialType.AgentCard)(m) &&
+            m.location.type === LocationType.AgentDiscard &&
+            rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.Titus
+        )!
       playAndResolve(rules, discardTitus)
 
       expect(rules.game.rule?.id).toBe(RuleId.DiscardAction)
 
       // Take diplomacy
-      const diplomacy = rules.getLegalMoves(me).find(m =>
-        isCustomMoveType(CustomMoveType.Diplomacy)(m)
-      )!
+      const diplomacy = rules.getLegalMoves(me).find((m) => isCustomMoveType(CustomMoveType.Diplomacy)(m))!
       playAndResolve(rules, diplomacy)
 
       // Player 1 should now have the leader badge
@@ -243,16 +249,19 @@ describe('TutorialSetup', () => {
       expect(rules.getActivePlayer()).toBe(opponent)
 
       // === TURN 3: Player 2 recruits LordCreep ===
-      const recruitLordCreep = rules.getLegalMoves(opponent).find(m =>
-        isMoveItemType(MaterialType.AgentCard)(m)
-        && m.location.type === LocationType.Influence
-        && rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.LordCreep
-      )!
+      const recruitLordCreep = rules
+        .getLegalMoves(opponent)
+        .find(
+          (m) =>
+            isMoveItemType(MaterialType.AgentCard)(m) &&
+            m.location.type === LocationType.Influence &&
+            rules.material(MaterialType.AgentCard).getItem(m.itemIndex).id === Agent.LordCreep
+        )!
       playAndResolve(rules, recruitLordCreep)
 
       // Terra should be captured: disc moved to TeamPlanets for Black
       const blackPlanets = getItems(rules, MaterialType.InfluenceDisc, LocationType.TeamPlanets, TeamColor.Black)
-      const terraCaptured = blackPlanets.some(item => item.id === Influence.Terra)
+      const terraCaptured = blackPlanets.some((item) => item.id === Influence.Terra)
       expect(terraCaptured).toBe(true)
     })
   })
