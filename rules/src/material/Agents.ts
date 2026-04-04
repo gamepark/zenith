@@ -2315,7 +2315,7 @@ export const AdmiralJack: AgentCharacteristics = {
   faction: Faction.Human,
   effects: [
     { type: EffectType.WinInfluence, influence: Influence.Jupiter, quantity: 1 },
-    { type: EffectType.WinInfluence, quantity: 1 },
+    { type: EffectType.WinInfluence, quantity: 1, resetDifferentPlanet: true },
     {
       type: EffectType.Conditional,
       condition: { type: ConditionType.OpponentHasZenithium, min: 3 },

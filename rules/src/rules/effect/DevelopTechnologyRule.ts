@@ -45,9 +45,9 @@ export class DevelopTechnologyRule extends EffectRule<DevelopTechnologyEffect> {
       .getIndexes()
     const tokens = this.technologyTokens.parent((p: number | undefined) => techBoard.includes(p!))
     if (!tokens.length) return tokens
-    if (this.effect.free && this.effect.lowest) {
+    if (this.effect.lowest) {
       const lowestX = tokens.minBy((item) => item.location.x!).getItem()!.location.x!
-      return tokens.filter((item) => item.location.x === lowestX)
+      return tokens.filter((item) => item.location.x === lowestX && (this.effect.free || item.location.x! + 1 <= zenithium))
     }
 
     const discount = this.effect.discount
