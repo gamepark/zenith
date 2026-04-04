@@ -82,19 +82,21 @@ class EffectTestSetup extends ZenithSetup {
   protected playerZenithium: number
   protected playerIsLeader: boolean
 
-  constructor(opts: {
-    agent?: Agent
-    effects?: any[]
-    deckCount?: number
-    discardCount?: number
-    opponentInfluenceCards?: Agent[]
-    playerInfluenceCards?: Agent[]
-    planetPositions?: Partial<Record<Influence, number>>
-    playerCredits?: number
-    opponentCredits?: number
-    playerZenithium?: number
-    playerIsLeader?: boolean
-  } = {}) {
+  constructor(
+    opts: {
+      agent?: Agent
+      effects?: any[]
+      deckCount?: number
+      discardCount?: number
+      opponentInfluenceCards?: Agent[]
+      playerInfluenceCards?: Agent[]
+      planetPositions?: Partial<Record<Influence, number>>
+      playerCredits?: number
+      opponentCredits?: number
+      playerZenithium?: number
+      playerIsLeader?: boolean
+    } = {}
+  ) {
     super()
     this.testAgent = opts.agent ?? Agent.Elisabeth
     this.effects = opts.effects ?? []
@@ -119,7 +121,7 @@ class EffectTestSetup extends ZenithSetup {
     this.setupInfluenceCards()
     this.setupTeams()
     this.setupLeaderBadge()
-    this.setupTechnologyBoard({ animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false, players: [] })
+    this.setupTechnologyBoard({ animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', players: [] })
     this.setupTestBonuses()
   }
 
@@ -132,7 +134,7 @@ class EffectTestSetup extends ZenithSetup {
       id: this.testAgent,
       location: { type: LocationType.PlayerHand, player: player1 }
     })
-    const fillers = agents.filter(a => a !== this.testAgent && !this.opponentInfluenceCards.includes(a) && !this.playerInfluenceCards.includes(a)).slice(0, 3)
+    const fillers = agents.filter((a) => a !== this.testAgent && !this.opponentInfluenceCards.includes(a) && !this.playerInfluenceCards.includes(a)).slice(0, 3)
     for (const agent of fillers) {
       this.material(MaterialType.AgentCard).createItem({
         id: agent,
@@ -140,7 +142,9 @@ class EffectTestSetup extends ZenithSetup {
       })
     }
 
-    const p2Fillers = agents.filter(a => a !== this.testAgent && !fillers.includes(a) && !this.opponentInfluenceCards.includes(a) && !this.playerInfluenceCards.includes(a)).slice(0, 4)
+    const p2Fillers = agents
+      .filter((a) => a !== this.testAgent && !fillers.includes(a) && !this.opponentInfluenceCards.includes(a) && !this.playerInfluenceCards.includes(a))
+      .slice(0, 4)
     for (const agent of p2Fillers) {
       this.material(MaterialType.AgentCard).createItem({
         id: agent,
@@ -154,9 +158,9 @@ class EffectTestSetup extends ZenithSetup {
       this.testAgent,
       ...this.opponentInfluenceCards,
       ...this.playerInfluenceCards,
-      ...agents.filter(a => a !== this.testAgent && !this.opponentInfluenceCards.includes(a) && !this.playerInfluenceCards.includes(a)).slice(0, 7)
+      ...agents.filter((a) => a !== this.testAgent && !this.opponentInfluenceCards.includes(a) && !this.playerInfluenceCards.includes(a)).slice(0, 7)
     ])
-    const remaining = agents.filter(a => !usedAgents.has(a))
+    const remaining = agents.filter((a) => !usedAgents.has(a))
     let idx = 0
     for (let i = 0; i < this.deckCount && idx < remaining.length; i++, idx++) {
       this.material(MaterialType.AgentCard).createItem({
@@ -260,7 +264,7 @@ class EffectTestSetup extends ZenithSetup {
 
 /** Inject effects directly into Memory and start the effect rule */
 function setupEffects(rules: ZenithRules, effects: any[]) {
-  const expandedEffects: ExpandedEffect[] = effects.map(e => ({
+  const expandedEffects: ExpandedEffect[] = effects.map((e) => ({
     ...e,
     effectSource: { type: MaterialType.AgentCard, value: Agent.Elisabeth }
   }))
@@ -269,7 +273,7 @@ function setupEffects(rules: ZenithRules, effects: any[]) {
 
 function createRulesWithEffects(opts: ConstructorParameters<typeof EffectTestSetup>[0], effects: any[]): ZenithRules {
   const setup = new EffectTestSetup(opts)
-  const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
+  const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
   const rules = new ZenithRules(game)
   setupEffects(rules, effects)
   return rules
@@ -281,9 +285,7 @@ function createRulesWithEffects(opts: ConstructorParameters<typeof EffectTestSet
 describe('WinInfluence edge cases', () => {
   it('opponentSide with no planets on opponent side should skip effect', () => {
     // All planets at x=0 (center) — no opponent side for White (opponent = x < 0)
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinInfluence, quantity: 1, opponentSide: true }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.WinInfluence, quantity: 1, opponentSide: true }])
     // Start the effect rule
     playConsequences(rules, { type: 'rule', id: RuleId.WinInfluence } as any)
 
@@ -294,9 +296,7 @@ describe('WinInfluence edge cases', () => {
 
   it('differentPlanet with only 1 planet remaining should skip after first pull', () => {
     // Capture 4 planets, leave only Mercury on board
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinInfluence, quantity: 1, differentPlanet: true, resetDifferentPlanet: true }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.WinInfluence, quantity: 1, differentPlanet: true, resetDifferentPlanet: true }])
 
     // Just verify the effect chain resolves
     const result = resolveAllEffects(rules, player1)
@@ -305,28 +305,33 @@ describe('WinInfluence edge cases', () => {
 
   it('fromCenter with no planets at center should skip', () => {
     // All planets at x=2
-    const rules = createRulesWithEffects({
-      planetPositions: {
-        [Influence.Mercury]: 2, [Influence.Venus]: 2, [Influence.Terra]: 2,
-        [Influence.Mars]: 2, [Influence.Jupiter]: 2
-      }
-    }, [
-      { type: EffectType.WinInfluence, quantity: 1, fromCenter: true }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        planetPositions: {
+          [Influence.Mercury]: 2,
+          [Influence.Venus]: 2,
+          [Influence.Terra]: 2,
+          [Influence.Mars]: 2,
+          [Influence.Jupiter]: 2
+        }
+      },
+      [{ type: EffectType.WinInfluence, quantity: 1, fromCenter: true }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('planet already at max position (x=4 for White) should still trigger capture', () => {
-    const rules = createRulesWithEffects({
-      planetPositions: { [Influence.Mars]: 3 }
-    }, [
-      { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        planetPositions: { [Influence.Mars]: 3 }
+      },
+      [{ type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 }]
+    )
 
     // Start effect rule
-    playConsequences(rules, rules.play({ type: 'rule', id: RuleId.WinInfluence } as any)[0] ?? { type: 'rule', id: RuleId.WinInfluence } as any)
+    playConsequences(rules, rules.play({ type: 'rule', id: RuleId.WinInfluence } as any)[0] ?? ({ type: 'rule', id: RuleId.WinInfluence } as any))
     resolveAutoMoves(rules)
     const result = resolveAllEffects(rules, player1)
     // Should not block
@@ -340,36 +345,42 @@ describe('WinInfluence edge cases', () => {
 describe('GiveInfluence edge cases', () => {
   it('all planets at boundary (x=-4 for White push) should skip', () => {
     // White pushes toward negative. All at -4 already.
-    const rules = createRulesWithEffects({
-      planetPositions: {
-        [Influence.Mercury]: -4, [Influence.Venus]: -4, [Influence.Terra]: -4,
-        [Influence.Mars]: -4, [Influence.Jupiter]: -4
-      }
-    }, [
-      { type: EffectType.GiveInfluence }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        planetPositions: {
+          [Influence.Mercury]: -4,
+          [Influence.Venus]: -4,
+          [Influence.Terra]: -4,
+          [Influence.Mars]: -4,
+          [Influence.Jupiter]: -4
+        }
+      },
+      [{ type: EffectType.GiveInfluence }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('push planet to -4 should capture for opponent', () => {
-    const rules = createRulesWithEffects({
-      planetPositions: { [Influence.Mars]: -3 }
-    }, [
-      { type: EffectType.GiveInfluence }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        planetPositions: { [Influence.Mars]: -3 }
+      },
+      [{ type: EffectType.GiveInfluence }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('except planet filter works', () => {
-    const rules = createRulesWithEffects({
-      planetPositions: { [Influence.Mars]: -4 }
-    }, [
-      { type: EffectType.GiveInfluence, except: Influence.Mars }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        planetPositions: { [Influence.Mars]: -4 }
+      },
+      [{ type: EffectType.GiveInfluence, except: Influence.Mars }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -382,31 +393,31 @@ describe('GiveInfluence edge cases', () => {
 describe('Exile edge cases', () => {
   it('exile with no influence cards should skip', () => {
     // No cards in influence for either team
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.Exile }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.Exile }])
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('exile opponent with no opponent influence cards should skip', () => {
-    const rules = createRulesWithEffects({
-      playerInfluenceCards: [Agent.Pkd1ck]
-    }, [
-      { type: EffectType.Exile, opponent: true }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerInfluenceCards: [Agent.Pkd1ck]
+      },
+      [{ type: EffectType.Exile, opponent: true }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('exile quantity=2 with only 1 card should exile 1 then skip', () => {
-    const rules = createRulesWithEffects({
-      playerInfluenceCards: [Agent.Pkd1ck]
-    }, [
-      { type: EffectType.Exile, quantity: 2 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerInfluenceCards: [Agent.Pkd1ck]
+      },
+      [{ type: EffectType.Exile, quantity: 2 }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -414,11 +425,12 @@ describe('Exile edge cases', () => {
 
   it('exile with specific influence filter and no matching cards should skip', () => {
     // Card on Mercury influence, but exile requires Venus
-    const rules = createRulesWithEffects({
-      playerInfluenceCards: [Agent.Pkd1ck] // Pkd1ck is on Mercury influence
-    }, [
-      { type: EffectType.Exile, influence: Influence.Venus }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerInfluenceCards: [Agent.Pkd1ck] // Pkd1ck is on Mercury influence
+      },
+      [{ type: EffectType.Exile, influence: Influence.Venus }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -430,31 +442,31 @@ describe('Exile edge cases', () => {
 // ============================================================
 describe('Transfer edge cases', () => {
   it('transfer with no opponent influence cards should skip', () => {
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.Transfer }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.Transfer }])
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('transfer quantity=2 with only 1 opponent card should skip (isPossible checks quantity)', () => {
-    const rules = createRulesWithEffects({
-      opponentInfluenceCards: [Agent.Pkd1ck]
-    }, [
-      { type: EffectType.Transfer, quantity: 2 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        opponentInfluenceCards: [Agent.Pkd1ck]
+      },
+      [{ type: EffectType.Transfer, quantity: 2 }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('transfer with specific influence and matching opponent cards should not block', () => {
-    const rules = createRulesWithEffects({
-      opponentInfluenceCards: [Agent.Pkd1ck] // Mercury influence
-    }, [
-      { type: EffectType.Transfer, influence: Influence.Mercury }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        opponentInfluenceCards: [Agent.Pkd1ck] // Mercury influence
+      },
+      [{ type: EffectType.Transfer, influence: Influence.Mercury }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -466,22 +478,24 @@ describe('Transfer edge cases', () => {
 // ============================================================
 describe('GiveCredit edge cases', () => {
   it('give credits with 0 credits should skip', () => {
-    const rules = createRulesWithEffects({
-      playerCredits: 0
-    }, [
-      { type: EffectType.GiveCredit, quantity: 3 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerCredits: 0
+      },
+      [{ type: EffectType.GiveCredit, quantity: 3 }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('give credits with insufficient credits should skip', () => {
-    const rules = createRulesWithEffects({
-      playerCredits: 2
-    }, [
-      { type: EffectType.GiveCredit, quantity: 5 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerCredits: 2
+      },
+      [{ type: EffectType.GiveCredit, quantity: 5 }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -493,11 +507,12 @@ describe('GiveCredit edge cases', () => {
 // ============================================================
 describe('StealCredit edge cases', () => {
   it('steal credits from opponent with 0 credits should skip', () => {
-    const rules = createRulesWithEffects({
-      opponentCredits: 0
-    }, [
-      { type: EffectType.StealCredit, quantity: 2 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        opponentCredits: 0
+      },
+      [{ type: EffectType.StealCredit, quantity: 2 }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -509,11 +524,12 @@ describe('StealCredit edge cases', () => {
 // ============================================================
 describe('GiveZenithium edge cases', () => {
   it('give zenithium with 0 zenithium should skip', () => {
-    const rules = createRulesWithEffects({
-      playerZenithium: 0
-    }, [
-      { type: EffectType.GiveZenithium, quantity: 1 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerZenithium: 0
+      },
+      [{ type: EffectType.GiveZenithium, quantity: 1 }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -525,22 +541,24 @@ describe('GiveZenithium edge cases', () => {
 // ============================================================
 describe('SpendCredit edge cases', () => {
   it('spend credits with 0 credits should skip', () => {
-    const rules = createRulesWithEffects({
-      playerCredits: 0
-    }, [
-      { type: EffectType.SpendCredit, quantities: [2, 4, 6], factors: [1, 2, 3] }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerCredits: 0
+      },
+      [{ type: EffectType.SpendCredit, quantities: [2, 4, 6], factors: [1, 2, 3] }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('spend credits with insufficient for all tiers should skip', () => {
-    const rules = createRulesWithEffects({
-      playerCredits: 1
-    }, [
-      { type: EffectType.SpendCredit, quantities: [2, 4, 6], factors: [1, 2, 3] }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerCredits: 1
+      },
+      [{ type: EffectType.SpendCredit, quantities: [2, 4, 6], factors: [1, 2, 3] }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -552,11 +570,12 @@ describe('SpendCredit edge cases', () => {
 // ============================================================
 describe('SpendZenithium edge cases', () => {
   it('spend zenithium with 0 zenithium should skip', () => {
-    const rules = createRulesWithEffects({
-      playerZenithium: 0
-    }, [
-      { type: EffectType.SpendZenithium, quantities: [1, 2], factors: [1, 2] }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerZenithium: 0
+      },
+      [{ type: EffectType.SpendZenithium, quantities: [1, 2], factors: [1, 2] }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -571,7 +590,7 @@ describe('Discard edge cases', () => {
     // We can't easily empty the hand in this setup, but the isPossible check should handle it
     // Test with a game state where player hand is empty
     const setup = new EffectTestSetup({})
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
     const rules = new ZenithRules(game)
 
     // Remove all cards from player1's hand
@@ -593,14 +612,18 @@ describe('ResetInfluence edge cases', () => {
   it('reset influence with no planets on player side should skip', () => {
     // All planets at x=0 (center) or negative (opponent side for White)
     // White's side = x > 0. No planets there.
-    const rules = createRulesWithEffects({
-      planetPositions: {
-        [Influence.Mercury]: -2, [Influence.Venus]: -1, [Influence.Terra]: 0,
-        [Influence.Mars]: -1, [Influence.Jupiter]: -2
-      }
-    }, [
-      { type: EffectType.ResetInfluence }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        planetPositions: {
+          [Influence.Mercury]: -2,
+          [Influence.Venus]: -1,
+          [Influence.Terra]: 0,
+          [Influence.Mars]: -1,
+          [Influence.Jupiter]: -2
+        }
+      },
+      [{ type: EffectType.ResetInfluence }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -612,23 +635,26 @@ describe('ResetInfluence edge cases', () => {
 // ============================================================
 describe('Conditional DoEffect edge cases', () => {
   it('mandatory mobilize condition with empty deck+discard should skip', () => {
-    const rules = createRulesWithEffects({
-      deckCount: 0,
-      discardCount: 0
-    }, [
+    const rules = createRulesWithEffects(
       {
-        type: EffectType.Conditional,
-        mandatory: true,
-        condition: {
-          type: ConditionType.DoEffect,
-          effect: { type: EffectType.Mobilize }
-        },
-        effect: {
-          type: EffectType.WinInfluence,
-          quantity: 1
+        deckCount: 0,
+        discardCount: 0
+      },
+      [
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: {
+            type: ConditionType.DoEffect,
+            effect: { type: EffectType.Mobilize }
+          },
+          effect: {
+            type: EffectType.WinInfluence,
+            quantity: 1
+          }
         }
-      }
-    ])
+      ]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -675,41 +701,47 @@ describe('Conditional DoEffect edge cases', () => {
   })
 
   it('HaveCredits condition with insufficient credits should skip', () => {
-    const rules = createRulesWithEffects({
-      playerCredits: 2
-    }, [
+    const rules = createRulesWithEffects(
       {
-        type: EffectType.Conditional,
-        condition: {
-          type: ConditionType.HaveCredits,
-          min: 6
-        },
-        effect: {
-          type: EffectType.WinInfluence,
-          quantity: 1
+        playerCredits: 2
+      },
+      [
+        {
+          type: EffectType.Conditional,
+          condition: {
+            type: ConditionType.HaveCredits,
+            min: 6
+          },
+          effect: {
+            type: EffectType.WinInfluence,
+            quantity: 1
+          }
         }
-      }
-    ])
+      ]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('Leader condition when not leader should skip', () => {
-    const rules = createRulesWithEffects({
-      playerIsLeader: false
-    }, [
+    const rules = createRulesWithEffects(
       {
-        type: EffectType.Conditional,
-        condition: {
-          type: ConditionType.Leader
-        },
-        effect: {
-          type: EffectType.WinInfluence,
-          quantity: 1
+        playerIsLeader: false
+      },
+      [
+        {
+          type: EffectType.Conditional,
+          condition: {
+            type: ConditionType.Leader
+          },
+          effect: {
+            type: EffectType.WinInfluence,
+            quantity: 1
+          }
         }
-      }
-    ])
+      ]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -732,63 +764,77 @@ describe('Chained effect sequences', () => {
   })
 
   it('multiple impossible effects in a row should all skip gracefully', () => {
-    const rules = createRulesWithEffects({
-      playerCredits: 0,
-      playerZenithium: 0
-    }, [
-      { type: EffectType.GiveCredit, quantity: 5 },
-      { type: EffectType.GiveZenithium, quantity: 2 },
-      { type: EffectType.StealCredit, quantity: 3 },
-      { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerCredits: 0,
+        playerZenithium: 0
+      },
+      [
+        { type: EffectType.GiveCredit, quantity: 5 },
+        { type: EffectType.GiveZenithium, quantity: 2 },
+        { type: EffectType.StealCredit, quantity: 3 },
+        { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 }
+      ]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('Domitian-like: WinInfluence + 3x Conditional(Mobilize -> WinInfluence) should resolve', () => {
-    const rules = createRulesWithEffects({
-      deckCount: 10
-    }, [
-      { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 },
+    const rules = createRulesWithEffects(
       {
-        type: EffectType.Conditional, mandatory: true,
-        condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
-        effect: { type: EffectType.WinInfluence, quantity: 1 }
+        deckCount: 10
       },
-      {
-        type: EffectType.Conditional, mandatory: true,
-        condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
-        effect: { type: EffectType.WinInfluence, quantity: 1 }
-      },
-      {
-        type: EffectType.Conditional, mandatory: true,
-        condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
-        effect: { type: EffectType.WinInfluence, quantity: 1 }
-      }
-    ])
+      [
+        { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 },
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
+          effect: { type: EffectType.WinInfluence, quantity: 1 }
+        },
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
+          effect: { type: EffectType.WinInfluence, quantity: 1 }
+        },
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
+          effect: { type: EffectType.WinInfluence, quantity: 1 }
+        }
+      ]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('Domitian-like with empty deck should skip mobilize conditions', () => {
-    const rules = createRulesWithEffects({
-      deckCount: 0,
-      discardCount: 0
-    }, [
-      { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 },
+    const rules = createRulesWithEffects(
       {
-        type: EffectType.Conditional, mandatory: true,
-        condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
-        effect: { type: EffectType.WinInfluence, quantity: 1 }
+        deckCount: 0,
+        discardCount: 0
       },
-      {
-        type: EffectType.Conditional, mandatory: true,
-        condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
-        effect: { type: EffectType.WinInfluence, quantity: 1 }
-      }
-    ])
+      [
+        { type: EffectType.WinInfluence, influence: Influence.Mars, quantity: 1 },
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
+          effect: { type: EffectType.WinInfluence, quantity: 1 }
+        },
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
+          effect: { type: EffectType.WinInfluence, quantity: 1 }
+        }
+      ]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -800,39 +846,45 @@ describe('Chained effect sequences', () => {
 // ============================================================
 describe('Mobilize edge cases', () => {
   it('mobilize quantity=2 with 2 cards in deck should resolve in one batch without crash', () => {
-    const rules = createRulesWithEffects({
-      deckCount: 2,
-      discardCount: 0
-    }, [
-      { type: EffectType.Mobilize, quantity: 2 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        deckCount: 2,
+        discardCount: 0
+      },
+      [{ type: EffectType.Mobilize, quantity: 2 }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('mobilize quantity=3 with 1 card in deck and 0 in discard should mobilize 1 then skip', () => {
-    const rules = createRulesWithEffects({
-      deckCount: 1,
-      discardCount: 0
-    }, [
-      { type: EffectType.Mobilize, quantity: 3 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        deckCount: 1,
+        discardCount: 0
+      },
+      [{ type: EffectType.Mobilize, quantity: 3 }]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('conditional mandatory mobilize quantity=2 should not crash afterItemMove', () => {
-    const rules = createRulesWithEffects({
-      deckCount: 5
-    }, [
+    const rules = createRulesWithEffects(
       {
-        type: EffectType.Conditional, mandatory: true,
-        condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize, quantity: 2 } },
-        effect: { type: EffectType.WinInfluence, quantity: 1 }
-      }
-    ])
+        deckCount: 5
+      },
+      [
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize, quantity: 2 } },
+          effect: { type: EffectType.WinInfluence, quantity: 1 }
+        }
+      ]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -844,27 +896,21 @@ describe('Mobilize edge cases', () => {
 // ============================================================
 describe('WinCredit edge cases', () => {
   it('perLevel1Technology with no techs should give 0 credits (not block)', () => {
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinCredit, perLevel1Technology: [Faction.Human] }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.WinCredit, perLevel1Technology: [Faction.Human] }])
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('factorPerDifferentInfluence with no influence cards should give 0', () => {
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinCredit, factorPerDifferentInfluence: 2 }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.WinCredit, factorPerDifferentInfluence: 2 }])
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('factorPerDifferentOpponentInfluence with no opponent cards should give 0', () => {
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinCredit, factorPerDifferentOpponentInfluence: 2 }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.WinCredit, factorPerDifferentOpponentInfluence: 2 }])
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -876,18 +922,14 @@ describe('WinCredit edge cases', () => {
 // ============================================================
 describe('WinZenithium edge cases', () => {
   it('perLevel1Technology with no techs should give 0 zenithium', () => {
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinZenithium, perLevel1Technology: [Faction.Human] }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.WinZenithium, perLevel1Technology: [Faction.Human] }])
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('opponent=true should give zenithium to opponent', () => {
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinZenithium, quantity: 1, opponent: true }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.WinZenithium, quantity: 1, opponent: true }])
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -899,30 +941,29 @@ describe('WinZenithium edge cases', () => {
 // ============================================================
 describe('StealZenithium', () => {
   it('should steal zenithium from opponent', () => {
-    const rules = createRulesWithEffects({
-      playerZenithium: 1
-    }, [
-      { type: EffectType.StealZenithium, quantity: 1 }
-    ])
+    const rules = createRulesWithEffects(
+      {
+        playerZenithium: 1
+      },
+      [{ type: EffectType.StealZenithium, quantity: 1 }]
+    )
 
     // Start the effect rule
     rules.game.rule = { id: RuleId.StealZenithium, player: player1 }
     resolveAutoMoves(rules)
 
     // Verify total zenithium is preserved (transferred, not created/destroyed)
-    const totalZen = rules.material(MaterialType.ZenithiumToken)
-      .location(LocationType.TeamZenithium).getQuantity()
+    const totalZen = rules.material(MaterialType.ZenithiumToken).location(LocationType.TeamZenithium).getQuantity()
     expect(totalZen).toBe(4) // 1 (player) + 3 (opponent) = 4 total preserved
   })
 
   it('should skip when opponent has no zenithium', () => {
     const setup = new EffectTestSetup({})
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
     const rules = new ZenithRules(game)
 
     // Remove all opponent zenithium
-    const opponentZen = rules.material(MaterialType.ZenithiumToken)
-      .location(LocationType.TeamZenithium).player(TeamColor.Black)
+    const opponentZen = rules.material(MaterialType.ZenithiumToken).location(LocationType.TeamZenithium).player(TeamColor.Black)
     if (opponentZen.length) {
       playConsequences(rules, opponentZen.deleteItem())
     }
@@ -938,46 +979,45 @@ describe('StealZenithium', () => {
 // ============================================================
 describe('Technology board alternative effects', () => {
   it('Board D level 4: WinInfluence pattern [1,1,1,1,1] should influence all planets', () => {
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinInfluence, pattern: [1, 1, 1, 1, 1] }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.WinInfluence, pattern: [1, 1, 1, 1, 1] }])
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('Board O level 4: WinInfluence pattern [2,2] should influence 2 adjacent planets', () => {
-    const rules = createRulesWithEffects({}, [
-      { type: EffectType.WinInfluence, pattern: [2, 2] }
-    ])
+    const rules = createRulesWithEffects({}, [{ type: EffectType.WinInfluence, pattern: [2, 2] }])
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
   })
 
   it('Board P level 4: exile own card then influence corresponding planet', () => {
-    const rules = createRulesWithEffects({
-      playerInfluenceCards: [Agent.Elisabeth, Agent.Titus]
-    }, [
+    const rules = createRulesWithEffects(
       {
-        type: EffectType.Conditional,
-        mandatory: true,
-        condition: {
-          type: ConditionType.DoEffect,
-          effect: { type: EffectType.Exile }
-        },
-        effect: { type: EffectType.WinInfluence, quantity: 2 }
+        playerInfluenceCards: [Agent.Elisabeth, Agent.Titus]
       },
-      {
-        type: EffectType.Conditional,
-        mandatory: true,
-        condition: {
-          type: ConditionType.DoEffect,
-          effect: { type: EffectType.Exile, differentPlanet: true }
+      [
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: {
+            type: ConditionType.DoEffect,
+            effect: { type: EffectType.Exile }
+          },
+          effect: { type: EffectType.WinInfluence, quantity: 2 }
         },
-        effect: { type: EffectType.WinInfluence, quantity: 2 }
-      }
-    ])
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: {
+            type: ConditionType.DoEffect,
+            effect: { type: EffectType.Exile, differentPlanet: true }
+          },
+          effect: { type: EffectType.WinInfluence, quantity: 2 }
+        }
+      ]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -985,28 +1025,31 @@ describe('Technology board alternative effects', () => {
 
   it('Board P level 4: second exile should skip when no card of different planet', () => {
     // Only one card in influence - second exile should be impossible
-    const rules = createRulesWithEffects({
-      playerInfluenceCards: [Agent.Elisabeth]
-    }, [
+    const rules = createRulesWithEffects(
       {
-        type: EffectType.Conditional,
-        mandatory: true,
-        condition: {
-          type: ConditionType.DoEffect,
-          effect: { type: EffectType.Exile }
-        },
-        effect: { type: EffectType.WinInfluence, quantity: 2 }
+        playerInfluenceCards: [Agent.Elisabeth]
       },
-      {
-        type: EffectType.Conditional,
-        mandatory: true,
-        condition: {
-          type: ConditionType.DoEffect,
-          effect: { type: EffectType.Exile, differentPlanet: true }
+      [
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: {
+            type: ConditionType.DoEffect,
+            effect: { type: EffectType.Exile }
+          },
+          effect: { type: EffectType.WinInfluence, quantity: 2 }
         },
-        effect: { type: EffectType.WinInfluence, quantity: 2 }
-      }
-    ])
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: {
+            type: ConditionType.DoEffect,
+            effect: { type: EffectType.Exile, differentPlanet: true }
+          },
+          effect: { type: EffectType.WinInfluence, quantity: 2 }
+        }
+      ]
+    )
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
@@ -1019,21 +1062,21 @@ describe('Technology board alternative effects', () => {
 describe('Board options', () => {
   it('should use specified board sides', () => {
     const setup = new EffectTestSetup({})
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
     const rules = new ZenithRules(game)
 
     const boards = rules.material(MaterialType.TechnologyBoard).getItems()
-    const ids = boards.map(b => b.id).sort()
+    const ids = boards.map((b) => b.id).sort()
     expect(ids).toEqual(['N', 'S', 'U'])
   })
 
   it('should use D/O/P sides when specified', () => {
     const setup = new ZenithSetup()
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'D', humanBoard: 'O', robotBoard: 'P', secretAgent: false })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'D', humanBoard: 'O', robotBoard: 'P' })
     const rules = new ZenithRules(game)
 
     const boards = rules.material(MaterialType.TechnologyBoard).getItems()
-    const ids = boards.map(b => b.id).sort()
+    const ids = boards.map((b) => b.id).sort()
     expect(ids).toEqual(['D', 'O', 'P'])
   })
 
@@ -1043,12 +1086,12 @@ describe('Board options', () => {
     const rules = new ZenithRules(game)
 
     const boards = rules.material(MaterialType.TechnologyBoard).getItems()
-    const ids = boards.map(b => b.id as string)
+    const ids = boards.map((b) => b.id as string)
     expect(ids.length).toBe(3)
 
     // Each board should be from the correct pair
-    expect(['S', 'D']).toContain(ids.find(id => ['S', 'D'].includes(id)))
-    expect(['U', 'O']).toContain(ids.find(id => ['U', 'O'].includes(id)))
-    expect(['N', 'P']).toContain(ids.find(id => ['N', 'P'].includes(id)))
+    expect(['S', 'D']).toContain(ids.find((id) => ['S', 'D'].includes(id)))
+    expect(['U', 'O']).toContain(ids.find((id) => ['U', 'O'].includes(id)))
+    expect(['N', 'P']).toContain(ids.find((id) => ['N', 'P'].includes(id)))
   })
 })
