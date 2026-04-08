@@ -21,7 +21,8 @@ export class SpendCreditRule extends EffectRule<SpendCreditEffect> {
     const credits = this.playerHelper.credits
     const effect = this.effect
     const moves: MaterialMove[] = []
-    for (const quantity of effect.quantities) {
+    const quantities = effect.quantities ?? []
+    for (const quantity of quantities) {
       if (credits < quantity) continue
       moves.push(this.customMove(CustomMoveType.DoCondition, quantity))
     }

@@ -324,6 +324,7 @@ const TechnologyPActions: Effect[][] = [
       },
       effect: {
         type: EffectType.WinInfluence,
+        resetDifferentPlanet: true,
         quantity: 2
       }
     },

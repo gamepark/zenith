@@ -105,9 +105,7 @@ export class ExileRule extends EffectRule<ExileEffect> {
 
   get cards() {
     const team = this.effect.opponent ? this.opponentTeam : this.playerHelper.team
-    const lastPlanetsMoved = this.effect.differentPlanet
-      ? this.remind<Influence[] | undefined>(Memory.LastPlanetsMoved) ?? []
-      : []
+    const lastPlanetsMoved = this.effect.differentPlanet ? (this.remind<Influence[] | undefined>(Memory.LastPlanetsMoved) ?? []) : []
 
     return this.material(MaterialType.AgentCard)
       .location(LocationType.Influence)
