@@ -14,8 +14,7 @@ export default tseslint.config([
             'react-hooks': reactHooks
         },
         rules: {
-            ...reactHooks.configs['recommended-latest'].rules,
-            '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
+            ...reactHooks.configs['recommended-latest'].rules
         },
         languageOptions: {
             ecmaVersion: 2020,
