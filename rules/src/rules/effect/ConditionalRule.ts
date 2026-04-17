@@ -70,6 +70,12 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
       return this.afterEffectPlayed()
     }
 
+    // Global custom moves (Mobilize/Refill) are handled at ZenithRules level — their
+    // consequent item moves drive decrement via afterItemMove, so nothing to do here.
+    if (isCustomMoveType(CustomMoveType.Mobilize)(move) || isCustomMoveType(CustomMoveType.Refill)(move)) {
+      return []
+    }
+
     this.onEffectPlayed(move)
 
     const condition = this.effect.condition

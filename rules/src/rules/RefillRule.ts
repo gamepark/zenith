@@ -1,9 +1,10 @@
-import { isMoveItemTypeAtOnce, isShuffleItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { influences } from '../material/Influence'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
 import { TeamColor } from '../TeamColor'
+import { CustomMoveType } from './CustomMoveType'
 import { DeckHelper } from './helper/DeckHelper'
 import { PlayerHelper } from './helper/PlayerHelper'
 import { Memory } from './Memory'
@@ -29,15 +30,25 @@ export class RefillRule extends PlayerTurnRule {
       )
     }
 
-    const maxSize = this.handSize
-    moves.push(...this.refillHand(maxSize))
-    if (moves.some((move) => isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDeck)) {
+    const missing = Math.max(0, this.handSize - this.hand.length)
+    if (missing > 0) {
+      this.memorize(Memory.Refilling, true)
+      moves.push(this.customMove(CustomMoveType.Refill, { player: this.player, quantity: missing }))
       return moves
     }
 
     moves.push(...this.endRuleMoves)
-
     return moves
+  }
+
+  afterItemMove(move: ItemMove) {
+    if (!this.remind(Memory.Refilling)) return []
+    if (!isMoveItemType(MaterialType.AgentCard)(move) || move.location.type !== LocationType.PlayerHand) return []
+    const { deck, discard } = new DeckHelper(this.game)
+    if (this.hand.length < this.handSize && (deck.length > 0 || discard.length > 0)) return []
+
+    this.forget(Memory.Refilling)
+    return this.endRuleMoves
   }
 
   get endRuleMoves(): MaterialMove[] {
@@ -91,41 +102,6 @@ export class RefillRule extends PlayerTurnRule {
         return 6
       }
     }
-  }
-
-  get deckHelper() {
-    return new DeckHelper(this.game)
-  }
-
-  refillHand(maxCount: number) {
-    const { deck, discard } = this.deckHelper
-    const quantity = Math.max(0, maxCount - this.hand.length)
-    if (!quantity) return []
-    const moves: MaterialMove[] = deck.deal(
-      {
-        type: LocationType.PlayerHand,
-        player: this.player
-      },
-      quantity
-    )
-
-    const remaining = quantity - moves.length
-    if (!remaining) return moves
-    if (!discard.length) return moves
-    moves.push(discard.moveItemsAtOnce({ type: LocationType.AgentDeck }))
-    return moves
-  }
-
-  afterItemMove(move: ItemMove) {
-    if (isShuffleItemType(MaterialType.AgentCard)(move)) {
-      return [...this.refillHand(this.handSize), ...this.endRuleMoves]
-    }
-
-    if (isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDeck) {
-      return [this.deckHelper.shuffleDeck()]
-    }
-
-    return []
   }
 
   get hand() {

@@ -1,10 +1,11 @@
-import { isMoveItemType, isMoveItemTypeAtOnce, isShuffleItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { Agent } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
 import { MobilizeEffect } from '../../material/effect/Effect'
 import { EffectType } from '../../material/effect/EffectType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { CustomMoveType } from '../CustomMoveType'
 import { DeckHelper } from '../helper/DeckHelper'
 import { EffectRule } from './index'
 
@@ -16,22 +17,12 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
   }
 
   getAutomaticEffectMoves(): MaterialMove[] {
-    const deckHelper = new DeckHelper(this.game)
-    const agent = deckHelper.deck.limit(this.effect.quantity ?? 1)
-
-    if (!agent.length) {
-      const reshuffle = deckHelper.reshuffleDiscardIfDeckEmpty()
-      if (reshuffle.length) return reshuffle
-      // No cards left anywhere — skip remaining mobilizations
+    const quantity = this.effect.quantity ?? 1
+    if (!this.isPossible()) {
       this.removeFirstEffect()
       return this.afterEffectPlayed()
     }
-
-    return agent.moveItems((item) => ({
-      type: LocationType.Influence,
-      id: item.id !== undefined ? Agents[item.id as Agent].influence : undefined,
-      player: this.playerHelper.team
-    }))
+    return [this.customMove(CustomMoveType.Mobilize, { team: this.playerHelper.team, quantity })]
   }
 
   decrement(move: ItemMove): boolean {
@@ -46,17 +37,6 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
   }
 
   afterItemMove(move: ItemMove) {
-    const deckHelper = new DeckHelper(this.game)
-
-    if (isMoveItemTypeAtOnce(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDeck) {
-      return [deckHelper.shuffleDeck()]
-    }
-
-    if (isShuffleItemType(MaterialType.AgentCard)(move)) {
-      // After reshuffle, try to mobilize again
-      return this.getAutomaticEffectMoves()
-    }
-
     if (!isMoveItemType(MaterialType.AgentCard)(move) || move.location.type !== LocationType.Influence) return []
 
     // Effect may have already been removed by a previous move in the same batch
@@ -66,19 +46,14 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
       this.effect.quantity--
     }
 
-    if (!this.effect.quantity) {
+    const deckHelper = new DeckHelper(this.game)
+    const exhausted = deckHelper.deck.length === 0 && deckHelper.discard.length === 0
+    if (!this.effect.quantity || exhausted) {
       this.removeFirstEffect()
       return this.afterEffectPlayed()
     }
 
-    // Still more to mobilize — check if deck needs reshuffle or is empty
-    const reshuffle = deckHelper.reshuffleDiscardIfDeckEmpty()
-    if (!reshuffle.length && !deckHelper.deck.length) {
-      // No cards left anywhere — skip remaining mobilizations
-      this.removeFirstEffect()
-      return this.afterEffectPlayed()
-    }
-    return reshuffle
+    return []
   }
 
   getExtraDataFromMove(move: ItemMove) {

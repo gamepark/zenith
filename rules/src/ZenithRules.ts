@@ -1,19 +1,24 @@
 import {
   Action,
   CompetitiveRank,
+  CustomMove,
   hideItemId,
   hideItemIdToOthers,
   isCustomMoveType,
   MaterialGame,
   MaterialMove,
+  PlayMoveContext,
   PositiveSequenceStrategy,
   SecretMaterialRules,
   TimeLimit
 } from '@gamepark/rules-api'
+import { Agent } from './material/Agent'
+import { Agents } from './material/Agents'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
 import { CustomMoveType } from './rules/CustomMoveType'
+import { DeckHelper } from './rules/helper/DeckHelper'
 import { DiplomacyBoardRule } from './rules/discard-action/DiplomacyBoardRule'
 import { TechnologyBoardRule } from './rules/discard-action/TechnologyBoardRule'
 import { DiscardActionRule } from './rules/DiscardActionRule'
@@ -120,6 +125,54 @@ export class ZenithRules
   canUndo(action: Action, consecutiveActions: Action[]): boolean {
     if (isCustomMoveType(CustomMoveType.PickFirst)(action.move)) return true
     return super.canUndo(action, consecutiveActions)
+  }
+
+  protected onCustomMove(move: CustomMove, context?: PlayMoveContext) {
+    const moves = super.onCustomMove(move, context)
+
+    if (isCustomMoveType(CustomMoveType.Mobilize)(move)) {
+      moves.push(...this.handleMobilize(move.data))
+    } else if (isCustomMoveType(CustomMoveType.Refill)(move)) {
+      moves.push(...this.handleRefill(move.data))
+    }
+
+    return moves
+  }
+
+  private handleMobilize({ team, quantity }: { team: PlayerId; quantity: number }) {
+    const deckHelper = new DeckHelper(this.game)
+    const available = deckHelper.deck.limit(quantity)
+    const moves: MaterialMove[] = available.moveItems((item) => ({
+      type: LocationType.Influence,
+      id: item.id !== undefined ? Agents[item.id as Agent].influence : undefined,
+      player: team
+    }))
+    const remaining = quantity - available.length
+
+    if (remaining > 0 && deckHelper.discard.length > 0) {
+      const discard = deckHelper.discard
+      moves.push(discard.moveItemsAtOnce({ type: LocationType.AgentDeck }))
+      moves.push(discard.shuffle())
+      moves.push(this.customMove(CustomMoveType.Mobilize, { team, quantity: remaining }))
+    }
+
+    return moves
+  }
+
+  private handleRefill({ player, quantity }: { player: PlayerId; quantity: number }) {
+    const deckHelper = new DeckHelper(this.game)
+    const available = deckHelper.deck.limit(quantity)
+    const moves: MaterialMove[] = available.moveItems({ type: LocationType.PlayerHand, player })
+    const remaining = quantity - available.length
+
+    if (remaining > 0 && deckHelper.discard.length > 0) {
+      const discard = deckHelper.discard
+      moves.push(discard.moveItemsAtOnce({ type: LocationType.AgentDeck }))
+      moves.push(discard.shuffle())
+      moves.push(this.customMove(CustomMoveType.Refill, { player, quantity: remaining }))
+    }
+
+    return moves
   }
 
   rankPlayers(_playerA: PlayerId, _playerB: PlayerId): number {

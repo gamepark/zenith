@@ -660,6 +660,79 @@ describe('Conditional DoEffect edge cases', () => {
     expect(result.error).toBeUndefined()
   })
 
+  it('mandatory mobilize condition with empty deck but non-empty discard should reshuffle and resolve', () => {
+    const rules = createRulesWithEffects(
+      {
+        deckCount: 0,
+        discardCount: 5
+      },
+      [
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: {
+            type: ConditionType.DoEffect,
+            effect: { type: EffectType.Mobilize }
+          },
+          effect: {
+            type: EffectType.WinInfluence,
+            quantity: 1
+          }
+        },
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: {
+            type: ConditionType.DoEffect,
+            effect: { type: EffectType.Mobilize }
+          },
+          effect: {
+            type: EffectType.WinInfluence,
+            quantity: 1
+          }
+        }
+      ]
+    )
+
+    const result = resolveAllEffects(rules, player1)
+    expect(result.error).toBeUndefined()
+  })
+
+  it('Animod S level 4: chain mobilize conditionals draining deck into discard should not deadlock', () => {
+    // Reproduces state.json bug: 3 conditionals(Mobilize→WinInfluence) after deck exhausted mid-chain
+    const rules = createRulesWithEffects(
+      {
+        deckCount: 1,
+        discardCount: 4
+      },
+      [
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
+          effect: { type: EffectType.WinInfluence, quantity: 1 }
+        },
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
+          effect: { type: EffectType.WinInfluence, quantity: 1 }
+        },
+        {
+          type: EffectType.Conditional,
+          mandatory: true,
+          condition: { type: ConditionType.DoEffect, effect: { type: EffectType.Mobilize } },
+          effect: { type: EffectType.WinInfluence, quantity: 1 }
+        },
+        { type: EffectType.Transfer, quantity: 3 },
+        { type: EffectType.WinInfluence, pattern: [1, 1] }
+      ]
+    )
+
+    const result = resolveAllEffects(rules, player1)
+    expect(result.error).toBeUndefined()
+  })
+
   it('non-mandatory exile condition with no cards should allow pass', () => {
     const rules = createRulesWithEffects({}, [
       {

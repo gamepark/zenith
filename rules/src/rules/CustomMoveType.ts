@@ -11,5 +11,7 @@ export enum CustomMoveType {
   GiveZenithiumLog,
   DiscardForTech,
   DiscardForDiplomacy,
-  StealZenithiumLog
+  StealZenithiumLog,
+  Mobilize,
+  Refill
 }
