@@ -125,7 +125,7 @@
   "exile-dialog.wasted": "Misma recompensa (desperdiciada)",
   "exile-dialog.zenithium-gain": "+{count} zenithium",
   "faction.1": "Animod",
-  "faction.2": "Human",
+  "faction.2": "Humano",
   "faction.3": "Robot",
   "header.choice": "<source /> : <effect1 /> o <effect2 />",
   "header.choice.player": "<source /> : {player} debe elegir qué efecto aplicar",
