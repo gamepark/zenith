@@ -448,7 +448,7 @@ describe('Transfer edge cases', () => {
     expect(result.error).toBeUndefined()
   })
 
-  it('transfer quantity=2 with only 1 opponent card should skip (isPossible checks quantity)', () => {
+  it('transfer quantity=2 with only 1 opponent card should still transfer the available card', () => {
     const rules = createRulesWithEffects(
       {
         opponentInfluenceCards: [Agent.Pkd1ck]
@@ -456,8 +456,12 @@ describe('Transfer edge cases', () => {
       [{ type: EffectType.Transfer, quantity: 2 }]
     )
 
+    rules.game.rule = { id: RuleId.Transfer, player: player1 }
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
+    const transferred = rules.material(MaterialType.AgentCard).location(LocationType.Influence).player(TeamColor.White).getItems()
+    expect(transferred).toHaveLength(1)
+    expect(transferred[0].id).toBe(Agent.Pkd1ck)
   })
 
   it('transfer with specific influence and matching opponent cards should not block', () => {
