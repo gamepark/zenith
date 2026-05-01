@@ -23,7 +23,7 @@ const player2: PlayerId = 2
  */
 function createGameForAgent(agent: Agent): ZenithRules {
   const setup = new TestSetup(agent)
-  const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+  const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
   return new ZenithRules(game)
 }
 
@@ -89,7 +89,7 @@ class TestSetup extends ZenithSetup {
   }
 
   /** Override to no-op — hands are set in setupTestHands */
-  setupPlayers() {}
+  setupPlayers() { }
 
   setupInfluences() {
     // Place all discs at center, except Venus at x=1 (opponent side for White)
@@ -256,7 +256,7 @@ describe('Agent effects resolution', () => {
 describe('Gilgamesh opponentSide fallback', () => {
   it('should allow pulling a different planet when the only opponent-side planet was pulled across by effect 2', () => {
     const setup = new GilgameshTestSetup()
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     // Verify Venus starts on opponent side (x > 0 for White is opponent side? No — White pulls toward negative)
@@ -347,7 +347,7 @@ describe('Gilgamesh opponentSide fallback', () => {
 describe('Planet capture', () => {
   it('White pulling a planet at x=3 should capture it at x=4 into White TeamPlanets', () => {
     const setup = new CaptureTestSetup(Agent.Mc4ffr3y, Influence.Mars, 3)
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     // Mars starts at x=3 (near White capture zone)
@@ -397,7 +397,7 @@ describe('Planet capture', () => {
   it('Black pulling a planet at x=-3 should capture it at x=-4 into Black TeamPlanets', () => {
     // Use a setup where player2 (Black) plays first
     const setup = new CaptureTestSetupBlack(Agent.Mc4ffr3y, Influence.Mars, -3)
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     // Mars starts at x=-3 (near Black capture zone)
@@ -447,7 +447,7 @@ describe('Planet capture', () => {
   it('White pushing Terra at x=-3 should capture it at x=-4 into Black TeamPlanets (opponent)', () => {
     // Titus has GiveInfluence (except Mars) — will push Terra to -4
     const setup = new CaptureTestSetup(Agent.Titus, Influence.Terra, -3)
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     const terraStart = rules.material(MaterialType.InfluenceDisc).location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Terra).getItem()
@@ -501,7 +501,7 @@ describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
   it('should allow capturing Mercury and still apply remaining pattern moves to Venus and Terra', () => {
     // Mercury at x=3: pattern [1,2,1] on [Mercury, Venus, Terra] → Mercury+1=capture, Venus+2, Terra+1
     const setup = new AugustusPatternSetup({ [Influence.Mercury]: 3 })
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     // Verify initial positions
@@ -538,11 +538,11 @@ describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
       )
       const venusMove = !mercuryMove
         ? moves.find(
-            (m) =>
-              isMoveItemType(MaterialType.InfluenceDisc)(m) &&
-              rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Venus &&
-              m.location.x === 2
-          )
+          (m) =>
+            isMoveItemType(MaterialType.InfluenceDisc)(m) &&
+            rules.material(MaterialType.InfluenceDisc).getItem(m.itemIndex).id === Influence.Venus &&
+            m.location.x === 2
+        )
         : undefined
       playConsequences(rules, mercuryMove ?? venusMove ?? moves[0])
       resolveAutoMoves(rules)
@@ -565,7 +565,7 @@ describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
   it('should allow truncated pattern at left edge — Mercury+2 capture with Venus+1', () => {
     // Mercury at x=2: truncated pattern [2,1] on [Mercury, Venus] → Mercury+2=capture, Venus+1
     const setup = new AugustusPatternSetup({ [Influence.Mercury]: 2 })
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     expect(rules.material(MaterialType.InfluenceDisc).location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Mercury).getItem()!.location.x).toBe(2)
@@ -617,7 +617,7 @@ describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
   it('should allow truncated pattern at right edge — Jupiter+2 capture with Mars+1', () => {
     // Jupiter at x=2: truncated pattern [1,2] on [Mars, Jupiter] → Mars+1, Jupiter+2=capture
     const setup = new AugustusPatternSetup({ [Influence.Jupiter]: 2 })
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     expect(rules.material(MaterialType.InfluenceDisc).location(LocationType.PlanetBoardInfluenceDiscSpace).id(Influence.Jupiter).getItem()!.location.x).toBe(2)
@@ -671,7 +671,7 @@ describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
     // The truncated pattern [Merc=2, Ven=1] also exists, so Mercury+2 IS available
     // BUT Mercury+2 means x=0+2=2, which is NOT a capture — so both +1 and +2 should be legal
     const setup = new AugustusPatternSetup({})
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     const cardIndex = rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
@@ -716,7 +716,7 @@ describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
   it('should not allow moving a non-adjacent planet with pattern', () => {
     // After choosing Mercury+1, only Venus and Terra should be movable (not Mars or Jupiter alone)
     const setup = new AugustusPatternSetup({})
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     const cardIndex = rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
@@ -771,7 +771,7 @@ describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
     // Jupiter at x=2: truncated pattern [Mar=1, Jup=2] requires Mars first or together
     // If we start with Jupiter+2, Mars+1 should follow. Jupiter alone without Mars is NOT a valid pattern.
     const setup = new AugustusPatternSetup({ [Influence.Jupiter]: 2 })
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     const cardIndex = rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
@@ -839,7 +839,7 @@ describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
   it('should continue pattern when Venus is clamped at limit — Mercury+1, Venus captured, Terra+1', () => {
     // Venus at x=3: pattern [Merc=1, Ven=2, Ter=1] → Mercury+1, Venus+2 clamped to x=4 (captured), Terra+1
     const setup = new AugustusPatternSetup({ [Influence.Venus]: 3 })
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     const cardIndex = rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
@@ -898,7 +898,7 @@ describe('Augustus pattern [1,2,1] at extreme — Mercury capture', () => {
   it('should work with pattern on right side — Terra+1, Mars+2 clamped/captured, Jupiter+1', () => {
     // Mars at x=3: pattern [Ter=1, Mar=2, Jup=1] → Terra+1, Mars+2 clamped to x=4 (captured), Jupiter+1
     const setup = new AugustusPatternSetup({ [Influence.Mars]: 3 })
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
 
     const cardIndex = rules.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(player1).id(Agent.Augustus).getIndex()
@@ -1061,7 +1061,7 @@ class GilgameshTestSetup extends TestSetup {
 describe('Refill with low/empty deck', () => {
   function createRefillSetup(deckCount: number) {
     const setup = new RefillTestSetup(deckCount)
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     return new ZenithRules(game)
   }
 
@@ -1190,7 +1190,7 @@ describe('Refill with low/empty deck', () => {
 describe('Mobilize with low/empty deck', () => {
   function createMobilizeSetup(deckCount: number) {
     const setup = new MobilizeTestSetup(deckCount)
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     return new ZenithRules(game)
   }
 
@@ -1220,7 +1220,7 @@ describe('Mobilize with low/empty deck', () => {
 
   it('mobilize 2 with deck=0 and discard=0: should skip mobilization without blocking', () => {
     const setup = new MobilizeEmptySetup()
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
     expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(0)
     expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDiscard).length).toBe(0)
@@ -1236,7 +1236,7 @@ describe('Mobilize with low/empty deck', () => {
 
   it('mobilize 2 with deck=1 and discard=0: should mobilize 1 then skip remaining', () => {
     const setup = new MobilizePartialSetup(1)
-    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N' })
+    const game = setup.setup({ players: [{}, {}], animodBoard: 'S', humanBoard: 'U', robotBoard: 'N', secretAgent: false })
     const rules = new ZenithRules(game)
     expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDeck).length).toBe(1)
     expect(rules.material(MaterialType.AgentCard).location(LocationType.AgentDiscard).length).toBe(0)
