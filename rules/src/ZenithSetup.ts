@@ -1,6 +1,6 @@
 import { MaterialDeck, MaterialGameSetup } from '@gamepark/rules-api'
 import { sample, shuffle } from 'es-toolkit/compat'
-import { Agent, baseAgents } from './material/Agent'
+import { baseAgents, secretAgents } from './material/Agent'
 import { allBonuses } from './material/Bonus'
 import { Credit } from './material/Credit'
 import { factions } from './material/Faction'
@@ -24,7 +24,7 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
   setupMaterial(options: ZenithOptions) {
     this.assignTeams(options)
     this.setupTurnOrder()
-    this.setupDeck()
+    this.setupDeck(options)
     this.setupPlayers()
     this.setupInfluences()
     this.setupLeaderBadge()
@@ -139,11 +139,11 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
     return 0
   }
 
-  setupDeck() {
-    /*if (options?.secretAgent) {
+  setupDeck(options: ZenithOptions) {
+    if (options?.secretAgent) {
       this.memorize(Memory.SecretAgent, true)
-    }*/
-    const availableAgents = shuffle(baseAgents) //options?.secretAgent ? [...baseAgents, ...secretAgents] : baseAgents)
+    }
+    const availableAgents = shuffle(options?.secretAgent ? [...baseAgents, ...secretAgents] : baseAgents)
     this.material(MaterialType.AgentCard).createItems(
       availableAgents.map((agent) => ({
         id: agent,
@@ -189,29 +189,6 @@ export class ZenithSetup extends MaterialGameSetup<PlayerId, MaterialType, Locat
       },
       4
     )
-  }
-
-  // TODO: REMOVE — debug only
-  setupDebugInfluences() {
-    const mercury = this.material(MaterialType.InfluenceDisc).id(Influence.Mercury)
-    if (mercury.length) {
-      const item = mercury.getItem()!
-      item.location.x = (item.location.x ?? 0) + 2
-    }
-  }
-
-  // TODO: REMOVE — debug only
-  setupDebugHand() {
-    const me: PlayerId = 1
-    const augustusIndex = this.material(MaterialType.AgentCard).id(Agent.Augustus).getIndex()
-    const handCards = this.material(MaterialType.AgentCard).location(LocationType.PlayerHand).player(me)
-    if (handCards.length > 0) {
-      const firstHandIndex = handCards.getIndex()
-      const items = this.game.items[MaterialType.AgentCard]!
-      const augustusLoc = { ...items[augustusIndex].location }
-      items[augustusIndex].location = { ...items[firstHandIndex].location }
-      items[firstHandIndex].location = augustusLoc
-    }
   }
 
   setupTeams() {
