@@ -6,6 +6,7 @@ import { Influence } from '@gamepark/zenith/material/Influence'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
 import { CustomMoveType } from '@gamepark/zenith/rules/CustomMoveType'
 import { Choice, ChoiceRule } from '@gamepark/zenith/rules/effect'
+import { PlayerHelper } from '@gamepark/zenith/rules/helper/PlayerHelper'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { TooltipButton } from '../components/TooltipButton'
@@ -20,6 +21,7 @@ export const ChoiceHeader: FC = () => {
   const me = usePlayerId<PlayerId>()
   const activePlayer = rules.getActivePlayer()
   const itsMe = me === activePlayer
+  const { t } = useTranslation()
 
   const source = <EffectSource effectSource={effect.effectSource} />
 
@@ -30,25 +32,43 @@ export const ChoiceHeader: FC = () => {
         components={{
           ...HeaderTransComponents,
           source,
-          effect1: <ChoiceEffectButton choice={Choice.LEFT} choiceEffect={effect} />,
-          effect2: <ChoiceEffectButton choice={Choice.RIGHT} choiceEffect={effect} />
+          effect1: <ChoiceEffectButton choice={Choice.LEFT} choiceEffect={effect} interactive />,
+          effect2: <ChoiceEffectButton choice={Choice.RIGHT} choiceEffect={effect} interactive />
         }}
       />
     )
   }
 
-  return null
+  return (
+    <Trans
+      i18nKey="header.choice.player"
+      values={{ player: t(`team.${new PlayerHelper(game, activePlayer!).team}`) }}
+      components={{
+        ...HeaderTransComponents,
+        source,
+        effect1: <ChoiceEffectButton choice={Choice.LEFT} choiceEffect={effect} interactive={false} />,
+        effect2: <ChoiceEffectButton choice={Choice.RIGHT} choiceEffect={effect} interactive={false} />
+      }}
+    />
+  )
 }
 
 type ChoiceEffectType = {
   choice: Choice
   choiceEffect: ExpandedEffect<ChoiceEffect>
+  interactive: boolean
 }
-const ChoiceEffectButton: FC<ChoiceEffectType> = ({ choice, choiceEffect }) => {
+const ChoiceEffectButton: FC<ChoiceEffectType> = ({ choice, choiceEffect, interactive }) => {
   const { t } = useTranslation()
   const chosen = choice === Choice.RIGHT ? choiceEffect.right : choiceEffect.left
   const effects = Array.isArray(chosen) ? chosen : [chosen]
   const move = useLegalMove((move: MaterialMove) => isCustomMoveType(CustomMoveType.Choice)(move) && move.data === choice)
+
+  const wrap = (tooltip: string | undefined, content: React.ReactElement) => {
+    if (!interactive) return content
+    const button = <PlayMoveButton move={move}>{content}</PlayMoveButton>
+    return tooltip ? <TooltipButton tooltip={tooltip}>{button}</TooltipButton> : button
+  }
 
   // Multi-effect branch (e.g. influence multiple planets)
   if (effects.length > 1 && effects.every((e) => e.type === EffectType.WinInfluence)) {
@@ -57,59 +77,46 @@ const ChoiceEffectButton: FC<ChoiceEffectType> = ({ choice, choiceEffect }) => {
     planets.forEach((planet, i) => {
       components[`planet${i}`] = getPlanetForHeader(planet)
     })
-    return (
-      <PlayMoveButton move={move}>
-        <Trans
-          i18nKey={`header.choice.win-influence.${planets.length}`}
-          defaults={planets.map((_, i) => `<planet${i}/>`).join(' + ')}
-          components={components}
-        />
-      </PlayMoveButton>
+    return wrap(
+      undefined,
+      <Trans
+        i18nKey={`header.choice.win-influence.${planets.length}`}
+        defaults={planets.map((_, i) => `<planet${i}/>`).join(' + ')}
+        components={components}
+      />
     )
   }
 
   const effect = effects[0]
 
   if (effect.type === EffectType.WinCredit) {
-    return (
-      <TooltipButton tooltip={t('tooltip.win-credit', { count: effect.quantity })}>
-        <PlayMoveButton move={move}>
-          <Trans i18nKey="header.choice.win-credit" values={{ count: effect.quantity }} components={HeaderTransComponents} />
-        </PlayMoveButton>
-      </TooltipButton>
+    return wrap(
+      t('tooltip.win-credit', { count: effect.quantity }),
+      <Trans i18nKey="header.choice.win-credit" values={{ count: effect.quantity }} components={HeaderTransComponents} />
     )
   }
 
   if (effect.type === EffectType.WinZenithium) {
-    return (
-      <TooltipButton tooltip={t('tooltip.win-zenithium', { count: effect.quantity ?? 1 })}>
-        <PlayMoveButton move={move}>
-          <Trans i18nKey="header.choice.win-zenithium" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
-        </PlayMoveButton>
-      </TooltipButton>
+    return wrap(
+      t('tooltip.win-zenithium', { count: effect.quantity ?? 1 }),
+      <Trans i18nKey="header.choice.win-zenithium" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
     )
   }
 
   if (effect.type === EffectType.TakeLeaderBadge) {
-    return (
-      <TooltipButton tooltip={t('tooltip.take-leader')}>
-        <PlayMoveButton move={move}>
-          <Trans
-            i18nKey="header.choice.take-leader"
-            components={{ ...HeaderTransComponents, leaderBadge: effect.gold ? HeaderTransComponents.leaderGold : HeaderTransComponents.leaderSilver }}
-          />
-        </PlayMoveButton>
-      </TooltipButton>
+    return wrap(
+      t('tooltip.take-leader'),
+      <Trans
+        i18nKey="header.choice.take-leader"
+        components={{ ...HeaderTransComponents, leaderBadge: effect.gold ? HeaderTransComponents.leaderGold : HeaderTransComponents.leaderSilver }}
+      />
     )
   }
 
   if (effect.type === EffectType.Transfer) {
-    return (
-      <TooltipButton tooltip={t('tooltip.transfer', { count: effect.quantity ?? 1 })}>
-        <PlayMoveButton move={move}>
-          <Trans i18nKey="header.choice.transfert" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
-        </PlayMoveButton>
-      </TooltipButton>
+    return wrap(
+      t('tooltip.transfer', { count: effect.quantity ?? 1 }),
+      <Trans i18nKey="header.choice.transfert" values={{ count: effect.quantity ?? 1 }} components={HeaderTransComponents} />
     )
   }
 

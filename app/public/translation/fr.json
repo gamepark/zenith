@@ -128,7 +128,7 @@
   "faction.2": "Humain",
   "faction.3": "Robot",
   "header.choice": "<source /> : <effect1 /> ou <effect2 />",
-  "header.choice.player": "<source /> : {player} doit choisir l'effet à appliquer",
+  "header.choice.player": "<source /> : {player} doit choisir entre <effect1 /> ou <effect2 />",
   "header.choice.take-leader": "Prendre le badge <leaderBadge />",
   "header.choice.transfert": "Transférer {count, plural, one {# carte} other{# cartes}}",
   "header.choice.win-credit": "Gagner {count} <credit />",
