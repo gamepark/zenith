@@ -39,7 +39,7 @@ export class PlayerHandLocator extends HandLocator {
     const handItems = context.rules.material(MaterialType.AgentCard)
       .location(LocationType.PlayerHand).player(item.location.player!)
       .getItems<Agent>()
-    const reversed = new PlayerHelper(context.rules.game, item.location.player!).team !== getMyTeamColor(context)
+    const reversed = this.isMyTeam(item.location.player!, context) !== imWhiteTeam(context)
     const sorted = [...handItems]
       .filter(i => i.id !== undefined)
       .sort((a, b) => {
