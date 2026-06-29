@@ -10,16 +10,17 @@ export class GiveZenithiumRule extends EffectRule<GiveZenithiumEffect> {
   onRuleStart() {
     const moves: MaterialMove[] = super.onRuleStart()
     if (moves.length > 0) return moves
+    const quantity = this.effect.quantity ?? 1
     this.memorize(Memory.CurrentEffect, JSON.parse(JSON.stringify(this.effect)))
-    this.memorize(Memory.Zenithium, this.effect.quantity)
-    moves.push(this.customMove(CustomMoveType.GiveZenithiumLog, this.effect.quantity))
+    this.memorize(Memory.Zenithium, quantity)
+    moves.push(this.customMove(CustomMoveType.GiveZenithiumLog, quantity))
     moves.push(
       ...this.zenithium.moveItems(
         {
           type: LocationType.TeamZenithium,
           player: this.opponentTeam
         },
-        this.effect.quantity
+        quantity
       )
     )
 
