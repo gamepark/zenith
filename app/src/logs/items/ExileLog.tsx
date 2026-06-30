@@ -19,11 +19,14 @@ export const ExileLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const playerName = usePlayerName(activePlayer)
   const team = new PlayerHelper(context.game as MaterialGame, activePlayer).team
   const opponentTeam = team === TeamColor.Black ? TeamColor.White : TeamColor.Black
-  const effect = rules.effect
+  // Derive the exiled card's owner team from the card itself rather than from the effect:
+  // when the exile is wrapped in a Conditional (e.g. Bajazet), the active effect is the
+  // ConditionalEffect and its `opponent` flag is undefined, which would wrongly render "own zone".
+  const isOpponent = item.location.player !== team
   return (
     <>
       <Trans
-        i18nKey={effect.opponent ? 'log.exile.opponent' : 'log.exile'}
+        i18nKey={isOpponent ? 'log.exile.opponent' : 'log.exile'}
         values={{
           player: playerName,
           team: t(`team.${opponentTeam}`)
