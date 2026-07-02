@@ -15,10 +15,11 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
     const moves: MaterialMove[] = []
     const money = this.creditMoney
     const credits = this.wonCredit
+    const team = this.effect.opponent ? this.opponentTeam : this.playerHelper.team
     this.memorize(Memory.Credit, credits)
     this.memorize(Memory.CurrentEffect, JSON.parse(JSON.stringify(this.effect)))
-    moves.push(this.customMove(CustomMoveType.WinCreditLog, credits))
-    moves.push(...money.addMoney(credits, { type: LocationType.TeamCredit, player: this.effect.opponent ? this.opponentTeam : this.playerHelper.team }))
+    moves.push(this.customMove(CustomMoveType.WinCreditLog, { count: credits, team }))
+    moves.push(...money.addMoney(credits, { type: LocationType.TeamCredit, player: team }))
 
     this.removeFirstEffect()
     moves.push(...this.afterEffectPlayed())

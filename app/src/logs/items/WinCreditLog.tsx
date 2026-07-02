@@ -11,10 +11,12 @@ export const WinCreditLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
   const { context } = props
   const move = props.move as CustomMove
   const { t } = useTranslation()
-  const rules = new WinCreditRule(context.game as MaterialGame)
-  const count = move.data
+  const game = context.game as MaterialGame
+  const rules = new WinCreditRule(game)
   const activePlayer = rules.getActivePlayer()
   const playerName = usePlayerName(activePlayer)
+  const count = typeof move.data === 'number' ? move.data : move.data.count
+  const targetTeam = typeof move.data === 'number' ? new PlayerHelper(game, activePlayer).team : move.data.team
 
   return (
     <>
@@ -23,7 +25,7 @@ export const WinCreditLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
         values={{
           player: playerName,
           count: count,
-          team: t(`team.${new PlayerHelper(context.game as MaterialGame, activePlayer).team}`)
+          team: t(`team.${targetTeam}`)
         }}
         components={LogTransComponents}
       />

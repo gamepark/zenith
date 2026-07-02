@@ -190,7 +190,8 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
 
     if (isCustomMoveType(CustomMoveType.WinCreditLog)(move)) {
       const player = context.game.rule!.player!
-      if (move.data > 0) {
+      const count = typeof move.data === 'number' ? move.data : move.data.count
+      if (count > 0) {
         return {
           depth: 1,
           Component: WinCreditLog,

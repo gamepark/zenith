@@ -21,14 +21,16 @@ export const WinCreditHeader = () => {
   const effect = rules.remind<ExpandedEffect<WinCreditEffect>>(Memory.CurrentEffect as number)
   const source = <EffectSource effectSource={effect.effectSource} />
 
-  if (itsMe) {
+  if (itsMe && !effect.opponent) {
     return <Trans i18nKey="header.win-credit" values={{ count: count }} components={{ ...HeaderTransComponents, source }} />
   }
 
+  const activeTeam = new PlayerHelper(game, activePlayer!).team
+  const targetTeam = effect.opponent ? rules.opponentTeam : activeTeam
   return (
     <Trans
       i18nKey="header.win-credit.player"
-      values={{ team: t(`team.${new PlayerHelper(game, activePlayer!).team}`), count: count }}
+      values={{ team: t(`team.${targetTeam}`), count: count }}
       components={{ ...HeaderTransComponents, source }}
     />
   )
