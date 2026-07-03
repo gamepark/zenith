@@ -27,7 +27,7 @@ export const getBonusWinningTeam = (game: MaterialGame, move: MoveItem): TeamCol
       return disc.location.player as TeamColor
     }
   }
-  return new PlayerHelper(game, rules.getActivePlayer()).team
+  return new PlayerHelper(game, rules.getActivePlayer()!).team
 }
 
 export const WinBonusLog: FC<MoveComponentProps<MaterialMove>> = (props) => {
