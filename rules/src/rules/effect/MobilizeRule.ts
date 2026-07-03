@@ -22,7 +22,8 @@ export class MobilizeRule extends EffectRule<MobilizeEffect> {
       this.removeFirstEffect()
       return this.afterEffectPlayed()
     }
-    return [this.customMove(CustomMoveType.Mobilize, { team: this.playerHelper.team, quantity })]
+    const team = this.effect.opponent ? this.opponentTeam : this.playerHelper.team
+    return [this.customMove(CustomMoveType.Mobilize, { team, quantity })]
   }
 
   decrement(move: ItemMove): boolean {

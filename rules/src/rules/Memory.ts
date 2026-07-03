@@ -22,7 +22,8 @@ export enum Memory {
   LastPlanetMove,
   Team,
   SecretAgent,
-  Refilling
+  Refilling,
+  ActivePlayer
 }
 
 export type PatternType = {

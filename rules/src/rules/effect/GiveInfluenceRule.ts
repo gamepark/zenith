@@ -62,26 +62,29 @@ export class GiveInfluenceRule extends EffectRule<GiveInfluenceEffect> {
   afterItemMove(move: MaterialMove) {
     if (!isMoveItemType(MaterialType.InfluenceDisc)(move)) return []
 
+    // Re-entry once the disc has landed in the opponent's control zone: the capture sequence
+    // is driven explicitly below, so this move must not trigger any resolution here.
+    if (move.location.type === LocationType.TeamPlanets) return []
+
     if (Math.abs(move.location.x!) === 4) {
       const planet = this.material(MaterialType.InfluenceDisc).index(move.itemIndex)
       const helper = new EndGameHelper(this.game)
       const opponentTeam = this.opponentTeam
-      const moves: MaterialMove[] = []
-      moves.push(
-        ...planet.moveItems({
-          type: LocationType.TeamPlanets,
-          player: opponentTeam
-        })
-      )
+      const item = planet.getItem<Influence>()!
+      const capture = planet.moveItems({ type: LocationType.TeamPlanets, player: opponentTeam })
 
       const planets = this.material(MaterialType.InfluenceDisc).index([...helper.getTeamPlanet(opponentTeam).getIndexes(), planet.getIndex()])
       if (helper.willEnd(opponentTeam, planets)) {
-        moves.push(this.endGame())
-      } else {
-        const item = planet.getItem<Influence>()!
-        moves.push(...new BonusHelper(this.game).applyInfluenceBonus(item.id))
+        return [...capture, this.endGame()]
       }
 
+      // Exact order: capture the planet, then discard the bonus token, then resolve its
+      // effect. applyInfluenceBonus emits the token discard and queues the bonus; we then
+      // drop the give effect and resolve the queued bonus — all after the capture move.
+      const moves: MaterialMove[] = [...capture]
+      moves.push(...new BonusHelper(this.game).applyInfluenceBonus(item.id, true))
+      this.removeFirstEffect()
+      moves.push(...this.afterEffectPlayed())
       return moves
     }
 

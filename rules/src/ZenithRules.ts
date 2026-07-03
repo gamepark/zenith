@@ -12,12 +12,16 @@ import {
   SecretMaterialRules,
   TimeLimit
 } from '@gamepark/rules-api'
+import { randomInt } from 'es-toolkit'
 import { Agent } from './material/Agent'
 import { Agents } from './material/Agents'
+import { ExpandedEffect } from './material/effect/Effect'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
 import { CustomMoveType } from './rules/CustomMoveType'
+import { EffectRuleIds } from './rules/helper/EffectRuleIds'
+import { Memory } from './rules/Memory'
 import { DeckHelper } from './rules/helper/DeckHelper'
 import { DiplomacyBoardRule } from './rules/discard-action/DiplomacyBoardRule'
 import { TechnologyBoardRule } from './rules/discard-action/TechnologyBoardRule'
@@ -134,9 +138,39 @@ export class ZenithRules
       moves.push(...this.handleMobilize(move.data))
     } else if (isCustomMoveType(CustomMoveType.Refill)(move)) {
       moves.push(...this.handleRefill(move.data))
+    } else if (isCustomMoveType(CustomMoveType.HandToOpponent)(move)) {
+      moves.push(...this.handToOpponent(move.data))
     }
 
     return moves
+  }
+
+  private handToOpponent({ player }: { player: PlayerId }) {
+    const effects = this.remind<ExpandedEffect[]>(Memory.Effects)
+    const effect = effects[0]
+    if (!effect) return []
+    return [this.startPlayerTurn(EffectRuleIds[effect.type], player)]
+  }
+
+  private effectOpponents() {
+    const turnOwner = this.remind<PlayerId>(Memory.ActivePlayer)
+    const ownerTeam = new PlayerHelper(this.game, turnOwner).team
+    return this.game.players.filter((player) => new PlayerHelper(this.game, player).team !== ownerTeam)
+  }
+
+  randomize(move: MaterialMove, player?: PlayerId) {
+    if (isCustomMoveType(CustomMoveType.HandToOpponent)(move)) {
+      const opponents = this.effectOpponents()
+      return { ...move, data: { player: opponents[randomInt(opponents.length)] } }
+    }
+    return super.randomize(move, player)
+  }
+
+  isUnpredictableMove(move: MaterialMove, player: PlayerId): boolean {
+    // The opponent that resolves a captured planet bonus is drawn at random on the server,
+    // so the client cannot predict which one it is.
+    if (isCustomMoveType(CustomMoveType.HandToOpponent)(move)) return true
+    return super.isUnpredictableMove(move, player)
   }
 
   private handleMobilize({ team, quantity }: { team: PlayerId; quantity: number }) {

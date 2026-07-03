@@ -169,6 +169,7 @@ export type DiscardEffect = {
 export type MobilizeEffect = {
   type: EffectType.Mobilize
   quantity?: number
+  opponent?: boolean
 }
 
 export type ChoiceEffect = {
@@ -223,6 +224,13 @@ export type ExpandedEffect<T extends Effect = Effect> = T & {
     type: MaterialType
     value: unknown
   }
+  /**
+   * When set, this effect must be resolved by an opponent of the player whose turn it is
+   * (e.g. an interactive planet bonus won by the opponent that captured a "given" planet).
+   * The effect resolution hands control over to that opponent, then returns it to the turn
+   * owner for the following effects. See {@link EffectRule.applyFirstEffect}.
+   */
+  resolvedByOpponent?: boolean
 }
 
 export const isSpendZenithium = (effect: Effect): effect is SpendZenithiumEffect => effect.type === EffectType.SpendZenithium

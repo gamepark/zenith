@@ -13,5 +13,6 @@ export enum CustomMoveType {
   DiscardForDiplomacy,
   StealZenithiumLog,
   Mobilize,
-  Refill
+  Refill,
+  HandToOpponent
 }

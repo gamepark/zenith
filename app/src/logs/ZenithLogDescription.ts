@@ -32,7 +32,7 @@ import { StealCreditLog } from './items/StealCreditLog'
 import { StealZenithiumLog } from './items/StealZenithiumLog'
 import { TakeLeaderBadgeLog } from './items/TakeLeaderBadgeLog'
 import { TransfertLog } from './items/TransfertLog'
-import { WinBonusLog } from './items/WinBonusLog'
+import { getBonusWinningTeam, WinBonusLog } from './items/WinBonusLog'
 import { WinCreditLog } from './items/WinCreditLog'
 import { WinPlanetLog } from './items/WinPlanetLog'
 import { WinZenithiumLog } from './items/WinZenithiumLog'
@@ -101,11 +101,10 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
     }
 
     if (isMoveItemType(MaterialType.BonusToken)(move) && move.location.type === LocationType.BonusDiscard) {
-      const player = context.game.rule!.player!
       return {
         depth: 1,
         Component: WinBonusLog,
-        css: colorCss(player, context.game)
+        css: colorCssForTeam(getBonusWinningTeam(context.game, move))
       }
     }
 
@@ -129,11 +128,11 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
     }
 
     if (context.game.rule?.id === RuleId.WinZenithium && isCreateItemType(MaterialType.ZenithiumToken)(move)) {
-      const player = context.game.rule.player!
+      const team = move.item.location?.player
       return {
         depth: 1,
         Component: WinZenithiumLog,
-        css: colorCss(player, context.game)
+        css: team !== undefined ? colorCssForTeam(team as TeamColor) : colorCss(context.game.rule.player!, context.game)
       }
     }
 
@@ -151,11 +150,10 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
     }
 
     if (isMoveItemType(MaterialType.InfluenceDisc)(move) && move.location.type === LocationType.TeamPlanets) {
-      const player = context.game.rule!.player!
       return {
         depth: 1,
         Component: WinPlanetLog,
-        css: colorCss(player, context.game)
+        css: colorCssForTeam(move.location.player as TeamColor)
       }
     }
 
@@ -189,13 +187,13 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
     }
 
     if (isCustomMoveType(CustomMoveType.WinCreditLog)(move)) {
-      const player = context.game.rule!.player!
       const count = typeof move.data === 'number' ? move.data : move.data.count
       if (count > 0) {
+        const css = typeof move.data === 'number' ? colorCss(context.game.rule!.player!, context.game) : colorCssForTeam(move.data.team)
         return {
           depth: 1,
           Component: WinCreditLog,
-          css: colorCss(player, context.game)
+          css
         }
       }
     }
@@ -302,8 +300,7 @@ export class ZenithLogDescription implements LogDescription<MaterialMove, Player
   }
 }
 
-const getTeamCss = (player: PlayerId, game: MaterialGame) => {
-  const team = new PlayerHelper(game, player).team
+const teamBackgroundCss = (team: TeamColor) => {
   if (team === TeamColor.Black) {
     return
   }
@@ -327,24 +324,28 @@ const slideIn = keyframes`
   }
 `
 
-const colorCss = (player: PlayerId, game: MaterialGame) => {
-  const teamCss = getTeamCss(player, game)
-  return css`
-    animation: ${slideIn} 0.3s ease-out;
+const logCss = (teamCss: ReturnType<typeof css> | undefined) => css`
+  animation: ${slideIn} 0.3s ease-out;
 
-    picture,
-    img {
-      height: 2em;
-    }
-    width: calc(100% - 0.2em);
-    > div:last-of-type {
-      display: flex;
-      align-items: center;
-    }
+  picture,
+  img {
+    height: 2em;
+  }
+  width: calc(100% - 0.2em);
+  > div:last-of-type {
+    display: flex;
+    align-items: center;
+  }
 
-    ${teamCss}
-    > div:first-of-type {
-      margin-top: 0;
-    }
-  `
-}
+  ${teamCss}
+  > div:first-of-type {
+    margin-top: 0;
+  }
+`
+
+// Colour a log entry by the player's team.
+const colorCss = (player: PlayerId, game: MaterialGame) => logCss(teamBackgroundCss(new PlayerHelper(game, player).team))
+
+// Colour a log entry by a team directly (for rewards that go to a team other than the
+// active player's — e.g. a bonus won by the opponent that captured a "given" planet).
+const colorCssForTeam = (team: TeamColor) => logCss(teamBackgroundCss(team))
