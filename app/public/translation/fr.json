@@ -295,6 +295,7 @@
   "help.diplomacy-board.note": "Avec le badge Leader côté Or, les bonus sont doublés",
   "help.diplomacy-board.title": "Plateau de Diplomatie",
   "help.discard": "Défaussez {count, plural, one{# carte} other{# cartes}} de votre main",
+  "help.discard.for-cost": "Défaussez {count, plural, one{# carte} other{# cartes}} de votre main et gagnez autant de <credit/> que son coût",
   "help.discard-all": "Défaussez toute votre main",
   "help.discard.info": "Pile de défausse des cartes Agent.",
   "help.discard.title": "Pile de défausse",

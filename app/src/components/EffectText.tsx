@@ -352,6 +352,23 @@ export const EffectText: FC<{ effect: Effect; sameColor?: boolean; factors?: num
         )
       }
 
+      // Special case: DoEffect(Discard) → WinCredit without quantity
+      const isDiscardForCost =
+        conditionEffect?.type === EffectType.Discard &&
+        effect.effect.type === EffectType.WinCredit &&
+        !effect.effect.quantity
+
+      if (isDiscardForCost) {
+        return (
+          <Trans
+            i18nKey="help.discard.for-cost"
+            defaults="Discard {count, plural, one{# card} other{# cards}} from your hand and gain <credit/> equal to its cost"
+            values={{ count: 1 }}
+            components={components}
+          />
+        )
+      }
+
       // Special case: DoEffect(Transfer) → WinCredit without quantity
       const isTransferForCost =
         conditionEffect?.type === EffectType.Transfer &&

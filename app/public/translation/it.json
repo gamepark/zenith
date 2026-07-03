@@ -294,6 +294,7 @@
   "help.diplomacy-board.note": "Con il Badge Leader lato Oro, i bonus sono raddoppiati",
   "help.diplomacy-board.title": "Plancia Diplomazia",
   "help.discard": "Scarta {count, plural, one{# carta} other{# carte}} dalla tua mano",
+  "help.discard.for-cost": "Scarta {count, plural, one{# carta} other{# carte}} dalla tua mano e ottieni <credit/> pari al suo costo",
   "help.discard-all": "Scarta tutta la tua mano",
   "help.discard.info": "Pila degli scarti delle carte agente.",
   "help.discard.title": "Pila degli scarti",

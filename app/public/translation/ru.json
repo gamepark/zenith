@@ -294,6 +294,7 @@
   "help.diplomacy-board.note": "Со знаком лидера золотой стороной бонусы удваиваются",
   "help.diplomacy-board.title": "Поле дипломатии",
   "help.discard": "Сбросить {count, plural, one{# карту} other{# карт}} из руки",
+  "help.discard.for-cost": "Сбросить {count, plural, one{# карту} other{# карт}} из руки и получить <credit/> равный стоимости",
   "help.discard-all": "Сбросить всю руку",
   "help.discard.info": "Стопка сброса карт агентов.",
   "help.discard.title": "Стопка сброса",

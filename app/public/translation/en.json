@@ -294,6 +294,7 @@
   "help.diplomacy-board.note": "With the Leader badge Gold side, bonuses are doubled",
   "help.diplomacy-board.title": "Diplomacy Board",
   "help.discard": "Discard {count, plural, one{# card} other{# cards}} from your hand",
+  "help.discard.for-cost": "Discard {count, plural, one{# card} other{# cards}} from your hand and gain <credit/> equal to its cost",
   "help.discard-all": "Discard your entire hand",
   "help.discard.info": "Agent cards discard pile.",
   "help.discard.title": "Discard pile",

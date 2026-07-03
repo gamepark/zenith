@@ -294,6 +294,7 @@
   "help.diplomacy-board.note": "Mit dem Anf\u00fchrerabzeichen auf der Goldseite werden die Boni verdoppelt",
   "help.diplomacy-board.title": "Diplomatietafel",
   "help.discard": "Wirf {count, plural, one{# Karte} other{# Karten}} von deiner Hand ab",
+  "help.discard.for-cost": "Wirf {count, plural, one{# Karte} other{# Karten}} von deiner Hand ab und erhalte <credit/> in Höhe der Kosten",
   "help.discard-all": "Wirf deine gesamte Hand ab",
   "help.discard.info": "Ablagestapel der Agentenkarten.",
   "help.discard.title": "Ablagestapel",

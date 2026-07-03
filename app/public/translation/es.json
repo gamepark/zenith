@@ -294,6 +294,7 @@
   "help.diplomacy-board.note": "Con la Insignia de Líder cara Oro, las bonificaciones se duplican",
   "help.diplomacy-board.title": "Tablero de Diplomacia",
   "help.discard": "Descarta {count, plural, one{# carta} other{# cartas}} de tu mano",
+  "help.discard.for-cost": "Descarta {count, plural, one{# carta} other{# cartas}} de tu mano y gana <credit/> igual a su coste",
   "help.discard-all": "Descarta toda tu mano",
   "help.discard.info": "Pila de descarte de cartas de agente.",
   "help.discard.title": "Pila de descarte",
