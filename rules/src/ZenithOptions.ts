@@ -20,37 +20,37 @@ export type ZenithOptions = {
 export const ZenithOptionsSpec: OptionsSpec<ZenithOptions> = {
   competitivePlayers: { min: 2, max: 2 },
   secretAgent: {
-    label: (t) => t('option.secret-agent', 'Secret Agent expansion'),
-    help: (t) => t('option.secret-agent.help', 'Add 10 new Secret Agent cards to the game'),
+    label: (t) => t('option.secret-agent'),
+    help: (t) => t('option.secret-agent.help'),
     subscriberRequired: true
   },
   animodBoard: {
-    label: (t) => t('board.animod', 'Animod board'),
-    help: (t) => t('board.animod.help', 'Choose the side for the Animod technology board.'),
+    label: (t) => t('board.animod'),
+    help: (t) => t('board.animod.help'),
     values: ['S', 'D'] as AnimodBoard[],
-    valueSpec: (value) => ({ label: (t) => t(`board.side.${value}`, `Side ${value}`) }),
+    valueSpec: (value) => ({ label: (t) => t(`board.side.${value}`) }),
     competitiveDisabled: true
   },
   humanBoard: {
-    label: (t) => t('board.human', 'Human board'),
-    help: (t) => t('board.human.help', 'Choose the side for the Human technology board.'),
+    label: (t) => t('board.human'),
+    help: (t) => t('board.human.help'),
     values: ['U', 'O'] as HumanBoard[],
-    valueSpec: (value) => ({ label: (t) => t(`board.side.${value}`, `Side ${value}`) }),
+    valueSpec: (value) => ({ label: (t) => t(`board.side.${value}`) }),
     competitiveDisabled: true
   },
   robotBoard: {
-    label: (t) => t('board.robot', 'Robot board'),
-    help: (t) => t('board.robot.help', 'Choose the side for the Robot technology board.'),
+    label: (t) => t('board.robot'),
+    help: (t) => t('board.robot.help'),
     values: ['N', 'P'] as RobotBoard[],
-    valueSpec: (value) => ({ label: (t) => t(`board.side.${value}`, `Side ${value}`) }),
+    valueSpec: (value) => ({ label: (t) => t(`board.side.${value}`) }),
     competitiveDisabled: true
   },
   players: {
     team: {
-      label: (t) => t('team', 'Team'),
-      help: (t) => t('team.help', 'Choose which team you want to play on.'),
+      label: (t) => t('team'),
+      help: (t) => t('team.help'),
       values: teamColors,
-      valueSpec: (color) => ({ label: (t) => t(`team.${color}`, color === TeamColor.White ? 'White' : 'Black') }),
+      valueSpec: (color) => ({ label: (t) => t(`team.${color}`) }),
       competitiveDisabled: true
     }
   },
