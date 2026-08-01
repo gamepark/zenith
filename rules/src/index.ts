@@ -1,5 +1,5 @@
 export { ZenithRules } from './ZenithRules'
-export { ZenithOptionsSpec } from './ZenithOptions'
+export { ZenithOptionsSpec, ZenithOptionsSpecV2 } from './ZenithOptions'
 export { ZenithSetup } from './ZenithSetup'
 export { ZenithBot, ai } from './ZenithBot'
 export { EndGameHelper } from './rules/helper/EndGameHelper'
