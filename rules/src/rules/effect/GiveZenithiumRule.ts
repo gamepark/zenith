@@ -41,6 +41,5 @@ export class GiveZenithiumRule extends EffectRule<GiveZenithiumEffect> {
   onRuleEnd() {
     this.forget(Memory.CurrentEffect)
     this.forget(Memory.Zenithium)
-    return []
   }
 }

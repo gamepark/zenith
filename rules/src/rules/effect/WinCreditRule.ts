@@ -79,6 +79,5 @@ export class WinCreditRule extends EffectRule<WinCreditEffect> {
   onRuleEnd() {
     this.forget(Memory.Credit)
     this.forget(Memory.CurrentEffect)
-    return []
   }
 }

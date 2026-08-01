@@ -65,6 +65,5 @@ export class DiscardRule extends EffectRule<DiscardEffect> {
 
   onRuleEnd() {
     this.forget(Memory.CurrentEffect)
-    return []
   }
 }

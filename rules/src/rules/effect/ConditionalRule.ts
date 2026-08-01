@@ -200,6 +200,5 @@ export class ConditionalRule extends EffectRule<ConditionalEffect> {
 
   onRuleEnd() {
     this.forget(Memory.CantPass)
-    return []
   }
 }

@@ -58,6 +58,5 @@ export class TakeTechnologyBonusTokenRule extends EffectRule<TakeTechnologyBonus
   onRuleEnd() {
     this.forget(Memory.WonBonus)
     this.forget(Memory.CurrentEffect)
-    return []
   }
 }

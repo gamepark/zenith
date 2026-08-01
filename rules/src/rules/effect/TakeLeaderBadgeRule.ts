@@ -47,6 +47,5 @@ export class TakeLeaderBadgeRule extends EffectRule<TakeLeaderBadgeEffect> {
 
   onRuleEnd() {
     this.forget(Memory.CurrentEffect)
-    return []
   }
 }

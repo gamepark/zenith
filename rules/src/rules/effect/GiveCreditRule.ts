@@ -37,6 +37,5 @@ export class GiveCreditRule extends EffectRule<GiveCreditEffect> {
   onRuleEnd() {
     this.forget(Memory.CurrentEffect)
     this.forget(Memory.Credit)
-    return []
   }
 }

@@ -281,6 +281,5 @@ export class WinInfluenceRule extends EffectRule<WinInfluenceEffect> {
 
   onRuleEnd() {
     this.forget(Memory.Pattern)
-    return []
   }
 }

@@ -64,6 +64,5 @@ export class WinZenithiumRule extends EffectRule<WinZenithiumEffect> {
   onRuleEnd() {
     this.forget(Memory.Zenithium)
     this.forget(Memory.CurrentEffect)
-    return []
   }
 }
