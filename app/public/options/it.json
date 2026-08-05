@@ -1,0 +1,20 @@
+{
+  "option.animodBoard": "Plancia Animod",
+  "option.animodBoard.D": "Lato D",
+  "option.animodBoard.S": "Lato S (consigliato per principianti)",
+  "option.animodBoard.help": "Scegli il lato della plancia tecnologia Animod.",
+  "option.humanBoard": "Plancia Human",
+  "option.humanBoard.O": "Lato O",
+  "option.humanBoard.U": "Lato U (consigliato per principianti)",
+  "option.humanBoard.help": "Scegli il lato della plancia tecnologia Human.",
+  "option.robotBoard": "Plancia Robot",
+  "option.robotBoard.N": "Lato N (consigliato per principianti)",
+  "option.robotBoard.P": "Lato P",
+  "option.robotBoard.help": "Scegli il lato della plancia tecnologia Robot.",
+  "option.secretAgent": "Espansione Secret Agents",
+  "option.secretAgent.help": "Aggiunge 10 nuove carte Secret Agents al gioco",
+  "teams": "Squadra",
+  "teams.1": "Pedine nere",
+  "teams.2": "Pedine bianche",
+  "teams.help": "Scegli in quale squadra vuoi giocare."
+}

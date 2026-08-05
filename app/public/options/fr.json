@@ -1,0 +1,20 @@
+{
+  "option.animodBoard": "Plateau Animod",
+  "option.animodBoard.D": "Face D",
+  "option.animodBoard.S": "Face S (recommandé pour débuter)",
+  "option.animodBoard.help": "Choisissez la face du plateau technologie Animod.",
+  "option.humanBoard": "Plateau Humain",
+  "option.humanBoard.O": "Face O",
+  "option.humanBoard.U": "Face U (recommandé pour débuter)",
+  "option.humanBoard.help": "Choisissez la face du plateau technologie Humain.",
+  "option.robotBoard": "Plateau Robot",
+  "option.robotBoard.N": "Face N (recommandé pour débuter)",
+  "option.robotBoard.P": "Face P",
+  "option.robotBoard.help": "Choisissez la face du plateau technologie Robot.",
+  "option.secretAgent": "Extension Secret Agents",
+  "option.secretAgent.help": "Ajoute 10 nouvelles cartes Secret Agents au jeu",
+  "teams": "Equipe",
+  "teams.1": "Pions noirs",
+  "teams.2": "Pions blancs",
+  "teams.help": "Choisissez dans quelle équipe vous souhaitez jouer."
+}

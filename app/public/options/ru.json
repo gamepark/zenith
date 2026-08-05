@@ -1,0 +1,20 @@
+{
+  "option.animodBoard": "Поле Animod",
+  "option.animodBoard.D": "Сторона D",
+  "option.animodBoard.S": "Сторона S (рекомендуется для начинающих)",
+  "option.animodBoard.help": "Выберите сторону поля технологий Animod.",
+  "option.humanBoard": "Поле Human",
+  "option.humanBoard.O": "Сторона O",
+  "option.humanBoard.U": "Сторона U (рекомендуется для начинающих)",
+  "option.humanBoard.help": "Выберите сторону поля технологий Human.",
+  "option.robotBoard": "Поле Robot",
+  "option.robotBoard.N": "Сторона N (рекомендуется для начинающих)",
+  "option.robotBoard.P": "Сторона P",
+  "option.robotBoard.help": "Выберите сторону поля технологий Robot.",
+  "option.secretAgent": "Дополнение Secret Agents",
+  "option.secretAgent.help": "Добавляет в игру 10 новых карт Secret Agents",
+  "teams": "Команда",
+  "teams.1": "Чёрные пешки",
+  "teams.2": "Белые пешки",
+  "teams.help": "Выберите, за какую команду вы хотите играть."
+}

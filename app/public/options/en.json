@@ -1,0 +1,20 @@
+{
+  "option.animodBoard": "Animod board",
+  "option.animodBoard.D": "Side D",
+  "option.animodBoard.S": "Side S (recommended for beginners)",
+  "option.animodBoard.help": "Choose the side for the Animod technology board.",
+  "option.humanBoard": "Human board",
+  "option.humanBoard.O": "Side O",
+  "option.humanBoard.U": "Side U (recommended for beginners)",
+  "option.humanBoard.help": "Choose the side for the Human technology board.",
+  "option.robotBoard": "Robot board",
+  "option.robotBoard.N": "Side N (recommended for beginners)",
+  "option.robotBoard.P": "Side P",
+  "option.robotBoard.help": "Choose the side for the Robot technology board.",
+  "option.secretAgent": "Secret Agents expansion",
+  "option.secretAgent.help": "Add 10 new Secret Agents cards to the game",
+  "teams": "Team",
+  "teams.1": "Black pawns",
+  "teams.2": "White pawns",
+  "teams.help": "Choose which team you want to play on."
+}

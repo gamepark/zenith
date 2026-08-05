@@ -1,0 +1,20 @@
+{
+  "option.animodBoard": "Tablero Animod",
+  "option.animodBoard.D": "Cara D",
+  "option.animodBoard.S": "Cara S (recomendado para principiantes)",
+  "option.animodBoard.help": "Elige la cara del tablero de tecnología Animod.",
+  "option.humanBoard": "Tablero Humano",
+  "option.humanBoard.O": "Cara O",
+  "option.humanBoard.U": "Cara U (recomendado para principiantes)",
+  "option.humanBoard.help": "Elige la cara del tablero de tecnología Humano.",
+  "option.robotBoard": "Tablero Robot",
+  "option.robotBoard.N": "Cara N (recomendado para principiantes)",
+  "option.robotBoard.P": "Cara P",
+  "option.robotBoard.help": "Elige la cara del tablero de tecnología Robot.",
+  "option.secretAgent": "Expansión Secret Agents",
+  "option.secretAgent.help": "Añade 10 nuevas cartas Secret Agents al juego",
+  "teams": "Equipo",
+  "teams.1": "Marcadores negros",
+  "teams.2": "Marcadores blancos",
+  "teams.help": "Elige en qué equipo quieres jugar."
+}

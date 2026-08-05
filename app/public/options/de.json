@@ -1,0 +1,20 @@
+{
+  "option.animodBoard": "Animod-Tafel",
+  "option.animodBoard.D": "Seite D",
+  "option.animodBoard.S": "Seite S (empfohlen für Anfänger)",
+  "option.animodBoard.help": "Wähle die Seite der Animod-Technologietafel.",
+  "option.humanBoard": "Human-Tafel",
+  "option.humanBoard.O": "Seite O",
+  "option.humanBoard.U": "Seite U (empfohlen für Anfänger)",
+  "option.humanBoard.help": "Wähle die Seite der Human-Technologietafel.",
+  "option.robotBoard": "Robot-Tafel",
+  "option.robotBoard.N": "Seite N (empfohlen für Anfänger)",
+  "option.robotBoard.P": "Seite P",
+  "option.robotBoard.help": "Wähle die Seite der Robot-Technologietafel.",
+  "option.secretAgent": "Secret Agents-Erweiterung",
+  "option.secretAgent.help": "Fügt dem Spiel 10 neue Secret Agents-Karten hinzu",
+  "teams": "Team",
+  "teams.1": "Schwarze Figuren",
+  "teams.2": "Weiße Figuren",
+  "teams.help": "Wähle, in welchem Team du spielen möchtest."
+}
