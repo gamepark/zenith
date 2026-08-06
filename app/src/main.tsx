@@ -1,7 +1,7 @@
 import { GameProvider } from '@gamepark/react-game'
 import { ZenithTutorial } from './tutorial/ZenithTutorial'
 import { ai } from '@gamepark/zenith/ZenithBot'
-import { ZenithOptionsSpec } from '@gamepark/zenith/ZenithOptions'
+import { ZenithOptionsSpecV2 } from '@gamepark/zenith/ZenithOptions'
 import { ZenithRules } from '@gamepark/zenith/ZenithRules'
 import { ZenithSetup } from '@gamepark/zenith/ZenithSetup'
 import { StrictMode } from 'react'
@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')!).render(
     <GameProvider
       game="zenith"
       Rules={ZenithRules}
-      optionsSpec={ZenithOptionsSpec}
+      optionsSpec={ZenithOptionsSpecV2}
       GameSetup={ZenithSetup}
       material={Material}
       logs={new ZenithLogDescription()}

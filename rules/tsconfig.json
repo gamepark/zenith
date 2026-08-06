@@ -1,11 +1,12 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
     "module": "ESNext",
     "target": "ESNext",
-    "lib": ["ESNext"],
-    "moduleResolution": "node",
+    "lib": [
+      "ESNext"
+    ],
+    "moduleResolution": "bundler",
     "declaration": true,
     "sourceMap": true,
     "declarationMap": true,
