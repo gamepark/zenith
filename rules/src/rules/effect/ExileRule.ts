@@ -12,7 +12,9 @@ import { EffectRule } from './index'
 export class ExileRule extends EffectRule<ExileEffect> {
   isPossible(): boolean {
     if (this.firstEffect?.type === EffectType.Conditional && !this.effect.quantities) {
-      return this.getPlayerMoves().length >= (this.effect.quantity ?? 1)
+      // Only the top card of each planet can be exiled at a given time, but the cards below it
+      // become exilable one after the other: count the exilable cards, not the moves available now.
+      return this.cards.length >= (this.effect.quantity ?? 1)
     }
 
     return this.getPlayerMoves().length > 0

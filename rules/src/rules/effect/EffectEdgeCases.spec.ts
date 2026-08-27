@@ -1,8 +1,8 @@
-import { MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, MaterialMove, MoveKind, RuleMoveType } from '@gamepark/rules-api'
 import { describe, expect, it } from 'vitest'
 import { Agent, agents } from '../../material/Agent'
 import { Agents } from '../../material/Agents'
-import { Credit } from '../../material/Credit'
+import { Credit, credits } from '../../material/Credit'
 import { ConditionType, ExpandedEffect } from '../../material/effect/Effect'
 import { EffectType } from '../../material/effect/EffectType'
 import { Faction } from '../../material/Faction'
@@ -387,6 +387,32 @@ describe('GiveInfluence edge cases', () => {
   })
 })
 
+/** Chaka: exile N cards (Mercury excluded) to win 10 credits */
+function chakaEffect(quantity: number) {
+  return {
+    type: EffectType.Conditional,
+    condition: {
+      type: ConditionType.DoEffect,
+      effect: { type: EffectType.Exile, quantity, except: Influence.Mercury }
+    },
+    effect: { type: EffectType.WinCredit, quantity: 10 }
+  }
+}
+
+function startRule(rules: ZenithRules, id: RuleId) {
+  playConsequences(rules, { kind: MoveKind.RulesMove, type: RuleMoveType.StartRule, id } as any)
+}
+
+function exileMoves(rules: ZenithRules) {
+  return rules
+    .getLegalMoves(player1)
+    .filter((move) => isMoveItemType(MaterialType.AgentCard)(move) && move.location.type === LocationType.AgentDiscard)
+}
+
+function teamCredits(rules: ZenithRules) {
+  return rules.material(MaterialType.CreditToken).money(credits).player(TeamColor.White).count
+}
+
 // ============================================================
 // Exile
 // ============================================================
@@ -421,6 +447,36 @@ describe('Exile edge cases', () => {
 
     const result = resolveAllEffects(rules, player1)
     expect(result.error).toBeUndefined()
+  })
+
+  it('exile 2 as a condition is possible when the 2 cards are stacked on the same planet', () => {
+    // Chaka: only the top card of a planet can be exiled at a given time, but the card below it
+    // becomes exilable right after — 2 cards on a single planet do satisfy "exile 2".
+    const rules = createRulesWithEffects({ playerInfluenceCards: [Agent.Luc4s, Agent.Cresus] }, [chakaEffect(2)])
+    const creditsBefore = teamCredits(rules)
+    startRule(rules, RuleId.Conditional)
+
+    const firstExiles = exileMoves(rules)
+    expect(firstExiles).toHaveLength(1)
+    playConsequences(rules, firstExiles[0])
+
+    const secondExiles = exileMoves(rules)
+    expect(secondExiles).toHaveLength(1)
+    playConsequences(rules, secondExiles[0])
+    resolveAutoMoves(rules)
+
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.Influence).player(TeamColor.White).length).toBe(0)
+    expect(teamCredits(rules)).toBe(creditsBefore + 10)
+  })
+
+  it('exile 2 as a condition is skipped when only 1 card can be exiled', () => {
+    const rules = createRulesWithEffects({ playerInfluenceCards: [Agent.Luc4s] }, [chakaEffect(2)])
+    const creditsBefore = teamCredits(rules)
+    startRule(rules, RuleId.Conditional)
+
+    expect(exileMoves(rules)).toHaveLength(0)
+    expect(rules.material(MaterialType.AgentCard).location(LocationType.Influence).player(TeamColor.White).length).toBe(1)
+    expect(teamCredits(rules)).toBe(creditsBefore)
   })
 
   it('exile with specific influence filter and no matching cards should skip', () => {
