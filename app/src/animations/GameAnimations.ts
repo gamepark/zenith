@@ -1,4 +1,4 @@
-import { MaterialGameAnimations } from '@gamepark/react-game'
+import { and, isRule, MaterialGameAnimations } from '@gamepark/react-game'
 import { isMoveItemType } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { RuleId } from '@gamepark/zenith/rules/RuleId'
@@ -7,52 +7,40 @@ export const gameAnimations = new MaterialGameAnimations()
 
 // Influence disc movements - slower for satisfaction
 gameAnimations
-  .when()
-  .move((move) => isMoveItemType(MaterialType.InfluenceDisc)(move))
-  .duration(1.2)
+  .configure((move) => isMoveItemType(MaterialType.InfluenceDisc)(move))
+  .duration(1200)
 
 // Card plays
 gameAnimations
-  .when()
-  .rule(RuleId.PlayCard)
-  .move((move) => isMoveItemType(MaterialType.AgentCard)(move))
-  .duration(0.8)
+  .configure(and(isRule(RuleId.PlayCard), (move) => isMoveItemType(MaterialType.AgentCard)(move)))
+  .duration(800)
 
 // Mulligan - faster card distribution
 gameAnimations
-  .when()
-  .rule(RuleId.Muligan)
-  .move((move) => isMoveItemType(MaterialType.AgentCard)(move))
-  .duration(0.5)
+  .configure(and(isRule(RuleId.Muligan), (move) => isMoveItemType(MaterialType.AgentCard)(move)))
+  .duration(500)
 
 // Discard actions
 gameAnimations
-  .when()
-  .rule(RuleId.Discard)
-  .move((move) => isMoveItemType(MaterialType.AgentCard)(move))
-  .duration(0.6)
+  .configure(and(isRule(RuleId.Discard), (move) => isMoveItemType(MaterialType.AgentCard)(move)))
+  .duration(600)
 
 // Credit/Zenithium token movements
 gameAnimations
-  .when()
-  .move((move) => isMoveItemType(MaterialType.CreditToken)(move) || isMoveItemType(MaterialType.ZenithiumToken)(move))
-  .duration(0.7)
+  .configure((move) => isMoveItemType(MaterialType.CreditToken)(move) || isMoveItemType(MaterialType.ZenithiumToken)(move))
+  .duration(700)
 
 // Leader badge transfer
 gameAnimations
-  .when()
-  .move((move) => isMoveItemType(MaterialType.LeaderBadgeToken)(move))
-  .duration(1.0)
+  .configure((move) => isMoveItemType(MaterialType.LeaderBadgeToken)(move))
+  .duration(1000)
 
 // Technology markers
 gameAnimations
-  .when()
-  .move((move) => isMoveItemType(MaterialType.TechMarker)(move))
-  .duration(0.8)
+  .configure((move) => isMoveItemType(MaterialType.TechMarker)(move))
+  .duration(800)
 
 // Refill deck
 gameAnimations
-  .when()
-  .rule(RuleId.Refill)
-  .move((move) => isMoveItemType(MaterialType.AgentCard)(move))
-  .duration(0.4)
+  .configure(and(isRule(RuleId.Refill), (move) => isMoveItemType(MaterialType.AgentCard)(move)))
+  .duration(400)
