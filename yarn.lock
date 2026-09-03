@@ -644,9 +644,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@npm:~7.7.47":
-  version: 7.7.47
-  resolution: "@gamepark/react-game@npm:7.7.47"
+"@gamepark/react-game@npm:~7.7.48":
+  version: 7.7.48
+  resolution: "@gamepark/react-game@npm:7.7.48"
   dependencies:
     "@datadog/browser-logs": "npm:^7.10.0"
     "@dnd-kit/modifiers": "npm:^9.0.0"
@@ -663,7 +663,7 @@ __metadata:
     o9n: "npm:^2.1.1"
     react-infinite-scroll-component: "npm:^7.2.1"
     react-merge-refs: "npm:^3.0.2"
-    react-zoom-pan-pinch: "npm:^4.0.4"
+    react-zoom-pan-pinch: "npm:^4.1.1"
     rxjs: "npm:^7.8.2"
     use-long-press: "npm:^3.3.0"
   peerDependencies:
@@ -680,7 +680,7 @@ __metadata:
     react-dom: 19.x
     react-i18next: 17.x
     react-redux: 9.x
-  checksum: 10c0/ad5541e6579ca94bd0a14758ea6cd58cd7e4e6d667d752252ca18180200458beabd2bdeb56c2d76ca87940b559cee2490a58410e3b37e81445426e24b09082f2
+  checksum: 10c0/6fdec3cec541f0eb0c0f935bd560f5a6bf05853450cf5cdc6f7bfbbf92a073634579d2421c4a7a819dfee2527eee5fd9839c40a530532bcf260c652ea0ecdf42
   languageName: node
   linkType: hard
 
@@ -704,7 +704,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.3.1"
     "@fortawesome/free-solid-svg-icons": "npm:^7.3.1"
     "@fortawesome/react-fontawesome": "npm:^3.5.0"
-    "@gamepark/react-game": "npm:~7.7.47"
+    "@gamepark/react-game": "npm:~7.7.48"
     "@gamepark/rules-api": "npm:~7.7.2"
     "@types/node": "npm:^26.1.2"
     "@types/react": "npm:^19.2.18"
@@ -4269,13 +4269,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-zoom-pan-pinch@npm:^4.0.4":
-  version: 4.0.4
-  resolution: "react-zoom-pan-pinch@npm:4.0.4"
+"react-zoom-pan-pinch@npm:^4.1.1":
+  version: 4.2.0
+  resolution: "react-zoom-pan-pinch@npm:4.2.0"
   peerDependencies:
     react: "*"
     react-dom: "*"
-  checksum: 10c0/32c6d92fede5716f01c3c6c4fb6d0edba6e2ee8bd8fe55e5e9c2ec38553fcea5d09ca45ed838861ec2d750ee3df3482a834151870f9e20b19ddca9455add054f
+  checksum: 10c0/caab5abeab6e99a30b7913049d401a51ccc7d130674e0d62e2b42076e418502a666b50054a27c094e0ad62057079e3a9d98802fa9fb2da1f3f7f0df884baeff7
   languageName: node
   linkType: hard
 

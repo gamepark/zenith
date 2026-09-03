@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
-import { Avatar, MaterialContext, PlayerTimer, SpeechBubbleDirection, useMaterialContext, usePlayerName, usePlayerTime, usePlayers, useRules } from '@gamepark/react-game'
+import { Avatar, MaterialContext, PlayerTimer, useMaterialContext, usePlayerName, usePlayerTime, usePlayers, useRules } from '@gamepark/react-game'
 import { Credit } from '@gamepark/zenith/material/Credit'
 import { MaterialType } from '@gamepark/zenith/material/MaterialType'
 import { PlayerId } from '@gamepark/zenith/PlayerId'
@@ -111,10 +111,9 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
   const playerName = usePlayerName(playerId)
   const playerTime = usePlayerTime(playerId)
   const isWhite = team === TeamColor.White
-  const panelRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div ref={panelRef} css={[panelCss, isWhite ? panelWhiteCss : panelBlackCss, position]}>
+    <div css={[panelCss, isWhite ? panelWhiteCss : panelBlackCss, position]}>
       {/* Left: Avatar + Info */}
       <div css={leftSideCss}>
         {/* Avatar wrapper */}
@@ -127,12 +126,8 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
           <Avatar
             playerId={playerId}
             css={avatarCss}
-            speechBubbleProps={speak ? {
-              // eslint-disable-next-line react-hooks/refs
-              direction: getSpeechDirection(panelRef.current),
-              css: speechBubbleCss,
-              children: <>{speak}</>
-            } : undefined}
+            speechBubble
+            speechBubbleProps={{ css: speechBubbleCss, children: speak }}
           />
         </div>
 
@@ -172,19 +167,6 @@ const PlayerPanel: FC<PlayerPanelProps> = ({
 }
 
 // ============ Helpers ============
-
-const getSpeechDirection = (element: HTMLDivElement | null): SpeechBubbleDirection => {
-  if (!element) return SpeechBubbleDirection.BOTTOM_RIGHT
-  const rect = element.getBoundingClientRect()
-  const left = rect.left / window.innerWidth
-  const top = rect.top / window.innerHeight
-  const isLeft = left > 0.5
-  const isTop = top > 0.5
-  if (isLeft) {
-    return isTop ? SpeechBubbleDirection.TOP_LEFT : SpeechBubbleDirection.BOTTOM_LEFT
-  }
-  return isTop ? SpeechBubbleDirection.TOP_RIGHT : SpeechBubbleDirection.BOTTOM_RIGHT
-}
 
 const getPanelPosition = (player: PlayerId, context: MaterialContext) => {
   const itsMyTeam = getMyTeamColor(context) === new PlayerHelper(context.rules.game, player).team
